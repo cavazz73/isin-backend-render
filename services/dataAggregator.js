@@ -1,82 +1,127 @@
 /**
- * Data Aggregator - Multi-Source Orchestrator
  * Copyright (c) 2024-2025 Mutna S.R.L.S.
+ * Data Aggregator - Multi-Source with Fallback
  */
 
 const yahooFinance = require('./yahooFinance');
 const finnhub = require('./finnhub');
+const alphaVantage = require('./alphaVantage');
 
 class DataAggregator {
     constructor() {
         this.stats = {
             yahoo: { success: 0, errors: 0 },
-            finnhub: { success: 0, errors: 0 }
+            finnhub: { success: 0, errors: 0 },
+            alphavantage: { success: 0, errors: 0 }
         };
     }
 
     async search(query) {
         const sources = [
-            { name: 'yahoo', fn: () => yahooFinance.search(query) },
-            { name: 'finnhub', fn: () => finnhub.search(query) }
+            { name: 'finnhub', service: finnhub },      // Finnhub FIRST (more reliable)
+            { name: 'yahoo', service: yahooFinance },
+            { name: 'alphavantage', service: alphaVantage }
         ];
 
-        return await this.executeWithFallback(sources, 'search', query);
+        const errors = [];
+
+        for (const { name, service } of sources) {
+            try {
+                console.log(`[DataAggregator] Trying ${name} for search: ${query}`);
+                const results = await service.search(query);
+                
+                if (results && results.length > 0) {
+                    this.stats[name].success++;
+                    console.log(`[DataAggregator] ✓ ${name} succeeded with ${results.length} results`);
+                    
+                    return {
+                        success: true,
+                        results: results,
+                        source: name,
+                        stats: this.getStats()
+                    };
+                } else {
+                    console.log(`[DataAggregator] ✗ ${name} returned empty results`);
+                    this.stats[name].errors++;
+                }
+            } catch (error) {
+                this.stats[name].errors++;
+                errors.push({ source: name, error: error.message });
+                console.log(`[DataAggregator] ✗ ${name} failed: ${error.message}`);
+                continue; // Try next source
+            }
+        }
+
+        throw new Error(JSON.stringify({
+            message: 'All data sources failed',
+            errors: errors,
+            stats: this.getStats()
+        }));
     }
 
     async getQuote(symbol) {
         const sources = [
-            { name: 'yahoo', fn: () => yahooFinance.getQuote(symbol) },
-            { name: 'finnhub', fn: () => finnhub.getQuote(symbol) }
+            { name: 'finnhub', service: finnhub },      // Finnhub FIRST (more reliable)
+            { name: 'yahoo', service: yahooFinance },
+            { name: 'alphavantage', service: alphaVantage }
         ];
 
-        return await this.executeWithFallback(sources, 'quote', symbol);
-    }
-
-    async getHistoricalData(symbol, period) {
-        const sources = [
-            { name: 'yahoo', fn: () => yahooFinance.getHistoricalData(symbol, period) },
-            { name: 'finnhub', fn: () => finnhub.getHistoricalData(symbol, period) }
-        ];
-
-        return await this.executeWithFallback(sources, 'historical', symbol);
-    }
-
-    async executeWithFallback(sources, operation, query) {
         const errors = [];
 
-        for (const source of sources) {
+        for (const { name, service } of sources) {
             try {
-                console.log(`[Aggregator] Trying ${source.name} for ${operation}: ${query}`);
+                console.log(`[DataAggregator] Trying ${name} for quote: ${symbol}`);
+                const quote = await service.getQuote(symbol);
                 
-                const result = await source.fn();
-                
-                this.stats[source.name].success++;
-                
-                console.log(`[Aggregator] ✓ ${source.name} succeeded`);
-                
-                return {
-                    data: result,
-                    source: source.name,
-                    query,
-                    timestamp: new Date().toISOString()
-                };
-
+                if (quote && quote.price !== null && quote.price !== undefined) {
+                    this.stats[name].success++;
+                    console.log(`[DataAggregator] ✓ ${name} succeeded with price: ${quote.price}`);
+                    
+                    return {
+                        success: true,
+                        data: quote,
+                        source: name,
+                        stats: this.getStats()
+                    };
+                } else {
+                    console.log(`[DataAggregator] ✗ ${name} returned quote with null price`);
+                    this.stats[name].errors++;
+                }
             } catch (error) {
-                this.stats[source.name].errors++;
-                errors.push({
-                    source: source.name,
-                    error: error.message
-                });
-                console.error(`[Aggregator] ✗ ${source.name} failed:`, error.message);
+                this.stats[name].errors++;
+                errors.push({ source: name, error: error.message });
+                console.log(`[DataAggregator] ✗ ${name} failed: ${error.message}`);
+                continue; // Try next source
             }
         }
 
-        // Tutte le fonti fallite
         throw new Error(JSON.stringify({
             message: 'All data sources failed',
-            errors,
-            stats: this.stats
+            errors: errors,
+            stats: this.getStats()
         }));
+    }
+
+    async getHistoricalData(symbol, period = '1M') {
+        try {
+            console.log(`[DataAggregator] Getting historical data for ${symbol}, period: ${period}`);
+            const data = await yahooFinance.getHistoricalData(symbol, period);
+            this.stats.yahoo.success++;
+            
+            return {
+                success: true,
+                data: data,
+                source: 'yahoo',
+                stats: this.getStats()
+            };
+        } catch (error) {
+            this.stats.yahoo.errors++;
+            throw new Error(JSON.stringify({
+                message: 'Historical data failed',
+                error: error.message,
+                stats: this.getStats()
+            }));
+        }
     }
 
     async testAllSources() {
@@ -85,7 +130,7 @@ class DataAggregator {
         // Test Yahoo
         try {
             await yahooFinance.search('AAPL');
-            results.yahoo = { status: 'OK', responseTime: '0ms' };
+            results.yahoo = { status: 'OK', message: 'Working' };
         } catch (error) {
             results.yahoo = { status: 'FAILED', error: error.message };
         }
@@ -93,43 +138,50 @@ class DataAggregator {
         // Test Finnhub
         try {
             await finnhub.search('AAPL');
-            results.finnhub = { status: 'OK', responseTime: '0ms' };
+            results.finnhub = { status: 'OK', message: 'Working' };
         } catch (error) {
             results.finnhub = { status: 'FAILED', error: error.message };
+        }
+
+        // Test Alpha Vantage
+        try {
+            await alphaVantage.search('AAPL');
+            results.alphavantage = { status: 'OK', message: 'Working' };
+        } catch (error) {
+            results.alphavantage = { status: 'FAILED', error: error.message };
         }
 
         return results;
     }
 
     getStats() {
-        const total = {};
-        
-        for (const [source, stats] of Object.entries(this.stats)) {
-            const totalCalls = stats.success + stats.errors;
-            total[source] = {
-                success: stats.success,
-                errors: stats.errors,
-                total: totalCalls,
-                successRate: totalCalls > 0 ? ((stats.success / totalCalls) * 100).toFixed(2) + '%' : '0%'
-            };
-        }
+        return {
+            yahoo: {
+                ...this.stats.yahoo,
+                successRate: this.calculateRate(this.stats.yahoo)
+            },
+            finnhub: {
+                ...this.stats.finnhub,
+                successRate: this.calculateRate(this.stats.finnhub)
+            },
+            alphavantage: {
+                ...this.stats.alphavantage,
+                successRate: this.calculateRate(this.stats.alphavantage)
+            }
+        };
+    }
 
-        return total;
+    calculateRate(stats) {
+        const total = stats.success + stats.errors;
+        return total > 0 ? ((stats.success / total) * 100).toFixed(1) + '%' : 'N/A';
     }
 
     resetStats() {
         this.stats = {
             yahoo: { success: 0, errors: 0 },
-            finnhub: { success: 0, errors: 0 }
+            finnhub: { success: 0, errors: 0 },
+            alphavantage: { success: 0, errors: 0 }
         };
-    }
-
-    clearAllCaches() {
-        // Yahoo Finance cache
-        if (yahooFinance.cache) {
-            yahooFinance.cache.clear();
-        }
-        console.log('[Aggregator] All caches cleared');
     }
 }
 
