@@ -3,12 +3,12 @@
  * P.IVA: 04219740364
  * 
  * ISIN Research Backend - Multi-Source Financial Data API
- * Version: 2.0
+ * Version: 2.1 - Enhanced European/Italian stock support
  */
 
 const express = require('express');
 const cors = require('cors');
-const financialRoutes = require('./routes/financial');
+const financialRoutes = require('./financial');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -29,7 +29,8 @@ app.get('/health', (req, res) => {
         status: 'ok',
         timestamp: new Date().toISOString(),
         uptime: process.uptime(),
-        version: '2.0.0'
+        version: '2.1.0',
+        features: ['multi-source', 'european-stocks', 'italian-support']
     });
 });
 
@@ -57,7 +58,7 @@ app.use((err, req, res, next) => {
 // Start server
 app.listen(PORT, () => {
     console.log('='.repeat(60));
-    console.log('ISIN Research Backend - Multi-Source v2.0');
+    console.log('ISIN Research Backend - Multi-Source v2.1');
     console.log('Copyright (c) 2024-2025 Mutna S.R.L.S.');
     console.log('='.repeat(60));
     console.log(`Server running on port ${PORT}`);
@@ -65,9 +66,12 @@ app.listen(PORT, () => {
     console.log(`API endpoint: http://localhost:${PORT}/api/financial/search`);
     console.log('='.repeat(60));
     console.log('Data sources:');
-    console.log('  1. Yahoo Finance (Primary - Unlimited)');
-    console.log('  2. Finnhub (Backup - 60 req/min)');
-    console.log('  3. Alpha Vantage (Backup - 25 req/day)');
+    console.log('  1. Yahoo Finance (Primary - Unlimited, Free)');
+    console.log('  2. Marketstack (European stocks - 100 req/month free)');
+    console.log('  3. Finnhub (Backup - 60 req/min)');
+    console.log('  4. Alpha Vantage (Backup - 25 req/day)');
+    console.log('='.repeat(60));
+    console.log('European/Italian stocks: ENHANCED SUPPORT');
     console.log('='.repeat(60));
 });
 
