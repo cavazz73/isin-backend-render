@@ -3,7 +3,7 @@
  * P.IVA: 04219740364
  * 
  * ISIN Research Backend - Multi-Source Financial Data API
- * Version: 2.1 - Enhanced European/Italian stock support
+ * Version: 2.2 - FIX Italian stock priority + Marketstack first for EU historical
  */
 
 const express = require('express');
@@ -29,8 +29,8 @@ app.get('/health', (req, res) => {
         status: 'ok',
         timestamp: new Date().toISOString(),
         uptime: process.uptime(),
-        version: '2.1.0',
-        features: ['multi-source', 'european-stocks', 'italian-support']
+        version: '2.2.0',
+        features: ['multi-source', 'european-stocks', 'italian-priority-fix', 'marketstack-historical']
     });
 });
 
@@ -58,7 +58,8 @@ app.use((err, req, res, next) => {
 // Start server
 app.listen(PORT, () => {
     console.log('='.repeat(60));
-    console.log('ISIN Research Backend - Multi-Source v2.1');
+    console.log('ISIN Research Backend - Multi-Source v2.2');
+    console.log('FIX: Italian stock priority + Marketstack first for EU historical');
     console.log('Copyright (c) 2024-2025 Mutna S.R.L.S.');
     console.log('='.repeat(60));
     console.log(`Server running on port ${PORT}`);
