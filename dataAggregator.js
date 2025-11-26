@@ -2,55 +2,72 @@
  * Copyright (c) 2024-2025 Mutna S.R.L.S. - All Rights Reserved
  * P.IVA: 04219740364
  * 
- * Multi-Source Data Aggregator v2.2
- * FIX: Priorità .MI per azioni italiane, Marketstack first per historical europei
+ * Multi-Source Data Aggregator v2.3
+ * OPTIMIZED: Yahoo Finance only with rate limiting and caching
+ * Fixes the "too many parallel requests" problem
  */
 
 const YahooFinanceClient = require('./yahooFinance');
-const MarketstackClient = require('./marketstack');
-const FinnhubClient = require('./finnhub');
-const AlphaVantageClient = require('./alphaVantage');
 
 class DataAggregator {
     constructor(config = {}) {
         this.yahoo = new YahooFinanceClient();
-        this.marketstack = new MarketstackClient(config.marketstackKey);
-        this.finnhub = new FinnhubClient(config.finnhubKey);
-        this.alphavantage = new AlphaVantageClient(config.alphavantageKey);
         
-        this.sources = ['yahoo', 'marketstack', 'finnhub', 'alphavantage'];
+        // Simple in-memory cache (TTL: 5 minutes)
+        this.cache = new Map();
+        this.cacheTTL = 5 * 60 * 1000; // 5 minutes
         
-        // European exchange suffixes
-        this.europeanSuffixes = ['.MI', '.PA', '.DE', '.AS', '.L', '.MC', '.SW', '.BR', '.LS', '.HE', '.ST', '.CO', '.OL', '.XMIL'];
+        // Rate limiting
+        this.lastRequestTime = 0;
+        this.minRequestInterval = 200; // 200ms between requests (5 req/sec max)
         
-        // Italian stock names - quando cerchi questi, DEVE trovare .MI
+        // Italian/European stock indicators
+        this.europeanSuffixes = ['.MI', '.PA', '.DE', '.AS', '.L', '.MC', '.SW', '.BR', '.LS', '.HE', '.ST', '.CO', '.OL'];
         this.italianStockNames = [
             'ENEL', 'ENI', 'INTESA', 'ISP', 'UNICREDIT', 'UCG', 'GENERALI', 
             'FERRARI', 'RACE', 'STELLANTIS', 'STLA', 'LEONARDO', 'LDO',
             'PRYSMIAN', 'PRY', 'TELECOM', 'TIT', 'TIM', 'MONCLER', 'MONC',
             'CAMPARI', 'CPR', 'PIRELLI', 'PIRC', 'NEXI', 'SNAM', 'SRG',
             'TERNA', 'TRN', 'MEDIOBANCA', 'MB', 'POSTE', 'PST', 'A2A',
-            'HERA', 'HER', 'SAIPEM', 'SPM', 'AMPLIFON', 'AMP', 'DIASORIN', 'DIA',
-            'STM', 'STMICROELECTRONICS', 'TENARIS', 'TEN', 'RECORDATI', 'REC',
-            'INWIT', 'INW', 'ITALGAS', 'IG', 'BPER', 'BPE', 'BANCO BPM', 'BAMI'
+            'HERA', 'HER', 'SAIPEM', 'SPM', 'AMPLIFON', 'AMP', 'DIASORIN', 'DIA'
         ];
-
-        console.log('[API] Data Aggregator v2.2 initialized - Italian stock priority FIX');
     }
 
     /**
-     * Check if query is for Italian stock specifically
+     * Rate-limited delay
      */
-    isItalianQuery(query) {
-        const upperQuery = query.toUpperCase().trim();
+    async rateLimitDelay() {
+        const now = Date.now();
+        const timeSinceLastRequest = now - this.lastRequestTime;
         
-        // Se finisce con .MI o .XMIL è sicuramente italiano
-        if (upperQuery.endsWith('.MI') || upperQuery.endsWith('.XMIL')) return true;
+        if (timeSinceLastRequest < this.minRequestInterval) {
+            const waitTime = this.minRequestInterval - timeSinceLastRequest;
+            await new Promise(resolve => setTimeout(resolve, waitTime));
+        }
         
-        // Se è un nome noto italiano
-        if (this.italianStockNames.includes(upperQuery)) return true;
-        
-        return false;
+        this.lastRequestTime = Date.now();
+    }
+
+    /**
+     * Get from cache if valid
+     */
+    getFromCache(key) {
+        const cached = this.cache.get(key);
+        if (cached && (Date.now() - cached.timestamp) < this.cacheTTL) {
+            console.log(`[Cache] HIT for ${key}`);
+            return cached.data;
+        }
+        return null;
+    }
+
+    /**
+     * Set cache
+     */
+    setCache(key, data) {
+        this.cache.set(key, {
+            data: data,
+            timestamp: Date.now()
+        });
     }
 
     /**
@@ -59,360 +76,263 @@ class DataAggregator {
     isEuropeanQuery(query) {
         const upperQuery = query.toUpperCase().trim();
         
-        // Check suffixes
         for (const suffix of this.europeanSuffixes) {
             if (upperQuery.endsWith(suffix)) return true;
         }
         
-        // Check Italian names
         if (this.italianStockNames.includes(upperQuery)) return true;
         
         return false;
     }
 
     /**
-     * Search across all sources with intelligent routing
+     * Retry wrapper with exponential backoff
+     */
+    async withRetry(fn, maxRetries = 3, baseDelay = 1000) {
+        for (let attempt = 1; attempt <= maxRetries; attempt++) {
+            try {
+                await this.rateLimitDelay();
+                return await fn();
+            } catch (error) {
+                const isRateLimit = error.message?.includes('401') || 
+                                   error.message?.includes('429') ||
+                                   error.message?.includes('Too Many');
+                
+                if (isRateLimit && attempt < maxRetries) {
+                    const delay = baseDelay * Math.pow(2, attempt - 1); // 1s, 2s, 4s
+                    console.log(`[Retry] Attempt ${attempt} failed, waiting ${delay}ms...`);
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                } else {
+                    throw error;
+                }
+            }
+        }
+    }
+
+    /**
+     * Search - Yahoo Finance only with smart caching
      */
     async search(query) {
-        console.log(`[DataAggregator] Searching for: "${query}"`);
-        const isItalian = this.isItalianQuery(query);
+        console.log(`[DataAggregator v2.3] Searching for: "${query}"`);
         const isEuropean = this.isEuropeanQuery(query);
-        console.log(`[DataAggregator] Italian: ${isItalian}, European: ${isEuropean}`);
+        console.log(`[DataAggregator] European market: ${isEuropean}`);
         
-        const searchPromises = [
-            this.yahoo.search(query).catch(e => ({ success: false, results: [], error: e.message })),
-            this.marketstack.search(query).catch(e => ({ success: false, results: [], error: e.message })),
-            this.finnhub.search(query).catch(e => ({ success: false, results: [], error: e.message })),
-            this.alphavantage.search(query).catch(e => ({ success: false, results: [], error: e.message }))
-        ];
+        // Check cache first
+        const cacheKey = `search:${query.toLowerCase()}`;
+        const cached = this.getFromCache(cacheKey);
+        if (cached) {
+            return cached;
+        }
 
-        const results = await Promise.all(searchPromises);
-        
-        results.forEach((result, index) => {
-            const source = this.sources[index];
-            if (result.success && result.results?.length > 0) {
-                console.log(`[${source}] Found ${result.results.length} results`);
-            } else {
-                console.log(`[${source}] No results or error: ${result.error || 'N/A'}`);
+        try {
+            // Use Yahoo with retry
+            const result = await this.withRetry(() => this.yahoo.search(query));
+            
+            if (!result.success || !result.results?.length) {
+                return {
+                    success: false,
+                    results: [],
+                    metadata: {
+                        source: 'yahoo',
+                        isEuropean: isEuropean,
+                        error: result.error || 'No results found'
+                    }
+                };
             }
-        });
 
-        // FIX: Passa isItalian per priorità .MI
-        const mergedResults = this.mergeSearchResults(results, isEuropean, isItalian, query);
-        
-        if (mergedResults.length === 0) {
+            // Sort results: prioritize Italian (.MI) for European queries
+            let sortedResults = result.results;
+            if (isEuropean) {
+                sortedResults = result.results.sort((a, b) => {
+                    const aIsIT = a.symbol?.endsWith('.MI');
+                    const bIsIT = b.symbol?.endsWith('.MI');
+                    if (aIsIT && !bIsIT) return -1;
+                    if (!aIsIT && bIsIT) return 1;
+                    
+                    // Then prioritize other European exchanges
+                    const aIsEU = this.europeanSuffixes.some(s => a.symbol?.endsWith(s));
+                    const bIsEU = this.europeanSuffixes.some(s => b.symbol?.endsWith(s));
+                    if (aIsEU && !bIsEU) return -1;
+                    if (!aIsEU && bIsEU) return 1;
+                    
+                    return 0;
+                });
+            }
+
+            // IMPORTANT: Only get quote for the FIRST result, not all!
+            // This prevents rate limiting
+            if (sortedResults.length > 0 && !sortedResults[0].price) {
+                try {
+                    const quote = await this.withRetry(() => 
+                        this.yahoo.getQuote(sortedResults[0].symbol)
+                    );
+                    
+                    if (quote.success && quote.data) {
+                        sortedResults[0] = {
+                            ...sortedResults[0],
+                            price: quote.data.price,
+                            change: quote.data.change,
+                            changePercent: quote.data.changePercent,
+                            currency: quote.data.currency || sortedResults[0].currency
+                        };
+                    }
+                } catch (quoteError) {
+                    console.warn(`[DataAggregator] Quote failed for first result: ${quoteError.message}`);
+                    // Continue without quote - not critical
+                }
+            }
+
+            const response = {
+                success: true,
+                results: sortedResults,
+                metadata: {
+                    totalResults: sortedResults.length,
+                    sources: ['yahoo'],
+                    isEuropean: isEuropean,
+                    timestamp: new Date().toISOString()
+                }
+            };
+
+            // Cache the result
+            this.setCache(cacheKey, response);
+            
+            return response;
+
+        } catch (error) {
+            console.error('[DataAggregator] Search error:', error.message);
             return {
                 success: false,
                 results: [],
                 metadata: {
-                    sources: this.sources,
+                    source: 'yahoo',
                     isEuropean: isEuropean,
-                    isItalian: isItalian,
-                    errors: results.map((r, i) => ({ source: this.sources[i], error: r.error }))
+                    error: error.message
                 }
             };
         }
-
-        const enrichedResults = await this.enrichWithQuotes(mergedResults, isEuropean);
-
-        return {
-            success: true,
-            results: enrichedResults,
-            metadata: {
-                totalResults: enrichedResults.length,
-                sources: this.sources.filter((_, i) => results[i].success),
-                isEuropean: isEuropean,
-                isItalian: isItalian,
-                timestamp: new Date().toISOString()
-            }
-        };
     }
 
     /**
-     * Merge search results with PRIORITY for .MI when searching Italian stocks
-     */
-    mergeSearchResults(results, isEuropean = false, isItalian = false, originalQuery = '') {
-        const symbolMap = new Map();
-        const upperQuery = originalQuery.toUpperCase().trim();
-
-        results.forEach((result, sourceIndex) => {
-            if (!result.success || !result.results) return;
-
-            const source = this.sources[sourceIndex];
-            
-            result.results.forEach(item => {
-                const symbol = item.symbol;
-                
-                if (!symbolMap.has(symbol)) {
-                    symbolMap.set(symbol, {
-                        ...item,
-                        sources: [source]
-                    });
-                } else {
-                    const existing = symbolMap.get(symbol);
-                    existing.sources.push(source);
-                }
-            });
-        });
-
-        let sorted = Array.from(symbolMap.values());
-        
-        // FIX PRINCIPALE: Se query è italiana, metti .MI SEMPRE in cima
-        if (isItalian) {
-            sorted.sort((a, b) => {
-                const aSymbol = a.symbol?.toUpperCase() || '';
-                const bSymbol = b.symbol?.toUpperCase() || '';
-                
-                // Priorità 1: Match esatto con .MI
-                const aIsExactMI = aSymbol === `${upperQuery}.MI` || aSymbol === `${upperQuery}.XMIL`;
-                const bIsExactMI = bSymbol === `${upperQuery}.MI` || bSymbol === `${upperQuery}.XMIL`;
-                if (aIsExactMI && !bIsExactMI) return -1;
-                if (!aIsExactMI && bIsExactMI) return 1;
-                
-                // Priorità 2: Qualsiasi .MI o .XMIL
-                const aIsMI = aSymbol.endsWith('.MI') || aSymbol.endsWith('.XMIL');
-                const bIsMI = bSymbol.endsWith('.MI') || bSymbol.endsWith('.XMIL');
-                if (aIsMI && !bIsMI) return -1;
-                if (!aIsMI && bIsMI) return 1;
-                
-                // Priorità 3: Exchange XMIL
-                const aIsXMIL = a.exchange === 'XMIL';
-                const bIsXMIL = b.exchange === 'XMIL';
-                if (aIsXMIL && !bIsXMIL) return -1;
-                if (!aIsXMIL && bIsXMIL) return 1;
-                
-                // Priorità 4: Altri europei (.DE, .PA, etc) DOPO .MI
-                const aIsOtherEU = this.europeanSuffixes.some(s => aSymbol.endsWith(s) && !aSymbol.endsWith('.MI'));
-                const bIsOtherEU = this.europeanSuffixes.some(s => bSymbol.endsWith(s) && !bSymbol.endsWith('.MI'));
-                if (aIsOtherEU && !bIsOtherEU) return 1; // Altri EU vanno DOPO
-                if (!aIsOtherEU && bIsOtherEU) return -1;
-                
-                return 0;
-            });
-            
-            console.log(`[DataAggregator] Italian sort applied. First result: ${sorted[0]?.symbol}`);
-        } else if (isEuropean) {
-            // Per altre query europee, priorità generica ai suffissi EU
-            sorted.sort((a, b) => {
-                const aIsEU = this.europeanSuffixes.some(s => a.symbol?.toUpperCase().endsWith(s));
-                const bIsEU = this.europeanSuffixes.some(s => b.symbol?.toUpperCase().endsWith(s));
-                if (aIsEU && !bIsEU) return -1;
-                if (!aIsEU && bIsEU) return 1;
-                return 0;
-            });
-        }
-
-        return sorted;
-    }
-
-    /**
-     * Enrich results with real-time quotes
-     */
-    async enrichWithQuotes(results, isEuropean = false) {
-        const enrichPromises = results.map(async (item) => {
-            if (item.price != null && typeof item.price === 'number' && item.price > 0) {
-                return item;
-            }
-
-            const quote = await this.getQuote(item.symbol, isEuropean);
-            
-            if (quote.success && quote.data) {
-                return {
-                    ...item,
-                    price: quote.data.price,
-                    change: quote.data.change,
-                    changePercent: quote.data.changePercent,
-                    currency: quote.data.currency || item.currency,
-                    quoteSource: quote.source
-                };
-            }
-
-            return item;
-        });
-
-        return await Promise.all(enrichPromises);
-    }
-
-    /**
-     * Get quote with intelligent fallback based on market
+     * Get quote - Yahoo Finance with caching
      */
     async getQuote(symbol, isEuropean = null) {
         if (isEuropean === null) {
             isEuropean = this.isEuropeanQuery(symbol);
         }
         
-        console.log(`[DataAggregator] Getting quote for: ${symbol} (European: ${isEuropean})`);
+        console.log(`[DataAggregator v2.3] Getting quote for: ${symbol}`);
 
-        // FIX: Per europei, Marketstack PRIMA di Yahoo (Yahoo spesso fallisce per .MI)
-        const sources = isEuropean
-            ? [
-                { name: 'marketstack', client: this.marketstack },
-                { name: 'yahoo', client: this.yahoo },
-                { name: 'finnhub', client: this.finnhub },
-                { name: 'alphavantage', client: this.alphavantage }
-            ]
-            : [
-                { name: 'yahoo', client: this.yahoo },
-                { name: 'finnhub', client: this.finnhub },
-                { name: 'alphavantage', client: this.alphavantage },
-                { name: 'marketstack', client: this.marketstack }
-            ];
-
-        for (const source of sources) {
-            try {
-                const result = await source.client.getQuote(symbol);
-                if (result.success && result.data && result.data.price != null) {
-                    console.log(`[${source.name}] Quote found for ${symbol}: ${result.data.price} ${result.data.currency}`);
-                    return result;
-                }
-            } catch (error) {
-                console.error(`[${source.name}] Quote error for ${symbol}: ${error.message}`);
-            }
+        // Check cache
+        const cacheKey = `quote:${symbol.toUpperCase()}`;
+        const cached = this.getFromCache(cacheKey);
+        if (cached) {
+            return cached;
         }
 
-        return {
-            success: false,
-            error: 'No quote data available from any source'
-        };
+        try {
+            const result = await this.withRetry(() => this.yahoo.getQuote(symbol));
+            
+            if (result.success && result.data) {
+                this.setCache(cacheKey, result);
+            }
+            
+            return result;
+
+        } catch (error) {
+            console.error(`[DataAggregator] Quote error for ${symbol}:`, error.message);
+            return {
+                success: false,
+                error: error.message
+            };
+        }
     }
 
     /**
-     * Get historical data - FIX: Marketstack FIRST for European stocks
+     * Get historical data - Yahoo Finance with caching
      */
     async getHistoricalData(symbol, period = '1M') {
-        const isEuropean = this.isEuropeanQuery(symbol);
-        console.log(`[DataAggregator] Getting historical data for: ${symbol}, period: ${period}, European: ${isEuropean}`);
+        console.log(`[DataAggregator v2.3] Getting historical data for: ${symbol}, period: ${period}`);
 
-        // FIX CRITICO: Per azioni europee, Marketstack DEVE essere PRIMO
-        // Yahoo/Finnhub restituiscono dati sbagliati per .MI
-        const sources = isEuropean
-            ? [
-                { name: 'marketstack', client: this.marketstack },  // PRIMO per EU!
-                { name: 'yahoo', client: this.yahoo },
-                { name: 'alphavantage', client: this.alphavantage }
-            ]
-            : [
-                { name: 'yahoo', client: this.yahoo },
-                { name: 'alphavantage', client: this.alphavantage },
-                { name: 'marketstack', client: this.marketstack }
-            ];
-
-        for (const source of sources) {
-            try {
-                const result = await source.client.getHistoricalData(symbol, period);
-                if (result.success && result.data && result.data.length > 0) {
-                    console.log(`[${source.name}] Historical data found: ${result.data.length} points`);
-                    
-                    // Aggiungi info sulla fonte per debug
-                    return {
-                        ...result,
-                        source: source.name
-                    };
-                }
-            } catch (error) {
-                console.error(`[${source.name}] Historical data error: ${error.message}`);
-            }
+        // Check cache
+        const cacheKey = `historical:${symbol.toUpperCase()}:${period}`;
+        const cached = this.getFromCache(cacheKey);
+        if (cached) {
+            return cached;
         }
 
-        return {
-            success: false,
-            error: 'No historical data available from any source'
-        };
+        try {
+            const result = await this.withRetry(() => 
+                this.yahoo.getHistoricalData(symbol, period)
+            );
+            
+            if (result.success && result.data?.length > 0) {
+                this.setCache(cacheKey, result);
+                console.log(`[yahoo] Historical data found: ${result.data.length} points`);
+            }
+            
+            return result;
+
+        } catch (error) {
+            console.error(`[DataAggregator] Historical error for ${symbol}:`, error.message);
+            return {
+                success: false,
+                error: error.message
+            };
+        }
     }
 
     /**
      * Search by ISIN
      */
     async searchByISIN(isin) {
-        console.log(`[DataAggregator] Searching by ISIN: ${isin}`);
-
-        try {
-            const yahooResult = await this.yahoo.searchByISIN(isin);
-            if (yahooResult.success && yahooResult.results.length > 0) {
-                return yahooResult;
-            }
-        } catch (error) {
-            console.error(`[yahoo] ISIN search error: ${error.message}`);
-        }
-
-        try {
-            const msResult = await this.marketstack.searchByISIN(isin);
-            if (msResult.success && msResult.results.length > 0) {
-                return msResult;
-            }
-        } catch (error) {
-            console.error(`[marketstack] ISIN search error: ${error.message}`);
-        }
-
-        try {
-            const finnhubResult = await this.finnhub.searchByISIN(isin);
-            if (finnhubResult.success && finnhubResult.results.length > 0) {
-                return finnhubResult;
-            }
-        } catch (error) {
-            console.error(`[finnhub] ISIN search error: ${error.message}`);
-        }
-
-        return {
-            success: false,
-            results: [],
-            error: 'No results for ISIN from any source'
-        };
+        console.log(`[DataAggregator v2.3] Searching by ISIN: ${isin}`);
+        return this.search(isin);
     }
 
     /**
-     * Health check for all sources
+     * Health check
      */
     async healthCheck() {
-        const checks = await Promise.all([
-            this.yahoo.search('AAPL').then(r => ({ yahoo: r.success ? 'OK' : 'FAIL' })).catch(() => ({ yahoo: 'FAIL' })),
-            this.marketstack.search('AAPL').then(r => ({ marketstack: r.success ? 'OK' : 'FAIL' })).catch(() => ({ marketstack: 'FAIL' })),
-            this.finnhub.search('AAPL').then(r => ({ finnhub: r.success ? 'OK' : 'FAIL' })).catch(() => ({ finnhub: 'FAIL' })),
-            this.alphavantage.search('IBM').then(r => ({ alphavantage: r.success ? 'OK' : 'FAIL' })).catch(() => ({ alphavantage: 'FAIL' }))
-        ]);
-
-        // Test specifico per azioni italiane
-        let italianTest = 'SKIP';
         try {
-            const enelResult = await this.marketstack.getQuote('ENEL.MI');
-            italianTest = enelResult.success ? 'OK' : 'FAIL';
-        } catch (e) {
-            italianTest = 'FAIL';
+            const result = await this.withRetry(() => this.yahoo.search('AAPL'));
+            return {
+                status: result.success ? 'operational' : 'degraded',
+                sources: {
+                    yahoo: result.success ? 'OK' : 'FAIL'
+                },
+                cache: {
+                    size: this.cache.size,
+                    ttl: this.cacheTTL / 1000 + 's'
+                },
+                timestamp: new Date().toISOString()
+            };
+        } catch (error) {
+            return {
+                status: 'error',
+                sources: { yahoo: 'FAIL' },
+                error: error.message,
+                timestamp: new Date().toISOString()
+            };
         }
+    }
 
+    /**
+     * Get cache stats
+     */
+    getCacheStats() {
         return {
-            status: 'operational',
-            version: '2.2',
-            sources: Object.assign({}, ...checks),
-            italianStocksTest: italianTest,
-            timestamp: new Date().toISOString()
+            size: this.cache.size,
+            ttl: this.cacheTTL / 1000 + ' seconds',
+            entries: Array.from(this.cache.keys())
         };
     }
 
     /**
-     * Get API usage stats
+     * Clear cache
      */
-    getUsageStats() {
-        return {
-            marketstack: {
-                remaining: this.marketstack.getRemainingCalls ? this.marketstack.getRemainingCalls() : 'N/A',
-                limit: 100,
-                period: 'monthly'
-            },
-            alphavantage: {
-                remaining: this.alphavantage.dailyLimit - this.alphavantage.requestCount,
-                limit: 25,
-                period: 'daily'
-            },
-            finnhub: {
-                limit: 60,
-                period: 'per minute'
-            },
-            yahoo: {
-                limit: 'unlimited',
-                period: 'N/A'
-            }
-        };
+    clearCache() {
+        this.cache.clear();
+        console.log('[DataAggregator] Cache cleared');
     }
 }
 

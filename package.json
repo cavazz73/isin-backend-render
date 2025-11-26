@@ -1,7 +1,7 @@
 {
-  "name": "isin-backend-multisource",
-  "version": "2.0.0",
-  "description": "ISIN Research Backend - Multi-Source Financial Data API",
+  "name": "isin-backend-v2.3",
+  "version": "2.3.0",
+  "description": "ISIN Research Backend - Yahoo Finance Optimized with Rate Limiting and Caching",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -13,16 +13,15 @@
     "finance",
     "stock",
     "api",
-    "yahoo-finance",
-    "finnhub",
-    "alphavantage"
+    "yahoo-finance"
   ],
   "author": "Mutna S.R.L.S.",
   "license": "PROPRIETARY",
   "dependencies": {
-    "express": "^4.18.2",
+    "axios": "^1.6.2",
     "cors": "^2.8.5",
-    "axios": "^1.6.2"
+    "express": "^4.18.2",
+    "yahoo-finance2": "^3.10.2"
   },
   "devDependencies": {
     "nodemon": "^3.0.2"
