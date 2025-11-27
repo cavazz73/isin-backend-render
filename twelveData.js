@@ -21,6 +21,78 @@ class TwelveDataClient {
     }
 
     /**
+     * 🔧 FIX: Normalizza simbolo aggiungendo suffisso exchange
+     */
+    normalizeSymbolForExchange(symbol, exchange, micCode, country) {
+        // Se ha già un punto, è già normalizzato
+        if (symbol.includes('.')) {
+            return symbol;
+        }
+
+        // Mapping MIC code -> Suffisso Yahoo/TwelveData
+        const micToSuffix = {
+            'XMIL': '.MI',  // Milano
+            'XPAR': '.PA',  // Paris
+            'XLON': '.L',   // London
+            'XETR': '.DE',  // XETRA (Germania)
+            'XFRA': '.F',   // Frankfurt
+            'XAMS': '.AS',  // Amsterdam
+            'XSWX': '.SW',  // Swiss
+            'XMAD': '.MC',  // Madrid
+            'XBRU': '.BR'   // Brussels
+        };
+
+        // Prova MIC code prima
+        if (micCode && micToSuffix[micCode]) {
+            return symbol + micToSuffix[micCode];
+        }
+
+        // Fallback: usa exchange name
+        const exchangeToSuffix = {
+            'Milan': '.MI',
+            'Milano': '.MI',
+            'MIL': '.MI',
+            'Paris': '.PA',
+            'EPA': '.PA',
+            'London': '.L',
+            'LSE': '.L',
+            'XETRA': '.DE',
+            'Frankfurt': '.F',
+            'FRA': '.F',
+            'Amsterdam': '.AS',
+            'AMS': '.AS',
+            'Swiss': '.SW',
+            'SIX': '.SW',
+            'Madrid': '.MC',
+            'BME': '.MC',
+            'Brussels': '.BR'
+        };
+
+        if (exchange && exchangeToSuffix[exchange]) {
+            return symbol + exchangeToSuffix[exchange];
+        }
+
+        // Ultimo fallback: usa country
+        const countryToSuffix = {
+            'Italy': '.MI',
+            'France': '.PA',
+            'United Kingdom': '.L',
+            'Germany': '.DE',
+            'Netherlands': '.AS',
+            'Switzerland': '.SW',
+            'Spain': '.MC',
+            'Belgium': '.BR'
+        };
+
+        if (country && countryToSuffix[country]) {
+            return symbol + countryToSuffix[country];
+        }
+
+        // Se non riusciamo a mappare, restituisci simbolo originale
+        return symbol;
+    }
+
+    /**
      * Search for stocks/securities
      */
     async search(query) {
@@ -48,22 +120,40 @@ class TwelveDataClient {
             const results = response.data.data
                 .filter(item => item.instrument_type === 'Common Stock' || item.instrument_type === 'ETF')
                 .slice(0, 10)
-                .map(item => ({
-                    symbol: item.symbol,
-                    name: item.instrument_name,
-                    description: item.instrument_name,
-                    type: item.instrument_type,
-                    exchange: item.exchange,
-                    mic_code: item.mic_code,
-                    currency: item.currency,
-                    country: item.country,
-                    isin: null,
-                    price: null,
-                    change: null,
-                    changePercent: null
-                }));
+                .map(item => {
+                    // 🔧 FIX: Normalizza il simbolo aggiungendo suffisso exchange
+                    const normalizedSymbol = this.normalizeSymbolForExchange(
+                        item.symbol,
+                        item.exchange,
+                        item.mic_code,
+                        item.country
+                    );
+
+                    return {
+                        symbol: normalizedSymbol,  // ✅ Ora include .MI, .PA, etc
+                        originalSymbol: item.symbol,  // Mantieni originale per debug
+                        name: item.instrument_name,
+                        description: item.instrument_name,
+                        type: item.instrument_type,
+                        exchange: item.exchange,
+                        mic_code: item.mic_code,
+                        currency: item.currency,
+                        country: item.country,
+                        isin: null,
+                        price: null,
+                        change: null,
+                        changePercent: null
+                    };
+                });
 
             console.log(`[TwelveData] Found ${results.length} results for: ${query}`);
+            
+            // Debug: mostra primi 3 simboli normalizzati
+            if (results.length > 0) {
+                const preview = results.slice(0, 3).map(r => `${r.originalSymbol}->${r.symbol}`).join(', ');
+                console.log(`[TwelveData] Normalized symbols: ${preview}`);
+            }
+
             return { success: true, results, source: 'twelvedata' };
 
         } catch (error) {
@@ -81,10 +171,13 @@ class TwelveDataClient {
                 throw new Error('TwelveData API key not configured');
             }
 
+            // 🔧 FIX: TwelveData accetta simboli con suffisso (ENEL.MI)
+            // Se non ha suffisso e sembra italiano, non fare nulla (search lo ha già aggiunto)
+            
             const url = `${this.baseUrl}/quote`;
             const response = await axios.get(url, {
                 params: {
-                    symbol: symbol,
+                    symbol: symbol,  // Usa simbolo normalizzato (ENEL.MI)
                     apikey: this.apiKey
                 },
                 timeout: 10000
