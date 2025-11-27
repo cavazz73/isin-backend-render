@@ -2,14 +2,17 @@
  * Copyright (c) 2024-2025 Mutna S.R.L.S. - All Rights Reserved
  * P.IVA: 04219740364
  * 
- * ISIN Research Backend - Multi-Source Financial Data API
- * Version: 3.0.0 - TwelveData Integration
+ * ISIN Research Backend v3.0 - Multi-Source Financial Data API
+ * Primary: TwelveData (European Markets)
+ * Fallback: Yahoo Finance, Finnhub, Alpha Vantage
  */
 
+// Load environment variables
 require('dotenv').config();
+
 const express = require('express');
 const cors = require('cors');
-const financialRoutes = require('./financial'); // ← FLAT STRUCTURE!
+const financialRoutes = require('./financial');  // ✅ FLAT STRUCTURE (no ./routes/)
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -28,9 +31,10 @@ app.use((req, res, next) => {
 app.get('/health', (req, res) => {
     res.json({
         status: 'ok',
-        version: '3.0.0',
         timestamp: new Date().toISOString(),
-        uptime: process.uptime()
+        uptime: process.uptime(),
+        version: '3.0.0',
+        environment: process.env.NODE_ENV || 'production'
     });
 });
 
@@ -41,7 +45,15 @@ app.use('/api/financial', financialRoutes);
 app.use((req, res) => {
     res.status(404).json({
         success: false,
-        error: 'Endpoint not found'
+        error: 'Endpoint not found',
+        availableEndpoints: [
+            '/health',
+            '/api/financial/search?q=QUERY',
+            '/api/financial/quote/:symbol',
+            '/api/financial/historical/:symbol?period=1M',
+            '/api/financial/usage',
+            '/api/financial/test'
+        ]
     });
 });
 
@@ -57,23 +69,23 @@ app.use((err, req, res, next) => {
 
 // Start server
 app.listen(PORT, () => {
-    console.log('='.repeat(60));
-    console.log('ISIN Research Backend v3.0 - TwelveData Integration');
-    console.log('Copyright (c) 2024-2025 Mutna S.R.L.S.');
-    console.log('='.repeat(60));
-    console.log(`Server running on port ${PORT}`);
-    console.log(`Health check: http://localhost:${PORT}/health`);
-    console.log(`API endpoint: http://localhost:${PORT}/api/financial/search`);
-    console.log('='.repeat(60));
-    console.log('Data sources priority:');
-    console.log('  EU Stocks: TwelveData → Yahoo → Finnhub → Alpha Vantage');
-    console.log('  US Stocks: Yahoo → TwelveData → Finnhub → Alpha Vantage');
-    console.log('='.repeat(60));
-    console.log('Environment:');
-    console.log(`  TWELVE_DATA_API_KEY: ${process.env.TWELVE_DATA_API_KEY ? 'SET ✓' : 'MISSING ✗'}`);
-    console.log(`  FINNHUB_API_KEY: ${process.env.FINNHUB_API_KEY ? 'SET ✓' : 'MISSING ✗'}`);
-    console.log(`  ALPHA_VANTAGE_API_KEY: ${process.env.ALPHA_VANTAGE_API_KEY ? 'SET ✓' : 'MISSING ✗'}`);
-    console.log('='.repeat(60));
+    console.log('='.repeat(70));
+    console.log('🚀 ISIN RESEARCH BACKEND v3.0 - STARTED');
+    console.log('Copyright (c) 2024-2025 Mutna S.R.L.S. - P.IVA: 04219740364');
+    console.log('='.repeat(70));
+    console.log(`📡 Server running on port ${PORT}`);
+    console.log(`🔍 Health check: http://localhost:${PORT}/health`);
+    console.log(`📊 API endpoint: http://localhost:${PORT}/api/financial/search`);
+    console.log('='.repeat(70));
+    console.log('📈 DATA SOURCES (Priority Order):');
+    console.log('  1. TwelveData    → PRIMARY for European markets (800 req/day)');
+    console.log('  2. Yahoo Finance → Fallback for US markets (Unlimited)');
+    console.log('  3. Finnhub       → Backup (60 req/min)');
+    console.log('  4. Alpha Vantage → Last resort (25 req/day)');
+    console.log('='.repeat(70));
+    console.log('🇮🇹 Italian stocks (ENEL, ENI) → TwelveData → EUR pricing ✅');
+    console.log('🇺🇸 US stocks (AAPL, MSFT) → Yahoo Finance → USD pricing ✅');
+    console.log('='.repeat(70));
 });
 
 module.exports = app;
