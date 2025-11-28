@@ -1,9 +1,7 @@
 /**
  * Copyright (c) 2024-2025 Mutna S.R.L.S. - All Rights Reserved
- * P.IVA: 04219740364
- * 
- * Yahoo Finance API Client (Primary Source - Unlimited, Free)
- * Enhanced support for European/Italian stocks
+ * Yahoo Finance Client - PRIMARY SOURCE (Unlimited, Free)
+ * FIXED: Headers completi + Normalizzazione simboli italiani
  */
 
 const axios = require('axios');
@@ -14,194 +12,42 @@ class YahooFinanceClient {
         this.baseUrlV7 = 'https://query1.finance.yahoo.com/v7';
         this.baseUrlV8 = 'https://query2.finance.yahoo.com/v8';
         
-        // Extended Italian stocks mapping (symbol -> Yahoo symbol)
-        this.italianStocksMap = {
+        // FIXED: Headers completi per evitare 401
+        this.headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            'Accept': '*/*',
+            'Accept-Language': 'en-US,en;q=0.9',
+            'Referer': 'https://finance.yahoo.com'
+        };
+    }
+
+    /**
+     * Normalizza simboli italiani aggiungendo .MI
+     */
+    normalizeItalianSymbol(query) {
+        const italianStocks = {
             'ENEL': 'ENEL.MI',
             'ENI': 'ENI.MI',
             'INTESA': 'ISP.MI',
-            'ISP': 'ISP.MI',
             'UNICREDIT': 'UCG.MI',
-            'UCG': 'UCG.MI',
             'GENERALI': 'G.MI',
             'FERRARI': 'RACE.MI',
-            'RACE': 'RACE.MI',
-            'STELLANTIS': 'STLAM.MI',
-            'STLA': 'STLAM.MI',
-            'STLAM': 'STLAM.MI',
+            'STELLANTIS': 'STLA.MI',
             'LEONARDO': 'LDO.MI',
-            'LDO': 'LDO.MI',
             'PRYSMIAN': 'PRY.MI',
-            'PRY': 'PRY.MI',
             'TELECOM': 'TIT.MI',
-            'TIT': 'TIT.MI',
-            'TIM': 'TIT.MI',
-            'TELECOM ITALIA': 'TIT.MI',
-            'STM': 'STMMI.MI',
-            'STMICROELECTRONICS': 'STMMI.MI',
-            'TENARIS': 'TEN.MI',
-            'TEN': 'TEN.MI',
-            'MONCLER': 'MONC.MI',
-            'MONC': 'MONC.MI',
-            'CAMPARI': 'CPR.MI',
-            'CPR': 'CPR.MI',
-            'PIRELLI': 'PIRC.MI',
-            'PIRC': 'PIRC.MI',
-            'AMPLIFON': 'AMP.MI',
-            'AMP': 'AMP.MI',
-            'RECORDATI': 'REC.MI',
-            'REC': 'REC.MI',
-            'DIASORIN': 'DIA.MI',
-            'DIA': 'DIA.MI',
-            'NEXI': 'NEXI.MI',
-            'INWIT': 'INW.MI',
-            'INW': 'INW.MI',
-            'SNAM': 'SRG.MI',
-            'SRG': 'SRG.MI',
-            'TERNA': 'TRN.MI',
-            'TRN': 'TRN.MI',
-            'ITALGAS': 'IG.MI',
-            'IG': 'IG.MI',
-            'MEDIOBANCA': 'MB.MI',
-            'MB': 'MB.MI',
-            'BPER': 'BPE.MI',
-            'BPE': 'BPE.MI',
-            'BANCO BPM': 'BAMI.MI',
-            'BAMI': 'BAMI.MI',
-            'POSTE': 'PST.MI',
-            'PST': 'PST.MI',
-            'POSTE ITALIANE': 'PST.MI',
-            'A2A': 'A2A.MI',
-            'HERA': 'HER.MI',
-            'HER': 'HER.MI',
-            'SAIPEM': 'SPM.MI',
-            'SPM': 'SPM.MI',
-            'ATLANTIA': 'ATL.MI',
-            'ATL': 'ATL.MI',
-            'FINECOBANK': 'FBK.MI',
-            'FBK': 'FBK.MI',
-            'FINECO': 'FBK.MI',
-            'ASSICURAZIONI GENERALI': 'G.MI',
-            'LUXOTTICA': 'LUX.MI',
-            'BUZZI': 'BZU.MI',
-            'BZU': 'BZU.MI',
-            'BRUNELLO CUCINELLI': 'BC.MI',
-            'BC': 'BC.MI',
-            'INTERPUMP': 'IP.MI',
-            'IP': 'IP.MI',
-            'IVECO': 'IVG.MI',
-            'IVG': 'IVG.MI'
+            'AZIMUT': 'AZM.MI',
+            'POSTE': 'PST.MI'
         };
 
-        // Exchange to currency mapping (comprehensive)
-        this.exchangeCurrencyMap = {
-            // Italian
-            'MIL': 'EUR', 'Milan': 'EUR', 'MI': 'EUR',
-            // US
-            'NYSE': 'USD', 'NMS': 'USD', 'NYQ': 'USD', 'NASDAQ': 'USD', 'NGM': 'USD', 'NCM': 'USD', 'PCX': 'USD',
-            // UK
-            'LSE': 'GBP', 'LON': 'GBP', 'L': 'GBP', 'IOB': 'GBP',
-            // Germany
-            'FRA': 'EUR', 'XETRA': 'EUR', 'GER': 'EUR', 'ETR': 'EUR', 'BER': 'EUR', 'STU': 'EUR', 'MUN': 'EUR', 'HAM': 'EUR', 'DUS': 'EUR',
-            // France
-            'PAR': 'EUR', 'EPA': 'EUR', 'ENX': 'EUR',
-            // Netherlands
-            'AMS': 'EUR', 'AS': 'EUR',
-            // Belgium
-            'BRU': 'EUR', 'EBR': 'EUR',
-            // Spain
-            'BME': 'EUR', 'MCE': 'EUR', 'MC': 'EUR',
-            // Portugal
-            'LIS': 'EUR', 'ELI': 'EUR',
-            // Switzerland
-            'SWX': 'CHF', 'VTX': 'CHF', 'SW': 'CHF',
-            // Nordic
-            'STO': 'SEK', 'OMX': 'SEK', 'HEL': 'EUR', 'CPH': 'DKK', 'OSL': 'NOK', 'ICE': 'ISK',
-            // Other European
-            'VIE': 'EUR', 'WSE': 'PLN', 'PRA': 'CZK', 'BUD': 'HUF', 'ATH': 'EUR', 'IST': 'TRY',
-            // Asia Pacific
-            'TYO': 'JPY', 'HKG': 'HKD', 'SHG': 'CNY', 'SHE': 'CNY', 'KRX': 'KRW', 'KSC': 'KRW',
-            'TWO': 'TWD', 'TPE': 'TWD', 'NSE': 'INR', 'BSE': 'INR', 'BOM': 'INR',
-            'SES': 'SGD', 'SGX': 'SGD', 'ASX': 'AUD', 'NZX': 'NZD',
-            // Americas
-            'TSX': 'CAD', 'TOR': 'CAD', 'MEX': 'MXN', 'SAO': 'BRL', 'BVMF': 'BRL'
-        };
-    }
-
-    /**
-     * Normalize symbol - convert Italian names to Yahoo format
-     */
-    normalizeSymbol(query) {
-        const upperQuery = query.toUpperCase().trim();
-        
-        // Check if it's a known Italian stock
-        if (this.italianStocksMap[upperQuery]) {
-            return this.italianStocksMap[upperQuery];
-        }
-        
-        // If already has .MI suffix, return as-is
-        if (upperQuery.endsWith('.MI')) {
-            return upperQuery;
-        }
-        
-        return query;
-    }
-
-    /**
-     * Get currency from exchange code
-     */
-    getCurrencyFromExchange(exchange) {
-        if (!exchange) return 'USD';
-        return this.exchangeCurrencyMap[exchange] || this.exchangeCurrencyMap[exchange.toUpperCase()] || 'USD';
-    }
-
-    /**
-     * Get country from exchange code
-     */
-    getCountryFromExchange(exchange) {
-        const exchangeCountryMap = {
-            'MIL': 'IT', 'Milan': 'IT', 'MI': 'IT',
-            'NYSE': 'US', 'NMS': 'US', 'NYQ': 'US', 'NASDAQ': 'US', 'NGM': 'US', 'NCM': 'US', 'PCX': 'US',
-            'LSE': 'GB', 'LON': 'GB', 'L': 'GB', 'IOB': 'GB',
-            'FRA': 'DE', 'XETRA': 'DE', 'GER': 'DE', 'ETR': 'DE',
-            'PAR': 'FR', 'EPA': 'FR', 'ENX': 'FR',
-            'AMS': 'NL', 'AS': 'NL',
-            'BRU': 'BE', 'EBR': 'BE',
-            'BME': 'ES', 'MCE': 'ES', 'MC': 'ES',
-            'SWX': 'CH', 'VTX': 'CH',
-            'STO': 'SE', 'OMX': 'SE',
-            'HEL': 'FI',
-            'CPH': 'DK',
-            'OSL': 'NO',
-            'TYO': 'JP',
-            'HKG': 'HK',
-            'SHG': 'CN', 'SHE': 'CN',
-            'TSX': 'CA', 'TOR': 'CA',
-            'ASX': 'AU',
-            'NSE': 'IN', 'BSE': 'IN', 'BOM': 'IN'
-        };
-        return exchangeCountryMap[exchange] || 'US';
-    }
-
-    /**
-     * Check if symbol is European
-     */
-    isEuropeanSymbol(symbol) {
-        const upperSymbol = symbol.toUpperCase();
-        return upperSymbol.endsWith('.MI') ||
-               upperSymbol.endsWith('.PA') ||
-               upperSymbol.endsWith('.DE') ||
-               upperSymbol.endsWith('.AS') ||
-               upperSymbol.endsWith('.L') ||
-               upperSymbol.endsWith('.MC') ||
-               upperSymbol.endsWith('.SW') ||
-               this.italianStocksMap[upperSymbol] !== undefined;
+        const upperQuery = query.toUpperCase();
+        return italianStocks[upperQuery] || query;
     }
 
     async search(query) {
         try {
-            // Normalize query for Italian/European stocks
-            const searchQuery = this.normalizeSymbol(query);
-            console.log(`[Yahoo] Searching for: "${query}" -> "${searchQuery}"`);
+            const searchQuery = this.normalizeItalianSymbol(query);
+            console.log(`[Yahoo] Search: "${query}" -> "${searchQuery}"`);
             
             const url = `${this.baseUrlV7}/finance/search`;
             const response = await axios.get(url, {
@@ -209,13 +55,11 @@ class YahooFinanceClient {
                     q: searchQuery,
                     lang: 'en-US',
                     region: 'US',
-                    quotesCount: 15,
+                    quotesCount: 10,
                     newsCount: 0,
-                    enableFuzzyQuery: true
+                    enableFuzzyQuery: false
                 },
-                headers: { 
-                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-                },
+                headers: this.headers,
                 timeout: 10000
             });
 
@@ -224,14 +68,14 @@ class YahooFinanceClient {
             }
 
             const results = response.data.quotes
-                .filter(q => q.symbol && (q.quoteType === 'EQUITY' || q.quoteType === 'ETF'))
+                .filter(q => q.symbol && q.quoteType === 'EQUITY')
                 .map(quote => ({
                     symbol: quote.symbol,
                     name: quote.shortname || quote.longname,
                     description: quote.longname || quote.shortname,
-                    type: quote.quoteType === 'ETF' ? 'ETF' : 'Stock',
+                    type: 'Stock',
                     exchange: quote.exchange,
-                    currency: this.getCurrencyFromExchange(quote.exchange) || quote.currency || 'USD',
+                    currency: quote.currency || 'USD',
                     isin: quote.isin || null,
                     country: this.getCountryFromExchange(quote.exchange),
                     price: null,
@@ -239,6 +83,7 @@ class YahooFinanceClient {
                     changePercent: null
                 }));
 
+            console.log(`[Yahoo] Found ${results.length} results`);
             return { success: true, results, source: 'yahoo' };
 
         } catch (error) {
@@ -249,46 +94,36 @@ class YahooFinanceClient {
 
     async getQuote(symbol) {
         try {
-            // Normalize symbol for European stocks
-            const normalizedSymbol = this.normalizeSymbol(symbol);
-            console.log(`[Yahoo] Getting quote for: "${symbol}" -> "${normalizedSymbol}"`);
+            const normalizedSymbol = this.normalizeItalianSymbol(symbol);
+            console.log(`[Yahoo] Quote: "${symbol}" -> "${normalizedSymbol}"`);
             
             const url = `${this.baseUrlV7}/finance/quote`;
             const response = await axios.get(url, {
                 params: {
                     symbols: normalizedSymbol,
-                    fields: 'symbol,regularMarketPrice,regularMarketChange,regularMarketChangePercent,currency,shortName,longName,exchange,marketCap,regularMarketOpen,regularMarketDayHigh,regularMarketDayLow,regularMarketVolume'
+                    fields: 'symbol,regularMarketPrice,regularMarketChange,regularMarketChangePercent,currency,shortName,longName,exchange'
                 },
-                headers: { 
-                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-                },
+                headers: this.headers,
                 timeout: 10000
             });
 
             const quote = response.data?.quoteResponse?.result?.[0];
-            if (!quote) {
-                console.warn(`[Yahoo] No quote found for ${normalizedSymbol}`);
+            if (!quote || !quote.regularMarketPrice) {
                 return { success: false };
             }
 
-            // Determine currency from exchange if not provided
-            const currency = quote.currency || this.getCurrencyFromExchange(quote.exchange) || 'USD';
-
+            console.log(`[Yahoo] Quote OK: ${quote.regularMarketPrice} ${quote.currency}`);
+            
             return {
                 success: true,
                 data: {
                     symbol: quote.symbol,
                     name: quote.shortName || quote.longName,
                     price: quote.regularMarketPrice,
-                    open: quote.regularMarketOpen,
-                    high: quote.regularMarketDayHigh,
-                    low: quote.regularMarketDayLow,
-                    volume: quote.regularMarketVolume,
                     change: quote.regularMarketChange,
                     changePercent: quote.regularMarketChangePercent,
-                    currency: currency,
+                    currency: quote.currency || 'USD',
                     exchange: quote.exchange,
-                    marketCap: quote.marketCap,
                     timestamp: new Date().toISOString()
                 },
                 source: 'yahoo'
@@ -302,8 +137,7 @@ class YahooFinanceClient {
 
     async getHistoricalData(symbol, period = '1M') {
         try {
-            const normalizedSymbol = this.normalizeSymbol(symbol);
-            console.log(`[Yahoo] Getting historical data for: "${symbol}" -> "${normalizedSymbol}", period: ${period}`);
+            const normalizedSymbol = this.normalizeItalianSymbol(symbol);
             
             const periodMap = {
                 '1D': { range: '1d', interval: '5m' },
@@ -323,9 +157,7 @@ class YahooFinanceClient {
             
             const response = await axios.get(url, {
                 params: { range: params.range, interval: params.interval },
-                headers: { 
-                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-                },
+                headers: this.headers,
                 timeout: 15000
             });
 
@@ -334,7 +166,6 @@ class YahooFinanceClient {
             const quotes = result?.indicators?.quote?.[0];
 
             if (!timestamps || !quotes) {
-                console.warn(`[Yahoo] No historical data for ${normalizedSymbol}`);
                 return { success: false };
             }
 
@@ -364,6 +195,20 @@ class YahooFinanceClient {
 
     async searchByISIN(isin) {
         return this.search(isin);
+    }
+
+    getCountryFromExchange(exchange) {
+        const exchangeCountryMap = {
+            'MIL': 'IT', 'Milan': 'IT', 'MTA': 'IT',
+            'NYSE': 'US', 'NMS': 'US', 'NYQ': 'US',
+            'LSE': 'GB', 'LON': 'GB',
+            'FRA': 'DE', 'XETRA': 'DE',
+            'PAR': 'FR', 'EPA': 'FR',
+            'AMS': 'NL',
+            'SWX': 'CH',
+            'BME': 'ES'
+        };
+        return exchangeCountryMap[exchange] || 'US';
     }
 }
 

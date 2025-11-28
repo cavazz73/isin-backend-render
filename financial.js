@@ -1,15 +1,14 @@
 /**
  * Copyright (c) 2024-2025 Mutna S.R.L.S. - All Rights Reserved
- * Financial API Routes V3.0
+ * Financial API Routes
  */
 
 const express = require('express');
 const router = express.Router();
-const DataAggregator = require('./dataAggregator'); // ← FLAT STRUCTURE
+const DataAggregator = require('./dataAggregator');
 
-// Initialize Data Aggregator V3
+// Initialize Data Aggregator
 const aggregator = new DataAggregator({
-    twelveDataKey: process.env.TWELVE_DATA_API_KEY,
     finnhubKey: process.env.FINNHUB_API_KEY,
     alphavantageKey: process.env.ALPHA_VANTAGE_API_KEY
 });
@@ -35,7 +34,7 @@ function detectQueryType(query) {
 }
 
 // ===================================
-// UNIFIED SEARCH V3.0
+// UNIFIED SEARCH
 // ===================================
 router.get('/search', async (req, res) => {
     try {
@@ -48,11 +47,11 @@ router.get('/search', async (req, res) => {
             });
         }
 
-        console.log(`[API v3.0] Search request: "${q}"`);
+        console.log(`[API] Search request: "${q}"`);
 
         // Detect query type
         const queryType = detectQueryType(q);
-        console.log(`[API v3.0] Query type: ${queryType}`);
+        console.log(`[API] Query type detected: ${queryType}`);
 
         let result;
 
@@ -67,8 +66,7 @@ router.get('/search', async (req, res) => {
                 success: false,
                 error: 'No results found',
                 query: q,
-                queryType: queryType,
-                version: '3.0.0'
+                queryType: queryType
             });
         }
 
@@ -78,29 +76,27 @@ router.get('/search', async (req, res) => {
             metadata: {
                 ...result.metadata,
                 query: q,
-                queryType: queryType,
-                version: '3.0.0'
+                queryType: queryType
             }
         });
 
     } catch (error) {
-        console.error('[API v3.0] Search error:', error);
+        console.error('[API] Search error:', error);
         res.status(500).json({
             success: false,
-            error: error.message,
-            version: '3.0.0'
+            error: error.message
         });
     }
 });
 
 // ===================================
-// REAL-TIME QUOTE V3.0
+// REAL-TIME QUOTE
 // ===================================
 router.get('/quote/:symbol', async (req, res) => {
     try {
         const { symbol } = req.params;
         
-        console.log(`[API v3.0] Quote request: ${symbol}`);
+        console.log(`[API] Quote request: ${symbol}`);
 
         const result = await aggregator.getQuote(symbol);
 
@@ -108,37 +104,34 @@ router.get('/quote/:symbol', async (req, res) => {
             return res.status(404).json({
                 success: false,
                 error: 'Quote not found',
-                symbol: symbol,
-                version: '3.0.0'
+                symbol: symbol
             });
         }
 
         res.json({
             success: true,
             data: result.data,
-            source: result.source,
-            version: '3.0.0'
+            source: result.source
         });
 
     } catch (error) {
-        console.error('[API v3.0] Quote error:', error);
+        console.error('[API] Quote error:', error);
         res.status(500).json({
             success: false,
-            error: error.message,
-            version: '3.0.0'
+            error: error.message
         });
     }
 });
 
 // ===================================
-// HISTORICAL DATA V3.0
+// HISTORICAL DATA
 // ===================================
 router.get('/historical/:symbol', async (req, res) => {
     try {
         const { symbol } = req.params;
         const { period = '1M' } = req.query;
 
-        console.log(`[API v3.0] Historical request: ${symbol}, period: ${period}`);
+        console.log(`[API] Historical data request: ${symbol}, period: ${period}`);
 
         const result = await aggregator.getHistoricalData(symbol, period);
 
@@ -147,8 +140,7 @@ router.get('/historical/:symbol', async (req, res) => {
                 success: false,
                 error: 'Historical data not found',
                 symbol: symbol,
-                period: period,
-                version: '3.0.0'
+                period: period
             });
         }
 
@@ -157,63 +149,66 @@ router.get('/historical/:symbol', async (req, res) => {
             symbol: result.symbol,
             data: result.data,
             source: result.source,
-            period: period,
-            version: '3.0.0'
+            period: period
         });
 
     } catch (error) {
-        console.error('[API v3.0] Historical error:', error);
+        console.error('[API] Historical data error:', error);
         res.status(500).json({
             success: false,
-            error: error.message,
-            version: '3.0.0'
+            error: error.message
         });
     }
 });
 
 // ===================================
-// TWELVEDATA USAGE STATISTICS
-// ===================================
-router.get('/usage', async (req, res) => {
-    try {
-        const usageStats = aggregator.twelvedata.getUsageStats();
-        
-        res.json({
-            success: true,
-            usage: usageStats,
-            version: '3.0.0',
-            timestamp: new Date().toISOString()
-        });
-
-    } catch (error) {
-        console.error('[API v3.0] Usage error:', error);
-        res.status(500).json({
-            success: false,
-            error: error.message,
-            version: '3.0.0'
-        });
-    }
-});
-
-// ===================================
-// HEALTH CHECK V3.0
+// TEST ENDPOINT
 // ===================================
 router.get('/test', async (req, res) => {
     try {
-        const health = await aggregator.healthCheck();
-        
-        res.json({
-            success: true,
-            health: health,
-            version: '3.0.0'
-        });
+        const testResults = {
+            timestamp: new Date().toISOString(),
+            tests: {}
+        };
+
+        // Test Yahoo Finance
+        try {
+            const yahooResult = await aggregator.yahoo.search('ENEL');
+            testResults.tests.yahoo = {
+                status: yahooResult.success ? 'OK' : 'FAIL',
+                results: yahooResult.results?.length || 0
+            };
+        } catch (e) {
+            testResults.tests.yahoo = { status: 'ERROR', error: e.message };
+        }
+
+        // Test Finnhub
+        try {
+            const finnhubResult = await aggregator.finnhub.search('AAPL');
+            testResults.tests.finnhub = {
+                status: finnhubResult.success ? 'OK' : 'FAIL',
+                results: finnhubResult.results?.length || 0
+            };
+        } catch (e) {
+            testResults.tests.finnhub = { status: 'ERROR', error: e.message };
+        }
+
+        // Test Alpha Vantage
+        try {
+            const avResult = await aggregator.alphavantage.search('IBM');
+            testResults.tests.alphavantage = {
+                status: avResult.success ? 'OK' : 'FAIL',
+                results: avResult.results?.length || 0
+            };
+        } catch (e) {
+            testResults.tests.alphavantage = { status: 'ERROR', error: e.message };
+        }
+
+        res.json(testResults);
 
     } catch (error) {
-        console.error('[API v3.0] Health check error:', error);
         res.status(500).json({
-            success: false,
-            error: error.message,
-            version: '3.0.0'
+            error: error.message
         });
     }
 });

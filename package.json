@@ -1,7 +1,7 @@
 {
   "name": "isin-backend-multisource",
-  "version": "3.0.0",
-  "description": "ISIN Research Backend v3.0 - Multi-Source Financial Data API with TwelveData",
+  "version": "2.0.0",
+  "description": "ISIN Research Backend - Multi-Source Financial Data API",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -13,20 +13,16 @@
     "finance",
     "stock",
     "api",
-    "twelvedata",
     "yahoo-finance",
     "finnhub",
-    "alphavantage",
-    "european-markets",
-    "italian-stocks"
+    "alphavantage"
   ],
   "author": "Mutna S.R.L.S.",
   "license": "PROPRIETARY",
   "dependencies": {
     "express": "^4.18.2",
     "cors": "^2.8.5",
-    "axios": "^1.6.2",
-    "dotenv": "^16.3.1"
+    "axios": "^1.6.2"
   },
   "devDependencies": {
     "nodemon": "^3.0.2"
