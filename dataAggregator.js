@@ -16,8 +16,8 @@ class DataAggregator {
         this.finnhub = new FinnhubClient(config.finnhubKey);
         this.alphavantage = new AlphaVantageClient(config.alphavantageKey);
         
-        // FIXED: Yahoo PRIMARY (unlimited + free)
-        this.sources = ['yahoo', 'finnhub', 'alphavantage'];
+        // FIXED: Finnhub PRIMARY (60 req/min, funzionante)
+        this.sources = ['finnhub', 'yahoo', 'alphavantage'];
     }
 
     /**
@@ -28,8 +28,8 @@ class DataAggregator {
         
         // Try all sources in parallel for maximum speed
         const searchPromises = [
-            this.yahoo.search(query).catch(e => ({ success: false, results: [], error: e.message })),
             this.finnhub.search(query).catch(e => ({ success: false, results: [], error: e.message })),
+            this.yahoo.search(query).catch(e => ({ success: false, results: [], error: e.message })),
             this.alphavantage.search(query).catch(e => ({ success: false, results: [], error: e.message }))
         ];
 
@@ -117,32 +117,42 @@ class DataAggregator {
 
     /**
      * Enrich search results with real-time quotes
+     * FIXED: Limit to first 3 results + sequential to avoid rate limiting
      */
     async enrichWithQuotes(results) {
-        const enrichPromises = results.map(async (item) => {
+        // FIXED: Limita a primi 3 risultati per evitare rate limiting
+        const limitedResults = results.slice(0, 3);
+        const enrichedResults = [];
+
+        // FIXED: Sequenziale invece di parallelo per evitare 403
+        for (const item of limitedResults) {
             // If we already have price data, skip
             if (item.price != null && typeof item.price === 'number') {
-                return item;
+                enrichedResults.push(item);
+                continue;
             }
 
             // Try to get quote from best source
             const quote = await this.getQuote(item.symbol);
             
             if (quote.success && quote.data) {
-                return {
+                enrichedResults.push({
                     ...item,
                     price: quote.data.price,
                     change: quote.data.change,
                     changePercent: quote.data.changePercent,
                     currency: quote.data.currency || item.currency,
                     quoteSources: [quote.source]
-                };
+                });
+            } else {
+                enrichedResults.push(item);
             }
 
-            return item;
-        });
+            // Small delay to avoid rate limiting
+            await new Promise(resolve => setTimeout(resolve, 100));
+        }
 
-        return await Promise.all(enrichPromises);
+        return enrichedResults;
     }
 
     /**
@@ -151,18 +161,7 @@ class DataAggregator {
     async getQuote(symbol) {
         console.log(`[DataAggregator] Getting quote for: ${symbol}`);
 
-        // Try Yahoo first (fastest and most reliable)
-        try {
-            const yahooQuote = await this.yahoo.getQuote(symbol);
-            if (yahooQuote.success && yahooQuote.data) {
-                console.log(`[yahoo] Quote found for ${symbol}`);
-                return yahooQuote;
-            }
-        } catch (error) {
-            console.error(`[yahoo] Error getting quote: ${error.message}`);
-        }
-
-        // Fallback to Finnhub
+        // Try Finnhub first (funzionante con headers)
         try {
             const finnhubQuote = await this.finnhub.getQuote(symbol);
             if (finnhubQuote.success && finnhubQuote.data) {
@@ -171,6 +170,17 @@ class DataAggregator {
             }
         } catch (error) {
             console.error(`[finnhub] Error getting quote: ${error.message}`);
+        }
+
+        // Fallback to Yahoo
+        try {
+            const yahooQuote = await this.yahoo.getQuote(symbol);
+            if (yahooQuote.success && yahooQuote.data) {
+                console.log(`[yahoo] Quote found for ${symbol}`);
+                return yahooQuote;
+            }
+        } catch (error) {
+            console.error(`[yahoo] Error getting quote: ${error.message}`);
         }
 
         // Fallback to Alpha Vantage

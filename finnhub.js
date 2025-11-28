@@ -9,6 +9,12 @@ class FinnhubClient {
     constructor(apiKey) {
         this.apiKey = apiKey;
         this.baseUrl = 'https://finnhub.io/api/v1';
+        
+        // Headers per evitare 403
+        this.headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+            'Accept': 'application/json'
+        };
     }
 
     async search(query) {
@@ -16,6 +22,7 @@ class FinnhubClient {
             const url = `${this.baseUrl}/search`;
             const response = await axios.get(url, {
                 params: { q: query, token: this.apiKey },
+                headers: this.headers,
                 timeout: 10000
             });
 
@@ -51,6 +58,7 @@ class FinnhubClient {
             const url = `${this.baseUrl}/quote`;
             const response = await axios.get(url, {
                 params: { symbol: symbol, token: this.apiKey },
+                headers: this.headers,
                 timeout: 10000
             });
 
