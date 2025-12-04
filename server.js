@@ -3,7 +3,7 @@
  * P.IVA: 04219740364
  * 
  * ISIN Research Backend - Multi-Source Financial Data API
- * Version: 2.0
+ * Version: 2.1 - RICH METRICS UPDATE
  */
 
 const express = require('express');
@@ -29,7 +29,7 @@ app.get('/health', (req, res) => {
         status: 'ok',
         timestamp: new Date().toISOString(),
         uptime: process.uptime(),
-        version: '2.0.0'
+        version: '2.1.0'
     });
 });
 
@@ -57,7 +57,8 @@ app.use((err, req, res, next) => {
 // Start server
 app.listen(PORT, () => {
     console.log('='.repeat(60));
-    console.log('ISIN Research Backend - Multi-Source v2.0');
+    console.log('ISIN Research Backend - Multi-Source v2.1 🚀');
+    console.log('WITH RICH METRICS: Market Cap, P/E, Logo, Description');
     console.log('Copyright (c) 2024-2025 Mutna S.R.L.S.');
     console.log('='.repeat(60));
     console.log(`Server running on port ${PORT}`);
