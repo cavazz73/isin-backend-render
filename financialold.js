@@ -90,39 +90,6 @@ router.get('/search', async (req, res) => {
 });
 
 // ===================================
-// INSTRUMENT DETAILS (NEW - Enhanced with metrics)
-// ===================================
-router.get('/details/:symbol', async (req, res) => {
-    try {
-        const { symbol } = req.params;
-        
-        console.log(`[API] Details request: ${symbol}`);
-
-        const result = await aggregator.getInstrumentDetails(symbol);
-
-        if (!result.success) {
-            return res.status(404).json({
-                success: false,
-                error: 'Details not found',
-                symbol: symbol
-            });
-        }
-
-        res.json({
-            success: true,
-            data: result.data
-        });
-
-    } catch (error) {
-        console.error('[API] Details error:', error);
-        res.status(500).json({
-            success: false,
-            error: error.message
-        });
-    }
-});
-
-// ===================================
 // REAL-TIME QUOTE
 // ===================================
 router.get('/quote/:symbol', async (req, res) => {

@@ -1,0 +1,424 @@
+<!--
+  ============================================================================
+  ISIN Research & Compare - Enhanced Instrument Card Component
+  Copyright (c) 2025 Mutna S.R.L.S. - All Rights Reserved
+  ============================================================================
+-->
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Instrument Card - Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            transition: all 0.3s;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .positive { color: #10b981; }
+        .negative { color: #ef4444; }
+        
+        .logo-container {
+            width: 48px;
+            height: 48px;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .logo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-tech {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .badge-finance {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge-energy {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .description {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .description.expanded {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-4xl font-bold text-white text-center mb-8">
+            Enhanced Instrument Card
+        </h1>
+
+        <!-- Demo Card -->
+        <div id="instrumentCard" class="glass rounded-2xl p-6 shadow-2xl mb-4">
+            <!-- Loading state -->
+            <div id="loadingState" class="text-center py-8">
+                <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+                <p class="mt-4 text-gray-600">Caricamento dati...</p>
+            </div>
+
+            <!-- Card content (hidden initially) -->
+            <div id="cardContent" class="hidden">
+                <!-- Header -->
+                <div class="flex items-start justify-between mb-6">
+                    <div class="flex items-center space-x-4">
+                        <div class="logo-container">
+                            <img id="companyLogo" src="" alt="Logo" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2248%22 height=%2248%22 viewBox=%220 0 48 48%22%3E%3Ctext x=%2250%25%22 y=%2250%25%22 font-size=%2224%22 text-anchor=%22middle%22 dy=%22.3em%22%3E📊%3C/text%3E%3C/svg%3E'">
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2 mb-1">
+                                <h2 id="instrumentName" class="text-2xl font-bold text-gray-900"></h2>
+                                <span id="sectorBadge" class="badge badge-tech"></span>
+                            </div>
+                            <div class="flex items-center gap-3 text-sm text-gray-600">
+                                <span id="instrumentSymbol" class="font-mono font-semibold"></span>
+                                <span>•</span>
+                                <span id="exchangeName"></span>
+                                <span>•</span>
+                                <a id="websiteLink" href="#" target="_blank" class="text-blue-600 hover:underline flex items-center gap-1">
+                                    🌐 Website
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Price Section -->
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 mb-6">
+                    <div class="flex items-baseline gap-3">
+                        <span id="currentPrice" class="text-4xl font-bold text-gray-900"></span>
+                        <span id="currency" class="text-xl text-gray-600"></span>
+                        <div id="priceChange" class="flex items-center gap-1">
+                            <span id="changeAmount" class="text-xl font-semibold"></span>
+                            <span id="changePercent" class="text-xl font-semibold"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Key Metrics Grid -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                    <div class="metric-card">
+                        <div class="text-xs text-gray-600 mb-1">Market Cap</div>
+                        <div id="marketCap" class="text-lg font-bold text-gray-900">-</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="text-xs text-gray-600 mb-1">P/E Ratio</div>
+                        <div id="peRatio" class="text-lg font-bold text-gray-900">-</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="text-xs text-gray-600 mb-1">Dividend Yield</div>
+                        <div id="dividendYield" class="text-lg font-bold text-gray-900">-</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="text-xs text-gray-600 mb-1">Volume</div>
+                        <div id="volume" class="text-lg font-bold text-gray-900">-</div>
+                    </div>
+                </div>
+
+                <!-- 52-Week Range -->
+                <div class="mb-6">
+                    <div class="flex items-center justify-between text-sm text-gray-600 mb-2">
+                        <span>52-Week Range</span>
+                        <span id="rangeText" class="font-mono"></span>
+                    </div>
+                    <div class="relative h-2 bg-gray-200 rounded-full overflow-hidden">
+                        <div id="rangeBar" class="absolute h-full bg-gradient-to-r from-red-400 via-yellow-400 to-green-400"></div>
+                        <div id="currentPriceMarker" class="absolute h-4 w-1 bg-blue-600 rounded" style="top: -4px;"></div>
+                    </div>
+                </div>
+
+                <!-- Additional Metrics (expandable) -->
+                <div class="border-t pt-4 mb-4">
+                    <button id="toggleMetrics" class="text-blue-600 hover:text-blue-700 font-semibold text-sm mb-3">
+                        📊 Show More Metrics ▼
+                    </button>
+                    <div id="additionalMetrics" class="hidden grid grid-cols-2 md:grid-cols-3 gap-3 text-sm">
+                        <div>
+                            <span class="text-gray-600">Beta:</span>
+                            <span id="beta" class="font-semibold ml-2">-</span>
+                        </div>
+                        <div>
+                            <span class="text-gray-600">EPS:</span>
+                            <span id="eps" class="font-semibold ml-2">-</span>
+                        </div>
+                        <div>
+                            <span class="text-gray-600">P/B Ratio:</span>
+                            <span id="priceToBook" class="font-semibold ml-2">-</span>
+                        </div>
+                        <div>
+                            <span class="text-gray-600">Profit Margin:</span>
+                            <span id="profitMargin" class="font-semibold ml-2">-</span>
+                        </div>
+                        <div>
+                            <span class="text-gray-600">ROE:</span>
+                            <span id="roe" class="font-semibold ml-2">-</span>
+                        </div>
+                        <div>
+                            <span class="text-gray-600">Avg Volume:</span>
+                            <span id="avgVolume" class="font-semibold ml-2">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Description -->
+                <div class="border-t pt-4">
+                    <h3 class="text-sm font-semibold text-gray-700 mb-2">📄 About</h3>
+                    <p id="description" class="description text-sm text-gray-600 leading-relaxed">
+                        <!-- Description here -->
+                    </p>
+                    <button id="toggleDescription" class="text-blue-600 hover:text-blue-700 text-sm mt-2 hidden">
+                        Read more...
+                    </button>
+                </div>
+
+                <!-- Data Sources Footer -->
+                <div class="mt-6 pt-4 border-t text-xs text-gray-500 flex items-center justify-between">
+                    <div>
+                        Data sources: <span id="dataSources" class="font-semibold"></span>
+                    </div>
+                    <div id="lastUpdate"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Demo Controls -->
+        <div class="glass rounded-xl p-4">
+            <h3 class="font-semibold mb-3 text-gray-800">Test Instruments</h3>
+            <div class="flex flex-wrap gap-2">
+                <button onclick="loadInstrument('AAPL')" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                    AAPL (US)
+                </button>
+                <button onclick="loadInstrument('ENEL.MI')" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">
+                    ENEL (IT)
+                </button>
+                <button onclick="loadInstrument('MSFT')" class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition">
+                    MSFT (US)
+                </button>
+                <button onclick="loadInstrument('ENI.MI')" class="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition">
+                    ENI (IT)
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Toggle metrics
+        document.getElementById('toggleMetrics').addEventListener('click', function() {
+            const metrics = document.getElementById('additionalMetrics');
+            metrics.classList.toggle('hidden');
+            this.textContent = metrics.classList.contains('hidden') 
+                ? '📊 Show More Metrics ▼' 
+                : '📊 Hide Metrics ▲';
+        });
+
+        // Toggle description
+        document.getElementById('toggleDescription').addEventListener('click', function() {
+            const desc = document.getElementById('description');
+            desc.classList.toggle('expanded');
+            this.textContent = desc.classList.contains('expanded') 
+                ? 'Read less...' 
+                : 'Read more...';
+        });
+
+        // Load instrument data
+        async function loadInstrument(symbol) {
+            const loadingState = document.getElementById('loadingState');
+            const cardContent = document.getElementById('cardContent');
+            
+            loadingState.classList.remove('hidden');
+            cardContent.classList.add('hidden');
+
+            try {
+                // Call your backend API
+                const response = await fetch(`http://localhost:3000/api/financial/enhanced-quote/${symbol}`);
+                const result = await response.json();
+
+                if (result.success && result.data) {
+                    renderInstrument(result.data);
+                    loadingState.classList.add('hidden');
+                    cardContent.classList.remove('hidden');
+                } else {
+                    alert('Error loading data');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error: ' + error.message);
+            }
+        }
+
+        // Render instrument data
+        function renderInstrument(data) {
+            // Basic info
+            document.getElementById('instrumentName').textContent = data.name || data.symbol;
+            document.getElementById('instrumentSymbol').textContent = data.symbol;
+            document.getElementById('exchangeName').textContent = data.exchange || '-';
+            
+            // Logo
+            if (data.logoUrl) {
+                document.getElementById('companyLogo').src = data.logoUrl;
+            }
+
+            // Website
+            if (data.website) {
+                const websiteLink = document.getElementById('websiteLink');
+                websiteLink.href = data.website;
+                websiteLink.classList.remove('hidden');
+            }
+
+            // Sector badge
+            if (data.sector) {
+                const badge = document.getElementById('sectorBadge');
+                badge.textContent = data.sector;
+                badge.className = 'badge ' + getSectorClass(data.sector);
+            }
+
+            // Price
+            document.getElementById('currentPrice').textContent = formatPrice(data.price);
+            document.getElementById('currency').textContent = data.currency || 'USD';
+            
+            // Change
+            const isPositive = data.change >= 0;
+            const changeClass = isPositive ? 'positive' : 'negative';
+            const changeSymbol = isPositive ? '↑' : '↓';
+            
+            document.getElementById('changeAmount').textContent = `${isPositive ? '+' : ''}${formatPrice(data.change)}`;
+            document.getElementById('changeAmount').className = `text-xl font-semibold ${changeClass}`;
+            
+            document.getElementById('changePercent').textContent = `(${isPositive ? '+' : ''}${data.changePercent?.toFixed(2)}%) ${changeSymbol}`;
+            document.getElementById('changePercent').className = `text-xl font-semibold ${changeClass}`;
+
+            // Metrics
+            document.getElementById('marketCap').textContent = data.marketCapFormatted || '-';
+            document.getElementById('peRatio').textContent = data.peRatio?.toFixed(2) || '-';
+            document.getElementById('dividendYield').textContent = data.dividendYield 
+                ? (data.dividendYield * 100).toFixed(2) + '%' 
+                : '-';
+            document.getElementById('volume').textContent = data.volumeFormatted || '-';
+
+            // 52-week range
+            if (data.fiftyTwoWeekLow && data.fiftyTwoWeekHigh) {
+                document.getElementById('rangeText').textContent = 
+                    `${formatPrice(data.fiftyTwoWeekLow)} - ${formatPrice(data.fiftyTwoWeekHigh)}`;
+                
+                const range = data.fiftyTwoWeekHigh - data.fiftyTwoWeekLow;
+                const position = ((data.price - data.fiftyTwoWeekLow) / range) * 100;
+                document.getElementById('currentPriceMarker').style.left = position + '%';
+            }
+
+            // Additional metrics
+            document.getElementById('beta').textContent = data.beta?.toFixed(2) || '-';
+            document.getElementById('eps').textContent = data.eps?.toFixed(2) || '-';
+            document.getElementById('priceToBook').textContent = data.priceToBook?.toFixed(2) || '-';
+            document.getElementById('profitMargin').textContent = data.profitMargin 
+                ? (data.profitMargin * 100).toFixed(2) + '%' 
+                : '-';
+            document.getElementById('roe').textContent = data.roe 
+                ? (data.roe * 100).toFixed(2) + '%' 
+                : '-';
+            document.getElementById('avgVolume').textContent = formatVolume(data.avgVolume) || '-';
+
+            // Description
+            const descEl = document.getElementById('description');
+            const toggleBtn = document.getElementById('toggleDescription');
+            
+            if (data.description) {
+                descEl.textContent = data.description;
+                if (data.description.length > 200) {
+                    toggleBtn.classList.remove('hidden');
+                }
+            } else {
+                descEl.textContent = 'No description available.';
+            }
+
+            // Data sources
+            if (data.dataSources && data.dataSources.length > 0) {
+                document.getElementById('dataSources').textContent = data.dataSources.join(', ');
+            }
+
+            // Timestamp
+            document.getElementById('lastUpdate').textContent = 
+                'Updated: ' + new Date().toLocaleTimeString();
+        }
+
+        // Helper functions
+        function formatPrice(price) {
+            if (price === null || price === undefined) return '-';
+            return price.toFixed(2);
+        }
+
+        function formatVolume(volume) {
+            if (!volume) return null;
+            if (volume >= 1e9) return (volume / 1e9).toFixed(1) + 'B';
+            if (volume >= 1e6) return (volume / 1e6).toFixed(1) + 'M';
+            if (volume >= 1e3) return (volume / 1e3).toFixed(1) + 'K';
+            return volume.toFixed(0);
+        }
+
+        function getSectorClass(sector) {
+            const sectorMap = {
+                'Technology': 'badge-tech',
+                'Financial': 'badge-finance',
+                'Financial Services': 'badge-finance',
+                'Energy': 'badge-energy',
+                'Utilities': 'badge-energy'
+            };
+            return sectorMap[sector] || 'badge-tech';
+        }
+
+        // Auto-load first example
+        window.addEventListener('load', () => {
+            loadInstrument('AAPL');
+        });
+    </script>
+</body>
+</html>
