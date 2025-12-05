@@ -3,7 +3,11 @@
  * P.IVA: 04219740364
  * 
  * ISIN Research Backend - Multi-Source Financial Data API
+<<<<<<< HEAD
  * Version: 3.0 - Database Hybrid System
+=======
+ * Version: 2.1 - RICH METRICS UPDATE
+>>>>>>> 21aed0b4855ce1a63586735a4682567d16e5830f
  */
 
 const express = require('express');
@@ -30,8 +34,12 @@ app.get('/health', (req, res) => {
         status: 'ok',
         timestamp: new Date().toISOString(),
         uptime: process.uptime(),
+<<<<<<< HEAD
         version: '3.0.0',
         database: process.env.DATABASE_URL ? 'configured' : 'not configured'
+=======
+        version: '2.1.0'
+>>>>>>> 21aed0b4855ce1a63586735a4682567d16e5830f
     });
 });
 
@@ -195,8 +203,13 @@ app.use((err, req, res, next) => {
 // Start server
 app.listen(PORT, () => {
     console.log('='.repeat(60));
+<<<<<<< HEAD
     console.log('ISIN Research Backend - Multi-Source v3.0');
     console.log('WITH HYBRID DATABASE SYSTEM');
+=======
+    console.log('ISIN Research Backend - Multi-Source v2.1 🚀');
+    console.log('WITH RICH METRICS: Market Cap, P/E, Logo, Description');
+>>>>>>> 21aed0b4855ce1a63586735a4682567d16e5830f
     console.log('Copyright (c) 2024-2025 Mutna S.R.L.S.');
     console.log('='.repeat(60));
     console.log(`Server running on port ${PORT}`);

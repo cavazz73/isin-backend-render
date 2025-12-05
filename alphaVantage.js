@@ -58,6 +58,42 @@ class AlphaVantageClient {
         }
     }
 
+    async getCompanyOverview(symbol) {
+        if (this.requestCount >= this.dailyLimit) {
+            return { success: false, error: 'Daily limit reached' };
+        }
+
+        try {
+            const response = await axios.get(this.baseUrl, {
+                params: {
+                    function: 'OVERVIEW',
+                    symbol: symbol,
+                    apikey: this.apiKey
+                },
+                timeout: 15000
+            });
+
+            this.requestCount++;
+
+            const data = response.data;
+            
+            // Check if we got valid data
+            if (!data || !data.Symbol) {
+                return { success: false, data: null };
+            }
+
+            return {
+                success: true,
+                data: data,
+                source: 'alphavantage'
+            };
+
+        } catch (error) {
+            console.error('[AlphaVantage] Company overview error:', error.message);
+            return { success: false, data: null, error: error.message };
+        }
+    }
+
     async getQuote(symbol) {
         if (this.requestCount >= this.dailyLimit) {
             return { success: false, error: 'Daily limit reached' };

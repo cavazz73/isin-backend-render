@@ -1,7 +1,7 @@
 {
   "name": "isin-backend-multisource",
-  "version": "3.0.0",
-  "description": "ISIN Research Backend - Multi-Source Financial Data API with PostgreSQL",
+  "version": "2.0.0",
+  "description": "ISIN Research Backend - Multi-Source Financial Data API",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -15,17 +15,14 @@
     "api",
     "yahoo-finance",
     "finnhub",
-    "alphavantage",
-    "postgresql",
-    "database"
+    "alphavantage"
   ],
   "author": "Mutna S.R.L.S.",
   "license": "PROPRIETARY",
   "dependencies": {
     "express": "^4.18.2",
     "cors": "^2.8.5",
-    "axios": "^1.6.2",
-    "pg": "^8.11.3"
+    "axios": "^1.6.2"
   },
   "devDependencies": {
     "nodemon": "^3.0.2"
