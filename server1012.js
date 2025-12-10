@@ -3,14 +3,13 @@
  * P.IVA: 04219740364
  * 
  * ISIN Research Backend - Multi-Source Financial Data API
- * Version: 3.1 - Database Hybrid System + Bond Integration
+ * Version: 3.0 - Database Hybrid System
  */
 
 const express = require('express');
 const cors = require('cors');
 const { Pool } = require('pg');
 const financialRoutes = require('./financial');
-const bondsRoutes = require('./bonds'); // ← NUOVO: Import bond routes
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -31,7 +30,7 @@ app.get('/health', (req, res) => {
         status: 'ok',
         timestamp: new Date().toISOString(),
         uptime: process.uptime(),
-        version: '3.1.0', // ← Aggiornato
+        version: '3.0.0',
         database: process.env.DATABASE_URL ? 'configured' : 'not configured'
     });
 });
@@ -174,7 +173,6 @@ ON CONFLICT (isin) DO NOTHING;
 
 // API Routes
 app.use('/api/financial', financialRoutes);
-app.use('/api/bonds', bondsRoutes); // ← NUOVO: Bond routes
 
 // 404 handler
 app.use((req, res) => {
@@ -197,14 +195,13 @@ app.use((err, req, res, next) => {
 // Start server
 app.listen(PORT, () => {
     console.log('='.repeat(60));
-    console.log('ISIN Research Backend - Multi-Source v3.1'); // ← Aggiornato
-    console.log('WITH HYBRID DATABASE SYSTEM + BOND INTEGRATION'); // ← Aggiornato
+    console.log('ISIN Research Backend - Multi-Source v3.0');
+    console.log('WITH HYBRID DATABASE SYSTEM');
     console.log('Copyright (c) 2024-2025 Mutna S.R.L.S.');
     console.log('='.repeat(60));
     console.log(`Server running on port ${PORT}`);
     console.log(`Health check: http://localhost:${PORT}/health`);
     console.log(`API endpoint: http://localhost:${PORT}/api/financial/search`);
-    console.log(`Bonds endpoint: http://localhost:${PORT}/api/bonds/search`); // ← NUOVO
     console.log(`DB Setup: http://localhost:${PORT}/setup-database`);
     console.log('='.repeat(60));
     console.log('Data sources:');
@@ -212,7 +209,6 @@ app.listen(PORT, () => {
     console.log('  2. Yahoo Finance (Fallback - Unlimited)');
     console.log('  3. Finnhub (Fallback - 60 req/min)');
     console.log('  4. Alpha Vantage (Fallback - 25 req/day)');
-    console.log('  5. Borsa Italiana (Bonds - Italian Gov Bonds)'); // ← NUOVO
     console.log('='.repeat(60));
     console.log('Database:', process.env.DATABASE_URL ? '✅ Configured' : '⚠️  Not configured');
     console.log('='.repeat(60));
