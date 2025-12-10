@@ -1,7 +1,7 @@
 {
   "name": "isin-backend-multisource",
-  "version": "3.0.0",
-  "description": "ISIN Research Backend - Multi-Source Financial Data API with PostgreSQL",
+  "version": "3.1.0",
+  "description": "ISIN Research Backend - Multi-Source Financial Data API with PostgreSQL + Bond Integration",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -17,7 +17,9 @@
     "finnhub",
     "alphavantage",
     "postgresql",
-    "database"
+    "database",
+    "bonds",
+    "btp"
   ],
   "author": "Mutna S.R.L.S.",
   "license": "PROPRIETARY",
@@ -25,7 +27,8 @@
     "express": "^4.18.2",
     "cors": "^2.8.5",
     "axios": "^1.6.2",
-    "pg": "^8.11.3"
+    "pg": "^8.11.3",
+    "cheerio": "^1.0.0-rc.12"
   },
   "devDependencies": {
     "nodemon": "^3.0.2"
