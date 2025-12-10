@@ -1,0 +1,2226 @@
+<!--
+  ============================================================================
+  ISIN Research & Compare
+  Copyright (c) 2025 Mutna S.R.L.S. - All Rights Reserved
+  ============================================================================
+  
+  This file is part of ISIN Research & Compare proprietary software.
+  
+  Unauthorized copying, modification, distribution, or use of this file,
+  via any medium, is strictly prohibited without express written permission
+  from Mutna S.R.L.S.
+  
+  Proprietary and Confidential
+  
+  Company: Mutna S.R.L.S.
+  P.IVA: 04219740364
+  Website: https://mutna.it
+  ============================================================================
+-->
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ISIN Research and Compare | Mutna S.R.L.S.</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .glass {
+            backdrop-filter: blur(16px) saturate(180%);
+            background-color: rgba(255, 255, 255, 0.75);
+            border: 1px solid rgba(209, 213, 219, 0.3);
+        }
+        
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3498db;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .period-btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .period-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .period-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: white;
+        }
+
+        .period-btn:not(.active) {
+            background: white;
+            color: #4b5563;
+        }
+
+        /* Enhanced Instrument Card Styles */
+        .instrument-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .instrument-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 25px 30px -5px rgba(0, 0, 0, 0.2);
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            transition: transform 0.2s;
+        }
+
+        .metric-card:hover {
+            transform: scale(1.05);
+        }
+
+        .metric-label {
+            font-size: 0.75rem;
+            color: #64748b;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .metric-value {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-top: 0.25rem;
+        }
+
+        .logo-container {
+            width: 48px;
+            height: 48px;
+            border-radius: 0.5rem;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .logo-container img {
+            max-width: 40px;
+            max-height: 40px;
+            object-fit: contain;
+        }
+
+        .price-badge {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .change-positive {
+            color: #10b981;
+            font-weight: 700;
+        }
+
+        .change-negative {
+            color: #ef4444;
+            font-weight: 700;
+        }
+
+        .description-text {
+            color: #475569;
+            line-height: 1.6;
+            font-size: 0.875rem;
+        }
+
+        .sector-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .website-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .website-link:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+
+        /* ======== BOND STYLES ======== */
+        .bond-type-btn {
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 700;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: 2px solid rgba(102, 126, 234, 0.3);
+            background: white;
+            color: #4b5563;
+            font-size: 0.95rem;
+        }
+
+        .bond-type-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-color: #667eea;
+        }
+
+        .bond-type-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: white;
+            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+        }
+
+        .bond-category-btn, .bond-country-btn {
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: 2px solid rgba(102, 126, 234, 0.2);
+            background: white;
+            color: #4b5563;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .bond-category-btn:hover, .bond-country-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+
+        .bond-category-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: white;
+        }
+
+        .bond-country-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .bond-content-section {
+            animation: fadeIn 0.5s ease-out;
+        }
+    </style>
+</head>
+<body class="min-h-screen gradient-bg">
+    <!-- Header -->
+    <header class="glass border-b border-white/20 sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <div class="text-3xl">📊</div>
+                    <div>
+                        <h1 class="text-xl font-bold text-gray-900">ISIN Research & Compare</h1>
+                        <p class="text-xs text-gray-600">by Mutna S.R.L.S.</p>
+                    </div>
+                </div>
+                <nav class="flex items-center space-x-4">
+                    <a href="about.html" class="text-gray-700 hover:text-gray-900 font-semibold transition-colors">
+                        Chi Siamo
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mx-auto px-4 py-8">
+        <!-- Title -->
+        <div class="text-center mb-8 fade-in">
+            <h2 class="text-5xl font-bold text-white mb-4 drop-shadow-lg">
+                Ricerca Strumenti Finanziari
+            </h2>
+            <p class="text-white/90 text-lg">
+                Cerca azioni US • Dati real-time • Grafici interattivi
+            </p>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="flex justify-center mb-8 fade-in">
+            <div class="glass rounded-full p-1 shadow-xl flex flex-wrap gap-1 justify-center">
+                <button id="searchTab" class="tab-btn active" onclick="showTab('search')">
+                    🔍 Ricerca
+                </button>
+                <button id="favoritesTab" class="tab-btn" onclick="showTab('favorites')">
+                    ⭐ I Miei Titoli (<span id="favCount">0</span>)
+                </button>
+                <button id="compareTab" class="tab-btn" onclick="showTab('compare')">
+                    📊 Confronta
+                </button>
+                <button id="bondsTab" class="tab-btn" onclick="showTab('bonds')">
+                    💰 Obbligazioni
+                </button>
+                <button id="aiTab" class="tab-btn" onclick="showTab('ai')">
+                    🤖 AI Assistant
+                </button>
+            </div>
+        </div>
+
+        <!-- Search Section -->
+        <div id="searchSection" class="fade-in">
+        <div class="max-w-2xl mx-auto mb-8 fade-in">
+            <div class="glass rounded-2xl p-6 shadow-xl">
+                <div class="space-y-4">
+                    <div class="relative">
+                        <input
+                            type="text"
+                            id="searchInput"
+                            placeholder="Cerca azioni US (es. AAPL, Apple, Microsoft, TSLA)"
+                            class="w-full px-4 py-4 pr-12 border-0 rounded-xl focus:ring-4 focus:ring-blue-300 text-lg bg-white/90"
+                            onkeypress="if(event.key==='Enter') searchInstrument()"
+                        />
+                        <div class="absolute right-3 top-4 text-2xl">🔍</div>
+                    </div>
+                    <div class="text-sm text-gray-600 bg-white/50 rounded-lg p-3">
+                        💡 <strong>Suggerimento:</strong> Puoi cercare usando il <strong>simbolo</strong> (es. "AAPL") 
+                        o il <strong>nome</strong> dell'azienda (es. "Apple", "Microsoft").
+                        <br><strong>⚠️ Nota:</strong> Solo azioni US supportate al momento.
+                    </div>
+                    <button
+                        onclick="searchInstrument()"
+                        class="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg"
+                    >
+                        Cerca Strumento
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading -->
+        <div id="loading" class="hidden text-center mb-8">
+            <div class="glass rounded-2xl p-8 max-w-md mx-auto shadow-xl">
+                <div class="spinner mx-auto mb-4"></div>
+                <p class="text-gray-700 font-semibold">Ricerca in corso...</p>
+                <p class="text-gray-500 text-sm mt-2">⏰ Il backend potrebbe impiegare 50-60 secondi al primo avvio (cold start di Render)</p>
+            </div>
+        </div>
+
+        <!-- Alerts -->
+        <div id="alertArea" class="max-w-2xl mx-auto mb-8"></div>
+
+        <!-- Results -->
+        <div id="results" class="max-w-6xl mx-auto hidden">
+            <div class="glass rounded-2xl p-6 shadow-xl mb-6 fade-in">
+                <div class="flex justify-between items-start mb-6">
+                    <div>
+                        <h3 id="instrumentName" class="text-3xl font-bold text-gray-900 mb-2">-</h3>
+                        <div class="flex items-center space-x-2">
+                            <span id="symbolCode" class="text-lg font-semibold text-gray-700">-</span>
+                            <span class="text-gray-400">•</span>
+                            <span id="market" class="text-gray-600">-</span>
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="addToFavorites()" class="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold py-2 px-4 rounded-lg transition-all">
+                            ⭐ Salva
+                        </button>
+                        <button onclick="addToComparison()" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition-all">
+                            📊 Confronta
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Chart -->
+            <div class="glass rounded-2xl p-6 shadow-xl fade-in">
+                <h4 class="text-xl font-bold text-gray-900 mb-4">Andamento Storico</h4>
+                <div class="flex flex-wrap gap-2 mb-4">
+                    <button class="period-btn" onclick="changePeriod('1D')">1D</button>
+                    <button class="period-btn" onclick="changePeriod('1W')">1S</button>
+                    <button class="period-btn active" onclick="changePeriod('1M')">1M</button>
+                    <button class="period-btn" onclick="changePeriod('3M')">3M</button>
+                    <button class="period-btn" onclick="changePeriod('6M')">6M</button>
+                    <button class="period-btn" onclick="changePeriod('1Y')">1A</button>
+                    <button class="period-btn" onclick="changePeriod('5Y')">5A</button>
+                </div>
+                <div style="position: relative; height: 300px;">
+                    <canvas id="priceChart"></canvas>
+                </div>
+            </div>
+        </div>
+        </div>
+
+        <!-- Favorites Section -->
+        <div id="favoritesSection" class="hidden fade-in">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-3xl font-bold text-white mb-6 text-center drop-shadow-lg">
+                    I Miei Titoli
+                </h2>
+                
+                <!-- Pulsante Confronta Selezionati -->
+                <div id="compareSelectedContainer" class="hidden mb-6">
+                    <div class="glass rounded-2xl p-4 shadow-xl flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-700 font-semibold">
+                                <span id="selectedCount">0</span> strumenti selezionati per il confronto
+                            </p>
+                        </div>
+                        <button 
+                            onclick="showTab('compare')" 
+                            class="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 rounded-xl font-bold hover:shadow-lg transition-all"
+                        >
+                            📊 Vai al Confronto
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="favoritesList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+                
+                <div id="emptyFavorites" class="text-center py-16">
+                    <div class="glass rounded-2xl p-12 shadow-xl">
+                        <div class="text-6xl mb-6">⭐</div>
+                        <h3 class="text-2xl font-bold text-gray-700 mb-4">Nessun titolo salvato</h3>
+                        <p class="text-gray-600 text-lg mb-6">Aggiungi strumenti alla tua lista per vederli qui</p>
+                        <button 
+                            onclick="showTab('search')" 
+                            class="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-8 py-3 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 transform hover:scale-105"
+                        >
+                            Inizia a Cercare
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Compare Section -->
+        <div id="compareSection" class="hidden fade-in">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-3xl font-bold text-white mb-6 text-center drop-shadow-lg">
+                    Confronta Strumenti
+                </h2>
+                
+                <!-- Istruzioni -->
+                <div class="glass rounded-2xl p-6 shadow-xl mb-6">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="text-3xl">📊</div>
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-900">Come funziona</h3>
+                            <p class="text-gray-600">Seleziona gli strumenti che vuoi confrontare</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Lista strumenti selezionati -->
+                    <div id="compareList" class="space-y-2 mb-4">
+                        <p class="text-gray-500 text-sm" id="emptyCompare">Nessuno strumento selezionato. Cerca e clicca "Aggiungi al Confronto"</p>
+                    </div>
+                    
+                    <button 
+                        id="runCompareBtn"
+                        onclick="runComparison()" 
+                        class="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white font-bold py-3 rounded-xl hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                        disabled
+                    >
+                        Confronta (<span id="compareCount">0</span>)
+                    </button>
+                </div>
+
+                <!-- Risultati confronto -->
+                <div id="comparisonResults" class="hidden">
+                    <!-- Tabella comparativa -->
+                    <div class="glass rounded-2xl p-6 shadow-xl mb-6">
+                        <h3 class="text-xl font-bold text-gray-900 mb-4">Confronto Dettagliato</h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left">
+                                <thead>
+                                    <tr class="border-b border-gray-300">
+                                        <th class="py-2 px-4 text-gray-700 font-semibold">Metrica</th>
+                                        <th class="py-2 px-4 text-gray-700 font-semibold" id="compareHeader1">-</th>
+                                        <th class="py-2 px-4 text-gray-700 font-semibold" id="compareHeader2">-</th>
+                                        <th class="py-2 px-4 text-gray-700 font-semibold" id="compareHeader3">-</th>
+                                        <th class="py-2 px-4 text-gray-700 font-semibold" id="compareHeader4">-</th>
+                                        <th class="py-2 px-4 text-gray-700 font-semibold" id="compareHeader5">-</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="compareTableBody">
+                                    <!-- Popolato dinamicamente -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Grafici sovrapposti -->
+                    <div class="glass rounded-2xl p-6 shadow-xl">
+                        <div class="flex items-center justify-between mb-4 flex-wrap gap-4">
+                            <h3 class="text-xl font-bold text-gray-900" id="compareChartTitle">Andamento Comparativo (1 Mese)</h3>
+                            
+                            <!-- Period Selector for Compare -->
+                            <div class="flex gap-2 flex-wrap">
+                                <button class="period-btn" onclick="changeComparePeriod('1D')">1G</button>
+                                <button class="period-btn" onclick="changeComparePeriod('1W')">1S</button>
+                                <button class="period-btn active" onclick="changeComparePeriod('1M')">1M</button>
+                                <button class="period-btn" onclick="changeComparePeriod('3M')">3M</button>
+                                <button class="period-btn" onclick="changeComparePeriod('6M')">6M</button>
+                                <button class="period-btn" onclick="changeComparePeriod('1Y')">1A</button>
+                                <button class="period-btn" onclick="changeComparePeriod('3Y')">3A</button>
+                                <button class="period-btn" onclick="changeComparePeriod('5Y')">5A</button>
+                                <button class="period-btn" onclick="changeComparePeriod('MAX')">MAX</button>
+                            </div>
+                        </div>
+                        <div style="position: relative; height: 400px;">
+                            <canvas id="compareChart"></canvas>
+                        </div>
+                    </div>
+
+                    <button 
+                        onclick="clearComparison()" 
+                        class="mt-6 w-full bg-red-500 hover:bg-red-600 text-white font-bold py-3 rounded-xl transition-all"
+                    >
+                        🗑️ Cancella Confronto
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- BOND SECTION - COMPLETE INTEGRATION -->
+        <!-- ============================================ -->
+        <div id="bondsSection" class="hidden fade-in">
+            <div class="max-w-7xl mx-auto">
+                <h2 class="text-4xl font-bold text-white mb-6 text-center drop-shadow-lg">
+                    Mercato Obbligazionario Completo
+                </h2>
+                
+                <!-- Sub-navigation (Tipo Bond) -->
+                <div class="glass rounded-2xl p-4 shadow-xl mb-6">
+                    <div class="flex flex-wrap gap-3 justify-center">
+                        <button onclick="showBondType('gov-it')" class="bond-type-btn active" data-type="gov-it">
+                            🇮🇹 Governativi Italia
+                        </button>
+                        <button onclick="showBondType('gov-eu')" class="bond-type-btn" data-type="gov-eu">
+                            🇪🇺 Governativi Europa
+                        </button>
+                        <button onclick="showBondType('supranational')" class="bond-type-btn" data-type="supranational">
+                            🌍 Sovranazionali
+                        </button>
+                        <button onclick="showBondType('corporate')" class="bond-type-btn" data-type="corporate">
+                            🏢 Corporate
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Disclaimer -->
+                <div class="bg-yellow-100 border-l-4 border-yellow-500 p-4 rounded-lg mb-6">
+                    <div class="flex">
+                        <span class="text-2xl mr-3">⚠️</span>
+                        <div>
+                            <p class="font-semibold text-yellow-800 mb-1">Disclaimer Importante</p>
+                            <p class="text-yellow-700 text-sm">
+                                Dati forniti da Borsa Italiana con delay di 15 minuti. 
+                                I prezzi sono puramente indicativi. Verificare sempre presso fonti ufficiali 
+                                prima di prendere decisioni di investimento.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ==== GOVERNATIVI ITALIA ==== -->
+                <div id="govItSection" class="bond-content-section">
+                    <div class="glass rounded-2xl p-6 shadow-xl mb-6">
+                        <h3 class="text-xl font-bold text-gray-900 mb-4">Seleziona Categoria</h3>
+                        <div class="flex flex-wrap gap-3">
+                            <button onclick="loadBonds('gov-it-btp')" class="bond-category-btn active" data-category="gov-it-btp">
+                                📈 BTP - Buoni Tesoro Poliennali
+                            </button>
+                            <button onclick="loadBonds('gov-it-bot')" class="bond-category-btn" data-category="gov-it-bot">
+                                📊 BOT - Buoni Ordinari Tesoro
+                            </button>
+                            <button onclick="loadBonds('gov-it-cct')" class="bond-category-btn" data-category="gov-it-cct">
+                                💹 CCT - Certificati Credito Tesoro
+                            </button>
+                            <button onclick="loadBonds('gov-it-ctz')" class="bond-category-btn" data-category="gov-it-ctz">
+                                📉 CTZ - Certificati Tesoro Zero Coupon
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ==== GOVERNATIVI EUROPA ==== -->
+                <div id="govEuSection" class="bond-content-section hidden">
+                    <div class="glass rounded-2xl p-6 shadow-xl mb-6">
+                        <h3 class="text-xl font-bold text-gray-900 mb-4">Seleziona Paese</h3>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                            <button onclick="loadBonds('gov-eu-germany')" class="bond-country-btn" data-category="gov-eu-germany">
+                                🇩🇪 Germania
+                            </button>
+                            <button onclick="loadBonds('gov-eu-france')" class="bond-country-btn" data-category="gov-eu-france">
+                                🇫🇷 Francia
+                            </button>
+                            <button onclick="loadBonds('gov-eu-spain')" class="bond-country-btn" data-category="gov-eu-spain">
+                                🇪🇸 Spagna
+                            </button>
+                            <button onclick="loadBonds('gov-eu-netherlands')" class="bond-country-btn" data-category="gov-eu-netherlands">
+                                🇳🇱 Olanda
+                            </button>
+                            <button onclick="loadBonds('gov-eu-belgium')" class="bond-country-btn" data-category="gov-eu-belgium">
+                                🇧🇪 Belgio
+                            </button>
+                            <button onclick="loadBonds('gov-eu-austria')" class="bond-country-btn" data-category="gov-eu-austria">
+                                🇦🇹 Austria
+                            </button>
+                            <button onclick="loadBonds('gov-eu-portugal')" class="bond-country-btn" data-category="gov-eu-portugal">
+                                🇵🇹 Portogallo
+                            </button>
+                            <button onclick="loadBonds('gov-eu-ireland')" class="bond-country-btn" data-category="gov-eu-ireland">
+                                🇮🇪 Irlanda
+                            </button>
+                            <button onclick="loadBonds('gov-eu-finland')" class="bond-country-btn" data-category="gov-eu-finland">
+                                🇫🇮 Finlandia
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ==== SOVRANAZIONALI ==== -->
+                <div id="supranationalSection" class="bond-content-section hidden">
+                    <div class="glass rounded-2xl p-6 shadow-xl mb-6">
+                        <h3 class="text-xl font-bold text-gray-900 mb-4">Istituzioni Sovranazionali</h3>
+                        <p class="text-gray-700 mb-4">
+                            Obbligazioni emesse da istituzioni internazionali come EFSF, ESM, BEI (Banca Europea Investimenti), etc.
+                        </p>
+                        <button onclick="loadBonds('supranational')" class="bond-category-btn active">
+                            🌍 Tutte le Sovranazionali
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ==== CORPORATE ==== -->
+                <div id="corporateSection" class="bond-content-section hidden">
+                    <div class="glass rounded-2xl p-6 shadow-xl mb-6">
+                        <h3 class="text-xl font-bold text-gray-900 mb-4">Obbligazioni Corporate</h3>
+                        <p class="text-gray-700 mb-4">
+                            Obbligazioni emesse da aziende private (Senior, Subordinate, Investment Grade, High Yield).
+                        </p>
+                        <button onclick="loadBonds('corporate-all')" class="bond-category-btn active">
+                            🏢 Tutte le Corporate
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ==== FILTRI AVANZATI ==== -->
+                <div id="bondsFilters" class="hidden glass rounded-2xl p-6 shadow-xl mb-6">
+                    <h3 class="text-lg font-bold text-gray-900 mb-4">🔍 Filtri Avanzati</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Yield Minimo (%)</label>
+                            <input type="number" id="filterMinYield" step="0.1" placeholder="es. 2.5" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Yield Massimo (%)</label>
+                            <input type="number" id="filterMaxYield" step="0.1" placeholder="es. 5.0" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Ordina Per</label>
+                            <select id="filterSortBy" class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                                <option value="">-- Seleziona --</option>
+                                <option value="yield-desc">Yield: Alto → Basso</option>
+                                <option value="yield-asc">Yield: Basso → Alto</option>
+                                <option value="price-desc">Prezzo: Alto → Basso</option>
+                                <option value="price-asc">Prezzo: Basso → Alto</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="flex gap-3 mt-4">
+                        <button onclick="applyBondFilters()" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold">
+                            Applica Filtri
+                        </button>
+                        <button onclick="clearBondFilters()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-6 py-2 rounded-lg font-semibold">
+                            Reset
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ==== LOADING ==== -->
+                <div id="bondsLoading" class="hidden text-center mb-8">
+                    <div class="glass rounded-2xl p-8 max-w-md mx-auto shadow-xl">
+                        <div class="spinner mx-auto mb-4"></div>
+                        <p class="text-gray-700 font-semibold">Caricamento obbligazioni...</p>
+                    </div>
+                </div>
+
+                <!-- ==== RISULTATI ==== -->
+                <div id="bondsResults" class="hidden glass rounded-2xl p-6 shadow-xl">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xl font-bold text-gray-900" id="bondsTitle">Obbligazioni</h3>
+                        <div class="flex gap-2">
+                            <button onclick="exportBondsToCSV()" 
+                                    class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-semibold text-sm">
+                                📥 Esporta CSV
+                            </button>
+                            <button onclick="document.getElementById('bondsFilters').classList.toggle('hidden')" 
+                                    class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-lg font-semibold text-sm">
+                                🔍 Filtri
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-gradient-to-r from-blue-50 to-purple-50">
+                                <tr>
+                                    <th class="px-4 py-3 text-left text-xs font-bold text-gray-700 uppercase">Nome</th>
+                                    <th class="px-4 py-3 text-left text-xs font-bold text-gray-700 uppercase">ISIN</th>
+                                    <th class="px-4 py-3 text-left text-xs font-bold text-gray-700 uppercase">Paese</th>
+                                    <th class="px-4 py-3 text-right text-xs font-bold text-gray-700 uppercase">Prezzo</th>
+                                    <th class="px-4 py-3 text-right text-xs font-bold text-gray-700 uppercase">Var.</th>
+                                    <th class="px-4 py-3 text-right text-xs font-bold text-gray-700 uppercase">Yield %</th>
+                                    <th class="px-4 py-3 text-right text-xs font-bold text-gray-700 uppercase">Volume</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bondsTableBody" class="divide-y divide-gray-200">
+                                <!-- Rows dinamiche -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="mt-4 pt-4 border-t border-gray-200">
+                        <div class="flex justify-between items-center text-sm text-gray-600">
+                            <span>Fonte: Borsa Italiana | Aggiornamento: <span id="bondsTimestamp">-</span></span>
+                            <span id="bondsTotalCount" class="font-semibold">-</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Assistant Section -->
+        <div id="aiSection" class="hidden fade-in">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-white mb-6 text-center drop-shadow-lg">
+                    AI Assistant
+                </h2>
+                
+                <!-- File Upload Area -->
+                <div class="glass rounded-2xl p-6 shadow-xl mb-6">
+                    <h3 class="text-lg font-bold text-gray-900 mb-4">📄 Carica Documento Finanziario</h3>
+                    
+                    <div class="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-blue-500 transition-all cursor-pointer" 
+                         id="dropZone"
+                         onclick="document.getElementById('fileInput').click()">
+                        <input 
+                            type="file" 
+                            id="fileInput" 
+                            class="hidden" 
+                            accept=".pdf,.doc,.docx,.txt,.csv"
+                            onchange="handleFileUpload(event)"
+                        />
+                        <div class="text-6xl mb-4">📁</div>
+                        <p class="text-gray-700 font-semibold mb-2">Trascina un file qui o clicca per selezionare</p>
+                        <p class="text-gray-500 text-sm">Supportati: PDF, DOCX, TXT, CSV (max 10MB)</p>
+                    </div>
+
+                    <!-- File info -->
+                    <div id="fileInfo" class="hidden mt-4 bg-blue-50 border border-blue-200 rounded-lg p-4">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <div class="text-3xl">📄</div>
+                                <div>
+                                    <p class="font-semibold text-gray-900" id="fileName">-</p>
+                                    <p class="text-sm text-gray-600" id="fileSize">-</p>
+                                </div>
+                            </div>
+                            <button onclick="removeFile()" class="text-red-500 hover:text-red-700 font-bold">
+                                ✕ Rimuovi
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chat Area -->
+                <div class="glass rounded-2xl p-6 shadow-xl mb-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-bold text-gray-900">💬 Chat</h3>
+                        <button onclick="clearChat()" class="text-gray-500 hover:text-gray-700 text-sm">
+                            🗑️ Cancella chat
+                        </button>
+                    </div>
+                    
+                    <div class="space-y-4" id="chatMessages" style="max-height: 400px; overflow-y: auto;">
+                        <div class="bg-blue-100 rounded-lg p-4">
+                            <p class="text-gray-800">👋 Ciao! Sono l'assistente AI di ISIN Research. Posso aiutarti a:</p>
+                            <ul class="list-disc list-inside mt-2 text-gray-700 text-sm">
+                                <li>Analizzare documenti finanziari (bilanci, report, prospetti)</li>
+                                <li>Rispondere a domande sui dati caricati</li>
+                                <li>Spiegare metriche e indicatori finanziari</li>
+                            </ul>
+                            <p class="text-gray-600 text-xs mt-2">💡 Carica un documento per iniziare l'analisi</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Input Area -->
+                <div class="glass rounded-2xl p-4 shadow-xl">
+                    <div class="flex space-x-2">
+                        <input
+                            type="text"
+                            id="aiInput"
+                            placeholder="Fai una domanda (es. 'Riassumi il documento', 'Quali sono i ricavi?')..."
+                            class="flex-1 px-4 py-3 border-0 rounded-lg focus:ring-2 focus:ring-blue-300 bg-white/90"
+                            onkeypress="if(event.key==='Enter') sendAIMessage()"
+                        />
+                        <button
+                            onclick="sendAIMessage()"
+                            id="sendBtn"
+                            class="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold px-6 py-3 rounded-lg transition-all"
+                        >
+                            Invia
+                        </button>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-2" id="aiStatus">Pronto</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // =====================================
+        // API CONFIGURATION  
+        // =====================================
+        const API_CONFIG = { baseUrl: 'https://isin-backend.onrender.com' };
+
+        // =====================================
+        // STATE
+        // =====================================
+        let currentChart = null;
+        let currentInstrument = null;
+        let currentPeriod = '1M';
+        let currentComparePeriod = '1M'; // Period for comparison chart
+        let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+        let comparisonList = JSON.parse(localStorage.getItem('comparison')) || [];
+        let compareChart = null;
+        let uploadedFile = null;
+        let fileContent = '';
+        let chatHistory = [];
+
+        // Update favorites count
+        updateFavCount();
+        updateCompareCount();
+
+        // =====================================
+        // TAB NAVIGATION
+        // =====================================
+        function showTab(tabName) {
+            // Hide all sections
+            document.getElementById('searchSection').classList.add('hidden');
+            document.getElementById('favoritesSection').classList.add('hidden');
+            document.getElementById('compareSection').classList.add('hidden');
+            document.getElementById('bondsSection').classList.add('hidden');
+            document.getElementById('aiSection').classList.add('hidden');
+
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+
+            // Show selected section and activate tab
+            if (tabName === 'search') {
+                document.getElementById('searchSection').classList.remove('hidden');
+                document.getElementById('searchTab').classList.add('active');
+            } else if (tabName === 'favorites') {
+                document.getElementById('favoritesSection').classList.remove('hidden');
+                document.getElementById('favoritesTab').classList.add('active');
+                loadFavorites();
+            } else if (tabName === 'compare') {
+                document.getElementById('compareSection').classList.remove('hidden');
+                document.getElementById('compareTab').classList.add('active');
+                updateCompareList();
+            } else if (tabName === 'bonds') {
+                document.getElementById('bondsSection').classList.remove('hidden');
+                document.getElementById('bondsTab').classList.add('active');
+                showBondType('gov-it'); // Load Italian government bonds by default
+            } else if (tabName === 'ai') {
+                document.getElementById('aiSection').classList.remove('hidden');
+                document.getElementById('aiTab').classList.add('active');
+            }
+        }
+
+        // =====================================
+        // SEARCH FUNCTION
+        // =====================================
+        async function searchInstrument() {
+            const query = document.getElementById('searchInput').value.trim();
+            
+            if (!query) {
+                showAlert('Inserisci un valore per la ricerca', 'error');
+                return;
+            }
+
+            showLoading(true);
+            clearAlerts();
+            document.getElementById('results').classList.add('hidden');
+
+            try {
+                console.log(`Searching for: ${query}`);
+                
+                const response = await fetch(`${API_CONFIG.baseUrl}/api/financial/search?q=${encodeURIComponent(query)}`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const result = await response.json();
+                console.log('Search result:', result);
+
+                if (!result.success) {
+                    throw new Error(result.error || 'Search failed');
+                }
+
+                if (!result.results || result.results.length === 0) {
+                    showAlert('Nessun risultato trovato. Prova con un simbolo diverso (es. AAPL, MSFT, TSLA)', 'info');
+                    showLoading(false);
+                    return;
+                }
+
+                // Prendi il primo risultato con prezzo
+                const instrument = result.results.find(r => r.price != null) || result.results[0];
+                
+                if (!instrument.price) {
+                    showAlert('⚠️ Nessun prezzo disponibile. Prova con azioni US', 'warning');
+                    showLoading(false);
+                    return;
+                }
+
+                currentInstrument = instrument;
+
+                displayResults(instrument, result.metadata);
+
+                if (instrument.symbol && instrument.symbol !== 'N/A') {
+                    await loadHistoricalData(instrument.symbol, currentPeriod);
+                }
+
+                document.getElementById('results').classList.remove('hidden');
+                showAlert('Ricerca completata con successo!', 'success');
+
+            } catch (error) {
+                console.error('Search error:', error);
+                showAlert(`Errore: ${error.message}. Il backend potrebbe essere dormiente, riprova tra 60 secondi.`, 'error');
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // =====================================
+        // ENHANCED INSTRUMENT CARD COMPONENT
+        // =====================================
+        class InstrumentCard {
+            constructor(data) {
+                this.data = data;
+            }
+
+            formatNumber(num) {
+                if (!num || num === 'N/A') return 'N/A';
+                const n = parseFloat(num);
+                if (isNaN(n)) return 'N/A';
+                
+                if (n >= 1e12) return `$${(n / 1e12).toFixed(2)}T`;
+                if (n >= 1e9) return `$${(n / 1e9).toFixed(2)}B`;
+                if (n >= 1e6) return `$${(n / 1e6).toFixed(2)}M`;
+                if (n >= 1e3) return `$${(n / 1e3).toFixed(2)}K`;
+                
+                return `$${n.toFixed(2)}`;
+            }
+
+            formatPercent(num) {
+                if (!num || num === 'N/A') return 'N/A';
+                const n = parseFloat(num);
+                if (isNaN(n)) return 'N/A';
+                return `${(n * 100).toFixed(2)}%`;
+            }
+
+            formatPrice(price) {
+                if (!price) return 'N/A';
+                return parseFloat(price).toFixed(2);
+            }
+
+            render() {
+                const { 
+                    symbol, name, exchange, currency, price, change, changePercent,
+                    marketCap, peRatio, dividendYield, week52High, week52Low,
+                    sector, industry, description, website, logo
+                } = this.data;
+
+                const changeClass = change >= 0 ? 'change-positive' : 'change-negative';
+                const changeIcon = change >= 0 ? '▲' : '▼';
+                const currencySymbol = currency === 'EUR' ? '€' : currency === 'GBP' ? '£' : '$';
+                
+                const logoHtml = logo 
+                    ? `<img src="${logo}" alt="${name} logo" onerror="this.parentElement.innerHTML='<div style=\\'font-size:1.5rem;font-weight:700;color:#667eea\\'>${symbol?.charAt(0) || '?'}</div>'">`
+                    : `<div style='font-size:1.5rem; font-weight:700; color:#667eea'>${symbol?.charAt(0) || '?'}</div>`;
+
+                return `
+                    <div class="instrument-card mb-6">
+                        <!-- Header -->
+                        <div class="flex items-start justify-between mb-4 flex-wrap gap-3">
+                            <div class="flex items-center gap-3">
+                                <div class="logo-container">
+                                    ${logoHtml}
+                                </div>
+                                <div>
+                                    <h2 class="text-xl font-bold text-gray-900">${name || symbol}</h2>
+                                    <div class="flex items-center gap-2 mt-1 flex-wrap">
+                                        ${sector ? `<span class="sector-badge">${sector}</span>` : ''}
+                                        <span class="text-sm text-gray-600">${symbol} · ${exchange} · ${currency}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            ${website ? `<a href="${website}" target="_blank" class="website-link">🌐 Sito Web →</a>` : ''}
+                        </div>
+
+                        <!-- Price -->
+                        <div class="mb-6">
+                            <div class="flex items-baseline gap-4 flex-wrap">
+                                <span class="price-badge">${currencySymbol}${this.formatPrice(price)}</span>
+                                <span class="${changeClass}">
+                                    ${changeIcon} ${Math.abs(change || 0).toFixed(2)} (${Math.abs(changePercent || 0).toFixed(2)}%)
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Key Metrics Grid -->
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+                            <div class="metric-card">
+                                <div class="metric-label">Market Cap</div>
+                                <div class="metric-value">${this.formatNumber(marketCap)}</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-label">P/E Ratio</div>
+                                <div class="metric-value">${peRatio || 'N/A'}</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-label">Dividend</div>
+                                <div class="metric-value">${this.formatPercent(dividendYield)}</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-label">52W Range</div>
+                                <div class="metric-value text-sm">
+                                    ${week52Low ? `${currencySymbol}${parseFloat(week52Low).toFixed(0)}` : 'N/A'} - 
+                                    ${week52High ? `${currencySymbol}${parseFloat(week52High).toFixed(0)}` : 'N/A'}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Description -->
+                        ${description ? `
+                            <div class="mb-4">
+                                <h3 class="text-sm font-bold text-gray-700 mb-2 uppercase tracking-wide">About ${name}</h3>
+                                <p class="description-text">
+                                    ${description.substring(0, 300)}${description.length > 300 ? '...' : ''}
+                                </p>
+                            </div>
+                        ` : ''}
+
+                        <!-- Industry -->
+                        ${industry ? `
+                            <div class="text-sm text-gray-600 mt-4">
+                                <strong>Industry:</strong> ${industry}
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }
+        }
+
+        // =====================================
+        // DISPLAY RESULTS (Enhanced)
+        // =====================================
+        async function displayResults(data, metadata) {
+            // Try to fetch enhanced details
+            if (data.symbol) {
+                try {
+                    const detailsResponse = await fetch(`${API_CONFIG.baseUrl}/api/financial/details/${encodeURIComponent(data.symbol)}`);
+                    
+                    if (detailsResponse.ok) {
+                        const detailsResult = await detailsResponse.json();
+                        
+                        if (detailsResult.success && detailsResult.data) {
+                            // Use enhanced data
+                            const card = new InstrumentCard(detailsResult.data);
+                            
+                            // Inject card into results section
+                            const resultsContainer = document.querySelector('#results > div');
+                            if (resultsContainer) {
+                                // Replace old display with new card
+                                const existingCard = resultsContainer.querySelector('.instrument-card');
+                                if (existingCard) {
+                                    existingCard.remove();
+                                }
+                                
+                                // Insert before chart section
+                                const chartSection = resultsContainer.querySelector('.glass');
+                                if (chartSection) {
+                                    chartSection.insertAdjacentHTML('beforebegin', card.render());
+                                } else {
+                                    resultsContainer.insertAdjacentHTML('afterbegin', card.render());
+                                }
+                            }
+                            
+                            return; // Exit, enhanced card displayed
+                        }
+                    }
+                } catch (error) {
+                    console.warn('Could not fetch enhanced details, falling back to basic:', error);
+                }
+            }
+            
+            // Fallback to old display method
+            document.getElementById('instrumentName').textContent = data.name || 'N/A';
+            document.getElementById('symbolCode').textContent = data.symbol || 'N/A';
+            document.getElementById('market').textContent = data.exchange || 'N/A';
+            document.getElementById('currency').textContent = data.currency || 'N/A';
+            
+            if (data.price) {
+                document.getElementById('price').textContent = 
+                    `${data.price.toFixed(2)} ${data.currency || 'USD'}`;
+            } else {
+                document.getElementById('price').textContent = 'N/A';
+            }
+
+            if (data.change !== null && data.changePercent !== null) {
+                const changeText = `${data.change >= 0 ? '+' : ''}${data.change.toFixed(2)} (${data.changePercent.toFixed(2)}%)`;
+                const changeEl = document.getElementById('change');
+                changeEl.textContent = changeText;
+                changeEl.style.color = data.change >= 0 ? '#10b981' : '#ef4444';
+            } else {
+                document.getElementById('change').textContent = 'N/A';
+            }
+        }
+
+        // =====================================
+        // DISPLAY RESULTS (OLD - REMOVED, use Enhanced version above)
+        // =====================================
+
+        // =====================================
+        // HISTORICAL DATA
+        // =====================================
+        async function loadHistoricalData(symbol, period) {
+            try {
+                const response = await fetch(
+                    `${API_CONFIG.baseUrl}/api/financial/historical/${encodeURIComponent(symbol)}?period=${period}`
+                );
+                
+                if (!response.ok) {
+                    return;
+                }
+                
+                const result = await response.json();
+                console.log('Historical data result:', result);
+
+                if (result.success && result.data?.length) {
+                    createChart(result.data);
+                }
+
+            } catch (error) {
+                console.error('Historical data error:', error);
+            }
+        }
+
+        // =====================================
+        // CHART
+        // =====================================
+        function createChart(historicalData) {
+            const ctx = document.getElementById('priceChart');
+            if (currentChart) currentChart.destroy();
+            if (!historicalData?.length) return;
+
+            const labels = historicalData.map(item => {
+                const date = new Date(item.date);
+                return date.toLocaleDateString('it-IT', { month: 'short', day: 'numeric' });
+            });
+
+            currentChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Prezzo',
+                        data: historicalData.map(item => item.close),
+                        borderColor: '#3b82f6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        borderWidth: 2,
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { 
+                        legend: { 
+                            labels: { color: '#1f2937' }
+                        }
+                    },
+                    scales: {
+                        y: { 
+                            ticks: { color: '#1f2937' }, 
+                            grid: { color: 'rgba(0,0,0,0.1)' }
+                        },
+                        x: { 
+                            ticks: { color: '#1f2937', maxTicksLimit: 10 }, 
+                            grid: { color: 'rgba(0,0,0,0.1)' }
+                        }
+                    }
+                }
+            });
+        }
+
+        function changePeriod(period) {
+            currentPeriod = period;
+            
+            document.querySelectorAll('.period-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            if (currentInstrument && currentInstrument.symbol) {
+                loadHistoricalData(currentInstrument.symbol, period);
+            }
+        }
+
+        function changeComparePeriod(period) {
+            currentComparePeriod = period;
+            
+            // Update active button in compare section only
+            const compareSection = document.getElementById('compareSection');
+            if (compareSection) {
+                compareSection.querySelectorAll('.period-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                event.target.classList.add('active');
+            }
+
+            // Update chart title
+            const titles = {
+                '1D': '1 Giorno',
+                '1W': '1 Settimana',
+                '1M': '1 Mese',
+                '3M': '3 Mesi',
+                '6M': '6 Mesi',
+                '1Y': '1 Anno',
+                '3Y': '3 Anni',
+                '5Y': '5 Anni',
+                'MAX': 'Massimo'
+            };
+            document.getElementById('compareChartTitle').textContent = 
+                `Andamento Comparativo (${titles[period] || period})`;
+
+            // Reload comparison with new period
+            if (comparisonList.length >= 2) {
+                runComparison();
+            }
+        }
+
+        // =====================================
+        // FAVORITES
+        // =====================================
+        function addToFavorites() {
+            if (!currentInstrument) return;
+
+            const exists = favorites.find(f => f.symbol === currentInstrument.symbol);
+            if (exists) {
+                showAlert('Questo strumento è già nei tuoi preferiti!', 'info');
+                return;
+            }
+
+            favorites.push(currentInstrument);
+            localStorage.setItem('favorites', JSON.stringify(favorites));
+            updateFavCount();
+            showAlert('✅ Aggiunto ai preferiti!', 'success');
+        }
+
+        function loadFavorites() {
+            const listEl = document.getElementById('favoritesList');
+            const emptyEl = document.getElementById('emptyFavorites');
+            const compareContainer = document.getElementById('compareSelectedContainer');
+
+            if (favorites.length === 0) {
+                listEl.innerHTML = '';
+                emptyEl.classList.remove('hidden');
+                compareContainer.classList.add('hidden');
+                return;
+            }
+
+            emptyEl.classList.add('hidden');
+            
+            // Mostra/nascondi pulsante Confronta
+            if (comparisonList.length > 0) {
+                compareContainer.classList.remove('hidden');
+                document.getElementById('selectedCount').textContent = comparisonList.length;
+            } else {
+                compareContainer.classList.add('hidden');
+            }
+            
+            listEl.innerHTML = favorites.map((fav, index) => {
+                const isSelected = comparisonList.find(c => c.symbol === fav.symbol);
+                return `
+                <div class="glass rounded-xl p-4 shadow-lg">
+                    <div class="flex items-start justify-between mb-3">
+                        <div class="flex items-center space-x-3 flex-1">
+                            <input 
+                                type="checkbox" 
+                                id="fav-${index}" 
+                                ${isSelected ? 'checked' : ''}
+                                onchange="toggleCompareFromFavorite(${index})"
+                                class="w-5 h-5 text-blue-600 rounded focus:ring-2 focus:ring-blue-500"
+                            />
+                            <label for="fav-${index}" class="flex-1 cursor-pointer">
+                                <h4 class="font-bold text-gray-900">${fav.name || fav.symbol}</h4>
+                                <p class="text-sm text-gray-600">${fav.symbol} • ${fav.exchange || 'N/A'}</p>
+                            </label>
+                        </div>
+                        <button onclick="removeFavorite(${index})" class="text-red-500 hover:text-red-700 ml-2">
+                            🗑️
+                        </button>
+                    </div>
+                    <div class="flex items-center justify-between border-t border-gray-200 pt-3">
+                        <div>
+                            <div class="text-lg font-bold text-gray-900">
+                                ${fav.price ? fav.price.toFixed(2) + ' ' + (fav.currency || 'USD') : 'N/A'}
+                            </div>
+                            <div class="text-sm ${fav.change >= 0 ? 'text-green-600' : 'text-red-600'}">
+                                ${fav.change != null ? (fav.change >= 0 ? '+' : '') + fav.change.toFixed(2) + ' (' + fav.changePercent.toFixed(2) + '%)' : 'N/A'}
+                            </div>
+                        </div>
+                        <button onclick="viewFavorite(${index})" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded-lg transition-all text-sm">
+                            Visualizza
+                        </button>
+                    </div>
+                </div>
+            `}).join('');
+        }
+
+        function toggleCompareFromFavorite(index) {
+            const fav = favorites[index];
+            const existingIndex = comparisonList.findIndex(c => c.symbol === fav.symbol);
+            
+            if (existingIndex >= 0) {
+                // Rimuovi dal confronto
+                comparisonList.splice(existingIndex, 1);
+            } else {
+                // Aggiungi al confronto
+                comparisonList.push(fav);
+            }
+            
+            localStorage.setItem('comparison', JSON.stringify(comparisonList));
+            updateCompareCount();
+            loadFavorites(); // Ricarica per aggiornare checkbox
+        }
+
+        function removeFavorite(index) {
+            if (confirm('Rimuovere questo strumento dai preferiti?')) {
+                favorites.splice(index, 1);
+                localStorage.setItem('favorites', JSON.stringify(favorites));
+                updateFavCount();
+                loadFavorites();
+            }
+        }
+
+        function viewFavorite(index) {
+            const fav = favorites[index];
+            document.getElementById('searchInput').value = fav.symbol;
+            showTab('search');
+            searchInstrument();
+        }
+
+        function updateFavCount() {
+            document.getElementById('favCount').textContent = favorites.length;
+        }
+
+        // =====================================
+        // AI ASSISTANT
+        // =====================================
+        
+        // Drag & Drop handlers
+        const dropZone = document.getElementById('dropZone');
+        if (dropZone) {
+            dropZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropZone.classList.add('border-blue-500');
+            });
+
+            dropZone.addEventListener('dragleave', (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('border-blue-500');
+            });
+
+            dropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('border-blue-500');
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    handleFileUpload({ target: { files: files } });
+                }
+            });
+        }
+
+        async function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            // Validate file size (10MB max)
+            if (file.size > 10 * 1024 * 1024) {
+                showAlert('File troppo grande. Massimo 10MB', 'error');
+                return;
+            }
+
+            // Validate file type
+            const validTypes = ['.pdf', '.doc', '.docx', '.txt', '.csv'];
+            const fileExt = '.' + file.name.split('.').pop().toLowerCase();
+            if (!validTypes.includes(fileExt)) {
+                showAlert('Tipo file non supportato. Usa: PDF, DOCX, TXT, CSV', 'error');
+                return;
+            }
+
+            uploadedFile = file;
+
+            // Show file info
+            document.getElementById('fileName').textContent = file.name;
+            document.getElementById('fileSize').textContent = formatFileSize(file.size);
+            document.getElementById('fileInfo').classList.remove('hidden');
+
+            // Extract text based on file type
+            try {
+                document.getElementById('aiStatus').textContent = 'Elaborazione file...';
+                
+                if (fileExt === '.txt' || fileExt === '.csv') {
+                    fileContent = await file.text();
+                } else if (fileExt === '.pdf') {
+                    fileContent = await extractPDFText(file);
+                } else {
+                    fileContent = await file.text(); // Fallback
+                }
+
+                addChatMessage(`✅ File "${file.name}" caricato con successo! (${formatFileSize(file.size)})`, 'system');
+                addChatMessage('Puoi farmi domande sul documento. Ad esempio: "Riassumi il contenuto", "Quali sono i dati principali?"', 'ai');
+                
+                document.getElementById('aiStatus').textContent = 'File caricato - Pronto';
+                
+            } catch (error) {
+                console.error('File processing error:', error);
+                showAlert('Errore nell\'elaborazione del file', 'error');
+                document.getElementById('aiStatus').textContent = 'Errore';
+            }
+        }
+
+        async function extractPDFText(file) {
+            // For PDF, we'll use a simple approach
+            // In production, you'd use pdf.js or send to backend
+            const arrayBuffer = await file.arrayBuffer();
+            const text = new TextDecoder().decode(arrayBuffer);
+            
+            // Very basic PDF text extraction (won't work well for complex PDFs)
+            // In production, use pdf.js library
+            return text.replace(/[^\x20-\x7E\n]/g, '').substring(0, 50000);
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes < 1024) return bytes + ' B';
+            if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+            return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+        }
+
+        function removeFile() {
+            uploadedFile = null;
+            fileContent = '';
+            document.getElementById('fileInfo').classList.add('hidden');
+            document.getElementById('fileInput').value = '';
+            document.getElementById('aiStatus').textContent = 'Pronto';
+            addChatMessage('File rimosso. Puoi caricare un nuovo documento.', 'system');
+        }
+
+        async function sendAIMessage() {
+            const input = document.getElementById('aiInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+
+            // Add user message
+            addChatMessage(message, 'user');
+            input.value = '';
+
+            // Add to history
+            chatHistory.push({ role: 'user', content: message });
+
+            // Show typing indicator
+            const typingId = addChatMessage('AI sta scrivendo...', 'typing');
+            document.getElementById('sendBtn').disabled = true;
+            document.getElementById('aiStatus').textContent = 'Elaborazione...';
+
+            try {
+                // Build context
+                let systemPrompt = 'Sei un assistente AI esperto in finanza che aiuta ad analizzare documenti finanziari e risponde a domande.';
+                
+                if (fileContent) {
+                    systemPrompt += `\n\nHai accesso al seguente documento:\n\n${fileContent.substring(0, 20000)}`;
+                }
+
+                // Call Anthropic API
+                const response = await fetch('https://api.anthropic.com/v1/messages', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-api-key': 'PLACEHOLDER', // This will work in the artifact environment
+                        'anthropic-version': '2023-06-01'
+                    },
+                    body: JSON.stringify({
+                        model: 'claude-sonnet-4-20250514',
+                        max_tokens: 1024,
+                        system: systemPrompt,
+                        messages: chatHistory
+                    })
+                });
+
+                // Remove typing indicator
+                document.getElementById(typingId).remove();
+
+                if (!response.ok) {
+                    throw new Error('API request failed');
+                }
+
+                const data = await response.json();
+                const aiResponse = data.content[0].text;
+
+                // Add AI response
+                addChatMessage(aiResponse, 'ai');
+                chatHistory.push({ role: 'assistant', content: aiResponse });
+
+                document.getElementById('aiStatus').textContent = 'Pronto';
+
+            } catch (error) {
+                console.error('AI error:', error);
+                
+                // Remove typing indicator
+                const typingEl = document.getElementById(typingId);
+                if (typingEl) typingEl.remove();
+
+                // Fallback response
+                let fallbackResponse = '⚠️ Mi dispiace, al momento non posso elaborare la richiesta tramite API.';
+                
+                if (fileContent) {
+                    fallbackResponse += '\n\n📄 Ho accesso al documento caricato. In una versione futura potrò analizzarlo completamente.';
+                    
+                    // Simple keyword analysis
+                    if (message.toLowerCase().includes('riassumi') || message.toLowerCase().includes('riassunto')) {
+                        fallbackResponse += '\n\n📊 Il documento contiene circa ' + fileContent.length + ' caratteri di testo.';
+                    }
+                } else {
+                    fallbackResponse += '\n\n💡 Prova a caricare un documento PDF/TXT per l\'analisi.';
+                }
+
+                addChatMessage(fallbackResponse, 'ai');
+                document.getElementById('aiStatus').textContent = 'Errore API - Modalità offline';
+            } finally {
+                document.getElementById('sendBtn').disabled = false;
+            }
+        }
+
+        function addChatMessage(text, sender) {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            const messageId = 'msg-' + Date.now();
+            messageDiv.id = messageId;
+            
+            if (sender === 'user') {
+                messageDiv.className = 'bg-blue-500 text-white rounded-lg p-4 ml-auto max-w-lg';
+            } else if (sender === 'ai') {
+                messageDiv.className = 'bg-gray-100 text-gray-800 rounded-lg p-4 max-w-lg';
+            } else if (sender === 'system') {
+                messageDiv.className = 'bg-green-100 text-green-800 rounded-lg p-3 text-sm text-center';
+            } else if (sender === 'typing') {
+                messageDiv.className = 'bg-gray-200 text-gray-600 rounded-lg p-3 max-w-lg italic text-sm';
+            }
+            
+            messageDiv.textContent = text;
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            return messageId;
+        }
+
+        function clearChat() {
+            if (confirm('Vuoi cancellare tutta la chat?')) {
+                chatHistory = [];
+                const chatMessages = document.getElementById('chatMessages');
+                chatMessages.innerHTML = `
+                    <div class="bg-blue-100 rounded-lg p-4">
+                        <p class="text-gray-800">👋 Ciao! Sono l'assistente AI di ISIN Research. Posso aiutarti a:</p>
+                        <ul class="list-disc list-inside mt-2 text-gray-700 text-sm">
+                            <li>Analizzare documenti finanziari (bilanci, report, prospetti)</li>
+                            <li>Rispondere a domande sui dati caricati</li>
+                            <li>Spiegare metriche e indicatori finanziari</li>
+                        </ul>
+                        <p class="text-gray-600 text-xs mt-2">💡 Carica un documento per iniziare l'analisi</p>
+                    </div>
+                `;
+                showAlert('Chat cancellata', 'info');
+            }
+        }
+
+        // =====================================
+        // COMPARATOR
+        // =====================================
+        function addToComparison() {
+            if (!currentInstrument) return;
+
+            const exists = comparisonList.find(c => c.symbol === currentInstrument.symbol);
+            if (exists) {
+                showAlert('Questo strumento è già nel confronto', 'info');
+                return;
+            }
+
+            comparisonList.push(currentInstrument);
+            localStorage.setItem('comparison', JSON.stringify(comparisonList));
+            updateCompareCount();
+            updateCompareList();
+            showAlert(`✅ ${currentInstrument.symbol} aggiunto al confronto!`, 'success');
+        }
+
+        function updateCompareCount() {
+            const count = comparisonList.length;
+            document.getElementById('compareCount').textContent = count;
+            document.getElementById('runCompareBtn').disabled = count < 2;
+        }
+
+        function updateCompareList() {
+            const listEl = document.getElementById('compareList');
+            const emptyEl = document.getElementById('emptyCompare');
+
+            if (comparisonList.length === 0) {
+                emptyEl.classList.remove('hidden');
+                listEl.innerHTML = '';
+                return;
+            }
+
+            emptyEl.classList.add('hidden');
+            listEl.innerHTML = comparisonList.map((item, index) => `
+                <div class="flex items-center justify-between bg-white/70 rounded-lg p-4 shadow-sm hover:shadow-md transition-all">
+                    <div class="flex items-center space-x-3 flex-1">
+                        <div class="w-4 h-4 rounded-full flex-shrink-0" style="background: ${getCompareColor(index)}"></div>
+                        <div class="flex-1 min-w-0">
+                            <div class="font-bold text-gray-900 truncate">${item.symbol}</div>
+                            <div class="text-sm text-gray-600 truncate">${item.name || 'N/A'}</div>
+                        </div>
+                        <div class="text-right">
+                            <div class="font-semibold text-gray-900">${item.price ? item.price.toFixed(2) : 'N/A'}</div>
+                            <div class="text-xs ${item.change >= 0 ? 'text-green-600' : 'text-red-600'}">
+                                ${item.changePercent != null ? (item.changePercent >= 0 ? '+' : '') + item.changePercent.toFixed(2) + '%' : ''}
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="removeFromComparison(${index})" class="text-red-500 hover:text-red-700 ml-3 flex-shrink-0 font-bold text-lg">
+                        ✕
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function removeFromComparison(index) {
+            comparisonList.splice(index, 1);
+            localStorage.setItem('comparison', JSON.stringify(comparisonList));
+            updateCompareCount();
+            updateCompareList();
+        }
+
+        function getCompareColor(index) {
+            const colors = [
+                '#3b82f6', // blue
+                '#ef4444', // red
+                '#10b981', // green
+                '#f59e0b', // orange
+                '#8b5cf6', // purple
+                '#ec4899', // pink
+                '#14b8a6', // teal
+                '#f97316', // orange-red
+                '#06b6d4', // cyan
+                '#a855f7'  // violet
+            ];
+            return colors[index % colors.length];
+        }
+
+        async function runComparison() {
+            if (comparisonList.length < 2) {
+                showAlert('Seleziona almeno 2 strumenti', 'warning');
+                return;
+            }
+
+            showLoading(true);
+
+            try {
+                // Fetch historical data for all instruments and all periods
+                const periods = ['1M', '6M', '1Y', '3Y', '5Y', 'MAX'];
+                
+                // Calculate returns for each instrument
+                for (let item of comparisonList) {
+                    for (let period of periods) {
+                        try {
+                            const response = await fetch(`${API_CONFIG.baseUrl}/api/financial/historical/${encodeURIComponent(item.symbol)}?period=${period}`);
+                            const result = await response.json();
+                            
+                            if (result.success && result.data && result.data.length > 1) {
+                                const firstPrice = result.data[0].close;
+                                const lastPrice = result.data[result.data.length - 1].close;
+                                const returnPercent = ((lastPrice - firstPrice) / firstPrice) * 100;
+                                item[`return${period}`] = returnPercent;
+                            } else {
+                                item[`return${period}`] = null;
+                            }
+                        } catch (error) {
+                            console.error(`Error fetching ${period} data for ${item.symbol}:`, error);
+                            item[`return${period}`] = null;
+                        }
+                    }
+                }
+
+                // Fetch data for chart (dynamic period based on selection)
+                const historicalPromises = comparisonList.map(item => 
+                    fetch(`${API_CONFIG.baseUrl}/api/financial/historical/${encodeURIComponent(item.symbol)}?period=${currentComparePeriod}`)
+                        .then(r => r.json())
+                );
+
+                const results = await Promise.all(historicalPromises);
+
+                // Build comparison table
+                buildComparisonTable();
+
+                // Build comparison chart
+                buildComparisonChart(results);
+
+                document.getElementById('comparisonResults').classList.remove('hidden');
+                showAlert('✅ Confronto completato!', 'success');
+
+            } catch (error) {
+                console.error('Comparison error:', error);
+                showAlert(`Errore nel confronto: ${error.message}`, 'error');
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        function buildComparisonTable() {
+            // Headers
+            for (let i = 0; i < 5; i++) {
+                const header = document.getElementById(`compareHeader${i + 1}`);
+                if (i < comparisonList.length) {
+                    header.textContent = comparisonList[i].symbol;
+                    header.style.color = getCompareColor(i);
+                } else {
+                    header.textContent = '-';
+                    header.style.color = '#6b7280';
+                }
+            }
+
+            // Rows
+            const metrics = [
+                { label: 'Nome', field: 'name' },
+                { label: 'Prezzo', field: 'price', format: (v, c) => v ? `${v.toFixed(2)} ${c}` : 'N/A' },
+                { label: 'Variazione', field: 'change', format: (v) => v != null ? `${v >= 0 ? '+' : ''}${v.toFixed(2)}` : 'N/A' },
+                { label: 'Variazione %', field: 'changePercent', format: (v) => v != null ? `${v >= 0 ? '+' : ''}${v.toFixed(2)}%` : 'N/A' },
+                { label: 'Mercato', field: 'exchange' },
+                { label: 'Valuta', field: 'currency' },
+                { label: 'Rendimento 1M', field: 'return1M', format: (v) => v != null ? `${v >= 0 ? '+' : ''}${v.toFixed(2)}%` : 'N/A' },
+                { label: 'Rendimento 6M', field: 'return6M', format: (v) => v != null ? `${v >= 0 ? '+' : ''}${v.toFixed(2)}%` : 'N/A' },
+                { label: 'Rendimento 1Y', field: 'return1Y', format: (v) => v != null ? `${v >= 0 ? '+' : ''}${v.toFixed(2)}%` : 'N/A' },
+                { label: 'Rendimento 3Y', field: 'return3Y', format: (v) => v != null ? `${v >= 0 ? '+' : ''}${v.toFixed(2)}%` : 'N/A' },
+                { label: 'Rendimento 5Y', field: 'return5Y', format: (v) => v != null ? `${v >= 0 ? '+' : ''}${v.toFixed(2)}%` : 'N/A' },
+                { label: 'Rendimento MAX', field: 'returnMAX', format: (v) => v != null ? `${v >= 0 ? '+' : ''}${v.toFixed(2)}%` : 'N/A' }
+            ];
+
+            const tbody = document.getElementById('compareTableBody');
+            tbody.innerHTML = metrics.map(metric => {
+                let row = `<tr class="border-b border-gray-200"><td class="py-3 px-4 font-semibold text-gray-700">${metric.label}</td>`;
+                
+                for (let i = 0; i < 5; i++) {
+                    if (i < comparisonList.length) {
+                        const item = comparisonList[i];
+                        let value = item[metric.field];
+                        
+                        if (metric.format) {
+                            value = metric.format(value, item.currency);
+                        }
+                        
+                        let color = 'text-gray-900';
+                        if (metric.field === 'change' || metric.field === 'changePercent' || 
+                            metric.field.startsWith('return')) {
+                            color = item[metric.field] >= 0 ? 'text-green-600' : 'text-red-600';
+                        }
+                        
+                        row += `<td class="py-3 px-4 ${color}">${value || 'N/A'}</td>`;
+                    } else {
+                        row += `<td class="py-3 px-4 text-gray-400">-</td>`;
+                    }
+                }
+                
+                row += '</tr>';
+                return row;
+            }).join('');
+        }
+
+        function buildComparisonChart(results) {
+            const ctx = document.getElementById('compareChart');
+            
+            if (compareChart) {
+                compareChart.destroy();
+            }
+
+            // Get all unique dates
+            const allDates = new Set();
+            results.forEach(result => {
+                if (result.success && result.data) {
+                    result.data.forEach(point => allDates.add(point.date));
+                }
+            });
+
+            const labels = Array.from(allDates).sort().map(date => {
+                const d = new Date(date);
+                return d.toLocaleDateString('it-IT', { month: 'short', day: 'numeric' });
+            });
+
+            // Build datasets
+            const datasets = comparisonList.map((item, index) => {
+                const result = results[index];
+                const data = result.success && result.data ? result.data.map(p => p.close) : [];
+                
+                return {
+                    label: item.symbol,
+                    data: data,
+                    borderColor: getCompareColor(index),
+                    backgroundColor: getCompareColor(index) + '20',
+                    borderWidth: 2,
+                    tension: 0.4,
+                    fill: false
+                };
+            });
+
+            compareChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: { color: '#1f2937' }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            ticks: { color: '#1f2937' },
+                            grid: { color: 'rgba(0,0,0,0.1)' }
+                        },
+                        x: {
+                            ticks: { 
+                                color: '#1f2937',
+                                maxTicksLimit: 10
+                            },
+                            grid: { color: 'rgba(0,0,0,0.1)' }
+                        }
+                    }
+                }
+            });
+        }
+
+        function clearComparison() {
+            if (confirm('Vuoi cancellare tutti gli strumenti dal confronto?')) {
+                comparisonList = [];
+                localStorage.setItem('comparison', JSON.stringify(comparisonList));
+                updateCompareCount();
+                updateCompareList();
+                document.getElementById('comparisonResults').classList.add('hidden');
+                showAlert('Confronto cancellato', 'info');
+            }
+        }
+
+        // =====================================
+        // UI HELPERS
+        // =====================================
+        function showLoading(show) {
+            document.getElementById('loading').classList.toggle('hidden', !show);
+        }
+
+        function showAlert(message, type = 'info') {
+            const alertArea = document.getElementById('alertArea');
+            
+            const colors = {
+                success: 'bg-green-100 border-green-400 text-green-700',
+                error: 'bg-red-100 border-red-400 text-red-700',
+                warning: 'bg-yellow-100 border-yellow-400 text-yellow-700',
+                info: 'bg-blue-100 border-blue-400 text-blue-700'
+            };
+
+            const icons = {
+                success: '✅',
+                error: '❌',
+                warning: '⚠️',
+                info: 'ℹ️'
+            };
+
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `${colors[type]} border px-6 py-4 rounded-xl shadow-lg mb-4`;
+            alertDiv.innerHTML = `
+                <div class="flex items-center">
+                    <span class="text-2xl mr-3">${icons[type]}</span>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            alertArea.appendChild(alertDiv);
+
+            setTimeout(() => {
+                alertDiv.remove();
+            }, 5000);
+        }
+
+        function clearAlerts() {
+            document.getElementById('alertArea').innerHTML = '';
+        }
+
+        // =====================================
+        // BONDS MANAGEMENT - COMPLETE SYSTEM
+        // =====================================
+        let currentBondType = 'gov-it';
+        let currentBondCategory = 'gov-it-btp';
+        let bondsData = null;
+
+        /**
+         * Mostra tipo bond (IT, EU, Sovranazionali, Corporate)
+         */
+        function showBondType(type) {
+            currentBondType = type;
+            
+            // Update buttons
+            document.querySelectorAll('.bond-type-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.type === type) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            // Hide all content sections
+            document.querySelectorAll('.bond-content-section').forEach(section => {
+                section.classList.add('hidden');
+            });
+            
+            // Show selected section
+            const sectionMap = {
+                'gov-it': 'govItSection',
+                'gov-eu': 'govEuSection',
+                'supranational': 'supranationalSection',
+                'corporate': 'corporateSection'
+            };
+            
+            const sectionId = sectionMap[type];
+            if (sectionId) {
+                document.getElementById(sectionId).classList.remove('hidden');
+            }
+            
+            // Auto-load first category
+            switch(type) {
+                case 'gov-it':
+                    loadBonds('gov-it-btp');
+                    break;
+                case 'gov-eu':
+                    loadBonds('gov-eu-germany');
+                    break;
+                case 'supranational':
+                    loadBonds('supranational');
+                    break;
+                case 'corporate':
+                    loadBonds('corporate-all');
+                    break;
+            }
+        }
+
+        /**
+         * Carica bond per categoria
+         */
+        async function loadBonds(category) {
+            currentBondCategory = category;
+            
+            // Update active button
+            document.querySelectorAll('.bond-category-btn, .bond-country-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.category === category) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            document.getElementById('bondsLoading').classList.remove('hidden');
+            document.getElementById('bondsResults').classList.add('hidden');
+            document.getElementById('bondsFilters').classList.add('hidden');
+            
+            try {
+                console.log(`Loading bonds: ${category}`);
+                
+                const response = await fetch(`${API_CONFIG.baseUrl}/api/bonds/search?category=${category}&limit=100`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const result = await response.json();
+                console.log('Bonds result:', result);
+                
+                if (!result.success || !result.bonds || result.bonds.length === 0) {
+                    throw new Error('Nessun bond trovato per questa categoria');
+                }
+                
+                bondsData = result;
+                displayBonds(result);
+                
+            } catch (error) {
+                console.error('Bonds error:', error);
+                showAlert(`Errore caricamento bond: ${error.message}`, 'error');
+            } finally {
+                document.getElementById('bondsLoading').classList.add('hidden');
+            }
+        }
+
+        /**
+         * Visualizza bond nella tabella
+         */
+        function displayBonds(result) {
+            const { categoryName, bonds, count } = result;
+            
+            // Update title
+            document.getElementById('bondsTitle').textContent = 
+                `${categoryName} (${count} risultati)`;
+            
+            document.getElementById('bondsTotalCount').textContent = 
+                `${count} obbligazioni trovate`;
+            
+            // Build table rows
+            const tbody = document.getElementById('bondsTableBody');
+            tbody.innerHTML = bonds.map(bond => {
+                const changeClass = (bond.change || 0) >= 0 ? 'text-green-600' : 'text-red-600';
+                const changeIcon = (bond.change || 0) >= 0 ? '▲' : '▼';
+                
+                return `
+                    <tr class="hover:bg-blue-50 transition-colors cursor-pointer" onclick="showBondDetails('${bond.isin}')">
+                        <td class="px-4 py-3">
+                            <div class="font-semibold text-gray-900 text-sm">${bond.name || 'N/A'}</div>
+                        </td>
+                        <td class="px-4 py-3">
+                            <span class="text-xs font-mono text-gray-600">${bond.isin || 'N/A'}</span>
+                        </td>
+                        <td class="px-4 py-3">
+                            <span class="text-sm text-gray-700">${bond.country || 'N/A'}</span>
+                        </td>
+                        <td class="px-4 py-3 text-right">
+                            <span class="font-bold text-gray-900">
+                                €${bond.price ? bond.price.toFixed(2) : 'N/A'}
+                            </span>
+                        </td>
+                        <td class="px-4 py-3 text-right">
+                            <span class="font-semibold ${changeClass}">
+                                ${bond.change != null ? `${changeIcon} ${Math.abs(bond.change).toFixed(2)}` : 'N/A'}
+                            </span>
+                            ${bond.changePercent != null ? 
+                                `<br><span class="text-xs ${changeClass}">(${bond.changePercent >= 0 ? '+' : ''}${bond.changePercent.toFixed(2)}%)</span>` : 
+                                ''}
+                        </td>
+                        <td class="px-4 py-3 text-right">
+                            ${bond.yield != null ? 
+                                `<span class="inline-block bg-green-100 text-green-800 px-3 py-1 rounded-full font-bold text-sm">
+                                    ${bond.yield.toFixed(2)}%
+                                </span>` : 
+                                '<span class="text-gray-400">N/A</span>'}
+                        </td>
+                        <td class="px-4 py-3 text-right text-sm text-gray-600">
+                            ${bond.volume ? formatBondVolume(bond.volume) : 'N/A'}
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+            
+            // Update timestamp
+            const now = new Date();
+            document.getElementById('bondsTimestamp').textContent = 
+                now.toLocaleString('it-IT', { 
+                    day: '2-digit', 
+                    month: '2-digit', 
+                    year: 'numeric',
+                    hour: '2-digit', 
+                    minute: '2-digit' 
+                });
+            
+            // Show results
+            document.getElementById('bondsResults').classList.remove('hidden');
+            showAlert(`Caricati ${count} ${categoryName}`, 'success');
+        }
+
+        /**
+         * Applica filtri avanzati
+         */
+        async function applyBondFilters() {
+            const minYield = document.getElementById('filterMinYield').value;
+            const maxYield = document.getElementById('filterMaxYield').value;
+            const sortBy = document.getElementById('filterSortBy').value;
+            
+            if (!minYield && !maxYield && !sortBy) {
+                showAlert('Imposta almeno un filtro', 'warning');
+                return;
+            }
+            
+            document.getElementById('bondsLoading').classList.remove('hidden');
+            document.getElementById('bondsResults').classList.add('hidden');
+            
+            try {
+                let url = `${API_CONFIG.baseUrl}/api/bonds/filter?category=${currentBondCategory}`;
+                if (minYield) url += `&minYield=${minYield}`;
+                if (maxYield) url += `&maxYield=${maxYield}`;
+                if (sortBy) url += `&sortBy=${sortBy}`;
+                
+                const response = await fetch(url);
+                const result = await response.json();
+                
+                if (!result.success) {
+                    throw new Error('Filtro fallito');
+                }
+                
+                bondsData = result;
+                displayBonds(result);
+                
+            } catch (error) {
+                console.error('Filter error:', error);
+                showAlert(`Errore filtro: ${error.message}`, 'error');
+            } finally {
+                document.getElementById('bondsLoading').classList.add('hidden');
+            }
+        }
+
+        /**
+         * Reset filtri
+         */
+        function clearBondFilters() {
+            document.getElementById('filterMinYield').value = '';
+            document.getElementById('filterMaxYield').value = '';
+            document.getElementById('filterSortBy').value = '';
+            
+            loadBonds(currentBondCategory);
+        }
+
+        /**
+         * Mostra dettagli bond (modal o nuova sezione)
+         */
+        function showBondDetails(isin) {
+            console.log('Bond clicked:', isin);
+            showAlert(`Dettagli bond: ${isin} (funzionalità in sviluppo)`, 'info');
+        }
+
+        /**
+         * Formatta volume
+         */
+        function formatBondVolume(volume) {
+            if (volume >= 1000000) {
+                return (volume / 1000000).toFixed(1) + 'M';
+            } else if (volume >= 1000) {
+                return (volume / 1000).toFixed(1) + 'K';
+            }
+            return volume.toString();
+        }
+
+        /**
+         * Esporta bond in CSV
+         */
+        function exportBondsToCSV() {
+            if (!bondsData || !bondsData.bonds || bondsData.bonds.length === 0) {
+                showAlert('Nessun dato da esportare', 'warning');
+                return;
+            }
+            
+            // Header CSV
+            let csv = 'Nome,ISIN,Paese,Prezzo,Variazione,Yield,Volume\n';
+            
+            // Rows
+            bondsData.bonds.forEach(bond => {
+                csv += `"${bond.name}","${bond.isin}","${bond.country}",`;
+                csv += `${bond.price || ''},${bond.change || ''},${bond.yield || ''},${bond.volume || ''}\n`;
+            });
+            
+            // Download
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `bonds_${currentBondCategory}_${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+            window.URL.revokeObjectURL(url);
+            
+            showAlert('CSV esportato con successo!', 'success');
+        }
+    </script>
+
+    <!-- Legal Footer -->
+    <footer style="background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%); color: white; padding: 2rem 0; margin-top: 4rem; text-align: center;">
+        <div style="max-width: 1200px; margin: 0 auto; padding: 0 1rem;">
+            <div style="margin-bottom: 1rem;">
+                <p style="font-size: 0.875rem; opacity: 0.9;">
+                    © 2025 Mutna S.R.L.S. - All Rights Reserved | P.IVA: 04219740364
+                </p>
+            </div>
+            <div style="display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; font-size: 0.875rem;">
+                <a href="/about.html" style="color: white; opacity: 0.8; text-decoration: none; transition: opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">🏢 Chi Siamo</a>
+                <a href="https://mutna.it" target="_blank" style="color: white; opacity: 0.8; text-decoration: none; transition: opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">🚀 Mutna S.R.L.S.</a>
+                <a href="/terms.html" style="color: white; opacity: 0.8; text-decoration: none; transition: opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">Terms of Service</a>
+                <a href="/privacy.html" style="color: white; opacity: 0.8; text-decoration: none; transition: opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">Privacy Policy</a>
+                <a href="mailto:info@mutna.it" style="color: white; opacity: 0.8; text-decoration: none; transition: opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">📧 Contact</a>
+            </div>
+            <div style="margin-top: 1rem; font-size: 0.75rem; opacity: 0.7;">
+                <p>⚠️ DISCLAIMER: Le informazioni fornite sono solo a scopo informativo e non costituiscono consulenza finanziaria.</p>
+                <p>Consulta sempre un professionista qualificato prima di prendere decisioni di investimento.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

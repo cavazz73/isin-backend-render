@@ -1,7 +1,7 @@
 {
   "name": "isin-backend-multisource",
   "version": "3.1.0",
-  "description": "ISIN Research Backend - Multi-Source Financial Data API with PostgreSQL + Complete Bond Integration",
+  "description": "ISIN Research Backend - Multi-Source Financial Data API with PostgreSQL + Bond Integration",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -19,8 +19,7 @@
     "postgresql",
     "database",
     "bonds",
-    "btp",
-    "obbligazioni"
+    "btp"
   ],
   "author": "Mutna S.R.L.S.",
   "license": "PROPRIETARY",
