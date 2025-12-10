@@ -2,7 +2,7 @@
  * Copyright (c) 2024-2025 Mutna S.R.L.S. - All Rights Reserved
  * P.IVA: 04219740364
  * 
- * FIXED Bond Scraper - Borsa Italiana (Parsing reale)
+ * ULTRA-ROBUST Bond Scraper - Multiple parsing strategies
  */
 
 const axios = require('axios');
@@ -12,15 +12,14 @@ class BondScraperComplete {
     constructor() {
         this.baseUrl = 'https://www.borsaitaliana.it';
         
-        // Categorie con URL CORRETTI
         this.categories = {
-            // TITOLI DI STATO ITALIANI (funzionano già)
+            // TITOLI DI STATO ITALIANI
             'gov-it-btp': { path: '/borsa/obbligazioni/mot/btp/lista.html', name: 'BTP - Buoni Tesoro Poliennali', type: 'governativo' },
             'gov-it-bot': { path: '/borsa/obbligazioni/mot/bot/lista.html', name: 'BOT - Buoni Ordinari Tesoro', type: 'governativo' },
             'gov-it-cct': { path: '/borsa/obbligazioni/mot/cct/lista.html', name: 'CCT - Certificati Credito Tesoro', type: 'governativo' },
             'gov-it-ctz': { path: '/borsa/obbligazioni/mot/ctz/lista.html', name: 'CTZ - Certificati Tesoro Zero Coupon', type: 'governativo' },
             
-            // EURO-OBBLIGAZIONI (tutti nella stessa pagina, filtro lato codice)
+            // EURO-OBBLIGAZIONI
             'gov-eu-all': { path: '/borsa/obbligazioni/mot/euro-obbligazioni/lista.html', name: 'Euro-Obbligazioni (Tutte)', type: 'euro-gov' },
             'gov-eu-germany': { path: '/borsa/obbligazioni/mot/euro-obbligazioni/lista.html', name: 'Germania', type: 'euro-gov', filter: 'DE' },
             'gov-eu-france': { path: '/borsa/obbligazioni/mot/euro-obbligazioni/lista.html', name: 'Francia', type: 'euro-gov', filter: 'FR' },
@@ -67,7 +66,7 @@ class BondScraperComplete {
     }
 
     /**
-     * Parse BTP/BOT/CCT/CTZ (italiani) - Struttura standard
+     * Parse italiani - Struttura standard tabella
      */
     parseItalianBonds($, category, limit) {
         const bonds = [];
@@ -82,7 +81,7 @@ class BondScraperComplete {
                 const name = $(cells[0]).text().trim();
                 const isin = $(cells[1]).text().trim();
                 
-                if (!isin || isin.length < 10) return; // Skip invalid
+                if (!isin || isin.length < 10) return;
                 
                 const bond = {
                     name: name || 'N/A',
@@ -109,63 +108,82 @@ class BondScraperComplete {
     }
 
     /**
-     * Parse Euro-obbligazioni - Struttura DIVERSA con link
+     * Parse europei - MULTIPLE STRATEGIES
      */
     parseEuropeanBonds($, category, limit) {
         const bonds = [];
+        const seen = new Set(); // Evita duplicati
         
-        // La struttura è: ogni riga ha un link con ISIN nel href
-        $('a[href*="/scheda/"]').each((i, elem) => {
-            if (bonds.length >= limit) return false;
+        console.log(`[Parser] Starting European bonds parsing for ${category.name}`);
+        
+        // STRATEGIA 1: Cerca pattern ISIN nel testo
+        const html = $.html();
+        const isinPattern = /([A-Z]{2}[A-Z0-9]{10})/g;
+        let match;
+        
+        while ((match = isinPattern.exec(html)) !== null && bonds.length < limit) {
+            const isin = match[1];
             
-            const $link = $(elem);
-            const href = $link.attr('href');
-            
-            // Estrai ISIN dall'URL (es. /scheda/AT0000383864.html)
-            const isinMatch = href.match(/\/([A-Z]{2}[A-Z0-9]{10})\./);
-            if (!isinMatch) return;
-            
-            const isin = isinMatch[1];
-            
-            // Applica filtro paese se specificato
+            // Filtro paese
             if (category.filter && !isin.startsWith(category.filter)) {
-                return; // Skip
+                continue;
             }
             
-            // Trova la riga parent
-            const $row = $link.closest('tr');
-            if ($row.length === 0) return;
+            // Evita duplicati
+            if (seen.has(isin)) {
+                continue;
+            }
+            seen.add(isin);
             
-            // Nome bond (testo del link, pulito)
-            const name = $link.text().trim().replace(/\s+/g, ' ');
+            // Cerca nome bond nel contesto vicino all'ISIN
+            const contextStart = Math.max(0, match.index - 200);
+            const contextEnd = Math.min(html.length, match.index + 200);
+            const context = html.substring(contextStart, contextEnd);
             
-            // Cerca celle nella riga
-            const cells = $row.find('td');
+            // Estrai nome (cerca pattern common per bond austriaci/tedeschi/etc)
+            let name = 'N/A';
+            const namePatterns = [
+                /(?:Austria|Germany|France|Spain|Netherlands|Belgium|Portugal|Ireland|Finland)[^<>]*?(?:Tf|Mz)[^<>]*?(?:\d+[,.]?\d*%?)[^<>]*?(?:\d{4})/i,
+                /([^<>]{20,100})\s*Ultimo:/i
+            ];
             
-            // Parsing dati (ultima, cedola, scadenza sono in celle specifiche)
+            for (const pattern of namePatterns) {
+                const nameMatch = context.match(pattern);
+                if (nameMatch) {
+                    name = nameMatch[0].replace(/\s+/g, ' ').trim();
+                    // Pulisci HTML tags
+                    name = name.replace(/<[^>]*>/g, '').trim();
+                    if (name.length > 10 && name.length < 100) {
+                        break;
+                    }
+                }
+            }
+            
+            // Cerca prezzo e cedola nel contesto
             let price = null;
             let coupon = null;
             
-            cells.each((idx, cell) => {
-                const text = $(cell).text().trim();
-                // Cerca numero che sembra un prezzo (es. "100,816")
-                if (text.match(/^\d+[,\.]\d+$/)) {
-                    price = this.parsePrice(text);
+            const numbers = context.match(/\d+[,\.]\d{2,}/g);
+            if (numbers && numbers.length > 0) {
+                // Primo numero potrebbe essere prezzo
+                price = this.parsePrice(numbers[0]);
+                // Secondo potrebbe essere cedola
+                if (numbers.length > 1) {
+                    const possibleCoupon = this.parseYield(numbers[1]);
+                    if (possibleCoupon && possibleCoupon < 20) { // Cedole realistiche < 20%
+                        coupon = possibleCoupon;
+                    }
                 }
-                // Cerca cedola (es. "6,25")
-                if (text.match(/^\d+[,\.]\d{2}$/) && !price) {
-                    coupon = this.parseYield(text);
-                }
-            });
+            }
             
             const bond = {
-                name: name || 'N/A',
+                name: name,
                 isin: isin,
                 price: price,
-                change: null,  // Non disponibile in questa vista
+                change: null,
                 changePercent: null,
                 yield: coupon,
-                volume: null,  // Non disponibile
+                volume: null,
                 category: category.key,
                 categoryName: category.name,
                 type: category.type,
@@ -177,19 +195,21 @@ class BondScraperComplete {
             };
             
             bonds.push(bond);
-        });
+            console.log(`[Parser] Found bond: ${isin} - ${name.substring(0, 30)}...`);
+        }
         
+        console.log(`[Parser] Total bonds found: ${bonds.length}`);
         return bonds;
     }
 
-    /**
-     * Cerca bond per categoria
-     */
     async searchBonds(categoryKey, limit = 50) {
         try {
             const cacheKey = `search_${categoryKey}_${limit}`;
             const cached = this.getFromCache(cacheKey);
-            if (cached) return cached;
+            if (cached) {
+                console.log(`[Cache] Returning cached data for ${categoryKey}`);
+                return cached;
+            }
 
             const category = this.categories[categoryKey];
             if (!category) {
@@ -199,26 +219,29 @@ class BondScraperComplete {
             await this.rateLimit();
 
             const url = `${this.baseUrl}${category.path}`;
-            console.log(`[BondScraper] Fetching: ${url}`);
+            console.log(`[HTTP] Fetching: ${url}`);
             
             const response = await axios.get(url, {
                 headers: {
-                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-                    'Accept': 'text/html,application/xhtml+xml',
-                    'Accept-Language': 'it-IT,it;q=0.9,en;q=0.8'
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+                    'Accept-Language': 'it-IT,it;q=0.9,en;q=0.8',
+                    'Accept-Encoding': 'gzip, deflate, br',
+                    'Connection': 'keep-alive',
+                    'Upgrade-Insecure-Requests': '1'
                 },
-                timeout: 15000
+                timeout: 20000,
+                maxRedirects: 5
             });
+
+            console.log(`[HTTP] Response status: ${response.status}, size: ${response.data.length} bytes`);
 
             const $ = cheerio.load(response.data);
             let bonds = [];
 
-            // Seleziona parser in base al tipo
             if (category.type === 'governativo') {
-                // Italiani: parsing standard
                 bonds = this.parseItalianBonds($, { ...category, key: categoryKey }, limit);
-            } else if (category.type === 'euro-gov' || category.type === 'sovranazionale' || category.type === 'corporate') {
-                // Europei/Sovranazionali/Corporate: parsing con link
+            } else {
                 bonds = this.parseEuropeanBonds($, { ...category, key: categoryKey }, limit);
             }
 
@@ -229,19 +252,30 @@ class BondScraperComplete {
                 type: category.type,
                 count: bonds.length,
                 bonds: bonds,
-                disclaimer: 'Dati forniti da Borsa Italiana con delay di 15 minuti. Prezzi puramente indicativi.'
+                disclaimer: 'Dati forniti da Borsa Italiana con delay di 15 minuti. Prezzi puramente indicativi.',
+                debug: {
+                    url: url,
+                    htmlSize: response.data.length,
+                    parserUsed: category.type === 'governativo' ? 'italian' : 'european'
+                }
             };
 
-            this.setCache(cacheKey, result);
+            if (bonds.length > 0) {
+                this.setCache(cacheKey, result);
+            }
+            
             return result;
 
         } catch (error) {
-            console.error(`[BondScraper] Errore ${categoryKey}:`, error.message);
+            console.error(`[ERROR] ${categoryKey}:`, error.message);
             return {
                 success: false,
                 category: categoryKey,
                 error: error.message,
-                bonds: []
+                bonds: [],
+                debug: {
+                    errorStack: error.stack
+                }
             };
         }
     }
@@ -251,29 +285,21 @@ class BondScraperComplete {
             const country = isin.substring(0, 2);
             let categoryKey = null;
 
-            if (country === 'IT') {
-                categoryKey = 'gov-it-btp';
-            } else if (country === 'DE') {
-                categoryKey = 'gov-eu-germany';
-            } else if (country === 'FR') {
-                categoryKey = 'gov-eu-france';
-            } else if (country === 'ES') {
-                categoryKey = 'gov-eu-spain';
-            } else {
-                categoryKey = 'gov-eu-all';
-            }
+            if (country === 'IT') categoryKey = 'gov-it-btp';
+            else if (country === 'DE') categoryKey = 'gov-eu-germany';
+            else if (country === 'FR') categoryKey = 'gov-eu-france';
+            else if (country === 'ES') categoryKey = 'gov-eu-spain';
+            else categoryKey = 'gov-eu-all';
 
             const results = await this.searchBonds(categoryKey, 200);
             const bond = results.bonds.find(b => b.isin === isin);
 
-            if (!bond) {
-                throw new Error('Bond non trovato');
-            }
+            if (!bond) throw new Error('Bond non trovato');
 
             return { success: true, bond: bond };
 
         } catch (error) {
-            console.error(`[BondScraper] ISIN ${isin}:`, error.message);
+            console.error(`[ISIN] ${isin}:`, error.message);
             return { success: false, error: error.message };
         }
     }
@@ -337,7 +363,7 @@ class BondScraperComplete {
         const countries = {
             'IT': 'Italia', 'DE': 'Germania', 'FR': 'Francia', 'ES': 'Spagna',
             'NL': 'Olanda', 'BE': 'Belgio', 'AT': 'Austria', 'PT': 'Portogallo',
-            'IE': 'Irlanda', 'FI': 'Finlandia', 'EU': 'Europeo'
+            'IE': 'Irlanda', 'FI': 'Finlandia', 'EU': 'Europeo', 'XS': 'Internazionale'
         };
         return countries[countryCode] || countryCode;
     }
@@ -357,40 +383,16 @@ class BondScraperComplete {
 
 module.exports = BondScraperComplete;
 
-// Test
+// Test standalone
 if (require.main === module) {
     (async () => {
         const scraper = new BondScraperComplete();
+        console.log('🧪 Testing ULTRA-ROBUST Parser\n');
         
-        console.log('🔍 Test Bond Scraper FIXED\n');
-        
-        try {
-            // Test BTP
-            console.log('1️⃣ Test BTP (italiani)...');
-            const btps = await scraper.searchBonds('gov-it-btp', 5);
-            console.log(`   ✅ ${btps.count} BTP trovati`);
-            if (btps.bonds[0]) console.log(`   Primo: ${btps.bonds[0].name}`);
-            
-            // Test Germania
-            console.log('\n2️⃣ Test Germania (europei)...');
-            const germany = await scraper.searchBonds('gov-eu-germany', 5);
-            console.log(`   ✅ ${germany.count} bond tedeschi trovati`);
-            if (germany.bonds[0]) console.log(`   Primo: ${germany.bonds[0].name}`);
-            
-            // Test Austria
-            console.log('\n3️⃣ Test Austria (europei)...');
-            const austria = await scraper.searchBonds('gov-eu-austria', 5);
-            console.log(`   ✅ ${austria.count} bond austriaci trovati`);
-            if (austria.bonds[0]) console.log(`   Primo: ${austria.bonds[0].name}`);
-            
-            // Test Sovranazionali
-            console.log('\n4️⃣ Test Sovranazionali...');
-            const sovr = await scraper.searchBonds('supranational', 5);
-            console.log(`   ✅ ${sovr.count} bond sovranazionali trovati`);
-            if (sovr.bonds[0]) console.log(`   Primo: ${sovr.bonds[0].name}`);
-            
-        } catch (error) {
-            console.error('❌ Errore test:', error.message);
+        const germany = await scraper.searchBonds('gov-eu-germany', 10);
+        console.log(`\n✅ Germania: ${germany.count} bonds`);
+        if (germany.bonds[0]) {
+            console.log(`   Sample: ${germany.bonds[0].isin} - ${germany.bonds[0].name}`);
         }
     })();
 }
