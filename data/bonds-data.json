@@ -1,0 +1,34 @@
+{
+  "lastUpdate": "2025-12-11T18:30:00Z",
+  "categories": {
+    "it-governativi": {
+      "name": "IT Governativi Italia",
+      "description": "BTP, BOT, CCT, CTZ",
+      "bonds": []
+    },
+    "eu-governativi": {
+      "name": "EU Governativi Europa",
+      "description": "Bund Germania, OAT Francia, Bonos Spagna",
+      "bonds": []
+    },
+    "sovranazionali": {
+      "name": "Sovranazionali",
+      "description": "BEI, EFSF, ESM",
+      "bonds": []
+    },
+    "corporate": {
+      "name": "Corporate",
+      "description": "Obbligazioni societarie",
+      "bonds": []
+    }
+  },
+  "statistics": {
+    "totalBonds": 0,
+    "byCategory": {
+      "it-governativi": 0,
+      "eu-governativi": 0,
+      "sovranazionali": 0,
+      "corporate": 0
+    }
+  }
+}
