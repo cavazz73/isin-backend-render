@@ -6,7 +6,6 @@
  * WITH REDIS CACHE
  */
 
-require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const DataAggregatorV4 = require('./dataAggregator-v4');
