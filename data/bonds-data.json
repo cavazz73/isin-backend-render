@@ -1,34 +1,385 @@
 {
-  "lastUpdate": "2025-12-11T18:30:00Z",
+  "lastUpdate": "2025-12-11T17:30:00Z",
   "categories": {
     "it-governativi": {
       "name": "IT Governativi Italia",
       "description": "BTP, BOT, CCT, CTZ",
-      "bonds": []
+      "count": 8,
+      "bonds": [
+        {
+          "isin": "IT0005508251",
+          "name": "BTP 2.45% Mar 2025",
+          "type": "BTP",
+          "country": "IT",
+          "currency": "EUR",
+          "maturity": "2025-03-01",
+          "coupon": 2.45,
+          "yield": 3.12,
+          "price": 98.50,
+          "change": "+0.15",
+          "lastUpdate": "2025-12-11"
+        },
+        {
+          "isin": "IT0005436693",
+          "name": "BTP 0.95% Sep 2027",
+          "type": "BTP",
+          "country": "IT",
+          "currency": "EUR",
+          "maturity": "2027-09-15",
+          "coupon": 0.95,
+          "yield": 3.45,
+          "price": 92.30,
+          "change": "-0.25",
+          "lastUpdate": "2025-12-11"
+        },
+        {
+          "isin": "IT0005513434",
+          "name": "BTP 4.00% Feb 2037",
+          "type": "BTP",
+          "country": "IT",
+          "currency": "EUR",
+          "maturity": "2037-02-01",
+          "coupon": 4.00,
+          "yield": 4.15,
+          "price": 96.80,
+          "change": "+0.30",
+          "lastUpdate": "2025-12-11"
+        },
+        {
+          "isin": "IT0005524027",
+          "name": "BOT 12M Jun 2025",
+          "type": "BOT",
+          "country": "IT",
+          "currency": "EUR",
+          "maturity": "2025-06-30",
+          "coupon": 0,
+          "yield": 3.25,
+          "price": 96.75,
+          "change": "-0.05",
+          "lastUpdate": "2025-12-11"
+        },
+        {
+          "isin": "IT0005517930",
+          "name": "BTP 3.50% Mar 2030",
+          "type": "BTP",
+          "country": "IT",
+          "currency": "EUR",
+          "maturity": "2030-03-01",
+          "coupon": 3.50,
+          "yield": 3.75,
+          "price": 97.20,
+          "change": "+0.10",
+          "lastUpdate": "2025-12-11"
+        },
+        {
+          "isin": "IT0005480157",
+          "name": "BTP 2.00% Dec 2025",
+          "type": "BTP",
+          "country": "IT",
+          "currency": "EUR",
+          "maturity": "2025-12-01",
+          "coupon": 2.00,
+          "yield": 3.05,
+          "price": 99.15,
+          "change": "+0.20",
+          "lastUpdate": "2025-12-11"
+        },
+        {
+          "isin": "IT0005534521",
+          "name": "CCT Mar 2030",
+          "type": "CCT",
+          "country": "IT",
+          "currency": "EUR",
+          "maturity": "2030-03-15",
+          "coupon": 0,
+          "yield": 3.85,
+          "price": 98.50,
+          "change": "-0.15",
+          "lastUpdate": "2025-12-11"
+        },
+        {
+          "isin": "IT0005527889",
+          "name": "CTZ Jun 2026",
+          "type": "CTZ",
+          "country": "IT",
+          "currency": "EUR",
+          "maturity": "2026-06-30",
+          "coupon": 0,
+          "yield": 3.35,
+          "price": 95.80,
+          "change": "+0.05",
+          "lastUpdate": "2025-12-11"
+        }
+      ]
     },
     "eu-governativi": {
       "name": "EU Governativi Europa",
       "description": "Bund Germania, OAT Francia, Bonos Spagna",
-      "bonds": []
+      "count": 6,
+      "bonds": [
+        {
+          "isin": "DE0001102440",
+          "name": "Bund 2.20% Apr 2027",
+          "type": "Bund",
+          "country": "DE",
+          "currency": "EUR",
+          "maturity": "2027-04-21",
+          "coupon": 2.20,
+          "yield": 2.45,
+          "price": 98.90,
+          "change": "+0.10",
+          "lastUpdate": "2025-12-11"
+        },
+        {
+          "isin": "DE0001102556",
+          "name": "Bund 2.60% Feb 2033",
+          "type": "Bund",
+          "country": "DE",
+          "currency": "EUR",
+          "maturity": "2033-02-15",
+          "coupon": 2.60,
+          "yield": 2.68,
+          "price": 97.50,
+          "change": "-0.15",
+          "lastUpdate": "2025-12-11"
+        },
+        {
+          "isin": "FR0013451507",
+          "name": "OAT 0.50% May 2025",
+          "type": "OAT",
+          "country": "FR",
+          "currency": "EUR",
+          "maturity": "2025-05-25",
+          "coupon": 0.50,
+          "yield": 2.95,
+          "price": 97.20,
+          "change": "+0.05",
+          "lastUpdate": "2025-12-11"
+        },
+        {
+          "isin": "FR0014001NN4",
+          "name": "OAT 3.00% Nov 2033",
+          "type": "OAT",
+          "country": "FR",
+          "currency": "EUR",
+          "maturity": "2033-11-25",
+          "coupon": 3.00,
+          "yield": 3.12,
+          "price": 96.80,
+          "change": "-0.20",
+          "lastUpdate": "2025-12-11"
+        },
+        {
+          "isin": "ES0000012B88",
+          "name": "Bonos 0.40% Oct 2026",
+          "type": "Bonos",
+          "country": "ES",
+          "currency": "EUR",
+          "maturity": "2026-10-31",
+          "coupon": 0.40,
+          "yield": 3.25,
+          "price": 93.50,
+          "change": "+0.12",
+          "lastUpdate": "2025-12-11"
+        },
+        {
+          "isin": "ES0000012G96",
+          "name": "Bonos 1.85% Jul 2035",
+          "type": "Bonos",
+          "country": "ES",
+          "currency": "EUR",
+          "maturity": "2035-07-30",
+          "coupon": 1.85,
+          "yield": 3.45,
+          "price": 89.20,
+          "change": "-0.30",
+          "lastUpdate": "2025-12-11"
+        }
+      ]
     },
     "sovranazionali": {
       "name": "Sovranazionali",
       "description": "BEI, EFSF, ESM",
-      "bonds": []
+      "count": 5,
+      "bonds": [
+        {
+          "isin": "EU000A1G0DM7",
+          "name": "BEI 1.50% Nov 2028",
+          "type": "BEI",
+          "country": "EU",
+          "issuer": "European Investment Bank",
+          "currency": "EUR",
+          "maturity": "2028-11-15",
+          "coupon": 1.50,
+          "yield": 2.85,
+          "price": 95.30,
+          "change": "+0.08",
+          "lastUpdate": "2025-12-11"
+        },
+        {
+          "isin": "EU000A1Z99T2",
+          "name": "BEI 2.25% Jun 2030",
+          "type": "BEI",
+          "country": "EU",
+          "issuer": "European Investment Bank",
+          "currency": "EUR",
+          "maturity": "2030-06-15",
+          "coupon": 2.25,
+          "yield": 2.95,
+          "price": 96.50,
+          "change": "-0.10",
+          "lastUpdate": "2025-12-11"
+        },
+        {
+          "isin": "EU000A1G0BP8",
+          "name": "EFSF 2.75% Oct 2027",
+          "type": "EFSF",
+          "country": "EU",
+          "issuer": "European Financial Stability Facility",
+          "currency": "EUR",
+          "maturity": "2027-10-19",
+          "coupon": 2.75,
+          "yield": 2.88,
+          "price": 98.20,
+          "change": "+0.15",
+          "lastUpdate": "2025-12-11"
+        },
+        {
+          "isin": "EU000A1ZA6V3",
+          "name": "ESM 1.50% Mar 2029",
+          "type": "ESM",
+          "country": "EU",
+          "issuer": "European Stability Mechanism",
+          "currency": "EUR",
+          "maturity": "2029-03-15",
+          "coupon": 1.50,
+          "yield": 2.92,
+          "price": 94.80,
+          "change": "-0.12",
+          "lastUpdate": "2025-12-11"
+        },
+        {
+          "isin": "EU000A2R3MK5",
+          "name": "BEI 3.00% May 2035",
+          "type": "BEI",
+          "country": "EU",
+          "issuer": "European Investment Bank",
+          "currency": "EUR",
+          "maturity": "2035-05-15",
+          "coupon": 3.00,
+          "yield": 3.15,
+          "price": 96.30,
+          "change": "+0.18",
+          "lastUpdate": "2025-12-11"
+        }
+      ]
     },
     "corporate": {
       "name": "Corporate",
       "description": "Obbligazioni societarie",
-      "bonds": []
+      "count": 6,
+      "bonds": [
+        {
+          "isin": "XS1234567890",
+          "name": "ENI 2.625% May 2027",
+          "type": "Corporate",
+          "country": "IT",
+          "issuer": "ENI SpA",
+          "sector": "Energy",
+          "currency": "EUR",
+          "maturity": "2027-05-15",
+          "coupon": 2.625,
+          "yield": 3.45,
+          "price": 96.20,
+          "change": "+0.18",
+          "lastUpdate": "2025-12-11"
+        },
+        {
+          "isin": "XS9876543210",
+          "name": "ENEL 1.875% Sep 2028",
+          "type": "Corporate",
+          "country": "IT",
+          "issuer": "ENEL Finance Intl",
+          "sector": "Utilities",
+          "currency": "EUR",
+          "maturity": "2028-09-17",
+          "coupon": 1.875,
+          "yield": 3.65,
+          "price": 93.50,
+          "change": "-0.25",
+          "lastUpdate": "2025-12-11"
+        },
+        {
+          "isin": "XS1122334455",
+          "name": "Intesa 3.125% Jan 2029",
+          "type": "Corporate",
+          "country": "IT",
+          "issuer": "Intesa Sanpaolo",
+          "sector": "Banking",
+          "currency": "EUR",
+          "maturity": "2029-01-15",
+          "coupon": 3.125,
+          "yield": 3.85,
+          "price": 94.80,
+          "change": "+0.10",
+          "lastUpdate": "2025-12-11"
+        },
+        {
+          "isin": "XS2233445566",
+          "name": "TIM 2.875% Jun 2026",
+          "type": "Corporate",
+          "country": "IT",
+          "issuer": "Telecom Italia",
+          "sector": "Telecommunications",
+          "currency": "EUR",
+          "maturity": "2026-06-30",
+          "coupon": 2.875,
+          "yield": 4.25,
+          "price": 92.30,
+          "change": "-0.15",
+          "lastUpdate": "2025-12-11"
+        },
+        {
+          "isin": "XS3344556677",
+          "name": "UniCredit 2.50% Apr 2030",
+          "type": "Corporate",
+          "country": "IT",
+          "issuer": "UniCredit SpA",
+          "sector": "Banking",
+          "currency": "EUR",
+          "maturity": "2030-04-20",
+          "coupon": 2.50,
+          "yield": 3.75,
+          "price": 95.10,
+          "change": "+0.22",
+          "lastUpdate": "2025-12-11"
+        },
+        {
+          "isin": "XS4455667788",
+          "name": "Generali 3.00% Oct 2031",
+          "type": "Corporate",
+          "country": "IT",
+          "issuer": "Assicurazioni Generali",
+          "sector": "Insurance",
+          "currency": "EUR",
+          "maturity": "2031-10-15",
+          "coupon": 3.00,
+          "yield": 3.55,
+          "price": 96.70,
+          "change": "-0.08",
+          "lastUpdate": "2025-12-11"
+        }
+      ]
     }
   },
   "statistics": {
-    "totalBonds": 0,
+    "totalBonds": 25,
     "byCategory": {
-      "it-governativi": 0,
-      "eu-governativi": 0,
-      "sovranazionali": 0,
-      "corporate": 0
-    }
+      "it-governativi": 8,
+      "eu-governativi": 6,
+      "sovranazionali": 5,
+      "corporate": 6
+    },
+    "errors": []
   }
 }
