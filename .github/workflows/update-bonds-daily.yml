@@ -1,0 +1,57 @@
+name: Update Bonds Data Daily
+
+on:
+  schedule:
+    # Runs every day at 18:30 UTC (19:30 CET / 20:30 CEST after market close)
+    - cron: '30 18 * * *'
+  
+  # Allow manual trigger
+  workflow_dispatch:
+
+jobs:
+  update-bonds:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      
+      - name: Install dependencies
+        run: |
+          npm install axios cheerio
+      
+      - name: Create data directory
+        run: mkdir -p data
+      
+      - name: Run bonds update script
+        run: node scripts/update-all-bonds.js
+        env:
+          NODE_ENV: production
+      
+      - name: Check if data changed
+        id: git-check
+        run: |
+          git diff --exit-code data/bonds-data.json || echo "changed=true" >> $GITHUB_OUTPUT
+      
+      - name: Commit and push if changed
+        if: steps.git-check.outputs.changed == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/bonds-data.json
+          git commit -m "🤖 Auto-update bonds data - $(date +'%Y-%m-%d %H:%M UTC')"
+          git push
+      
+      - name: Summary
+        run: |
+          echo "✅ Bonds data update completed"
+          if [ -f data/bonds-data.json ]; then
+            echo "📊 Total bonds: $(cat data/bonds-data.json | grep -o '"totalBonds":[0-9]*' | grep -o '[0-9]*')"
+          fi
