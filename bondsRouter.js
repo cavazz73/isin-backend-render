@@ -3,7 +3,7 @@
  * P.IVA: 04219740364
  * 
  * Bonds Router - Backend Endpoints for Bonds Data
- * WITH FULL RETROCOMPATIBILITY FOR OLD CATEGORY NAMES
+ * MATCHES FRONTEND EXPECTATIONS: /api/bonds/search?category=XXX
  */
 
 const express = require('express');
@@ -14,39 +14,6 @@ const router = express.Router();
 
 // Path to bonds data file
 const BONDS_DATA_PATH = path.join(__dirname, 'data', 'bonds-data.json');
-
-// RETROCOMPATIBILITY MAPPING: old names → new names
-const CATEGORY_MAPPING = {
-    // Old names (from frontend)
-    'it-btp': 'it-governativi',
-    'it-bot': 'it-governativi',
-    'it-cct': 'it-governativi',
-    'it-ctz': 'it-governativi',
-    'gov-it-btp': 'it-governativi',
-    
-    'eu-governativi-europa': 'eu-governativi',
-    'gov-eu': 'eu-governativi',
-    
-    'sovranazionali': 'sovranazionali',  // Already correct
-    'supranational': 'sovranazionali',
-    
-    'corporate': 'corporate',  // Already correct
-    
-    // New names (if called directly)
-    'it-governativi': 'it-governativi',
-    'eu-governativi': 'eu-governativi'
-};
-
-/**
- * Normalize category name using mapping
- */
-function normalizeCategory(category) {
-    const normalized = CATEGORY_MAPPING[category.toLowerCase()];
-    if (!normalized) {
-        return null;  // Invalid category
-    }
-    return normalized;
-}
 
 /**
  * Load bonds data from file
@@ -60,6 +27,196 @@ async function loadBondsData() {
         return null;
     }
 }
+
+/**
+ * Filter bonds by country code
+ */
+function filterByCountry(bonds, countryCode) {
+    return bonds.filter(bond => bond.country === countryCode);
+}
+
+/**
+ * Filter bonds by type
+ */
+function filterByType(bonds, type) {
+    return bonds.filter(bond => bond.type === type);
+}
+
+/**
+ * GET /api/bonds/search
+ * Main endpoint that frontend uses with ?category= query parameter
+ */
+router.get('/search', async (req, res) => {
+    try {
+        const category = req.query.category;
+        const limit = parseInt(req.query.limit) || 100;
+        const offset = parseInt(req.query.offset) || 0;
+
+        console.log(`[BondsRouter] Search with category: ${category}, limit: ${limit}`);
+
+        if (!category) {
+            return res.status(400).json({
+                success: false,
+                error: 'Category parameter required',
+                usage: '/api/bonds/search?category=gov-it-btp&limit=100'
+            });
+        }
+
+        const bondsData = await loadBondsData();
+        
+        if (!bondsData) {
+            return res.status(500).json({
+                success: false,
+                error: 'Bonds data not available'
+            });
+        }
+
+        let bonds = [];
+        let categoryName = '';
+        let categoryDescription = '';
+
+        // Map frontend category to backend data with filtering
+        switch(category) {
+            // Italian Government Bonds
+            case 'gov-it-btp':
+                bonds = filterByType(bondsData.categories['it-governativi'].bonds, 'BTP');
+                categoryName = 'BTP - Buoni Tesoro Poliennali';
+                categoryDescription = 'Titoli di Stato italiani a medio-lungo termine';
+                break;
+            
+            case 'gov-it-bot':
+                bonds = filterByType(bondsData.categories['it-governativi'].bonds, 'BOT');
+                categoryName = 'BOT - Buoni Ordinari Tesoro';
+                categoryDescription = 'Titoli di Stato italiani a breve termine';
+                break;
+            
+            case 'gov-it-cct':
+                bonds = filterByType(bondsData.categories['it-governativi'].bonds, 'CCT');
+                categoryName = 'CCT - Certificati Credito Tesoro';
+                categoryDescription = 'Titoli di Stato italiani a tasso variabile';
+                break;
+            
+            case 'gov-it-ctz':
+                bonds = filterByType(bondsData.categories['it-governativi'].bonds, 'CTZ');
+                categoryName = 'CTZ - Certificati Tesoro Zero Coupon';
+                categoryDescription = 'Titoli di Stato italiani zero coupon';
+                break;
+
+            // EU Government Bonds by Country
+            case 'gov-eu-germany':
+                bonds = filterByCountry(bondsData.categories['eu-governativi'].bonds, 'DE');
+                categoryName = 'Bund Germania';
+                categoryDescription = 'Titoli di Stato tedeschi';
+                break;
+            
+            case 'gov-eu-france':
+                bonds = filterByCountry(bondsData.categories['eu-governativi'].bonds, 'FR');
+                categoryName = 'OAT Francia';
+                categoryDescription = 'Titoli di Stato francesi';
+                break;
+            
+            case 'gov-eu-spain':
+                bonds = filterByCountry(bondsData.categories['eu-governativi'].bonds, 'ES');
+                categoryName = 'Bonos Spagna';
+                categoryDescription = 'Titoli di Stato spagnoli';
+                break;
+            
+            case 'gov-eu-netherlands':
+                bonds = filterByCountry(bondsData.categories['eu-governativi'].bonds, 'NL');
+                categoryName = 'DSL Paesi Bassi';
+                categoryDescription = 'Titoli di Stato olandesi';
+                break;
+            
+            case 'gov-eu-belgium':
+                bonds = filterByCountry(bondsData.categories['eu-governativi'].bonds, 'BE');
+                categoryName = 'OLO Belgio';
+                categoryDescription = 'Titoli di Stato belgi';
+                break;
+            
+            case 'gov-eu-austria':
+                bonds = filterByCountry(bondsData.categories['eu-governativi'].bonds, 'AT');
+                categoryName = 'RAGB Austria';
+                categoryDescription = 'Titoli di Stato austriaci';
+                break;
+            
+            case 'gov-eu-portugal':
+                bonds = filterByCountry(bondsData.categories['eu-governativi'].bonds, 'PT');
+                categoryName = 'PGB Portogallo';
+                categoryDescription = 'Titoli di Stato portoghesi';
+                break;
+            
+            case 'gov-eu-ireland':
+                bonds = filterByCountry(bondsData.categories['eu-governativi'].bonds, 'IE');
+                categoryName = 'IRISH Irlanda';
+                categoryDescription = 'Titoli di Stato irlandesi';
+                break;
+            
+            case 'gov-eu-finland':
+                bonds = filterByCountry(bondsData.categories['eu-governativi'].bonds, 'FI');
+                categoryName = 'FINNISH Finlandia';
+                categoryDescription = 'Titoli di Stato finlandesi';
+                break;
+
+            // Supranational
+            case 'supranational':
+                bonds = bondsData.categories['sovranazionali'].bonds;
+                categoryName = 'Sovranazionali';
+                categoryDescription = 'BEI, EFSF, ESM';
+                break;
+
+            // Corporate
+            case 'corporate-all':
+                bonds = bondsData.categories['corporate'].bonds;
+                categoryName = 'Corporate';
+                categoryDescription = 'Obbligazioni societarie';
+                break;
+
+            default:
+                console.log(`[BondsRouter] Unknown category: ${category}`);
+                return res.status(404).json({
+                    success: false,
+                    error: `Unknown category: ${category}`,
+                    availableCategories: [
+                        'gov-it-btp', 'gov-it-bot', 'gov-it-cct', 'gov-it-ctz',
+                        'gov-eu-germany', 'gov-eu-france', 'gov-eu-spain',
+                        'gov-eu-netherlands', 'gov-eu-belgium', 'gov-eu-austria',
+                        'gov-eu-portugal', 'gov-eu-ireland', 'gov-eu-finland',
+                        'supranational', 'corporate-all'
+                    ]
+                });
+        }
+
+        // Apply pagination
+        const totalBonds = bonds.length;
+        const paginatedBonds = bonds.slice(offset, offset + limit);
+
+        console.log(`[BondsRouter] Returning ${paginatedBonds.length} bonds from ${totalBonds} total for ${category}`);
+
+        res.json({
+            success: true,
+            category: {
+                id: category,
+                name: categoryName,
+                description: categoryDescription
+            },
+            bonds: paginatedBonds,
+            pagination: {
+                total: totalBonds,
+                limit: limit,
+                offset: offset,
+                returned: paginatedBonds.length
+            },
+            lastUpdate: bondsData.lastUpdate
+        });
+
+    } catch (error) {
+        console.error('[BondsRouter] Error in /search:', error);
+        res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+});
 
 /**
  * GET /api/bonds/categories
@@ -116,174 +273,11 @@ router.get('/stats', async (req, res) => {
         res.json({
             success: true,
             statistics: bondsData.statistics,
-            lastUpdate: bondsData.lastUpdate,
-            categoryMapping: CATEGORY_MAPPING  // Include mapping for reference
+            lastUpdate: bondsData.lastUpdate
         });
 
     } catch (error) {
         console.error('[BondsRouter] Error in /stats:', error);
-        res.status(500).json({
-            success: false,
-            error: error.message
-        });
-    }
-});
-
-/**
- * GET /api/bonds/search (without ISIN)
- * Returns help message about how to use search endpoint
- */
-router.get('/search', async (req, res) => {
-    console.log('[BondsRouter] Search endpoint called without ISIN');
-    
-    res.status(400).json({
-        success: false,
-        error: 'ISIN required for search',
-        usage: 'Use /api/bonds/search/:isin to search by ISIN',
-        example: '/api/bonds/search/IT0005508251',
-        hint: 'To get all bonds in a category, use /api/bonds/:category?limit=100',
-        availableCategories: [
-            'it-governativi (or it-btp, it-bot, it-cct, it-ctz)',
-            'eu-governativi (or eu-governativi-europa)',
-            'sovranazionali (or supranational)',
-            'corporate'
-        ]
-    });
-});
-
-/**
- * GET /api/bonds/search/:isin
- * Search bond by ISIN
- */
-router.get('/search/:isin', async (req, res) => {
-    try {
-        const { isin } = req.params;
-        
-        console.log(`[BondsRouter] Searching for ISIN: ${isin}`);
-
-        const bondsData = await loadBondsData();
-        
-        if (!bondsData) {
-            return res.status(500).json({
-                success: false,
-                error: 'Bonds data not available'
-            });
-        }
-
-        // Search across all categories
-        let foundBond = null;
-        let foundCategory = null;
-
-        for (const [categoryKey, categoryData] of Object.entries(bondsData.categories)) {
-            const bond = categoryData.bonds.find(b => b.isin === isin.toUpperCase());
-            if (bond) {
-                foundBond = bond;
-                foundCategory = categoryKey;
-                break;
-            }
-        }
-
-        if (!foundBond) {
-            console.log(`[BondsRouter] ISIN not found: ${isin}`);
-            return res.status(404).json({
-                success: false,
-                error: `Bond with ISIN '${isin}' not found`
-            });
-        }
-
-        console.log(`[BondsRouter] Found bond in category: ${foundCategory}`);
-
-        res.json({
-            success: true,
-            bond: foundBond,
-            category: foundCategory,
-            lastUpdate: bondsData.lastUpdate
-        });
-
-    } catch (error) {
-        console.error('[BondsRouter] Error in /search/:isin:', error);
-        res.status(500).json({
-            success: false,
-            error: error.message
-        });
-    }
-});
-
-/**
- * GET /api/bonds/:category
- * Get all bonds in a specific category
- * Query params: limit (default 100), offset (default 0)
- * SUPPORTS OLD AND NEW CATEGORY NAMES
- * 
- * NOTE: This MUST be the last route because it's a catch-all!
- */
-router.get('/:category', async (req, res) => {
-    try {
-        const { category } = req.params;
-        const limit = parseInt(req.query.limit) || 100;
-        const offset = parseInt(req.query.offset) || 0;
-
-        console.log(`[BondsRouter] Request for category: ${category}`);
-
-        // Normalize category name (old → new)
-        const normalizedCategory = normalizeCategory(category);
-        
-        if (!normalizedCategory) {
-            return res.status(404).json({
-                success: false,
-                error: `Unknown category '${category}'`,
-                hint: 'Available categories: it-governativi, eu-governativi, sovranazionali, corporate',
-                retrocompatible: 'Also accepts: it-btp, it-bot, it-cct, it-ctz, gov-it-btp, eu-governativi-europa, gov-eu, supranational'
-            });
-        }
-
-        console.log(`[BondsRouter] Normalized to: ${normalizedCategory}`);
-
-        const bondsData = await loadBondsData();
-        
-        if (!bondsData) {
-            return res.status(500).json({
-                success: false,
-                error: 'Bonds data not available'
-            });
-        }
-
-        const categoryData = bondsData.categories[normalizedCategory];
-        
-        if (!categoryData) {
-            return res.status(404).json({
-                success: false,
-                error: `Category '${normalizedCategory}' not found in database`,
-                availableCategories: Object.keys(bondsData.categories)
-            });
-        }
-
-        // Pagination
-        const totalBonds = categoryData.bonds.length;
-        const paginatedBonds = categoryData.bonds.slice(offset, offset + limit);
-
-        console.log(`[BondsRouter] Returning ${paginatedBonds.length} bonds from ${totalBonds} total`);
-
-        res.json({
-            success: true,
-            category: {
-                id: normalizedCategory,
-                requestedAs: category,  // Show what user requested
-                name: categoryData.name,
-                description: categoryData.description
-            },
-            bonds: paginatedBonds,
-            pagination: {
-                total: totalBonds,
-                limit: limit,
-                offset: offset,
-                returned: paginatedBonds.length
-            },
-            lastUpdate: bondsData.lastUpdate
-        });
-
-    } catch (error) {
-        console.error('[BondsRouter] Error in /:category:', error);
         res.status(500).json({
             success: false,
             error: error.message
