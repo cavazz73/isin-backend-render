@@ -58,7 +58,7 @@ app.get('/health', async (req, res) => {
 });
 
 /**
- * Search endpoint
+ * NEW Search endpoint (v4.0)
  * GET /api/search?query=AAPL
  */
 app.get('/api/search', async (req, res) => {
@@ -72,6 +72,34 @@ app.get('/api/search', async (req, res) => {
             });
         }
 
+        const results = await aggregator.search(query);
+        res.json(results);
+        
+    } catch (error) {
+        console.error('Search error:', error);
+        res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+});
+
+/**
+ * OLD Search endpoint (v3.0 retrocompatibility)
+ * GET /api/financial/search?query=AAPL
+ */
+app.get('/api/financial/search', async (req, res) => {
+    try {
+        const { query } = req.query;
+        
+        if (!query || query.trim().length === 0) {
+            return res.status(400).json({
+                success: false,
+                error: 'Query parameter is required'
+            });
+        }
+
+        console.log('[RETROCOMPAT] Using old endpoint /api/financial/search');
         const results = await aggregator.search(query);
         res.json(results);
         
@@ -168,7 +196,7 @@ app.get('/api/historical/:symbol', async (req, res) => {
 });
 
 /**
- * 🆕 GET CACHE STATISTICS
+ * GET CACHE STATISTICS
  * GET /api/cache/stats
  */
 app.get('/api/cache/stats', async (req, res) => {
@@ -189,7 +217,7 @@ app.get('/api/cache/stats', async (req, res) => {
 });
 
 /**
- * 🆕 CLEAR CACHE (USE WITH CAUTION!)
+ * CLEAR CACHE (USE WITH CAUTION!)
  * DELETE /api/cache
  */
 app.delete('/api/cache', async (req, res) => {
@@ -216,9 +244,11 @@ app.use((req, res) => {
     res.status(404).json({
         success: false,
         error: 'Endpoint not found',
+        requestedPath: req.path,
         availableEndpoints: [
             'GET /health',
             'GET /api/search?query=AAPL',
+            'GET /api/financial/search?query=AAPL (old endpoint)',
             'GET /api/isin/:isin',
             'GET /api/quote/:symbol',
             'GET /api/historical/:symbol',
@@ -247,7 +277,8 @@ app.listen(PORT, () => {
     console.log('='.repeat(70));
     console.log(`✅ Server running on port ${PORT}`);
     console.log(`📍 Health check: http://localhost:${PORT}/health`);
-    console.log(`🔍 Search: http://localhost:${PORT}/api/search?query=AAPL`);
+    console.log(`🔍 Search (NEW): http://localhost:${PORT}/api/search?query=AAPL`);
+    console.log(`🔍 Search (OLD): http://localhost:${PORT}/api/financial/search?query=AAPL`);
     console.log(`📊 Cache stats: http://localhost:${PORT}/api/cache/stats`);
     console.log('='.repeat(70));
     console.log('📦 Data Sources (Priority Order):');
