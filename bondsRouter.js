@@ -3,6 +3,7 @@
  * P.IVA: 04219740364
  * 
  * Bonds Router - Backend Endpoints for Bonds Data
+ * WITH FULL RETROCOMPATIBILITY FOR OLD CATEGORY NAMES
  */
 
 const express = require('express');
@@ -13,6 +14,39 @@ const router = express.Router();
 
 // Path to bonds data file
 const BONDS_DATA_PATH = path.join(__dirname, 'data', 'bonds-data.json');
+
+// RETROCOMPATIBILITY MAPPING: old names → new names
+const CATEGORY_MAPPING = {
+    // Old names (from frontend)
+    'it-btp': 'it-governativi',
+    'it-bot': 'it-governativi',
+    'it-cct': 'it-governativi',
+    'it-ctz': 'it-governativi',
+    'gov-it-btp': 'it-governativi',
+    
+    'eu-governativi-europa': 'eu-governativi',
+    'gov-eu': 'eu-governativi',
+    
+    'sovranazionali': 'sovranazionali',  // Already correct
+    'supranational': 'sovranazionali',
+    
+    'corporate': 'corporate',  // Already correct
+    
+    // New names (if called directly)
+    'it-governativi': 'it-governativi',
+    'eu-governativi': 'eu-governativi'
+};
+
+/**
+ * Normalize category name using mapping
+ */
+function normalizeCategory(category) {
+    const normalized = CATEGORY_MAPPING[category.toLowerCase()];
+    if (!normalized) {
+        return null;  // Invalid category
+    }
+    return normalized;
+}
 
 /**
  * Load bonds data from file
@@ -68,12 +102,29 @@ router.get('/categories', async (req, res) => {
  * GET /api/bonds/:category
  * Get all bonds in a specific category
  * Query params: limit (default 100), offset (default 0)
+ * SUPPORTS OLD AND NEW CATEGORY NAMES
  */
 router.get('/:category', async (req, res) => {
     try {
         const { category } = req.params;
         const limit = parseInt(req.query.limit) || 100;
         const offset = parseInt(req.query.offset) || 0;
+
+        console.log(`[BondsRouter] Request for category: ${category}`);
+
+        // Normalize category name (old → new)
+        const normalizedCategory = normalizeCategory(category);
+        
+        if (!normalizedCategory) {
+            return res.status(404).json({
+                success: false,
+                error: `Unknown category '${category}'`,
+                hint: 'Available categories: it-governativi, eu-governativi, sovranazionali, corporate',
+                retrocompatible: 'Also accepts: it-btp, it-bot, it-cct, it-ctz, gov-it-btp, eu-governativi-europa, gov-eu, supranational'
+            });
+        }
+
+        console.log(`[BondsRouter] Normalized to: ${normalizedCategory}`);
 
         const bondsData = await loadBondsData();
         
@@ -84,12 +135,12 @@ router.get('/:category', async (req, res) => {
             });
         }
 
-        const categoryData = bondsData.categories[category];
+        const categoryData = bondsData.categories[normalizedCategory];
         
         if (!categoryData) {
             return res.status(404).json({
                 success: false,
-                error: `Category '${category}' not found`,
+                error: `Category '${normalizedCategory}' not found in database`,
                 availableCategories: Object.keys(bondsData.categories)
             });
         }
@@ -98,10 +149,13 @@ router.get('/:category', async (req, res) => {
         const totalBonds = categoryData.bonds.length;
         const paginatedBonds = categoryData.bonds.slice(offset, offset + limit);
 
+        console.log(`[BondsRouter] Returning ${paginatedBonds.length} bonds from ${totalBonds} total`);
+
         res.json({
             success: true,
             category: {
-                id: category,
+                id: normalizedCategory,
+                requestedAs: category,  // Show what user requested
                 name: categoryData.name,
                 description: categoryData.description
             },
@@ -195,7 +249,8 @@ router.get('/stats', async (req, res) => {
         res.json({
             success: true,
             statistics: bondsData.statistics,
-            lastUpdate: bondsData.lastUpdate
+            lastUpdate: bondsData.lastUpdate,
+            categoryMapping: CATEGORY_MAPPING  // Include mapping for reference
         });
 
     } catch (error) {
