@@ -2,9 +2,9 @@
  * Copyright (c) 2024-2025 Mutna S.R.L.S. - All Rights Reserved
  * P.IVA: 04219740364
  * 
- * Multi-Source Data Aggregator V4.1 HYBRID
+ * Multi-Source Data Aggregator V4.2 FINAL
  * SEARCH: TwelveData primary for EU markets
- * QUOTE: Yahoo primary for fundamental data
+ * QUOTE: Yahoo primary (complete data), TwelveData fallback + separate fundamentals call
  * CACHE: Redis/Upstash for intelligent caching
  * PERFORMANCE: Limit 3 results, sequential with delay
  */
@@ -29,7 +29,7 @@ class DataAggregatorV4 {
         // Priority for SEARCH: TwelveData > Yahoo > Finnhub > AlphaVantage
         this.sources = ['twelvedata', 'yahoo', 'finnhub', 'alphavantage'];
         
-        console.log('[DataAggregatorV4] Initialized with Redis caching (HYBRID mode)');
+        console.log('[DataAggregatorV4] Initialized with Redis caching + TwelveData fundamentals fallback');
     }
 
     /**
@@ -246,7 +246,7 @@ class DataAggregatorV4 {
 
     /**
      * Get quote with intelligent routing + CACHE
-     * CRITICAL: Yahoo FIRST for fundamental data!
+     * STRATEGY: Yahoo first (complete), then TwelveData price + fundamentals
      */
     async getQuote(symbol) {
         console.log(`[DataAggregatorV4] Getting quote for: ${symbol}`);
@@ -261,11 +261,11 @@ class DataAggregatorV4 {
             };
         }
 
-        // ✅ TRY YAHOO FIRST (has fundamental data!)
+        // ✅ TRY YAHOO FIRST (has ALL data including fundamentals!)
         try {
             const yahooQuote = await this.yahoo.getQuote(symbol);
             if (yahooQuote.success && yahooQuote.data) {
-                console.log(`[yahoo] Quote found: ${yahooQuote.data.price} ${yahooQuote.data.currency}`);
+                console.log(`[yahoo] Quote found: ${yahooQuote.data.price} ${yahooQuote.data.currency} (with fundamentals)`);
                 
                 // SAVE TO CACHE
                 await this.cache.set('quote', symbol, yahooQuote);
@@ -276,22 +276,43 @@ class DataAggregatorV4 {
             console.error(`[yahoo] Quote error: ${error.message}`);
         }
 
-        // Fallback to TwelveData
+        // ✅ FALLBACK: TwelveData for price + separate fundamentals call
         try {
             const twelveQuote = await this.twelvedata.getQuote(symbol);
             if (twelveQuote.success && twelveQuote.data) {
                 console.log(`[twelvedata] Quote found: ${twelveQuote.data.price} ${twelveQuote.data.currency}`);
                 
-                // SAVE TO CACHE
-                await this.cache.set('quote', symbol, twelveQuote);
+                // 🆕 GET FUNDAMENTALS from TwelveData
+                console.log(`[DataAggregatorV4] Fetching fundamentals from TwelveData for ${symbol}...`);
+                const fundamentals = await this.twelvedata.getFundamentals(symbol);
                 
-                return twelveQuote;
+                // Combine price data with fundamentals
+                const combinedQuote = {
+                    ...twelveQuote,
+                    data: {
+                        ...twelveQuote.data,
+                        marketCap: fundamentals.success ? fundamentals.data.marketCap : null,
+                        peRatio: fundamentals.success ? fundamentals.data.peRatio : null,
+                        dividendYield: fundamentals.success ? fundamentals.data.dividendYield : null,
+                        week52High: fundamentals.success ? fundamentals.data.week52High : null,
+                        week52Low: fundamentals.success ? fundamentals.data.week52Low : null
+                    }
+                };
+                
+                if (fundamentals.success) {
+                    console.log(`[twelvedata] Added fundamentals for ${symbol}`);
+                }
+                
+                // SAVE TO CACHE
+                await this.cache.set('quote', symbol, combinedQuote);
+                
+                return combinedQuote;
             }
         } catch (error) {
             console.error(`[twelvedata] Quote error: ${error.message}`);
         }
 
-        // Fallback to Finnhub
+        // Fallback to Finnhub (no fundamentals)
         try {
             const finnhubQuote = await this.finnhub.getQuote(symbol);
             if (finnhubQuote.success && finnhubQuote.data) {
@@ -306,7 +327,7 @@ class DataAggregatorV4 {
             console.error(`[finnhub] Quote error: ${error.message}`);
         }
 
-        // Fallback to Alpha Vantage
+        // Fallback to Alpha Vantage (no fundamentals)
         try {
             const avQuote = await this.alphavantage.getQuote(symbol);
             if (avQuote.success && avQuote.data) {
@@ -461,7 +482,7 @@ class DataAggregatorV4 {
 
         return {
             status: 'operational',
-            version: '4.1.0-HYBRID',
+            version: '4.2.0-FINAL',
             sources: sources,
             twelveDataUsage: usageStats,
             redis: {

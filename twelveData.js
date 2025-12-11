@@ -2,9 +2,10 @@
  * Copyright (c) 2024-2025 Mutna S.R.L.S. - All Rights Reserved
  * P.IVA: 04219740364
  * 
- * Twelve Data API Client (PRIMARY Source for European Markets)
+ * Twelve Data API Client V4.2 (PRIMARY Source for European Markets)
  * Plan: Free tier - 800 requests/day, 8 requests/minute
  * Excellent for: Italian, French, German, UK stocks with correct EUR/GBP pricing
+ * NEW: Fundamental data support via /statistics endpoint
  */
 
 const axios = require('axios');
@@ -222,6 +223,63 @@ class TwelveDataClient {
 
         } catch (error) {
             console.error('[TwelveData] Quote error:', error.message);
+            return { success: false, error: error.message };
+        }
+    }
+
+    /**
+     * ✨ NEW: Get fundamental data (Market Cap, P/E, Dividend, 52W Range)
+     * Uses /statistics endpoint
+     */
+    async getFundamentals(symbol) {
+        try {
+            if (!this.apiKey) {
+                throw new Error('TwelveData API key not configured');
+            }
+
+            const url = `${this.baseUrl}/statistics`;
+            const response = await axios.get(url, {
+                params: {
+                    symbol: symbol,
+                    apikey: this.apiKey
+                },
+                timeout: 10000
+            });
+
+            this.requestCount++;
+
+            const data = response.data;
+            
+            if (!data || data.status === 'error' || !data.statistics) {
+                console.log('[TwelveData] No fundamental data for:', symbol);
+                return { success: false };
+            }
+
+            const stats = data.statistics.valuations_metrics || {};
+            const stockStats = data.statistics.stock_statistics || {};
+
+            const result = {
+                success: true,
+                data: {
+                    symbol: symbol,
+                    marketCap: stats.market_cap || null,
+                    peRatio: stats.trailing_pe || stats.forward_pe || null,
+                    dividendYield: stats.dividend_yield || null,
+                    week52High: stockStats.fifty_two_week_high || null,
+                    week52Low: stockStats.fifty_two_week_low || null
+                },
+                source: 'twelvedata'
+            };
+
+            console.log(`[TwelveData] Fundamentals for ${symbol}:`, {
+                marketCap: result.data.marketCap ? `$${(result.data.marketCap / 1e9).toFixed(2)}B` : 'N/A',
+                peRatio: result.data.peRatio || 'N/A'
+            });
+
+            return result;
+
+        } catch (error) {
+            console.error('[TwelveData] Fundamentals error:', error.message);
             return { success: false, error: error.message };
         }
     }
