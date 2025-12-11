@@ -2,21 +2,31 @@
  * Copyright (c) 2024-2025 Mutna S.R.L.S. - All Rights Reserved
  * P.IVA: 04219740364
  * 
- * ISIN Research Backend - Multi-Source Financial Data API
- * Version: 3.1 - Database Hybrid System + Complete Bond Integration
+ * ISIN Research Backend - Multi-Source Financial Data API V4.0
+ * WITH REDIS CACHE
  */
 
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const { Pool } = require('pg');
-const financialRoutes = require('./financial');
-const bondsRoutes = require('./bonds-complete'); // ← AGGIUNTO: Bond routes
+const DataAggregatorV4 = require('./dataAggregator-v4');
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
+
+// Initialize Data Aggregator with Redis
+const aggregator = new DataAggregatorV4({
+    redisUrl: process.env.REDIS_URL,
+    twelveDataKey: process.env.TWELVE_DATA_API_KEY,
+    finnhubKey: process.env.FINNHUB_API_KEY,
+    alphavantageKey: process.env.ALPHA_VANTAGE_API_KEY
+});
 
 // Middleware
-app.use(cors());
+app.use(cors({
+    origin: process.env.ALLOWED_ORIGINS?.split(',') || '*',
+    credentials: true
+}));
 app.use(express.json());
 
 // Request logging
@@ -25,162 +35,197 @@ app.use((req, res, next) => {
     next();
 });
 
-// Health check
-app.get('/health', (req, res) => {
-    res.json({
-        status: 'ok',
-        timestamp: new Date().toISOString(),
-        uptime: process.uptime(),
-        version: '3.1.0', // ← AGGIORNATO
-        database: process.env.DATABASE_URL ? 'configured' : 'not configured'
-    });
-});
+// ==================== ENDPOINTS ====================
 
-// ============================================================================
-// DATABASE SETUP ENDPOINT
-// ============================================================================
-// IMPORTANT: Remove this endpoint after initial database setup!
-// Visit: https://isin-backend.onrender.com/setup-database (one time only)
-// ============================================================================
-
-app.get('/setup-database', async (req, res) => {
-    if (!process.env.DATABASE_URL) {
-        return res.status(500).json({
-            success: false,
-            error: 'DATABASE_URL not configured in environment variables'
+/**
+ * Health Check + Redis Status
+ */
+app.get('/health', async (req, res) => {
+    try {
+        const health = await aggregator.healthCheck();
+        res.json({
+            status: 'ok',
+            timestamp: new Date().toISOString(),
+            uptime: process.uptime(),
+            version: '4.0.0',
+            ...health
+        });
+    } catch (error) {
+        res.status(500).json({
+            status: 'error',
+            error: error.message
         });
     }
+});
 
-    const pool = new Pool({
-        connectionString: process.env.DATABASE_URL,
-        ssl: { rejectUnauthorized: false }
-    });
-
-    const schema = `
--- Drop existing tables
-DROP TABLE IF EXISTS cache_status CASCADE;
-DROP TABLE IF EXISTS quotes CASCADE;
-DROP TABLE IF EXISTS instruments CASCADE;
-
--- Instruments table
-CREATE TABLE instruments (
-    id SERIAL PRIMARY KEY,
-    isin VARCHAR(12) UNIQUE NOT NULL,
-    symbol VARCHAR(20) NOT NULL,
-    name VARCHAR(255) NOT NULL,
-    exchange VARCHAR(50),
-    currency VARCHAR(3) DEFAULT 'USD',
-    type VARCHAR(50),
-    country VARCHAR(2),
-    sector VARCHAR(100),
-    industry VARCHAR(100),
-    market_cap BIGINT,
-    pe_ratio DECIMAL(10, 2),
-    dividend_yield DECIMAL(6, 4),
-    week_52_high DECIMAL(18, 4),
-    week_52_low DECIMAL(18, 4),
-    description TEXT,
-    logo_url TEXT,
-    website VARCHAR(255),
-    data_source VARCHAR(50),
-    is_active BOOLEAN DEFAULT true,
-    created_at TIMESTAMP DEFAULT NOW(),
-    updated_at TIMESTAMP DEFAULT NOW()
-);
-
--- Quotes table
-CREATE TABLE quotes (
-    id SERIAL PRIMARY KEY,
-    instrument_id INTEGER NOT NULL REFERENCES instruments(id) ON DELETE CASCADE,
-    price DECIMAL(18, 4) NOT NULL,
-    change DECIMAL(18, 4),
-    change_percent DECIMAL(8, 4),
-    volume BIGINT,
-    open DECIMAL(18, 4),
-    high DECIMAL(18, 4),
-    low DECIMAL(18, 4),
-    previous_close DECIMAL(18, 4),
-    timestamp TIMESTAMP NOT NULL,
-    source VARCHAR(50),
-    created_at TIMESTAMP DEFAULT NOW(),
-    UNIQUE(instrument_id, timestamp)
-);
-
--- Cache status table
-CREATE TABLE cache_status (
-    cache_key VARCHAR(255) PRIMARY KEY,
-    instrument_id INTEGER REFERENCES instruments(id) ON DELETE CASCADE,
-    cache_type VARCHAR(50) NOT NULL,
-    expires_at TIMESTAMP NOT NULL,
-    hit_count INTEGER DEFAULT 0,
-    last_updated TIMESTAMP DEFAULT NOW()
-);
-
--- Indexes
-CREATE INDEX idx_instruments_isin ON instruments(isin);
-CREATE INDEX idx_instruments_symbol ON instruments(symbol);
-CREATE INDEX idx_instruments_exchange ON instruments(exchange);
-CREATE INDEX idx_quotes_instrument ON quotes(instrument_id);
-CREATE INDEX idx_quotes_timestamp ON quotes(timestamp DESC);
-CREATE INDEX idx_cache_expires ON cache_status(expires_at);
-
--- Initial seed data (Italian stocks)
-INSERT INTO instruments (isin, symbol, name, exchange, currency, type, country, sector, is_active) VALUES
-('IT0003128367', 'ENEL.MI', 'Enel S.p.A.', 'MIL', 'EUR', 'stock', 'IT', 'Utilities', true),
-('IT0003132476', 'ENI.MI', 'Eni S.p.A.', 'MIL', 'EUR', 'stock', 'IT', 'Energy', true),
-('IT0000072618', 'ISP.MI', 'Intesa Sanpaolo', 'MIL', 'EUR', 'stock', 'IT', 'Financial Services', true),
-('IT0005239360', 'UCG.MI', 'UniCredit S.p.A.', 'MIL', 'EUR', 'stock', 'IT', 'Financial Services', true),
-('IT0003796171', 'G.MI', 'Generali', 'MIL', 'EUR', 'stock', 'IT', 'Financial Services', true),
-('IT0003506190', 'TIT.MI', 'Telecom Italia', 'MIL', 'EUR', 'stock', 'IT', 'Communication Services', true),
-('IT0005218380', 'STLAM.MI', 'Stellantis N.V.', 'MIL', 'EUR', 'stock', 'IT', 'Consumer Cyclical', true),
-('IT0003242622', 'PRY.MI', 'Prysmian S.p.A.', 'MIL', 'EUR', 'stock', 'IT', 'Industrials', true)
-ON CONFLICT (isin) DO NOTHING;
-    `;
-
+/**
+ * Search endpoint
+ * GET /api/search?query=AAPL
+ */
+app.get('/api/search', async (req, res) => {
     try {
-        console.log('[DB Setup] Starting database initialization...');
-        await pool.query(schema);
+        const { query } = req.query;
         
-        const result = await pool.query('SELECT COUNT(*) as count FROM instruments');
-        const count = result.rows[0].count;
-        
-        console.log('[DB Setup] ✅ Database initialized successfully!');
-        console.log(`[DB Setup] 📊 Instruments count: ${count}`);
-        
-        res.json({
-            success: true,
-            message: '✅ Database setup completed successfully!',
-            instruments_count: count,
-            tables_created: ['instruments', 'quotes', 'cache_status'],
-            indexes_created: 6,
-            next_steps: [
-                '1. Remove this endpoint from server.js for security',
-                '2. Implement cache layer with Redis/Upstash',
-                '3. Create smart router for multi-layer data fetching'
-            ]
-        });
+        if (!query || query.trim().length === 0) {
+            return res.status(400).json({
+                success: false,
+                error: 'Query parameter is required'
+            });
+        }
+
+        const results = await aggregator.search(query);
+        res.json(results);
         
     } catch (error) {
-        console.error('[DB Setup] ❌ Error:', error);
+        console.error('Search error:', error);
         res.status(500).json({
             success: false,
-            error: error.message,
-            details: error.stack
+            error: error.message
         });
-    } finally {
-        await pool.end();
     }
 });
 
-// API Routes
-app.use('/api/financial', financialRoutes);
-app.use('/api/bonds', bondsRoutes); // ← AGGIUNTO: Bond API routes
+/**
+ * Search by ISIN
+ * GET /api/isin/:isin
+ */
+app.get('/api/isin/:isin', async (req, res) => {
+    try {
+        const { isin } = req.params;
+        
+        // Validate ISIN format (12 alphanumeric characters)
+        if (!/^[A-Z]{2}[A-Z0-9]{10}$/i.test(isin)) {
+            return res.status(400).json({
+                success: false,
+                error: 'Invalid ISIN format. Must be 12 alphanumeric characters (e.g. US0378331005)'
+            });
+        }
+
+        const results = await aggregator.searchByISIN(isin.toUpperCase());
+        res.json(results);
+        
+    } catch (error) {
+        console.error('ISIN search error:', error);
+        res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+});
+
+/**
+ * Get Quote
+ * GET /api/quote/:symbol
+ */
+app.get('/api/quote/:symbol', async (req, res) => {
+    try {
+        const { symbol } = req.params;
+        
+        if (!symbol || symbol.trim().length === 0) {
+            return res.status(400).json({
+                success: false,
+                error: 'Symbol parameter is required'
+            });
+        }
+
+        const quote = await aggregator.getQuote(symbol);
+        res.json(quote);
+        
+    } catch (error) {
+        console.error('Quote error:', error);
+        res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+});
+
+/**
+ * Get Historical Data
+ * GET /api/historical/:symbol?period=1M
+ */
+app.get('/api/historical/:symbol', async (req, res) => {
+    try {
+        const { symbol } = req.params;
+        const { period = '1M' } = req.query;
+        
+        if (!symbol || symbol.trim().length === 0) {
+            return res.status(400).json({
+                success: false,
+                error: 'Symbol parameter is required'
+            });
+        }
+
+        const data = await aggregator.getHistoricalData(symbol, period);
+        res.json(data);
+        
+    } catch (error) {
+        console.error('Historical data error:', error);
+        res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+});
+
+/**
+ * 🆕 GET CACHE STATISTICS
+ * GET /api/cache/stats
+ */
+app.get('/api/cache/stats', async (req, res) => {
+    try {
+        const stats = await aggregator.getCacheStats();
+        res.json({
+            success: true,
+            cache: stats,
+            timestamp: new Date().toISOString()
+        });
+    } catch (error) {
+        console.error('Cache stats error:', error);
+        res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+});
+
+/**
+ * 🆕 CLEAR CACHE (USE WITH CAUTION!)
+ * DELETE /api/cache
+ */
+app.delete('/api/cache', async (req, res) => {
+    try {
+        const cleared = await aggregator.clearCache();
+        res.json({
+            success: cleared,
+            message: cleared ? 'Cache cleared successfully' : 'Cache clear failed',
+            timestamp: new Date().toISOString()
+        });
+    } catch (error) {
+        console.error('Cache clear error:', error);
+        res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+});
+
+// ==================== ERROR HANDLERS ====================
 
 // 404 handler
 app.use((req, res) => {
     res.status(404).json({
         success: false,
-        error: 'Endpoint not found'
+        error: 'Endpoint not found',
+        availableEndpoints: [
+            'GET /health',
+            'GET /api/search?query=AAPL',
+            'GET /api/isin/:isin',
+            'GET /api/quote/:symbol',
+            'GET /api/historical/:symbol',
+            'GET /api/cache/stats',
+            'DELETE /api/cache'
+        ]
     });
 });
 
@@ -190,32 +235,33 @@ app.use((err, req, res, next) => {
     res.status(500).json({
         success: false,
         error: 'Internal server error',
-        message: err.message
+        message: process.env.NODE_ENV === 'development' ? err.message : 'Something went wrong'
     });
 });
 
-// Start server
+// ==================== START SERVER ====================
+
 app.listen(PORT, () => {
-    console.log('='.repeat(60));
-    console.log('ISIN Research Backend - Multi-Source v3.1'); // ← AGGIORNATO
-    console.log('WITH HYBRID DATABASE SYSTEM + COMPLETE BOND INTEGRATION'); // ← AGGIORNATO
-    console.log('Copyright (c) 2024-2025 Mutna S.R.L.S.');
-    console.log('='.repeat(60));
-    console.log(`Server running on port ${PORT}`);
-    console.log(`Health check: http://localhost:${PORT}/health`);
-    console.log(`API endpoint: http://localhost:${PORT}/api/financial/search`);
-    console.log(`Bonds API: http://localhost:${PORT}/api/bonds/search`); // ← AGGIUNTO
-    console.log(`DB Setup: http://localhost:${PORT}/setup-database`);
-    console.log('='.repeat(60));
-    console.log('Data sources:');
-    console.log('  1. PostgreSQL Database (Primary - Local cache)');
-    console.log('  2. Yahoo Finance (Fallback - Unlimited)');
-    console.log('  3. Finnhub (Fallback - 60 req/min)');
-    console.log('  4. Alpha Vantage (Fallback - 25 req/day)');
-    console.log('  5. Borsa Italiana (Bonds - 15 categories)'); // ← AGGIUNTO
-    console.log('='.repeat(60));
-    console.log('Database:', process.env.DATABASE_URL ? '✅ Configured' : '⚠️  Not configured');
-    console.log('='.repeat(60));
+    console.log('='.repeat(70));
+    console.log('🚀 ISIN Research Backend V4.0 - WITH REDIS CACHE');
+    console.log('Copyright (c) 2024-2025 Mutna S.R.L.S. (P.IVA: 04219740364)');
+    console.log('='.repeat(70));
+    console.log(`✅ Server running on port ${PORT}`);
+    console.log(`📍 Health check: http://localhost:${PORT}/health`);
+    console.log(`🔍 Search: http://localhost:${PORT}/api/search?query=AAPL`);
+    console.log(`📊 Cache stats: http://localhost:${PORT}/api/cache/stats`);
+    console.log('='.repeat(70));
+    console.log('📦 Data Sources (Priority Order):');
+    console.log('  1️⃣  TwelveData (Primary - 800 req/day - Best for EU)');
+    console.log('  2️⃣  Yahoo Finance (Fallback - Unlimited)');
+    console.log('  3️⃣  Finnhub (Fallback - 60 req/min)');
+    console.log('  4️⃣  Alpha Vantage (Fallback - 25 req/day)');
+    console.log('='.repeat(70));
+    console.log('⚡ Redis Cache:');
+    console.log(`  • Host: capital-swan-9164.upstash.io`);
+    console.log(`  • TTL: 5min (prices) | 1h (metrics) | 7d (logos)`);
+    console.log(`  • Expected hit rate: 70-80%`);
+    console.log('='.repeat(70));
 });
 
 module.exports = app;

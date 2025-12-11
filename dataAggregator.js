@@ -2,35 +2,111 @@
  * Copyright (c) 2024-2025 Mutna S.R.L.S. - All Rights Reserved
  * P.IVA: 04219740364
  * 
- * Multi-Source Data Aggregator
- * Aggregates financial data from Yahoo Finance, Finnhub, and Alpha Vantage
+ * Multi-Source Data Aggregator V4.0 - WITH REDIS CACHE
+ * PRIMARY: TwelveData (excellent for EU markets with correct EUR pricing)
+ * FALLBACK: Yahoo Finance, Finnhub, Alpha Vantage
+ * CACHE: Redis/Upstash for intelligent caching
  */
 
+const TwelveDataClient = require('./twelveData');
 const YahooFinanceClient = require('./yahooFinance');
 const FinnhubClient = require('./finnhub');
 const AlphaVantageClient = require('./alphaVantage');
-const axios = require('axios');
+const RedisCache = require('./redisCache');
 
-class DataAggregator {
+class DataAggregatorV4 {
     constructor(config = {}) {
+        // Initialize all data sources
+        this.twelvedata = new TwelveDataClient(config.twelveDataKey || process.env.TWELVE_DATA_API_KEY);
         this.yahoo = new YahooFinanceClient();
-        this.finnhub = new FinnhubClient(config.finnhubKey);
-        this.alphavantage = new AlphaVantageClient(config.alphavantageKey);
+        this.finnhub = new FinnhubClient(config.finnhubKey || process.env.FINNHUB_API_KEY);
+        this.alphavantage = new AlphaVantageClient(config.alphavantageKey || process.env.ALPHA_VANTAGE_API_KEY);
         
-        // FIXED: Finnhub PRIMARY (60 req/min, funzionante)
-        this.sources = ['finnhub', 'yahoo', 'alphavantage'];
+        // Initialize Redis Cache
+        this.cache = new RedisCache(config.redisUrl || process.env.REDIS_URL);
+        
+        // Priority order: TwelveData > Yahoo > Finnhub > AlphaVantage
+        this.sources = ['twelvedata', 'yahoo', 'finnhub', 'alphavantage'];
+        
+        console.log('[DataAggregatorV4] Initialized with Redis caching');
     }
 
     /**
-     * Search across all sources and merge results
+     * Determine if query is for European market
+     */
+    isEuropeanMarket(query) {
+        const upperQuery = query.toUpperCase();
+        
+        // Italian stocks
+        const italianStocks = ['ENEL', 'ENI', 'INTESA', 'UNICREDIT', 'GENERALI', 'FERRARI', 
+                               'STELLANTIS', 'LEONARDO', 'PRYSMIAN', 'TELECOM'];
+        
+        // Check if query contains European exchange suffixes
+        const europeanSuffixes = ['.MI', '.PA', '.DE', '.L', '.AS', '.SW', '.MC'];
+        
+        // Check if it's a known Italian stock or has EU suffix
+        return italianStocks.includes(upperQuery) || 
+               europeanSuffixes.some(suffix => upperQuery.includes(suffix));
+    }
+
+    /**
+     * Search across all sources with intelligent routing + CACHE
      */
     async search(query) {
-        console.log(`[DataAggregator] Searching for: "${query}"`);
+        console.log(`[DataAggregatorV4] Searching for: "${query}"`);
         
-        // Try all sources in parallel for maximum speed
+        // 1. CHECK CACHE FIRST
+        const cached = await this.cache.get('search', query);
+        if (cached) {
+            console.log(`[DataAggregatorV4] 🚀 CACHE HIT! Returning cached results`);
+            return {
+                ...cached,
+                fromCache: true,
+                cacheTimestamp: new Date().toISOString()
+            };
+        }
+        
+        const isEU = this.isEuropeanMarket(query);
+        console.log(`[DataAggregatorV4] European market: ${isEU ? 'YES' : 'NO'}`);
+
+        // For European markets, prioritize TwelveData
+        if (isEU) {
+            try {
+                const twelveResult = await this.twelvedata.search(query);
+                if (twelveResult.success && twelveResult.results.length > 0) {
+                    console.log(`[DataAggregatorV4] TwelveData found ${twelveResult.results.length} results (EU)`);
+                    
+                    // Enrich with quotes
+                    const enriched = await this.enrichWithQuotes(twelveResult.results);
+                    
+                    const response = {
+                        success: true,
+                        results: enriched,
+                        metadata: {
+                            totalResults: enriched.length,
+                            sources: ['twelvedata'],
+                            primarySource: 'twelvedata',
+                            region: 'EU',
+                            timestamp: new Date().toISOString(),
+                            fromCache: false
+                        }
+                    };
+                    
+                    // SAVE TO CACHE
+                    await this.cache.set('search', query, response);
+                    
+                    return response;
+                }
+            } catch (error) {
+                console.error(`[DataAggregatorV4] TwelveData error: ${error.message}`);
+            }
+        }
+
+        // Try all sources in parallel
         const searchPromises = [
-            this.finnhub.search(query).catch(e => ({ success: false, results: [], error: e.message })),
+            this.twelvedata.search(query).catch(e => ({ success: false, results: [], error: e.message })),
             this.yahoo.search(query).catch(e => ({ success: false, results: [], error: e.message })),
+            this.finnhub.search(query).catch(e => ({ success: false, results: [], error: e.message })),
             this.alphavantage.search(query).catch(e => ({ success: false, results: [], error: e.message }))
         ];
 
@@ -41,8 +117,6 @@ class DataAggregator {
             const source = this.sources[index];
             if (result.success && result.results.length > 0) {
                 console.log(`[${source}] Found ${result.results.length} results`);
-            } else {
-                console.log(`[${source}] No results or error: ${result.error || 'N/A'}`);
             }
         });
 
@@ -55,7 +129,8 @@ class DataAggregator {
                 results: [],
                 metadata: {
                     sources: this.sources,
-                    errors: results.map((r, i) => ({ source: this.sources[i], error: r.error }))
+                    errors: results.map((r, i) => ({ source: this.sources[i], error: r.error })),
+                    fromCache: false
                 }
             };
         }
@@ -63,15 +138,21 @@ class DataAggregator {
         // Enrich results with quotes from best available source
         const enrichedResults = await this.enrichWithQuotes(mergedResults);
 
-        return {
+        const response = {
             success: true,
             results: enrichedResults,
             metadata: {
                 totalResults: enrichedResults.length,
                 sources: this.sources.filter((_, i) => results[i].success),
-                timestamp: new Date().toISOString()
+                timestamp: new Date().toISOString(),
+                fromCache: false
             }
         };
+        
+        // SAVE TO CACHE
+        await this.cache.set('search', query, response);
+
+        return response;
     }
 
     /**
@@ -89,24 +170,23 @@ class DataAggregator {
                 const symbol = item.symbol;
                 
                 if (!symbolMap.has(symbol)) {
-                    // First time seeing this symbol
                     symbolMap.set(symbol, {
                         ...item,
                         sources: [source]
                     });
                 } else {
-                    // Symbol already exists, merge data
                     const existing = symbolMap.get(symbol);
                     
-                    // Prefer Yahoo Finance data, then Finnhub, then AlphaVantage
-                    if (source === 'yahoo' || (source === 'finnhub' && existing.sources[0] === 'alphavantage')) {
+                    // Prefer TwelveData, then Yahoo, then Finnhub, then AlphaVantage
+                    if (source === 'twelvedata' || 
+                        (source === 'yahoo' && existing.sources[0] !== 'twelvedata') ||
+                        (source === 'finnhub' && !['twelvedata', 'yahoo'].includes(existing.sources[0]))) {
                         symbolMap.set(symbol, {
                             ...existing,
                             ...item,
                             sources: [...existing.sources, source]
                         });
                     } else {
-                        // Just add the source
                         existing.sources.push(source);
                     }
                 }
@@ -118,81 +198,106 @@ class DataAggregator {
 
     /**
      * Enrich search results with real-time quotes
-     * FIXED: Limit to first 3 results + sequential to avoid rate limiting
      */
     async enrichWithQuotes(results) {
-        // FIXED: Limita a primi 3 risultati per evitare rate limiting
-        const limitedResults = results.slice(0, 3);
-        const enrichedResults = [];
-
-        // FIXED: Sequenziale invece di parallelo per evitare 403
-        for (const item of limitedResults) {
-            // If we already have price data, skip
+        const enrichPromises = results.map(async (item) => {
             if (item.price != null && typeof item.price === 'number') {
-                enrichedResults.push(item);
-                continue;
+                return item;
             }
 
-            // Try to get quote from best source
             const quote = await this.getQuote(item.symbol);
             
             if (quote.success && quote.data) {
-                enrichedResults.push({
+                return {
                     ...item,
                     price: quote.data.price,
                     change: quote.data.change,
                     changePercent: quote.data.changePercent,
                     currency: quote.data.currency || item.currency,
                     quoteSources: [quote.source]
-                });
-            } else {
-                enrichedResults.push(item);
+                };
             }
 
-            // Small delay to avoid rate limiting
-            await new Promise(resolve => setTimeout(resolve, 100));
-        }
+            return item;
+        });
 
-        return enrichedResults;
+        return await Promise.all(enrichPromises);
     }
 
     /**
-     * Get quote with automatic fallback
+     * Get quote with intelligent routing + CACHE
      */
     async getQuote(symbol) {
-        console.log(`[DataAggregator] Getting quote for: ${symbol}`);
+        console.log(`[DataAggregatorV4] Getting quote for: ${symbol}`);
 
-        // Try Finnhub first (funzionante con headers)
+        // 1. CHECK CACHE FIRST
+        const cached = await this.cache.get('quote', symbol);
+        if (cached) {
+            console.log(`[DataAggregatorV4] 🚀 QUOTE CACHE HIT: ${symbol}`);
+            return {
+                ...cached,
+                fromCache: true
+            };
+        }
+
+        // Try TwelveData first (best for EU markets)
         try {
-            const finnhubQuote = await this.finnhub.getQuote(symbol);
-            if (finnhubQuote.success && finnhubQuote.data) {
-                console.log(`[finnhub] Quote found for ${symbol}`);
-                return finnhubQuote;
+            const twelveQuote = await this.twelvedata.getQuote(symbol);
+            if (twelveQuote.success && twelveQuote.data) {
+                console.log(`[twelvedata] Quote found: ${twelveQuote.data.price} ${twelveQuote.data.currency}`);
+                
+                // SAVE TO CACHE
+                await this.cache.set('quote', symbol, twelveQuote);
+                
+                return twelveQuote;
             }
         } catch (error) {
-            console.error(`[finnhub] Error getting quote: ${error.message}`);
+            console.error(`[twelvedata] Quote error: ${error.message}`);
         }
 
         // Fallback to Yahoo
         try {
             const yahooQuote = await this.yahoo.getQuote(symbol);
             if (yahooQuote.success && yahooQuote.data) {
-                console.log(`[yahoo] Quote found for ${symbol}`);
+                console.log(`[yahoo] Quote found: ${yahooQuote.data.price} ${yahooQuote.data.currency}`);
+                
+                // SAVE TO CACHE
+                await this.cache.set('quote', symbol, yahooQuote);
+                
                 return yahooQuote;
             }
         } catch (error) {
-            console.error(`[yahoo] Error getting quote: ${error.message}`);
+            console.error(`[yahoo] Quote error: ${error.message}`);
+        }
+
+        // Fallback to Finnhub
+        try {
+            const finnhubQuote = await this.finnhub.getQuote(symbol);
+            if (finnhubQuote.success && finnhubQuote.data) {
+                console.log(`[finnhub] Quote found: ${finnhubQuote.data.price}`);
+                
+                // SAVE TO CACHE
+                await this.cache.set('quote', symbol, finnhubQuote);
+                
+                return finnhubQuote;
+            }
+        } catch (error) {
+            console.error(`[finnhub] Quote error: ${error.message}`);
         }
 
         // Fallback to Alpha Vantage
         try {
             const avQuote = await this.alphavantage.getQuote(symbol);
             if (avQuote.success && avQuote.data) {
-                console.log(`[alphavantage] Quote found for ${symbol}`);
+                console.log(`[alphavantage] Quote found: ${avQuote.data.price}`);
+                
+                // SAVE TO CACHE
+                await this.cache.set('quote', symbol, avQuote);
+                
                 return avQuote;
             }
         } catch (error) {
-            console.error(`[alphavantage] Error getting quote: ${error.message}`);
+            console.error(`[alphavantage] Quote error: ${error.message}`);
         }
 
         return {
@@ -202,35 +307,44 @@ class DataAggregator {
     }
 
     /**
-     * Get historical data with automatic fallback
+     * Get historical data with intelligent routing
      */
     async getHistoricalData(symbol, period = '1M') {
-        console.log(`[DataAggregator] Getting historical data for: ${symbol}, period: ${period}`);
+        console.log(`[DataAggregatorV4] Getting historical data: ${symbol}, period: ${period}`);
 
-        // Try Yahoo first (best historical data)
+        // Try TwelveData first
+        try {
+            const twelveHistorical = await this.twelvedata.getHistoricalData(symbol, period);
+            if (twelveHistorical.success && twelveHistorical.data && twelveHistorical.data.length > 0) {
+                console.log(`[twelvedata] Historical data: ${twelveHistorical.data.length} points`);
+                return twelveHistorical;
+            }
+        } catch (error) {
+            console.error(`[twelvedata] Historical error: ${error.message}`);
+        }
+
+        // Fallback to Yahoo
         try {
             const yahooHistorical = await this.yahoo.getHistoricalData(symbol, period);
             if (yahooHistorical.success && yahooHistorical.data && yahooHistorical.data.length > 0) {
-                console.log(`[yahoo] Historical data found: ${yahooHistorical.data.length} points`);
+                console.log(`[yahoo] Historical data: ${yahooHistorical.data.length} points`);
                 return yahooHistorical;
             }
         } catch (error) {
-            console.error(`[yahoo] Error getting historical data: ${error.message}`);
+            console.error(`[yahoo] Historical error: ${error.message}`);
         }
 
         // Fallback to Alpha Vantage
         try {
             const avHistorical = await this.alphavantage.getHistoricalData(symbol, period);
             if (avHistorical.success && avHistorical.data && avHistorical.data.length > 0) {
-                console.log(`[alphavantage] Historical data found: ${avHistorical.data.length} points`);
+                console.log(`[alphavantage] Historical data: ${avHistorical.data.length} points`);
                 return avHistorical;
             }
         } catch (error) {
-            console.error(`[alphavantage] Error getting historical data: ${error.message}`);
+            console.error(`[alphavantage] Historical error: ${error.message}`);
         }
 
-        // Finnhub doesn't provide good historical data for free tier
-        
         return {
             success: false,
             error: 'No historical data available from any source'
@@ -238,25 +352,51 @@ class DataAggregator {
     }
 
     /**
-     * Search by ISIN with fallback
+     * Search by ISIN with fallback + CACHE
      */
     async searchByISIN(isin) {
-        console.log(`[DataAggregator] Searching by ISIN: ${isin}`);
+        console.log(`[DataAggregatorV4] Searching by ISIN: ${isin}`);
 
-        // Try Yahoo first
+        // 1. CHECK CACHE FIRST
+        const cached = await this.cache.get('isin', isin);
+        if (cached) {
+            console.log(`[DataAggregatorV4] 🚀 ISIN CACHE HIT!`);
+            return {
+                ...cached,
+                fromCache: true
+            };
+        }
+
+        // Try TwelveData
+        try {
+            const twelveResult = await this.twelvedata.searchByISIN(isin);
+            if (twelveResult.success && twelveResult.results.length > 0) {
+                // SAVE TO CACHE (ISIN never changes, 30 days)
+                await this.cache.set('isin', isin, twelveResult);
+                return twelveResult;
+            }
+        } catch (error) {
+            console.error(`[twelvedata] ISIN search error: ${error.message}`);
+        }
+
+        // Try Yahoo
         try {
             const yahooResult = await this.yahoo.searchByISIN(isin);
             if (yahooResult.success && yahooResult.results.length > 0) {
+                // SAVE TO CACHE
+                await this.cache.set('isin', isin, yahooResult);
                 return yahooResult;
             }
         } catch (error) {
             console.error(`[yahoo] ISIN search error: ${error.message}`);
         }
 
-        // Fallback to Finnhub
+        // Try Finnhub
         try {
             const finnhubResult = await this.finnhub.searchByISIN(isin);
             if (finnhubResult.success && finnhubResult.results.length > 0) {
+                // SAVE TO CACHE
+                await this.cache.set('isin', isin, finnhubResult);
                 return finnhubResult;
             }
         } catch (error) {
@@ -271,196 +411,59 @@ class DataAggregator {
     }
 
     /**
-     * Get full instrument details with rich metrics
-     * NEW: Includes Market Cap, P/E, Dividend, Description, Logo
-     */
-    async getInstrumentDetails(symbol) {
-        console.log(`[DataAggregator] Getting full details for: ${symbol}`);
-
-        // Get quote data
-        const quote = await this.getQuote(symbol);
-        
-        // Get company overview (metrics)
-        const overview = await this.getCompanyOverview(symbol);
-        
-        // Get logo
-        const logo = await this.getCompanyLogo(symbol, overview.data?.Name);
-
-        return {
-            success: true,
-            data: {
-                // Basic info
-                symbol: symbol,
-                name: overview.data?.Name || quote.data?.name || symbol,
-                exchange: overview.data?.Exchange || quote.data?.exchange || 'UNKNOWN',
-                currency: overview.data?.Currency || quote.data?.currency || 'USD',
-                
-                // Price data
-                price: quote.data?.price || null,
-                change: quote.data?.change || null,
-                changePercent: quote.data?.changePercent || null,
-                
-                // Key Metrics
-                marketCap: overview.data?.MarketCapitalization || null,
-                peRatio: overview.data?.PERatio || null,
-                pegRatio: overview.data?.PEGRatio || null,
-                dividendYield: overview.data?.DividendYield || null,
-                eps: overview.data?.EPS || null,
-                beta: overview.data?.Beta || null,
-                
-                // 52-Week Range
-                week52High: overview.data?.['52WeekHigh'] || null,
-                week52Low: overview.data?.['52WeekLow'] || null,
-                
-                // Volume
-                volume: quote.data?.volume || null,
-                
-                // Company Info
-                sector: overview.data?.Sector || null,
-                industry: overview.data?.Industry || null,
-                description: overview.data?.Description || null,
-                website: overview.data?.['Website'] || null,
-                
-                // Additional Metrics
-                bookValue: overview.data?.BookValue || null,
-                profitMargin: overview.data?.ProfitMargin || null,
-                
-                // Visual
-                logo: logo,
-                
-                // Metadata
-                lastUpdated: new Date().toISOString(),
-                sources: {
-                    quote: quote.source,
-                    overview: overview.source,
-                    logo: logo ? 'clearbit' : null
-                }
-            }
-        };
-    }
-
-    /**
-     * Get company overview with metrics from Alpha Vantage
-     */
-    async getCompanyOverview(symbol) {
-        try {
-            const avOverview = await this.alphavantage.getCompanyOverview(symbol);
-            if (avOverview.success && avOverview.data) {
-                console.log(`[alphavantage] Overview found for ${symbol}`);
-                return avOverview;
-            }
-        } catch (error) {
-            console.error(`[alphavantage] Overview error: ${error.message}`);
-        }
-
-        return { success: false, data: null, source: null };
-    }
-
-    /**
-     * Get company logo from Clearbit (free)
-     */
-    async getCompanyLogo(symbol, companyName) {
-        try {
-            const domain = this.guessDomain(symbol, companyName);
-            if (!domain) return null;
-            
-            const logoUrl = `https://logo.clearbit.com/${domain}`;
-            const response = await axios.head(logoUrl, { timeout: 3000 });
-            
-            return response.status === 200 ? logoUrl : null;
-        } catch (error) {
-            return null;
-        }
-    }
-
-    /**
-     * Guess company domain from symbol/name for logo fetching
-     */
-    guessDomain(symbol, companyName) {
-        // Known domains mapping
-        const knownDomains = {
-            'AAPL': 'apple.com',
-            'MSFT': 'microsoft.com',
-            'GOOGL': 'google.com',
-            'GOOG': 'google.com',
-            'AMZN': 'amazon.com',
-            'META': 'meta.com',
-            'TSLA': 'tesla.com',
-            'NVDA': 'nvidia.com',
-            'JPM': 'jpmorganchase.com',
-            'V': 'visa.com',
-            'WMT': 'walmart.com',
-            'DIS': 'disney.com',
-            'NFLX': 'netflix.com',
-            'INTC': 'intel.com',
-            'AMD': 'amd.com',
-            'ORCL': 'oracle.com',
-            'IBM': 'ibm.com',
-            'ENEL.MI': 'enel.com',
-            'ENI.MI': 'eni.com',
-            'ISP.MI': 'intesasanpaolo.com',
-            'UCG.MI': 'unicreditgroup.eu',
-            'STLA.MI': 'stellantis.com'
-        };
-
-        if (knownDomains[symbol]) {
-            return knownDomains[symbol];
-        }
-
-        // Try to extract from company name
-        if (companyName) {
-            const name = companyName.toLowerCase()
-                .replace(/\s+(inc|corp|corporation|ltd|limited|plc|spa|nv|ag|gmbh|sa)\b.*$/i, '')
-                .replace(/[^a-z0-9]/g, '');
-            
-            if (name) {
-                return `${name}.com`;
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * Format large numbers for display
-     */
-    static formatNumber(num) {
-        if (!num) return 'N/A';
-        const n = parseFloat(num);
-        if (isNaN(n)) return 'N/A';
-        
-        if (n >= 1e12) return `$${(n / 1e12).toFixed(2)}T`;
-        if (n >= 1e9) return `$${(n / 1e9).toFixed(2)}B`;
-        if (n >= 1e6) return `$${(n / 1e6).toFixed(2)}M`;
-        return `$${n.toFixed(2)}`;
-    }
-
-    /**
-     * Format percentage
-     */
-    static formatPercent(num) {
-        if (!num) return 'N/A';
-        const n = parseFloat(num);
-        if (isNaN(n)) return 'N/A';
-        return `${(n * 100).toFixed(2)}%`;
-    }
-
-    /**
-     * Health check for all sources
+     * Health check for all sources + Redis
      */
     async healthCheck() {
+        console.log('[DataAggregatorV4] Running health check...');
+        
         const checks = await Promise.all([
-            this.yahoo.search('AAPL').then(() => ({ yahoo: 'OK' })).catch(() => ({ yahoo: 'FAIL' })),
-            this.finnhub.search('AAPL').then(() => ({ finnhub: 'OK' })).catch(() => ({ finnhub: 'FAIL' })),
-            this.alphavantage.search('IBM').then(() => ({ alphavantage: 'OK' })).catch(() => ({ alphavantage: 'FAIL' }))
+            this.twelvedata.search('AAPL')
+                .then(() => ({ twelvedata: 'OK' }))
+                .catch(() => ({ twelvedata: 'FAIL' })),
+            this.yahoo.search('AAPL')
+                .then(() => ({ yahoo: 'OK' }))
+                .catch(() => ({ yahoo: 'FAIL' })),
+            this.finnhub.search('AAPL')
+                .then(() => ({ finnhub: 'OK' }))
+                .catch(() => ({ finnhub: 'FAIL' })),
+            this.alphavantage.search('IBM')
+                .then(() => ({ alphavantage: 'OK' }))
+                .catch(() => ({ alphavantage: 'FAIL' }))
         ]);
+
+        const sources = Object.assign({}, ...checks);
+        const usageStats = this.twelvedata.getUsageStats();
+        
+        // Redis health check
+        const redisHealth = await this.cache.healthCheck();
+        const cacheStats = await this.cache.getStats();
 
         return {
             status: 'operational',
-            sources: Object.assign({}, ...checks),
+            version: '4.0.0',
+            sources: sources,
+            twelveDataUsage: usageStats,
+            redis: {
+                health: redisHealth,
+                stats: cacheStats
+            },
             timestamp: new Date().toISOString()
         };
     }
+
+    /**
+     * Get cache statistics
+     */
+    async getCacheStats() {
+        return await this.cache.getStats();
+    }
+
+    /**
+     * Clear all cache
+     */
+    async clearCache() {
+        return await this.cache.clearAll();
+    }
 }
 
-module.exports = DataAggregator;
+module.exports = DataAggregatorV4;

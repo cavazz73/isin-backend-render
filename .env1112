@@ -1,0 +1,9 @@
+# ISIN Research Backend - Environment Variables
+PORT=3001
+NODE_ENV=production
+
+# Finnhub API Key (backup)
+FINNHUB_API_KEY=d4g3tepr01qgiieo60qgd4g3tepr01qgiieo60r0
+
+# Alpha Vantage API Key (backup)
+ALPHA_VANTAGE_API_KEY=5CU9FRS894ZHVEXF
