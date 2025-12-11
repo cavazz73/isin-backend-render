@@ -3,7 +3,7 @@
  * P.IVA: 04219740364
  * 
  * ISIN Research Backend - Multi-Source Financial Data API V4.0
- * WITH REDIS CACHE
+ * WITH REDIS CACHE + FULL RETROCOMPATIBILITY
  */
 
 const express = require('express');
@@ -103,7 +103,7 @@ app.get('/api/financial/search', async (req, res) => {
             });
         }
 
-        console.log('[RETROCOMPAT] Using old endpoint /api/financial/search');
+        console.log('[RETROCOMPAT] /api/financial/search');
         const results = await aggregator.search(query);
         res.json(results);
         
@@ -145,7 +145,7 @@ app.get('/api/isin/:isin', async (req, res) => {
 });
 
 /**
- * Get Quote
+ * Get Quote (NEW)
  * GET /api/quote/:symbol
  */
 app.get('/api/quote/:symbol', async (req, res) => {
@@ -172,7 +172,35 @@ app.get('/api/quote/:symbol', async (req, res) => {
 });
 
 /**
- * Get Historical Data
+ * Get Quote Details (OLD - v3.0 retrocompatibility)
+ * GET /api/financial/details/:symbol
+ */
+app.get('/api/financial/details/:symbol', async (req, res) => {
+    try {
+        const { symbol } = req.params;
+        
+        if (!symbol || symbol.trim().length === 0) {
+            return res.status(400).json({
+                success: false,
+                error: 'Symbol parameter is required'
+            });
+        }
+
+        console.log('[RETROCOMPAT] /api/financial/details');
+        const quote = await aggregator.getQuote(symbol);
+        res.json(quote);
+        
+    } catch (error) {
+        console.error('Quote error:', error);
+        res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+});
+
+/**
+ * Get Historical Data (NEW)
  * GET /api/historical/:symbol?period=1M
  */
 app.get('/api/historical/:symbol', async (req, res) => {
@@ -187,6 +215,35 @@ app.get('/api/historical/:symbol', async (req, res) => {
             });
         }
 
+        const data = await aggregator.getHistoricalData(symbol, period);
+        res.json(data);
+        
+    } catch (error) {
+        console.error('Historical data error:', error);
+        res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+});
+
+/**
+ * Get Historical Data (OLD - v3.0 retrocompatibility)
+ * GET /api/financial/historical/:symbol?period=1M
+ */
+app.get('/api/financial/historical/:symbol', async (req, res) => {
+    try {
+        const { symbol } = req.params;
+        const { period = '1M' } = req.query;
+        
+        if (!symbol || symbol.trim().length === 0) {
+            return res.status(400).json({
+                success: false,
+                error: 'Symbol parameter is required'
+            });
+        }
+
+        console.log('[RETROCOMPAT] /api/financial/historical');
         const data = await aggregator.getHistoricalData(symbol, period);
         res.json(data);
         
@@ -251,11 +308,13 @@ app.use((req, res) => {
         requestedPath: req.path,
         availableEndpoints: [
             'GET /health',
-            'GET /api/search?query=AAPL (or ?q=AAPL)',
-            'GET /api/financial/search?query=AAPL (or ?q=AAPL)',
-            'GET /api/isin/:isin',
+            'GET /api/search?q=AAPL',
+            'GET /api/financial/search?q=AAPL (v3.0)',
             'GET /api/quote/:symbol',
+            'GET /api/financial/details/:symbol (v3.0)',
             'GET /api/historical/:symbol',
+            'GET /api/financial/historical/:symbol (v3.0)',
+            'GET /api/isin/:isin',
             'GET /api/cache/stats',
             'DELETE /api/cache'
         ]
@@ -276,25 +335,18 @@ app.use((err, req, res, next) => {
 
 app.listen(PORT, () => {
     console.log('='.repeat(70));
-    console.log('🚀 ISIN Research Backend V4.0 - WITH REDIS CACHE');
+    console.log('🚀 ISIN Research Backend V4.0 - REDIS + FULL RETROCOMPATIBILITY');
     console.log('Copyright (c) 2024-2025 Mutna S.R.L.S. (P.IVA: 04219740364)');
     console.log('='.repeat(70));
     console.log(`✅ Server running on port ${PORT}`);
-    console.log(`📍 Health check: http://localhost:${PORT}/health`);
-    console.log(`🔍 Search (NEW): http://localhost:${PORT}/api/search?q=AAPL`);
-    console.log(`🔍 Search (OLD): http://localhost:${PORT}/api/financial/search?q=AAPL`);
-    console.log(`📊 Cache stats: http://localhost:${PORT}/api/cache/stats`);
+    console.log(`📍 Health: /health`);
+    console.log(`🔍 Search: /api/search?q=AAPL OR /api/financial/search?q=AAPL`);
+    console.log(`📊 Details: /api/quote/:symbol OR /api/financial/details/:symbol`);
+    console.log(`📈 Historical: /api/historical/:symbol OR /api/financial/historical/:symbol`);
+    console.log(`💾 Cache: /api/cache/stats`);
     console.log('='.repeat(70));
-    console.log('📦 Data Sources (Priority Order):');
-    console.log('  1️⃣  TwelveData (Primary - 800 req/day - Best for EU)');
-    console.log('  2️⃣  Yahoo Finance (Fallback - Unlimited)');
-    console.log('  3️⃣  Finnhub (Fallback - 60 req/min)');
-    console.log('  4️⃣  Alpha Vantage (Fallback - 25 req/day)');
-    console.log('='.repeat(70));
-    console.log('⚡ Redis Cache:');
-    console.log(`  • Host: capital-swan-9164.upstash.io`);
-    console.log(`  • TTL: 5min (prices) | 1h (metrics) | 7d (logos)`);
-    console.log(`  • Expected hit rate: 70-80%`);
+    console.log('📦 Data Sources: TwelveData → Yahoo → Finnhub → AlphaVantage');
+    console.log('⚡ Redis Cache: 70-80% hit rate expected');
     console.log('='.repeat(70));
 });
 
