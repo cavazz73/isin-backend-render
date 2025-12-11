@@ -99,10 +99,123 @@ router.get('/categories', async (req, res) => {
 });
 
 /**
+ * GET /api/bonds/stats
+ * Get bonds statistics
+ */
+router.get('/stats', async (req, res) => {
+    try {
+        const bondsData = await loadBondsData();
+        
+        if (!bondsData) {
+            return res.status(500).json({
+                success: false,
+                error: 'Bonds data not available'
+            });
+        }
+
+        res.json({
+            success: true,
+            statistics: bondsData.statistics,
+            lastUpdate: bondsData.lastUpdate,
+            categoryMapping: CATEGORY_MAPPING  // Include mapping for reference
+        });
+
+    } catch (error) {
+        console.error('[BondsRouter] Error in /stats:', error);
+        res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+});
+
+/**
+ * GET /api/bonds/search (without ISIN)
+ * Returns help message about how to use search endpoint
+ */
+router.get('/search', async (req, res) => {
+    console.log('[BondsRouter] Search endpoint called without ISIN');
+    
+    res.status(400).json({
+        success: false,
+        error: 'ISIN required for search',
+        usage: 'Use /api/bonds/search/:isin to search by ISIN',
+        example: '/api/bonds/search/IT0005508251',
+        hint: 'To get all bonds in a category, use /api/bonds/:category?limit=100',
+        availableCategories: [
+            'it-governativi (or it-btp, it-bot, it-cct, it-ctz)',
+            'eu-governativi (or eu-governativi-europa)',
+            'sovranazionali (or supranational)',
+            'corporate'
+        ]
+    });
+});
+
+/**
+ * GET /api/bonds/search/:isin
+ * Search bond by ISIN
+ */
+router.get('/search/:isin', async (req, res) => {
+    try {
+        const { isin } = req.params;
+        
+        console.log(`[BondsRouter] Searching for ISIN: ${isin}`);
+
+        const bondsData = await loadBondsData();
+        
+        if (!bondsData) {
+            return res.status(500).json({
+                success: false,
+                error: 'Bonds data not available'
+            });
+        }
+
+        // Search across all categories
+        let foundBond = null;
+        let foundCategory = null;
+
+        for (const [categoryKey, categoryData] of Object.entries(bondsData.categories)) {
+            const bond = categoryData.bonds.find(b => b.isin === isin.toUpperCase());
+            if (bond) {
+                foundBond = bond;
+                foundCategory = categoryKey;
+                break;
+            }
+        }
+
+        if (!foundBond) {
+            console.log(`[BondsRouter] ISIN not found: ${isin}`);
+            return res.status(404).json({
+                success: false,
+                error: `Bond with ISIN '${isin}' not found`
+            });
+        }
+
+        console.log(`[BondsRouter] Found bond in category: ${foundCategory}`);
+
+        res.json({
+            success: true,
+            bond: foundBond,
+            category: foundCategory,
+            lastUpdate: bondsData.lastUpdate
+        });
+
+    } catch (error) {
+        console.error('[BondsRouter] Error in /search/:isin:', error);
+        res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+});
+
+/**
  * GET /api/bonds/:category
  * Get all bonds in a specific category
  * Query params: limit (default 100), offset (default 0)
  * SUPPORTS OLD AND NEW CATEGORY NAMES
+ * 
+ * NOTE: This MUST be the last route because it's a catch-all!
  */
 router.get('/:category', async (req, res) => {
     try {
@@ -171,90 +284,6 @@ router.get('/:category', async (req, res) => {
 
     } catch (error) {
         console.error('[BondsRouter] Error in /:category:', error);
-        res.status(500).json({
-            success: false,
-            error: error.message
-        });
-    }
-});
-
-/**
- * GET /api/bonds/search/:isin
- * Search bond by ISIN
- */
-router.get('/search/:isin', async (req, res) => {
-    try {
-        const { isin } = req.params;
-
-        const bondsData = await loadBondsData();
-        
-        if (!bondsData) {
-            return res.status(500).json({
-                success: false,
-                error: 'Bonds data not available'
-            });
-        }
-
-        // Search across all categories
-        let foundBond = null;
-        let foundCategory = null;
-
-        for (const [categoryKey, categoryData] of Object.entries(bondsData.categories)) {
-            const bond = categoryData.bonds.find(b => b.isin === isin.toUpperCase());
-            if (bond) {
-                foundBond = bond;
-                foundCategory = categoryKey;
-                break;
-            }
-        }
-
-        if (!foundBond) {
-            return res.status(404).json({
-                success: false,
-                error: `Bond with ISIN '${isin}' not found`
-            });
-        }
-
-        res.json({
-            success: true,
-            bond: foundBond,
-            category: foundCategory,
-            lastUpdate: bondsData.lastUpdate
-        });
-
-    } catch (error) {
-        console.error('[BondsRouter] Error in /search/:isin:', error);
-        res.status(500).json({
-            success: false,
-            error: error.message
-        });
-    }
-});
-
-/**
- * GET /api/bonds/stats
- * Get bonds statistics
- */
-router.get('/stats', async (req, res) => {
-    try {
-        const bondsData = await loadBondsData();
-        
-        if (!bondsData) {
-            return res.status(500).json({
-                success: false,
-                error: 'Bonds data not available'
-            });
-        }
-
-        res.json({
-            success: true,
-            statistics: bondsData.statistics,
-            lastUpdate: bondsData.lastUpdate,
-            categoryMapping: CATEGORY_MAPPING  // Include mapping for reference
-        });
-
-    } catch (error) {
-        console.error('[BondsRouter] Error in /stats:', error);
         res.status(500).json({
             success: false,
             error: error.message
