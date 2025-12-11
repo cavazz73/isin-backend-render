@@ -60,15 +60,17 @@ app.get('/health', async (req, res) => {
 /**
  * NEW Search endpoint (v4.0)
  * GET /api/search?query=AAPL
+ * GET /api/search?q=AAPL (alias)
  */
 app.get('/api/search', async (req, res) => {
     try {
-        const { query } = req.query;
+        // Accept both 'query' and 'q' parameters
+        const query = req.query.query || req.query.q;
         
         if (!query || query.trim().length === 0) {
             return res.status(400).json({
                 success: false,
-                error: 'Query parameter is required'
+                error: 'Query parameter is required (use ?query=AAPL or ?q=AAPL)'
             });
         }
 
@@ -87,15 +89,17 @@ app.get('/api/search', async (req, res) => {
 /**
  * OLD Search endpoint (v3.0 retrocompatibility)
  * GET /api/financial/search?query=AAPL
+ * GET /api/financial/search?q=AAPL (alias)
  */
 app.get('/api/financial/search', async (req, res) => {
     try {
-        const { query } = req.query;
+        // Accept both 'query' and 'q' parameters
+        const query = req.query.query || req.query.q;
         
         if (!query || query.trim().length === 0) {
             return res.status(400).json({
                 success: false,
-                error: 'Query parameter is required'
+                error: 'Query parameter is required (use ?query=AAPL or ?q=AAPL)'
             });
         }
 
@@ -247,8 +251,8 @@ app.use((req, res) => {
         requestedPath: req.path,
         availableEndpoints: [
             'GET /health',
-            'GET /api/search?query=AAPL',
-            'GET /api/financial/search?query=AAPL (old endpoint)',
+            'GET /api/search?query=AAPL (or ?q=AAPL)',
+            'GET /api/financial/search?query=AAPL (or ?q=AAPL)',
             'GET /api/isin/:isin',
             'GET /api/quote/:symbol',
             'GET /api/historical/:symbol',
@@ -277,8 +281,8 @@ app.listen(PORT, () => {
     console.log('='.repeat(70));
     console.log(`✅ Server running on port ${PORT}`);
     console.log(`📍 Health check: http://localhost:${PORT}/health`);
-    console.log(`🔍 Search (NEW): http://localhost:${PORT}/api/search?query=AAPL`);
-    console.log(`🔍 Search (OLD): http://localhost:${PORT}/api/financial/search?query=AAPL`);
+    console.log(`🔍 Search (NEW): http://localhost:${PORT}/api/search?q=AAPL`);
+    console.log(`🔍 Search (OLD): http://localhost:${PORT}/api/financial/search?q=AAPL`);
     console.log(`📊 Cache stats: http://localhost:${PORT}/api/cache/stats`);
     console.log('='.repeat(70));
     console.log('📦 Data Sources (Priority Order):');
