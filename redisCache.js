@@ -6,7 +6,7 @@
  * Intelligent caching with TTL management
  */
 
-const redis = require('redis');
+const Redis = require('ioredis');
 
 class RedisCache {
     constructor(redisUrl) {
@@ -36,15 +36,20 @@ class RedisCache {
     }
 
     /**
-     * Initialize Redis client with TLS support
+     * Initialize Redis client with TLS support (ioredis)
      */
     initializeClient() {
         try {
-            this.client = redis.createClient({
-                url: this.redisUrl,
-                socket: {
-                    tls: true,
+            // ioredis automatically connects and handles TLS for Upstash URLs
+            this.client = new Redis(this.redisUrl, {
+                tls: {
                     rejectUnauthorized: false
+                },
+                retryStrategy: (times) => {
+                    if (times > 3) {
+                        return null; // Stop retrying
+                    }
+                    return Math.min(times * 100, 3000);
                 }
             });
 
@@ -60,12 +65,6 @@ class RedisCache {
 
             this.client.on('end', () => {
                 console.log('[RedisCache] Disconnected from Redis');
-                this.isConnected = false;
-            });
-
-            // Connect
-            this.client.connect().catch(err => {
-                console.error('[RedisCache] Connection failed:', err.message);
                 this.isConnected = false;
             });
 
