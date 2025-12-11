@@ -120,7 +120,8 @@ class RedisCache {
             const key = this.generateKey(type, identifier);
             const ttl = customTTL || this.TTL[type.toUpperCase()] || this.TTL.SEARCH;
             
-            await this.client.setEx(key, ttl, JSON.stringify(data));
+            // ioredis syntax: set(key, value, 'EX', seconds)
+            await this.client.set(key, JSON.stringify(data), 'EX', ttl);
             console.log(`[RedisCache] ✅ SET: ${key} (TTL: ${ttl}s)`);
             
             return true;
@@ -158,7 +159,8 @@ class RedisCache {
         }
 
         try {
-            await this.client.flushAll();
+            // ioredis uses lowercase: flushall()
+            await this.client.flushall();
             console.log('[RedisCache] 🗑️ CLEARED ALL CACHE');
             return true;
         } catch (error) {
@@ -180,7 +182,8 @@ class RedisCache {
 
         try {
             const info = await this.client.info('stats');
-            const dbSize = await this.client.dbSize();
+            // ioredis uses lowercase: dbsize()
+            const dbSize = await this.client.dbsize();
             
             return {
                 connected: true,
