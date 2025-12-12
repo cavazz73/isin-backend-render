@@ -82,6 +82,10 @@ class FinancialModelingPrepClient {
                 return { success: false };
             }
 
+            // 🔍 DEBUG: Log all available fields
+            console.log(`[FMP DEBUG] Available fields for ${symbol}:`, Object.keys(quote).join(', '));
+            console.log(`[FMP DEBUG] pe=${quote.pe}, eps=${quote.eps}, yield=${quote.yield}`);
+
             // Get company profile for DETAILED DESCRIPTION
             let description = quote.name;
             let sector = null;

@@ -186,6 +186,54 @@ router.get('/search', async (req, res) => {
                 });
         }
 
+        // ✅ APPLY ADVANCED FILTERS
+        const yieldMin = parseFloat(req.query.yield_min);
+        const yieldMax = parseFloat(req.query.yield_max);
+        const sortBy = req.query.sort_by || 'yield_desc'; // Default: yield high to low
+
+        // Filter by yield range
+        if (!isNaN(yieldMin)) {
+            bonds = bonds.filter(bond => bond.yield >= yieldMin);
+            console.log(`[BondsRouter] Applied yield_min filter: >= ${yieldMin}%`);
+        }
+        
+        if (!isNaN(yieldMax)) {
+            bonds = bonds.filter(bond => bond.yield <= yieldMax);
+            console.log(`[BondsRouter] Applied yield_max filter: <= ${yieldMax}%`);
+        }
+
+        // Sort bonds
+        switch(sortBy) {
+            case 'yield_desc': // Yield: Alto → Basso
+                bonds.sort((a, b) => b.yield - a.yield);
+                break;
+            case 'yield_asc': // Yield: Basso → Alto
+                bonds.sort((a, b) => a.yield - b.yield);
+                break;
+            case 'maturity_asc': // Maturity: Nearest first
+                bonds.sort((a, b) => new Date(a.maturity) - new Date(b.maturity));
+                break;
+            case 'maturity_desc': // Maturity: Farthest first
+                bonds.sort((a, b) => new Date(b.maturity) - new Date(a.maturity));
+                break;
+            case 'coupon_desc': // Coupon: High to Low
+                bonds.sort((a, b) => b.coupon - a.coupon);
+                break;
+            case 'coupon_asc': // Coupon: Low to High
+                bonds.sort((a, b) => a.coupon - b.coupon);
+                break;
+            case 'price_desc': // Price: High to Low
+                bonds.sort((a, b) => b.price - a.price);
+                break;
+            case 'price_asc': // Price: Low to High
+                bonds.sort((a, b) => a.price - b.price);
+                break;
+            default:
+                bonds.sort((a, b) => b.yield - a.yield); // Default: yield high to low
+        }
+
+        console.log(`[BondsRouter] Applied sorting: ${sortBy}`);
+
         // Apply pagination
         const totalBonds = bonds.length;
         const paginatedBonds = bonds.slice(offset, offset + limit);
@@ -200,6 +248,11 @@ router.get('/search', async (req, res) => {
                 description: categoryDescription
             },
             bonds: paginatedBonds,
+            filters: {
+                yieldMin: !isNaN(yieldMin) ? yieldMin : null,
+                yieldMax: !isNaN(yieldMax) ? yieldMax : null,
+                sortBy: sortBy
+            },
             pagination: {
                 total: totalBonds,
                 limit: limit,
