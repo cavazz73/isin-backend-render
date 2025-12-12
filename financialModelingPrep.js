@@ -158,12 +158,20 @@ class FinancialModelingPrepClient {
             // ✅ GET FUNDAMENTALS (P/E, Dividend) from /ratios endpoint
             let peRatio = null;
             let dividendYield = null;
+            let eps = null;
             
             try {
                 const fundamentals = await this.getFundamentals(symbol);
                 if (fundamentals.success) {
                     peRatio = fundamentals.data.peRatio;
                     dividendYield = fundamentals.data.dividendYield;
+                    eps = fundamentals.data.eps;
+                    
+                    // ✅ CALCULATE P/E if not available but we have EPS
+                    if (!peRatio && eps && quote.price) {
+                        peRatio = parseFloat((quote.price / eps).toFixed(2));
+                        console.log(`[FMP] Calculated P/E from price/EPS: ${peRatio}`);
+                    }
                 }
             } catch (fundamentalsError) {
                 console.log('[FinancialModelingPrep] Fundamentals call failed for:', symbol);
