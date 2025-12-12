@@ -13,9 +13,10 @@ const bondsRouter = require('./bondsRouter');
 const app = express();
 const PORT = process.env.PORT || 10000;
 
-// Initialize Data Aggregator V4 with Redis
+// Initialize Data Aggregator V4 with Redis + FMP
 const aggregator = new DataAggregatorV4({
     redisUrl: process.env.REDIS_URL,
+    fmpKey: process.env.FMP_API_KEY,  // ✅ Financial Modeling Prep
     twelveDataKey: process.env.TWELVE_DATA_API_KEY,
     finnhubKey: process.env.FINNHUB_API_KEY,
     alphavantageKey: process.env.ALPHA_VANTAGE_API_KEY

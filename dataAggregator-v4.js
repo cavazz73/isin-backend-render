@@ -13,11 +13,13 @@ const TwelveDataClient = require('./twelveData');
 const YahooFinanceClient = require('./yahooFinance');
 const FinnhubClient = require('./finnhub');
 const AlphaVantageClient = require('./alphaVantage');
+const FinancialModelingPrepClient = require('./financialModelingPrep');
 const RedisCache = require('./redisCache');
 
 class DataAggregatorV4 {
     constructor(config = {}) {
         // Initialize all data sources
+        this.fmp = new FinancialModelingPrepClient(config.fmpKey || process.env.FMP_API_KEY);  // ✅ PRIMARY SOURCE
         this.twelvedata = new TwelveDataClient(config.twelveDataKey || process.env.TWELVE_DATA_API_KEY);
         this.yahoo = new YahooFinanceClient();
         this.finnhub = new FinnhubClient(config.finnhubKey || process.env.FINNHUB_API_KEY);
@@ -26,10 +28,10 @@ class DataAggregatorV4 {
         // Initialize Redis Cache
         this.cache = new RedisCache(config.redisUrl || process.env.REDIS_URL);
         
-        // Priority for SEARCH: TwelveData > Yahoo > Finnhub > AlphaVantage
-        this.sources = ['twelvedata', 'yahoo', 'finnhub', 'alphavantage'];
+        // Priority for SEARCH: TwelveData > FMP > Yahoo > Finnhub > AlphaVantage
+        this.sources = ['twelvedata', 'fmp', 'yahoo', 'finnhub', 'alphavantage'];
         
-        console.log('[DataAggregatorV4] Initialized with Redis caching + TwelveData fundamentals fallback');
+        console.log('[DataAggregatorV4] Initialized with FMP (complete fundamentals) + Redis caching');
     }
 
     /**
@@ -247,7 +249,7 @@ class DataAggregatorV4 {
 
     /**
      * Get quote with intelligent routing + CACHE
-     * STRATEGY: Yahoo first (complete), then TwelveData price + fundamentals
+     * STRATEGY: FMP first (complete fundamentals + description), then Yahoo, then TwelveData
      */
     async getQuote(symbol) {
         console.log(`[DataAggregatorV4] Getting quote for: ${symbol}`);
@@ -262,11 +264,26 @@ class DataAggregatorV4 {
             };
         }
 
-        // ✅ TRY YAHOO FIRST (has ALL data including fundamentals!)
+        // ✅ TRY FINANCIAL MODELING PREP FIRST (complete fundamentals + description!)
+        try {
+            const fmpQuote = await this.fmp.getQuote(symbol);
+            if (fmpQuote.success && fmpQuote.data) {
+                console.log(`[fmp] Quote found: ${fmpQuote.data.price} USD (complete fundamentals + description)`);
+                
+                // SAVE TO CACHE
+                await this.cache.set('quote', symbol, fmpQuote);
+                
+                return fmpQuote;
+            }
+        } catch (error) {
+            console.error(`[fmp] Quote error: ${error.message}`);
+        }
+
+        // ✅ FALLBACK: Yahoo (if available)
         try {
             const yahooQuote = await this.yahoo.getQuote(symbol);
             if (yahooQuote.success && yahooQuote.data) {
-                console.log(`[yahoo] Quote found: ${yahooQuote.data.price} ${yahooQuote.data.currency} (with fundamentals)`);
+                console.log(`[yahoo] Quote found: ${yahooQuote.data.price} ${yahooQuote.data.currency}`);
                 
                 // SAVE TO CACHE
                 await this.cache.set('quote', symbol, yahooQuote);

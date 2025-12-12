@@ -1,0 +1,50 @@
+# ISIN Research Backend - Environment Variables
+# Copy to .env for local development or set in Render dashboard
+
+# ============================================================================
+# PRIMARY APIS (REQUIRED)
+# ============================================================================
+
+# Financial Modeling Prep API Key (PRIMARY - 250 req/day free)
+# Complete fundamentals: Market Cap, P/E, Dividend, 52W Range, Description
+# Get free key at: https://financialmodelingprep.com/developer/docs/
+FMP_API_KEY=mvRSiRR95YxN4iDLMnkKScou3c8Vt3En
+
+# TwelveData API Key (SEARCH PRIMARY - 800 req/day free)
+# Best for European stocks search
+# Get free key at: https://twelvedata.com/
+TWELVE_DATA_API_KEY=your_twelvedata_key_here
+
+# Redis/Upstash URL (CACHING - FREE tier 10k commands/day)
+# Get free at: https://upstash.com/
+REDIS_URL=your_redis_url_here
+
+# ============================================================================
+# BACKUP APIS (OPTIONAL)
+# ============================================================================
+
+# Finnhub API Key (backup source - 60 req/min free)
+# Get free key at: https://finnhub.io/
+FINNHUB_API_KEY=c7kgn0pr01qhqt0p6750c7kgn0pr01qhqt0p6760
+
+# Alpha Vantage API Key (backup source - 25 req/day free)
+# Get free key at: https://www.alphavantage.co/support/#api-key
+ALPHA_VANTAGE_API_KEY=demo
+
+# ============================================================================
+# SERVER CONFIGURATION
+# ============================================================================
+
+# Server Port
+PORT=10000
+
+# Environment
+NODE_ENV=production
+
+# ============================================================================
+# NOTES
+# ============================================================================
+# - Yahoo Finance does NOT require an API key (but may be rate-limited)
+# - FMP is now PRIMARY source for complete fundamentals
+# - TwelveData is PRIMARY for European markets search
+# - Redis cache provides 70-80% hit rate
