@@ -60,6 +60,48 @@ class FinancialModelingPrepClient {
     }
 
     /**
+     * Get fundamentals (P/E, Dividend) from /ratios endpoint
+     */
+    async getFundamentals(symbol) {
+        try {
+            const url = `${this.baseUrl}/ratios`;
+            const response = await axios.get(url, {
+                params: {
+                    symbol: symbol,
+                    limit: 1,
+                    apikey: this.apiKey
+                },
+                timeout: 10000
+            });
+
+            this.requestCount++;
+
+            const ratios = response.data?.[0];
+            if (!ratios) {
+                console.log('[FinancialModelingPrep] No ratios data for:', symbol);
+                return { success: false };
+            }
+
+            const result = {
+                success: true,
+                data: {
+                    peRatio: ratios.priceEarningsRatio || ratios.peRatio || null,
+                    dividendYield: ratios.dividendYield || ratios.dividendYieldPercentage || null,
+                    eps: ratios.netIncomePerShare || null
+                },
+                source: 'fmp'
+            };
+
+            console.log(`[FMP] Ratios for ${symbol}: PE=${result.data.peRatio}, DIV=${result.data.dividendYield}, EPS=${result.data.eps}`);
+            return result;
+
+        } catch (error) {
+            console.error('[FinancialModelingPrep] Ratios error:', error.message);
+            return { success: false, error: error.message };
+        }
+    }
+
+    /**
      * Get quote with COMPLETE FUNDAMENTALS
      */
     async getQuote(symbol) {
@@ -113,6 +155,20 @@ class FinancialModelingPrepClient {
                 console.log('[FinancialModelingPrep] Profile not available for:', symbol);
             }
 
+            // ✅ GET FUNDAMENTALS (P/E, Dividend) from /ratios endpoint
+            let peRatio = null;
+            let dividendYield = null;
+            
+            try {
+                const fundamentals = await this.getFundamentals(symbol);
+                if (fundamentals.success) {
+                    peRatio = fundamentals.data.peRatio;
+                    dividendYield = fundamentals.data.dividendYield;
+                }
+            } catch (fundamentalsError) {
+                console.log('[FinancialModelingPrep] Fundamentals call failed for:', symbol);
+            }
+
             const result = {
                 success: true,
                 data: {
@@ -124,10 +180,10 @@ class FinancialModelingPrepClient {
                     changePercent: quote.changesPercentage,
                     currency: 'USD',
                     exchange: quote.exchange,
-                    // ✅ COMPLETE FUNDAMENTALS - Try multiple field names
+                    // ✅ COMPLETE FUNDAMENTALS
                     marketCap: quote.marketCap || quote.market_cap || quote.mktCap || null,
-                    peRatio: quote.pe || quote.peRatio || quote.PE || quote.priceToEarnings || null,
-                    dividendYield: quote.yield || quote.dividendYield || quote.dividend_yield || quote.annualDividend || null,
+                    peRatio: peRatio || quote.pe || quote.peRatio || null,  // ✅ FROM /ratios ENDPOINT
+                    dividendYield: dividendYield || quote.yield || quote.dividendYield || null,  // ✅ FROM /ratios ENDPOINT
                     week52High: quote.yearHigh || quote.fiftyTwoWeekHigh || quote['52WeekHigh'] || null,
                     week52Low: quote.yearLow || quote.fiftyTwoWeekLow || quote['52WeekLow'] || null,
                     // Additional data
