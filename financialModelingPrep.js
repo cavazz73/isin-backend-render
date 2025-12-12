@@ -124,12 +124,12 @@ class FinancialModelingPrepClient {
                     changePercent: quote.changesPercentage,
                     currency: 'USD',
                     exchange: quote.exchange,
-                    // ✅ COMPLETE FUNDAMENTALS
-                    marketCap: quote.marketCap || null,
-                    peRatio: quote.pe || null,
-                    dividendYield: quote.yield ? quote.yield : null,
-                    week52High: quote.yearHigh || null,
-                    week52Low: quote.yearLow || null,
+                    // ✅ COMPLETE FUNDAMENTALS - Try multiple field names
+                    marketCap: quote.marketCap || quote.market_cap || quote.mktCap || null,
+                    peRatio: quote.pe || quote.peRatio || quote.PE || quote.priceToEarnings || null,
+                    dividendYield: quote.yield || quote.dividendYield || quote.dividend_yield || quote.annualDividend || null,
+                    week52High: quote.yearHigh || quote.fiftyTwoWeekHigh || quote['52WeekHigh'] || null,
+                    week52Low: quote.yearLow || quote.fiftyTwoWeekLow || quote['52WeekLow'] || null,
                     // Additional data
                     sector: sector,
                     industry: industry,
@@ -140,7 +140,8 @@ class FinancialModelingPrepClient {
                 source: 'fmp'
             };
 
-            console.log(`[FinancialModelingPrep] Quote for ${symbol}: ${quote.price} USD (with complete fundamentals)`);
+            console.log(`[FinancialModelingPrep] Quote for ${symbol}: ${quote.price} USD`);
+            console.log(`[FMP] Fundamentals: MC=${result.data.marketCap}, PE=${result.data.peRatio}, DIV=${result.data.dividendYield}, 52W=${result.data.week52High}-${result.data.week52Low}`);
             return result;
 
         } catch (error) {

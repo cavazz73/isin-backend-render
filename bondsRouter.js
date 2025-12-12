@@ -53,6 +53,7 @@ router.get('/search', async (req, res) => {
         const offset = parseInt(req.query.offset) || 0;
 
         console.log(`[BondsRouter] Search with category: ${category}, limit: ${limit}`);
+        console.log(`[BondsRouter] Query params:`, JSON.stringify(req.query));
 
         if (!category) {
             return res.status(400).json({
@@ -186,10 +187,12 @@ router.get('/search', async (req, res) => {
                 });
         }
 
-        // ✅ APPLY ADVANCED FILTERS
-        const yieldMin = parseFloat(req.query.yield_min);
-        const yieldMax = parseFloat(req.query.yield_max);
-        const sortBy = req.query.sort_by || 'yield_desc'; // Default: yield high to low
+        // ✅ APPLY ADVANCED FILTERS - Support both camelCase (frontend) and snake_case
+        const yieldMin = parseFloat(req.query.yield_min || req.query.yieldMin);
+        const yieldMax = parseFloat(req.query.yield_max || req.query.yieldMax);
+        const sortBy = req.query.sort_by || req.query.sortBy || 'yield_desc'; // Default: yield high to low
+
+        console.log(`[BondsRouter] Filters - yieldMin: ${yieldMin}, yieldMax: ${yieldMax}, sortBy: ${sortBy}`);
 
         // Filter by yield range
         if (!isNaN(yieldMin)) {
@@ -202,8 +205,10 @@ router.get('/search', async (req, res) => {
             console.log(`[BondsRouter] Applied yield_max filter: <= ${yieldMax}%`);
         }
 
-        // Sort bonds
-        switch(sortBy) {
+        // Sort bonds - Handle both "yield-desc" and "yield_desc" formats
+        const normalizedSortBy = sortBy.replace(/-/g, '_'); // Convert yield-desc → yield_desc
+        
+        switch(normalizedSortBy) {
             case 'yield_desc': // Yield: Alto → Basso
                 bonds.sort((a, b) => b.yield - a.yield);
                 break;
@@ -232,7 +237,7 @@ router.get('/search', async (req, res) => {
                 bonds.sort((a, b) => b.yield - a.yield); // Default: yield high to low
         }
 
-        console.log(`[BondsRouter] Applied sorting: ${sortBy}`);
+        console.log(`[BondsRouter] Applied sorting: ${normalizedSortBy}`);
 
         // Apply pagination
         const totalBonds = bonds.length;
@@ -251,7 +256,7 @@ router.get('/search', async (req, res) => {
             filters: {
                 yieldMin: !isNaN(yieldMin) ? yieldMin : null,
                 yieldMax: !isNaN(yieldMax) ? yieldMax : null,
-                sortBy: sortBy
+                sortBy: normalizedSortBy
             },
             pagination: {
                 total: totalBonds,
