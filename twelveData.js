@@ -203,6 +203,7 @@ class TwelveDataClient {
                 data: {
                     symbol: data.symbol,
                     name: data.name,
+                    description: data.name,  // ✅ ADD DESCRIPTION
                     price: price,
                     change: change,
                     changePercent: changePercent,

@@ -221,6 +221,7 @@ class DataAggregatorV4 {
             if (quote.success && quote.data) {
                 enrichedResults.push({
                     ...item,
+                    description: quote.data.description || item.description,  // ✅ KEEP DESCRIPTION
                     price: quote.data.price,
                     change: quote.data.change,
                     changePercent: quote.data.changePercent,

@@ -29,8 +29,15 @@ class YahooFinanceClient {
                     newsCount: 0,
                     enableFuzzyQuery: false
                 },
-                headers: { 'User-Agent': 'Mozilla/5.0' },
-                timeout: 10000
+                headers: {
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                    'Accept': 'application/json',
+                    'Accept-Language': 'en-US,en;q=0.9',
+                    'Accept-Encoding': 'gzip, deflate, br',
+                    'Referer': 'https://finance.yahoo.com',
+                    'Origin': 'https://finance.yahoo.com'
+                },
+                timeout: 15000
             });
 
             if (!response.data?.quotes) {
@@ -67,11 +74,18 @@ class YahooFinanceClient {
             const response = await axios.get(url, {
                 params: {
                     symbols: symbol,
-                    // ✅ ADDED: trailingPE, dividendYield, fiftyTwoWeekHigh, fiftyTwoWeekLow
-                    fields: 'symbol,regularMarketPrice,regularMarketChange,regularMarketChangePercent,currency,shortName,longName,exchange,marketCap,trailingPE,dividendYield,fiftyTwoWeekHigh,fiftyTwoWeekLow'
+                    // ✅ SIMPLIFIED: Only request essential fields to avoid rate limiting
+                    fields: 'symbol,regularMarketPrice,regularMarketChange,regularMarketChangePercent,currency,shortName,longName,exchange,marketCap'
                 },
-                headers: { 'User-Agent': 'Mozilla/5.0' },
-                timeout: 10000
+                headers: {
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                    'Accept': 'application/json',
+                    'Accept-Language': 'en-US,en;q=0.9',
+                    'Accept-Encoding': 'gzip, deflate, br',
+                    'Referer': 'https://finance.yahoo.com',
+                    'Origin': 'https://finance.yahoo.com'
+                },
+                timeout: 15000
             });
 
             const quote = response.data?.quoteResponse?.result?.[0];
@@ -82,17 +96,14 @@ class YahooFinanceClient {
                 data: {
                     symbol: quote.symbol,
                     name: quote.shortName || quote.longName,
+                    description: quote.longName || quote.shortName,  // ✅ DESCRIPTION RESTORED
                     price: quote.regularMarketPrice,
                     change: quote.regularMarketChange,
                     changePercent: quote.regularMarketChangePercent,
                     currency: quote.currency || 'USD',
                     exchange: quote.exchange,
-                    // ✅ FUNDAMENTAL DATA
+                    // ✅ ONLY BASIC FIELDS (fundamentals from TwelveData)
                     marketCap: quote.marketCap || null,
-                    peRatio: quote.trailingPE || null,
-                    dividendYield: quote.dividendYield || null,
-                    week52High: quote.fiftyTwoWeekHigh || null,
-                    week52Low: quote.fiftyTwoWeekLow || null,
                     timestamp: new Date().toISOString()
                 },
                 source: 'yahoo'
@@ -124,7 +135,13 @@ class YahooFinanceClient {
             
             const response = await axios.get(url, {
                 params: { range: params.range, interval: params.interval },
-                headers: { 'User-Agent': 'Mozilla/5.0' },
+                headers: {
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                    'Accept': 'application/json',
+                    'Accept-Language': 'en-US,en;q=0.9',
+                    'Referer': 'https://finance.yahoo.com',
+                    'Origin': 'https://finance.yahoo.com'
+                },
                 timeout: 15000
             });
 
