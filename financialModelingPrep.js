@@ -11,7 +11,7 @@ const axios = require('axios');
 class FinancialModelingPrepClient {
     constructor(apiKey) {
         this.apiKey = apiKey;
-        this.baseUrl = 'https://financialmodelingprep.com/api/v3';
+        this.baseUrl = 'https://financialmodelingprep.com/stable';  // ✅ CORRECT URL
         this.requestCount = 0;
     }
 
@@ -20,7 +20,7 @@ class FinancialModelingPrepClient {
      */
     async search(query) {
         try {
-            const url = `${this.baseUrl}/search`;
+            const url = `${this.baseUrl}/search-name`;  // ✅ CORRECT ENDPOINT
             const response = await axios.get(url, {
                 params: {
                     query: query,
@@ -65,9 +65,12 @@ class FinancialModelingPrepClient {
     async getQuote(symbol) {
         try {
             // Get real-time quote
-            const quoteUrl = `${this.baseUrl}/quote/${symbol}`;
+            const quoteUrl = `${this.baseUrl}/quote`;  // ✅ CORRECT ENDPOINT
             const quoteResponse = await axios.get(quoteUrl, {
-                params: { apikey: this.apiKey },
+                params: { 
+                    symbol: symbol,  // ✅ QUERY PARAMETER
+                    apikey: this.apiKey 
+                },
                 timeout: 10000
             });
 
@@ -85,9 +88,12 @@ class FinancialModelingPrepClient {
             let industry = null;
 
             try {
-                const profileUrl = `${this.baseUrl}/profile/${symbol}`;
+                const profileUrl = `${this.baseUrl}/profile`;  // ✅ CORRECT ENDPOINT
                 const profileResponse = await axios.get(profileUrl, {
-                    params: { apikey: this.apiKey },
+                    params: { 
+                        symbol: symbol,  // ✅ QUERY PARAMETER
+                        apikey: this.apiKey 
+                    },
                     timeout: 10000
                 });
 
@@ -157,10 +163,11 @@ class FinancialModelingPrepClient {
             };
 
             const params = periodMap[period] || periodMap['1M'];
-            const url = `${this.baseUrl}/historical-price-full/${symbol}`;
+            const url = `${this.baseUrl}/historical-price-eod/full`;  // ✅ CORRECT ENDPOINT
 
             const response = await axios.get(url, {
                 params: {
+                    symbol: symbol,  // ✅ QUERY PARAMETER
                     from: params.from,
                     apikey: this.apiKey
                 },

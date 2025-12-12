@@ -146,7 +146,7 @@ class DataAggregatorV4 {
             results: enrichedResults,
             metadata: {
                 totalResults: enrichedResults.length,
-                sources: this.sources.filter((_, i) => results[i].success),
+                sources: this.sources.filter((_, i) => results[i] && results[i].success),  // ✅ NULL-SAFE
                 timestamp: new Date().toISOString(),
                 fromCache: false
             }
