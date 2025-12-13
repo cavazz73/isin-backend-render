@@ -1,4 +1,4 @@
-json{
+{
   "name": "isin-backend-multisource",
   "version": "4.2.0",
   "description": "ISIN Research Backend - Multi-Source Financial Data API with Redis Cache & Bonds",
