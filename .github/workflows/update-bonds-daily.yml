@@ -1,57 +1,62 @@
-name: Update Bonds Data Daily
+name: Update Bonds Data
 
 on:
   schedule:
-    # Runs every day at 18:30 UTC (19:30 CET / 20:30 CEST after market close)
     - cron: '30 18 * * *'
-  
-  # Allow manual trigger
   workflow_dispatch:
 
 jobs:
-  update-bonds:
+  scrape-bonds:
     runs-on: ubuntu-latest
     
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+        uses: actions/checkout@v4
       
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
       
-      - name: Install dependencies
+      - name: Install Puppeteer
         run: |
-          npm install axios cheerio
+          npm install puppeteer@21.6.1
       
-      - name: Create data directory
-        run: mkdir -p data
-      
-      - name: Run bonds update script
-        run: node scripts/update-all-bonds.js
+      - name: Run bonds scraper
+        run: |
+          node bonds-scraper.js
         env:
           NODE_ENV: production
       
       - name: Check if data changed
-        id: git-check
+        id: check_changes
         run: |
-          git diff --exit-code data/bonds-data.json || echo "changed=true" >> $GITHUB_OUTPUT
+          if git diff --quiet data/bonds-data.json; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
       
-      - name: Commit and push if changed
-        if: steps.git-check.outputs.changed == 'true'
+      - name: Commit and push changes
+        if: steps.check_changes.outputs.changed == 'true'
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add data/bonds-data.json
-          git commit -m "🤖 Auto-update bonds data - $(date +'%Y-%m-%d %H:%M UTC')"
+          git commit -m "Update bonds data - $(date +'%Y-%m-%d %H:%M UTC')"
           git push
       
-      - name: Summary
+      - name: Upload scraping logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scraping-logs-${{ github.run_number }}
+          path: |
+            data/bonds-data.json
+          retention-days: 7
+      
+      - name: Notify on failure
+        if: failure()
         run: |
-          echo "✅ Bonds data update completed"
-          if [ -f data/bonds-data.json ]; then
-            echo "📊 Total bonds: $(cat data/bonds-data.json | grep -o '"totalBonds":[0-9]*' | grep -o '[0-9]*')"
-          fi
+          echo "❌ Bonds scraping failed!"
+          echo "Check the logs for details"
