@@ -1,0 +1,66 @@
+name: Update Bonds Data (Puppeteer)
+
+on:
+  schedule:
+    # Run every day at 18:30 UTC (after market close)
+    - cron: '30 18 * * *'
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  update-bonds:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+          
+      - name: Install dependencies
+        run: |
+          npm install puppeteer
+          
+      - name: Create data directory
+        run: mkdir -p data
+          
+      - name: Run Puppeteer bonds scraper
+        run: node bonds-scraper-puppeteer.js
+        timeout-minutes: 15
+        
+      - name: Verify data file
+        run: |
+          if [ ! -f data/bonds-data.json ]; then
+            echo "ERROR: bonds-data.json not created"
+            exit 1
+          fi
+          
+          # Check file is not empty
+          if [ ! -s data/bonds-data.json ]; then
+            echo "ERROR: bonds-data.json is empty"
+            exit 1
+          fi
+          
+          # Check file size (should be > 10KB if successful)
+          size=$(stat -f%z data/bonds-data.json 2>/dev/null || stat -c%s data/bonds-data.json)
+          if [ "$size" -lt 10000 ]; then
+            echo "WARNING: bonds-data.json is suspiciously small ($size bytes)"
+          else
+            echo "✓ bonds-data.json created successfully ($size bytes)"
+          fi
+          
+      - name: Check if data changed
+        id: check_changes
+        run: |
+          git diff --quiet data/bonds-data.json || echo "changed=true" >> $GITHUB_OUTPUT
+          
+      - name: Commit and push if changed
+        if: steps.check_changes.outputs.changed == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/bonds-data.json
+          git commit -m "Update bonds data - $(date -u +'%Y-%m-%d %H:%M') UTC"
+          git push
