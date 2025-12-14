@@ -57,8 +57,28 @@ async function scrapeItalianBonds(browser, type, url) {
             timeout: CONFIG.timeout 
         });
         
+        // Try to click "Mostra tutti" or similar button to load all bonds
+        try {
+            const showAllButtons = await page.$x("//button[contains(text(), 'Mostra')] | //a[contains(text(), 'tutti')] | //button[contains(text(), 'All')]");
+            if (showAllButtons.length > 0) {
+                await showAllButtons[0].click();
+                await page.waitForTimeout(2000);  // Wait for load
+                console.log(`   Clicked 'Show All' button`);
+            }
+        } catch (e) {
+            // Button might not exist, continue
+        }
+        
         // Wait for table to load
         await page.waitForSelector('table.m-table', { timeout: CONFIG.timeout });
+        
+        // Scroll to load all bonds (some tables use lazy loading)
+        await page.evaluate(() => {
+            window.scrollTo(0, document.body.scrollHeight);
+        });
+        
+        // Wait a bit for any lazy-loaded content
+        await page.waitForTimeout(2000);
         
         // Extract bond data
         const bonds = await page.evaluate((bondType) => {
@@ -71,8 +91,9 @@ async function scrapeItalianBonds(browser, type, url) {
                     if (cells.length < 6) return;
                     
                     // Extract data from cells
-                    const nameCell = cells[0]?.innerText?.trim() || '';
-                    const isinCell = cells[1]?.innerText?.trim() || '';
+                    // NOTE: Borsa Italiana table order is ISIN, Nome, Prezzo, Yield, Cedola, Scadenza
+                    const isinCell = cells[0]?.innerText?.trim() || '';  // ISIN is first!
+                    const nameCell = cells[1]?.innerText?.trim() || '';  // Nome is second!
                     const priceCell = cells[2]?.innerText?.trim() || '';
                     const yieldCell = cells[3]?.innerText?.trim() || '';
                     const couponCell = cells[4]?.innerText?.trim() || '';
