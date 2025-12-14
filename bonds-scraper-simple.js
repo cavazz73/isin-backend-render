@@ -55,42 +55,87 @@ function parseFloat(value) {
 }
 
 /**
- * Determine bond type from name/description
+ * Categorize bond based on issuer/description
  */
-function getBondType(name, issuer) {
+function categorizeBond(name, isin) {
     const nameUpper = name.toUpperCase();
-    const issuerUpper = issuer.toUpperCase();
     
-    if (nameUpper.includes('BTP') && !nameUpper.includes('BOT')) return 'BTP';
-    if (nameUpper.includes('BOT')) return 'BOT';
-    if (nameUpper.includes('CCT')) return 'CCT';
-    if (nameUpper.includes('CTZ')) return 'CTZ';
-    
-    // Determine from issuer
-    if (issuerUpper.includes('ITALIA')) {
-        if (nameUpper.includes('ZERO') || nameUpper.includes('ZC')) return 'BOT';
-        return 'BTP';
+    // Italian Government Bonds
+    if (nameUpper.includes('BTP') && !nameUpper.includes('BOT')) {
+        return { category: 'gov-it-btp', type: 'BTP', country: 'IT' };
+    }
+    if (nameUpper.includes('BOT')) {
+        return { category: 'gov-it-bot', type: 'BOT', country: 'IT' };
+    }
+    if (nameUpper.includes('CCT')) {
+        return { category: 'gov-it-cct', type: 'CCT', country: 'IT' };
+    }
+    if (nameUpper.includes('CTZ')) {
+        return { category: 'gov-it-ctz', type: 'CTZ', country: 'IT' };
     }
     
-    return 'OTHER';
+    // European Government Bonds
+    if (nameUpper.includes('FRANCIA') || nameUpper.includes('FRANCE')) {
+        return { category: 'gov-eu-france', type: 'GOV', country: 'FR' };
+    }
+    if (nameUpper.includes('GERMANIA') || nameUpper.includes('GERMANY') || nameUpper.includes('DEUTSCHE')) {
+        return { category: 'gov-eu-germany', type: 'GOV', country: 'DE' };
+    }
+    if (nameUpper.includes('SPAGNA') || nameUpper.includes('SPAIN')) {
+        return { category: 'gov-eu-spain', type: 'GOV', country: 'ES' };
+    }
+    if (nameUpper.includes('AUSTRIA')) {
+        return { category: 'gov-eu-austria', type: 'GOV', country: 'AT' };
+    }
+    if (nameUpper.includes('BELGIO') || nameUpper.includes('BELGIUM')) {
+        return { category: 'gov-eu-belgium', type: 'GOV', country: 'BE' };
+    }
+    if (nameUpper.includes('PAESI BASSI') || nameUpper.includes('NETHERLANDS')) {
+        return { category: 'gov-eu-netherlands', type: 'GOV', country: 'NL' };
+    }
+    
+    // Supranational Bonds
+    if (nameUpper.includes('EUROPEAN INVESTMENT BANK') || nameUpper.includes('BEI') || nameUpper.includes('EIB')) {
+        return { category: 'supranational', type: 'SUPRANATIONAL', country: 'EU' };
+    }
+    if (nameUpper.includes('EUROPEAN FINANCIAL STABILITY') || nameUpper.includes('EFSF')) {
+        return { category: 'supranational', type: 'SUPRANATIONAL', country: 'EU' };
+    }
+    if (nameUpper.includes('EUROPEAN STABILITY MECHANISM') || nameUpper.includes('ESM')) {
+        return { category: 'supranational', type: 'SUPRANATIONAL', country: 'EU' };
+    }
+    if (nameUpper.includes('WORLD BANK') || nameUpper.includes('IBRD')) {
+        return { category: 'supranational', type: 'SUPRANATIONAL', country: 'WORLD' };
+    }
+    if (nameUpper.includes('EUROPEAN UNION')) {
+        return { category: 'supranational', type: 'SUPRANATIONAL', country: 'EU' };
+    }
+    
+    // Corporate Bonds
+    if (nameUpper.includes('UBS') || nameUpper.includes('CREDIT SUISSE') || 
+        nameUpper.includes('DEUTSCHE BANK') || nameUpper.includes('MORGAN') ||
+        nameUpper.includes('BARCLAYS') || nameUpper.includes('GOLDMAN') ||
+        nameUpper.includes('UNICREDIT') || nameUpper.includes('INTESA') ||
+        nameUpper.includes('GENERALI') || nameUpper.includes('ENI') ||
+        nameUpper.includes('ENEL') || nameUpper.includes('TELECOM')) {
+        return { category: 'corporate-all', type: 'CORPORATE', country: getCountryFromIsin(isin) };
+    }
+    
+    // Default: if it has ISIN starting with IT, it's probably Italian
+    if (isin && isin.startsWith('IT')) {
+        return { category: 'gov-it-other', type: 'GOV', country: 'IT' };
+    }
+    
+    // Default: corporate or other
+    return { category: 'corporate-all', type: 'OTHER', country: getCountryFromIsin(isin) };
 }
 
 /**
- * Get country code from issuer/ISIN
+ * Get country code from ISIN
  */
-function getCountryCode(isin, issuer) {
-    // ISIN first 2 chars = country code
-    if (isin && isin.length >= 2) {
-        return isin.substring(0, 2);
-    }
-    
-    const issuerUpper = issuer.toUpperCase();
-    if (issuerUpper.includes('ITALIA') || issuerUpper.includes('ITALIAN')) return 'IT';
-    if (issuerUpper.includes('FRANCIA') || issuerUpper.includes('FRANCE')) return 'FR';
-    if (issuerUpper.includes('GERMANIA') || issuerUpper.includes('GERMANY')) return 'DE';
-    if (issuerUpper.includes('SPAGNA') || issuerUpper.includes('SPAIN')) return 'ES';
-    
-    return 'IT'; // Default to IT
+function getCountryFromIsin(isin) {
+    if (!isin || isin.length < 2) return 'XX';
+    return isin.substring(0, 2);
 }
 
 /**
@@ -149,21 +194,16 @@ async function scrapeBonds() {
                 const yieldGross = parseFloat(yieldGrossStr);
                 const yieldNet = parseFloat(yieldNetStr);
                 
-                // Determine bond type and country
-                const country = getCountryCode(isin, description);
-                const type = getBondType(description, description);
-                
-                // Skip non-Italian government bonds for now
-                if (country !== 'IT' || !['BTP', 'BOT', 'CCT', 'CTZ'].includes(type)) {
-                    return;
-                }
+                // Categorize bond
+                const bondInfo = categorizeBond(description, isin);
                 
                 // Create bond object
                 const bond = {
                     isin: isin,
                     name: description,
-                    type: type,
-                    country: country,
+                    type: bondInfo.type,
+                    category: bondInfo.category,
+                    country: bondInfo.country,
                     currency: currency || 'EUR',
                     maturity: parseMaturityDate(maturity),
                     coupon: coupon,
@@ -180,20 +220,22 @@ async function scrapeBonds() {
             }
         });
         
-        console.log(`✅ Scraped ${bonds.length} Italian government bonds`);
+        console.log(`✅ Scraped ${bonds.length} bonds from Simple Tools`);
         
-        // Group by type
-        const bondsByType = {
-            BTP: bonds.filter(b => b.type === 'BTP'),
-            BOT: bonds.filter(b => b.type === 'BOT'),
-            CCT: bonds.filter(b => b.type === 'CCT'),
-            CTZ: bonds.filter(b => b.type === 'CTZ')
-        };
+        // Group by category
+        const bondsByCategory = {};
+        bonds.forEach(bond => {
+            if (!bondsByCategory[bond.category]) {
+                bondsByCategory[bond.category] = [];
+            }
+            bondsByCategory[bond.category].push(bond);
+        });
         
-        console.log(`   BTP: ${bondsByType.BTP.length} bonds`);
-        console.log(`   BOT: ${bondsByType.BOT.length} bonds`);
-        console.log(`   CCT: ${bondsByType.CCT.length} bonds`);
-        console.log(`   CTZ: ${bondsByType.CTZ.length} bonds`);
+        // Log statistics
+        console.log('   Bonds by category:');
+        Object.keys(bondsByCategory).sort().forEach(cat => {
+            console.log(`   ${cat}: ${bondsByCategory[cat].length} bonds`);
+        });
         
         return bonds;
         
@@ -212,36 +254,94 @@ async function saveBondsData(bonds) {
         const dataDir = path.dirname(CONFIG.outputPath);
         await fs.mkdir(dataDir, { recursive: true });
         
-        // Group bonds by type
-        const bondsByType = {
-            BTP: bonds.filter(b => b.type === 'BTP'),
-            BOT: bonds.filter(b => b.type === 'BOT'),
-            CCT: bonds.filter(b => b.type === 'CCT'),
-            CTZ: bonds.filter(b => b.type === 'CTZ')
-        };
+        // Group bonds by category
+        const bondsByCategory = {};
+        bonds.forEach(bond => {
+            if (!bondsByCategory[bond.category]) {
+                bondsByCategory[bond.category] = [];
+            }
+            bondsByCategory[bond.category].push(bond);
+        });
+        
+        // Create categories object
+        const categories = {};
+        
+        // Italian Government Bonds
+        const itGovBonds = [
+            ...(bondsByCategory['gov-it-btp'] || []),
+            ...(bondsByCategory['gov-it-bot'] || []),
+            ...(bondsByCategory['gov-it-cct'] || []),
+            ...(bondsByCategory['gov-it-ctz'] || []),
+            ...(bondsByCategory['gov-it-other'] || [])
+        ];
+        
+        if (itGovBonds.length > 0) {
+            categories['it-governativi'] = {
+                name: 'Titoli di Stato Italiani',
+                description: 'BTP, BOT, CCT, CTZ - Italian Government Bonds',
+                count: itGovBonds.length,
+                bonds: itGovBonds
+            };
+        }
+        
+        // European Government Bonds
+        const euGovBonds = [
+            ...(bondsByCategory['gov-eu-france'] || []),
+            ...(bondsByCategory['gov-eu-germany'] || []),
+            ...(bondsByCategory['gov-eu-spain'] || []),
+            ...(bondsByCategory['gov-eu-austria'] || []),
+            ...(bondsByCategory['gov-eu-belgium'] || []),
+            ...(bondsByCategory['gov-eu-netherlands'] || [])
+        ];
+        
+        if (euGovBonds.length > 0) {
+            categories['eu-governativi'] = {
+                name: 'Titoli di Stato Europei',
+                description: 'European Government Bonds',
+                count: euGovBonds.length,
+                bonds: euGovBonds
+            };
+        }
+        
+        // Supranational Bonds
+        const supranationalBonds = bondsByCategory['supranational'] || [];
+        if (supranationalBonds.length > 0) {
+            categories['sovranazionali'] = {
+                name: 'Obbligazioni Sovranazionali',
+                description: 'BEI, EFSF, ESM, World Bank',
+                count: supranationalBonds.length,
+                bonds: supranationalBonds
+            };
+        }
+        
+        // Corporate Bonds
+        const corporateBonds = bondsByCategory['corporate-all'] || [];
+        if (corporateBonds.length > 0) {
+            categories['corporate'] = {
+                name: 'Obbligazioni Corporate',
+                description: 'Corporate Bonds',
+                count: corporateBonds.length,
+                bonds: corporateBonds
+            };
+        }
+        
+        // Count by type for statistics
+        const bondsByType = {};
+        bonds.forEach(bond => {
+            bondsByType[bond.type] = (bondsByType[bond.type] || 0) + 1;
+        });
         
         // Create output structure
         const output = {
             lastUpdate: new Date().toISOString(),
-            categories: {
-                'it-governativi': {
-                    name: 'Titoli di Stato Italiani',
-                    description: 'BTP, BOT, CCT, CTZ - Italian Government Bonds',
-                    count: bonds.length,
-                    bonds: bonds
-                }
-            },
+            categories: categories,
             statistics: {
                 totalBonds: bonds.length,
-                byCategory: {
-                    'it-governativi': bonds.length
-                },
-                byType: {
-                    BTP: bondsByType.BTP.length,
-                    BOT: bondsByType.BOT.length,
-                    CCT: bondsByType.CCT.length,
-                    CTZ: bondsByType.CTZ.length
-                },
+                byCategory: Object.keys(bondsByCategory).reduce((acc, cat) => {
+                    acc[cat] = bondsByCategory[cat].length;
+                    return acc;
+                }, {}),
+                byType: bondsByType,
                 source: 'Simple Tools for Investors',
                 sourceUrl: CONFIG.sourceUrl
             }
@@ -255,7 +355,8 @@ async function saveBondsData(bonds) {
         );
         
         console.log(`💾 Saved ${bonds.length} bonds to: ${CONFIG.outputPath}`);
-        console.log(`📊 File size: ${JSON.stringify(output).length} bytes`);
+        console.log(`📊 Categories created: ${Object.keys(categories).join(', ')}`);
+        console.log(`📊 File size: ${(JSON.stringify(output).length / 1024).toFixed(2)} KB`);
         
         return true;
         
