@@ -1,0 +1,71 @@
+name: Update Bonds Data
+
+on:
+  # Run daily at 19:30 UTC (after Simple Tools updates at 19:00)
+  schedule:
+    - cron: '30 19 * * *'
+  
+  # Allow manual trigger
+  workflow_dispatch:
+
+jobs:
+  scrape-bonds:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Install dependencies
+        run: |
+          npm install axios cheerio
+      
+      - name: Run bonds scraper
+        run: |
+          node bonds-scraper-simple.js
+        env:
+          NODE_ENV: production
+      
+      - name: Check if data changed
+        id: check_changes
+        run: |
+          if git diff --quiet data/bonds-data.json; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Commit and push changes
+        if: steps.check_changes.outputs.changed == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/bonds-data.json
+          git commit -m "Update bonds data - $(date +'%Y-%m-%d %H:%M UTC')"
+          git push
+      
+      - name: Upload scraping logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scraping-logs-${{ github.run_number }}
+          path: |
+            data/bonds-data.json
+          retention-days: 7
+      
+      - name: Notify on success
+        if: success()
+        run: |
+          echo "✅ Bonds scraping completed successfully!"
+          echo "📊 Check data/bonds-data.json for results"
+      
+      - name: Notify on failure
+        if: failure()
+        run: |
+          echo "❌ Bonds scraping failed!"
+          echo "Check the logs for details"
