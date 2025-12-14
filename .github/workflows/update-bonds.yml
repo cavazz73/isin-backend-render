@@ -17,7 +17,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: '20'  # ← FIXED: Use Node.js 20 instead of 18
           
       - name: Install dependencies
         run: |
