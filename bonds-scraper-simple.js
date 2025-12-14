@@ -56,14 +56,14 @@ function parseFloat(value) {
 
 /**
  * Categorize bond based on issuer/description
+ * CRITICAL: Order matters! BOT must be checked BEFORE BTP!
  */
 function categorizeBond(name, isin) {
     const nameUpper = name.toUpperCase();
     
-    // Italian Government Bonds
-    if (nameUpper.includes('BTP') && !nameUpper.includes('BOT')) {
-        return { category: 'gov-it-btp', type: 'BTP', country: 'IT' };
-    }
+    // Italian Government Bonds - CHECK BOT FIRST!
+    // BOT contains "BOT" but ALSO often contains "BTP" in the description
+    // So we MUST check BOT before BTP!
     if (nameUpper.includes('BOT')) {
         return { category: 'gov-it-bot', type: 'BOT', country: 'IT' };
     }
@@ -72,6 +72,10 @@ function categorizeBond(name, isin) {
     }
     if (nameUpper.includes('CTZ')) {
         return { category: 'gov-it-ctz', type: 'CTZ', country: 'IT' };
+    }
+    // BTP last because it's the most common and we want to catch BOT/CCT/CTZ first
+    if (nameUpper.includes('BTP')) {
+        return { category: 'gov-it-btp', type: 'BTP', country: 'IT' };
     }
     
     // European Government Bonds
@@ -266,47 +270,102 @@ async function saveBondsData(bonds) {
         // Create categories object
         const categories = {};
         
-        // Italian Government Bonds
-        const itGovBonds = [
-            ...(bondsByCategory['gov-it-btp'] || []),
-            ...(bondsByCategory['gov-it-bot'] || []),
-            ...(bondsByCategory['gov-it-cct'] || []),
-            ...(bondsByCategory['gov-it-ctz'] || []),
-            ...(bondsByCategory['gov-it-other'] || [])
-        ];
-        
-        if (itGovBonds.length > 0) {
-            categories['it-governativi'] = {
-                name: 'Titoli di Stato Italiani',
-                description: 'BTP, BOT, CCT, CTZ - Italian Government Bonds',
-                count: itGovBonds.length,
-                bonds: itGovBonds
+        // Italian Government Bonds - create separate categories for each type
+        if (bondsByCategory['gov-it-btp'] && bondsByCategory['gov-it-btp'].length > 0) {
+            categories['gov-it-btp'] = {
+                name: 'BTP - Buoni Tesoro Poliennali',
+                description: 'Titoli di Stato italiani a medio-lungo termine',
+                count: bondsByCategory['gov-it-btp'].length,
+                bonds: bondsByCategory['gov-it-btp']
             };
         }
         
-        // European Government Bonds
-        const euGovBonds = [
-            ...(bondsByCategory['gov-eu-france'] || []),
-            ...(bondsByCategory['gov-eu-germany'] || []),
-            ...(bondsByCategory['gov-eu-spain'] || []),
-            ...(bondsByCategory['gov-eu-austria'] || []),
-            ...(bondsByCategory['gov-eu-belgium'] || []),
-            ...(bondsByCategory['gov-eu-netherlands'] || [])
-        ];
+        if (bondsByCategory['gov-it-bot'] && bondsByCategory['gov-it-bot'].length > 0) {
+            categories['gov-it-bot'] = {
+                name: 'BOT - Buoni Ordinari Tesoro',
+                description: 'Titoli di Stato italiani a breve termine',
+                count: bondsByCategory['gov-it-bot'].length,
+                bonds: bondsByCategory['gov-it-bot']
+            };
+        }
         
-        if (euGovBonds.length > 0) {
-            categories['eu-governativi'] = {
-                name: 'Titoli di Stato Europei',
-                description: 'European Government Bonds',
-                count: euGovBonds.length,
-                bonds: euGovBonds
+        if (bondsByCategory['gov-it-cct'] && bondsByCategory['gov-it-cct'].length > 0) {
+            categories['gov-it-cct'] = {
+                name: 'CCT - Certificati Credito Tesoro',
+                description: 'Titoli di Stato italiani a tasso variabile',
+                count: bondsByCategory['gov-it-cct'].length,
+                bonds: bondsByCategory['gov-it-cct']
+            };
+        }
+        
+        if (bondsByCategory['gov-it-ctz'] && bondsByCategory['gov-it-ctz'].length > 0) {
+            categories['gov-it-ctz'] = {
+                name: 'CTZ - Certificati Tesoro Zero Coupon',
+                description: 'Titoli di Stato italiani zero coupon',
+                count: bondsByCategory['gov-it-ctz'].length,
+                bonds: bondsByCategory['gov-it-ctz']
+            };
+        }
+        
+        // European Government Bonds - create separate categories
+        if (bondsByCategory['gov-eu-france'] && bondsByCategory['gov-eu-france'].length > 0) {
+            categories['gov-eu-france'] = {
+                name: 'Francia - Titoli di Stato',
+                description: 'Obbligazioni governative francesi',
+                count: bondsByCategory['gov-eu-france'].length,
+                bonds: bondsByCategory['gov-eu-france']
+            };
+        }
+        
+        if (bondsByCategory['gov-eu-germany'] && bondsByCategory['gov-eu-germany'].length > 0) {
+            categories['gov-eu-germany'] = {
+                name: 'Germania - Titoli di Stato',
+                description: 'Obbligazioni governative tedesche',
+                count: bondsByCategory['gov-eu-germany'].length,
+                bonds: bondsByCategory['gov-eu-germany']
+            };
+        }
+        
+        if (bondsByCategory['gov-eu-spain'] && bondsByCategory['gov-eu-spain'].length > 0) {
+            categories['gov-eu-spain'] = {
+                name: 'Spagna - Titoli di Stato',
+                description: 'Obbligazioni governative spagnole',
+                count: bondsByCategory['gov-eu-spain'].length,
+                bonds: bondsByCategory['gov-eu-spain']
+            };
+        }
+        
+        if (bondsByCategory['gov-eu-austria'] && bondsByCategory['gov-eu-austria'].length > 0) {
+            categories['gov-eu-austria'] = {
+                name: 'Austria - Titoli di Stato',
+                description: 'Obbligazioni governative austriache',
+                count: bondsByCategory['gov-eu-austria'].length,
+                bonds: bondsByCategory['gov-eu-austria']
+            };
+        }
+        
+        if (bondsByCategory['gov-eu-belgium'] && bondsByCategory['gov-eu-belgium'].length > 0) {
+            categories['gov-eu-belgium'] = {
+                name: 'Belgio - Titoli di Stato',
+                description: 'Obbligazioni governative belghe',
+                count: bondsByCategory['gov-eu-belgium'].length,
+                bonds: bondsByCategory['gov-eu-belgium']
+            };
+        }
+        
+        if (bondsByCategory['gov-eu-netherlands'] && bondsByCategory['gov-eu-netherlands'].length > 0) {
+            categories['gov-eu-netherlands'] = {
+                name: 'Paesi Bassi - Titoli di Stato',
+                description: 'Obbligazioni governative olandesi',
+                count: bondsByCategory['gov-eu-netherlands'].length,
+                bonds: bondsByCategory['gov-eu-netherlands']
             };
         }
         
         // Supranational Bonds
         const supranationalBonds = bondsByCategory['supranational'] || [];
         if (supranationalBonds.length > 0) {
-            categories['sovranazionali'] = {
+            categories['supranational'] = {
                 name: 'Obbligazioni Sovranazionali',
                 description: 'BEI, EFSF, ESM, World Bank',
                 count: supranationalBonds.length,
@@ -317,7 +376,7 @@ async function saveBondsData(bonds) {
         // Corporate Bonds
         const corporateBonds = bondsByCategory['corporate-all'] || [];
         if (corporateBonds.length > 0) {
-            categories['corporate'] = {
+            categories['corporate-all'] = {
                 name: 'Obbligazioni Corporate',
                 description: 'Corporate Bonds',
                 count: corporateBonds.length,
