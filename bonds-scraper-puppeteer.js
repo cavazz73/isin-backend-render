@@ -2,14 +2,14 @@
  * Copyright (c) 2024-2025 Mutna S.R.L.S. - All Rights Reserved
  * P.IVA: 04219740364
  * 
- * SimpleTools Bond Scraper - PUPPETEER VERSION
- * Uses real headless browser to bypass anti-bot protection
+ * SimpleTools Bond Scraper - PUPPETEER V2 (FIXED HTML PARSING)
+ * Fixed: Corretto parsing per trovare tabella dati invece di header UI
  */
 
 const puppeteer = require('puppeteer');
 const fs = require('fs').promises;
 
-class PuppeteerBondScraper {
+class PuppeteerBondScraperV2 {
     constructor() {
         this.baseUrl = 'https://www.simpletoolsforinvestors.eu/monitor_info.php';
         this.categories = this.defineCategories();
@@ -178,49 +178,123 @@ class PuppeteerBondScraper {
             // Wait for table to load
             await page.waitForSelector('table', { timeout: 10000 });
 
-            // Extract bond data from page
+            // DEBUG: Save page HTML for analysis
+            const htmlContent = await page.content();
+            console.log(`[Debug] Page loaded, HTML length: ${htmlContent.length}`);
+
+            // Extract bond data with MULTIPLE PARSING STRATEGIES
             const bonds = await page.evaluate(() => {
                 const results = [];
-                const rows = document.querySelectorAll('table tr');
                 
-                rows.forEach(row => {
+                // STRATEGY 1: Find all tables and analyze each
+                const tables = document.querySelectorAll('table');
+                console.log(`[Debug] Found ${tables.length} tables on page`);
+                
+                let bondTable = null;
+                let maxRowCount = 0;
+                
+                // Find table with most data rows (likely the bonds table)
+                tables.forEach((table, idx) => {
+                    const rows = table.querySelectorAll('tr');
+                    const dataRows = Array.from(rows).filter(row => {
+                        const cells = row.querySelectorAll('td');
+                        return cells.length > 5; // Data rows have many columns
+                    });
+                    
+                    console.log(`[Debug] Table ${idx}: ${rows.length} total rows, ${dataRows.length} data rows`);
+                    
+                    if (dataRows.length > maxRowCount) {
+                        maxRowCount = dataRows.length;
+                        bondTable = table;
+                    }
+                });
+                
+                if (!bondTable) {
+                    console.error('[Debug] No suitable table found!');
+                    return [];
+                }
+                
+                console.log(`[Debug] Using table with ${maxRowCount} data rows`);
+                
+                // STRATEGY 2: Parse the selected table
+                const rows = bondTable.querySelectorAll('tr');
+                
+                rows.forEach((row, rowIdx) => {
                     const cells = row.querySelectorAll('td');
-                    if (cells.length < 8) return;
-
-                    const isinText = cells[0]?.textContent?.trim();
-                    if (!isinText || isinText.length < 10) return;
                     
-                    const isin = isinText.toUpperCase();
-                    if (!/^[A-Z]{2}/.test(isin)) return;
-
-                    const name = cells[2]?.textContent?.trim();
-                    if (!name) return;
-
+                    // Skip rows with too few cells (headers, UI elements)
+                    if (cells.length < 8) {
+                        return;
+                    }
+                    
+                    // VALIDATION 1: Check if first cell looks like an ISIN
+                    const firstCellText = cells[0]?.textContent?.trim() || '';
+                    
+                    // Skip if first cell is clearly not an ISIN
+                    if (!firstCellText || 
+                        firstCellText.length < 10 || 
+                        firstCellText.includes('SCALA') ||
+                        firstCellText.includes('DURATION') ||
+                        firstCellText.includes('TIME') ||
+                        firstCellText.includes('Tipo') ||
+                        firstCellText.includes('Emittente')) {
+                        console.log(`[Debug] Row ${rowIdx}: Skipped (first cell: "${firstCellText.substring(0, 30)}")`);
+                        return;
+                    }
+                    
+                    // VALIDATION 2: Check if it matches ISIN pattern
+                    const isin = firstCellText.toUpperCase();
+                    if (!/^[A-Z]{2}[A-Z0-9]{10}/.test(isin)) {
+                        console.log(`[Debug] Row ${rowIdx}: Skipped (not valid ISIN pattern: "${isin}")`);
+                        return;
+                    }
+                    
+                    // Extract data from cells
+                    const name = cells[2]?.textContent?.trim() || '';
+                    
+                    // VALIDATION 3: Name should not be UI text
+                    if (!name || 
+                        name.includes('Tipo yield') ||
+                        name.includes('Lordo') ||
+                        name.includes('Netto')) {
+                        console.log(`[Debug] Row ${rowIdx}: Skipped (invalid name: "${name.substring(0, 30)}")`);
+                        return;
+                    }
+                    
                     const currency = cells[3]?.textContent?.trim() || 'EUR';
-                    const maturity = cells[4]?.textContent?.trim();
+                    const maturity = cells[4]?.textContent?.trim() || '';
                     
-                    let priceText = cells[8]?.textContent?.trim();
+                    // Try multiple columns for price
+                    let priceText = cells[8]?.textContent?.trim() || '';
                     if (!priceText || isNaN(parseFloat(priceText.replace(',', '.')))) {
-                        priceText = cells[9]?.textContent?.trim() || '0';
+                        priceText = cells[9]?.textContent?.trim() || '';
+                    }
+                    if (!priceText || isNaN(parseFloat(priceText.replace(',', '.')))) {
+                        priceText = cells[7]?.textContent?.trim() || '100';
                     }
                     
-                    let yieldText = cells[12]?.textContent?.trim();
+                    // Try multiple columns for yield
+                    let yieldText = cells[12]?.textContent?.trim() || '';
                     if (!yieldText || isNaN(parseFloat(yieldText.replace(',', '.')))) {
-                        yieldText = cells[13]?.textContent?.trim() || '0';
+                        yieldText = cells[13]?.textContent?.trim() || '';
                     }
-
+                    if (!yieldText || isNaN(parseFloat(yieldText.replace(',', '.')))) {
+                        yieldText = cells[11]?.textContent?.trim() || '0';
+                    }
+                    
+                    // Extract coupon from name
                     const couponMatch = name.match(/(\d+[,\.]\d+)%/);
                     const coupon = couponMatch ? parseFloat(couponMatch[1].replace(',', '.')) : 0;
-
+                    
                     const country = isin.substring(0, 2);
-
+                    
                     let type = 'BOND';
                     if (name.includes('BTP')) type = 'BTP';
                     else if (name.includes('BOT')) type = 'BOT';
                     else if (name.includes('CCT')) type = 'CCT';
                     else if (name.includes('CTZ')) type = 'CTZ';
-
-                    results.push({
+                    
+                    const bond = {
                         isin,
                         name,
                         type,
@@ -229,12 +303,16 @@ class PuppeteerBondScraper {
                         maturity,
                         coupon,
                         yield: parseFloat(yieldText.replace(',', '.')) || 0,
-                        price: parseFloat(priceText.replace(',', '.')) || 0,
+                        price: parseFloat(priceText.replace(',', '.')) || 100,
                         change: '+0.00',
                         lastUpdate: new Date().toISOString().split('T')[0]
-                    });
+                    };
+                    
+                    console.log(`[Debug] Row ${rowIdx}: ✓ Valid bond: ${isin} - ${name.substring(0, 30)}...`);
+                    results.push(bond);
                 });
                 
+                console.log(`[Debug] Total valid bonds extracted: ${results.length}`);
                 return results;
             });
 
@@ -243,9 +321,11 @@ class PuppeteerBondScraper {
                 bond.maturity = this.parseDate(bond.maturity);
             });
 
-            console.log(`[Scraper] ✓ Found ${bonds.length} bonds in ${monitorName}`);
+            console.log(`[Scraper] ✓ Found ${bonds.length} valid bonds in ${monitorName}`);
             if (bonds.length > 0) {
-                console.log(`[Scraper]   Sample: ${bonds[0].name.substring(0, 40)}...`);
+                console.log(`[Scraper]   Sample: ${bonds[0].isin} - ${bonds[0].name.substring(0, 40)}...`);
+            } else {
+                console.log(`[Scraper]   ⚠ WARNING: No bonds found - may need HTML analysis`);
             }
 
             await page.close();
@@ -273,8 +353,8 @@ class PuppeteerBondScraper {
 
     async scrapeAll() {
         console.log('='.repeat(70));
-        console.log('SIMPLETOOL BONDS SCRAPER - PUPPETEER VERSION');
-        console.log('Bypassing anti-bot protection with real browser');
+        console.log('SIMPLETOOL BONDS SCRAPER - PUPPETEER V2 (FIXED PARSING)');
+        console.log('Multiple parsing strategies + validation');
         console.log('='.repeat(70));
 
         await this.initBrowser();
@@ -393,7 +473,7 @@ class PuppeteerBondScraper {
 
 if (require.main === module) {
     (async () => {
-        const scraper = new PuppeteerBondScraper();
+        const scraper = new PuppeteerBondScraperV2();
         
         try {
             const data = await scraper.scrapeAll();
@@ -417,4 +497,4 @@ if (require.main === module) {
     })();
 }
 
-module.exports = PuppeteerBondScraper;
+module.exports = PuppeteerBondScraperV2;
