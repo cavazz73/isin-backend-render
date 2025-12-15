@@ -1,4 +1,4 @@
-name: Update Bonds Data
+name: Update Bonds Data (Puppeteer)
 
 on:
   schedule:
@@ -17,18 +17,41 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20'  # ← FIXED: Use Node.js 20 instead of 18
+          node-version: '20'
           
-      - name: Install dependencies
+      - name: Install Puppeteer (explicit)
         run: |
-          npm install axios cheerio
+          echo "Installing Puppeteer for scraping..."
+          npm install puppeteer
           
       - name: Create data directory
         run: mkdir -p data
           
-      - name: Run bonds scraper
-        run: node bonds-scraper-simpletoolsforinvestors.js
+      - name: Run Puppeteer bonds scraper
+        run: node bonds-scraper-puppeteer.js
+        timeout-minutes: 15
         
+      - name: Verify data file
+        run: |
+          if [ ! -f data/bonds-data.json ]; then
+            echo "ERROR: bonds-data.json not created"
+            exit 1
+          fi
+          
+          # Check file is not empty
+          if [ ! -s data/bonds-data.json ]; then
+            echo "ERROR: bonds-data.json is empty"
+            exit 1
+          fi
+          
+          # Check file size (should be > 10KB if successful)
+          size=$(stat -f%z data/bonds-data.json 2>/dev/null || stat -c%s data/bonds-data.json)
+          if [ "$size" -lt 10000 ]; then
+            echo "WARNING: bonds-data.json is suspiciously small ($size bytes)"
+          else
+            echo "✓ bonds-data.json created successfully ($size bytes)"
+          fi
+          
       - name: Check if data changed
         id: check_changes
         run: |
