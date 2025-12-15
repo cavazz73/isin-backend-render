@@ -1,4 +1,4 @@
-name: Update Bonds Data (Puppeteer V3)
+name: Update Bonds Data (V4 Final)
 
 on:
   schedule:
@@ -27,9 +27,9 @@ jobs:
       - name: Create data directory
         run: mkdir -p data
           
-      - name: Run Puppeteer V3 bonds scraper
-        run: node bonds-scraper-puppeteer-v3.js
-        timeout-minutes: 25
+      - name: Run V4 bonds scraper (correct columns)
+        run: node bonds-scraper-puppeteer.js
+        timeout-minutes: 20
         
       - name: Verify data file
         run: |
