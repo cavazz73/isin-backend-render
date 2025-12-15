@@ -1,4 +1,4 @@
-name: Update Bonds Data (Puppeteer)
+name: Update Bonds Data (Puppeteer V3)
 
 on:
   schedule:
@@ -19,7 +19,7 @@ jobs:
         with:
           node-version: '20'
           
-      - name: Install Puppeteer (explicit)
+      - name: Install Puppeteer (explicit for GitHub Actions only)
         run: |
           echo "Installing Puppeteer for scraping..."
           npm install puppeteer
@@ -27,9 +27,9 @@ jobs:
       - name: Create data directory
         run: mkdir -p data
           
-      - name: Run Puppeteer bonds scraper
-        run: node bonds-scraper-puppeteer.js
-        timeout-minutes: 15
+      - name: Run Puppeteer V3 bonds scraper
+        run: node bonds-scraper-puppeteer-v3.js
+        timeout-minutes: 25
         
       - name: Verify data file
         run: |
@@ -45,12 +45,17 @@ jobs:
           fi
           
           # Check file size (should be > 10KB if successful)
-          size=$(stat -f%z data/bonds-data.json 2>/dev/null || stat -c%s data/bonds-data.json)
+          size=$(stat -c%s data/bonds-data.json)
           if [ "$size" -lt 10000 ]; then
             echo "WARNING: bonds-data.json is suspiciously small ($size bytes)"
+            echo "This might indicate parsing issues"
           else
             echo "✓ bonds-data.json created successfully ($size bytes)"
           fi
+          
+          # Show basic stats
+          echo "File contents preview:"
+          head -n 20 data/bonds-data.json
           
       - name: Check if data changed
         id: check_changes
