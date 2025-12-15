@@ -1,6 +1,6 @@
 {
   "name": "isin-backend-multisource",
-  "version": "4.2.0",
+  "version": "4.3.0",
   "description": "ISIN Research Backend - Multi-Source Financial Data API with Redis Cache & Bonds",
   "main": "server.js",
   "scripts": {
