@@ -2,18 +2,19 @@
  * Copyright (c) 2024-2025 Mutna S.R.L.S. - All Rights Reserved
  * P.IVA: 04219740364
  * 
- * SimpleTools Bond Scraper - PUPPETEER V2 (FIXED HTML PARSING)
- * Fixed: Corretto parsing per trovare tabella dati invece di header UI
+ * SimpleTools Bond Scraper - PUPPETEER V3 (AJAX WAIT + DEBUG)
+ * Added: Dynamic wait, HTML save, screenshot, detailed logging
  */
 
 const puppeteer = require('puppeteer');
 const fs = require('fs').promises;
 
-class PuppeteerBondScraperV2 {
+class PuppeteerBondScraperV3 {
     constructor() {
         this.baseUrl = 'https://www.simpletoolsforinvestors.eu/monitor_info.php';
         this.categories = this.defineCategories();
         this.browser = null;
+        this.debugMode = true; // Save HTML and screenshots for first monitor
     }
 
     defineCategories() {
@@ -158,79 +159,118 @@ class PuppeteerBondScraperV2 {
         }
     }
 
-    async scrapeMonitor(monitorName) {
+    async scrapeMonitor(monitorName, isFirstMonitor = false) {
         const page = await this.browser.newPage();
         
         try {
             const url = `${this.baseUrl}?monitor=${monitorName}&yieldtype=G&timescale=DUR`;
             console.log(`[Scraper] Fetching ${monitorName}...`);
 
-            // Set realistic viewport and user agent
             await page.setViewport({ width: 1920, height: 1080 });
             await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
 
-            // Navigate to page
+            // Navigate with longer timeout
             await page.goto(url, { 
                 waitUntil: 'networkidle2',
-                timeout: 60000 
+                timeout: 90000 
             });
 
-            // Wait for table to load
+            // CRITICAL: Wait for AJAX/JavaScript to load table data
+            console.log('[Scraper] Waiting 10s for dynamic content...');
+            await new Promise(resolve => setTimeout(resolve, 10000));
+
+            // Wait for any table
             await page.waitForSelector('table', { timeout: 10000 });
 
-            // DEBUG: Save page HTML for analysis
             const htmlContent = await page.content();
-            console.log(`[Debug] Page loaded, HTML length: ${htmlContent.length}`);
+            console.log(`[Debug] HTML length: ${htmlContent.length}`);
 
-            // Extract bond data with MULTIPLE PARSING STRATEGIES
+            // DEBUG MODE: Save HTML and screenshot for first monitor
+            if (isFirstMonitor && this.debugMode) {
+                try {
+                    await fs.mkdir('debug', { recursive: true });
+                    await fs.writeFile(`debug/${monitorName}.html`, htmlContent);
+                    await page.screenshot({ path: `debug/${monitorName}.png`, fullPage: true });
+                    console.log(`[Debug] Saved HTML and screenshot to debug/ folder`);
+                } catch (err) {
+                    console.log(`[Debug] Could not save debug files: ${err.message}`);
+                }
+            }
+
+            // Extract with ENHANCED logging
             const bonds = await page.evaluate(() => {
                 const results = [];
-                
-                // STRATEGY 1: Find all tables and analyze each
                 const tables = document.querySelectorAll('table');
-                console.log(`[Debug] Found ${tables.length} tables on page`);
                 
-                let bondTable = null;
-                let maxRowCount = 0;
+                console.log(`=== TABLE ANALYSIS ===`);
+                console.log(`Found ${tables.length} tables total`);
                 
-                // Find table with most data rows (likely the bonds table)
-                tables.forEach((table, idx) => {
-                    const rows = table.querySelectorAll('tr');
-                    const dataRows = Array.from(rows).filter(row => {
+                // Analyze each table
+                let bestTable = null;
+                let maxDataRows = 0;
+                
+                tables.forEach((table, tableIdx) => {
+                    const rows = Array.from(table.querySelectorAll('tr'));
+                    
+                    // Count rows that look like data (have many cells)
+                    const dataRows = rows.filter(row => {
                         const cells = row.querySelectorAll('td');
-                        return cells.length > 5; // Data rows have many columns
+                        return cells.length >= 8;
                     });
                     
-                    console.log(`[Debug] Table ${idx}: ${rows.length} total rows, ${dataRows.length} data rows`);
+                    console.log(`Table ${tableIdx}:`);
+                    console.log(`  - Total rows: ${rows.length}`);
+                    console.log(`  - Data rows (8+ cells): ${dataRows.length}`);
+                    console.log(`  - Classes: ${table.className}`);
+                    console.log(`  - ID: ${table.id}`);
                     
-                    if (dataRows.length > maxRowCount) {
-                        maxRowCount = dataRows.length;
-                        bondTable = table;
+                    // Sample first row
+                    if (rows.length > 0) {
+                        const firstRow = rows[0];
+                        const cells = firstRow.querySelectorAll('td, th');
+                        console.log(`  - First row cells: ${cells.length}`);
+                        if (cells.length > 0) {
+                            console.log(`  - First cell text: "${cells[0].textContent.trim().substring(0, 50)}"`);
+                        }
+                    }
+                    
+                    if (dataRows.length > maxDataRows) {
+                        maxDataRows = dataRows.length;
+                        bestTable = table;
                     }
                 });
                 
-                if (!bondTable) {
-                    console.error('[Debug] No suitable table found!');
+                console.log(`\n=== SELECTED TABLE ===`);
+                if (!bestTable) {
+                    console.log('ERROR: No suitable table found!');
                     return [];
                 }
                 
-                console.log(`[Debug] Using table with ${maxRowCount} data rows`);
+                console.log(`Using table with ${maxDataRows} data rows`);
                 
-                // STRATEGY 2: Parse the selected table
-                const rows = bondTable.querySelectorAll('tr');
+                const rows = Array.from(bestTable.querySelectorAll('tr'));
+                console.log(`\n=== ROW ANALYSIS (first 10) ===`);
                 
+                rows.slice(0, 10).forEach((row, idx) => {
+                    const cells = row.querySelectorAll('td');
+                    console.log(`Row ${idx}: ${cells.length} cells`);
+                    
+                    if (cells.length >= 3) {
+                        console.log(`  [0]: "${cells[0].textContent.trim().substring(0, 30)}"`);
+                        console.log(`  [1]: "${cells[1].textContent.trim().substring(0, 30)}"`);
+                        console.log(`  [2]: "${cells[2].textContent.trim().substring(0, 30)}"`);
+                    }
+                });
+                
+                // Parse bonds with original logic
                 rows.forEach((row, rowIdx) => {
                     const cells = row.querySelectorAll('td');
                     
-                    // Skip rows with too few cells (headers, UI elements)
-                    if (cells.length < 8) {
-                        return;
-                    }
+                    if (cells.length < 8) return;
                     
-                    // VALIDATION 1: Check if first cell looks like an ISIN
                     const firstCellText = cells[0]?.textContent?.trim() || '';
                     
-                    // Skip if first cell is clearly not an ISIN
+                    // Skip UI elements
                     if (!firstCellText || 
                         firstCellText.length < 10 || 
                         firstCellText.includes('SCALA') ||
@@ -238,33 +278,25 @@ class PuppeteerBondScraperV2 {
                         firstCellText.includes('TIME') ||
                         firstCellText.includes('Tipo') ||
                         firstCellText.includes('Emittente')) {
-                        console.log(`[Debug] Row ${rowIdx}: Skipped (first cell: "${firstCellText.substring(0, 30)}")`);
                         return;
                     }
                     
-                    // VALIDATION 2: Check if it matches ISIN pattern
                     const isin = firstCellText.toUpperCase();
-                    if (!/^[A-Z]{2}[A-Z0-9]{10}/.test(isin)) {
-                        console.log(`[Debug] Row ${rowIdx}: Skipped (not valid ISIN pattern: "${isin}")`);
+                    if (!/^[A-Z]{2}[A-Z0-9]{9,}/.test(isin)) {
                         return;
                     }
                     
-                    // Extract data from cells
                     const name = cells[2]?.textContent?.trim() || '';
-                    
-                    // VALIDATION 3: Name should not be UI text
                     if (!name || 
                         name.includes('Tipo yield') ||
                         name.includes('Lordo') ||
                         name.includes('Netto')) {
-                        console.log(`[Debug] Row ${rowIdx}: Skipped (invalid name: "${name.substring(0, 30)}")`);
                         return;
                     }
                     
                     const currency = cells[3]?.textContent?.trim() || 'EUR';
                     const maturity = cells[4]?.textContent?.trim() || '';
                     
-                    // Try multiple columns for price
                     let priceText = cells[8]?.textContent?.trim() || '';
                     if (!priceText || isNaN(parseFloat(priceText.replace(',', '.')))) {
                         priceText = cells[9]?.textContent?.trim() || '';
@@ -273,7 +305,6 @@ class PuppeteerBondScraperV2 {
                         priceText = cells[7]?.textContent?.trim() || '100';
                     }
                     
-                    // Try multiple columns for yield
                     let yieldText = cells[12]?.textContent?.trim() || '';
                     if (!yieldText || isNaN(parseFloat(yieldText.replace(',', '.')))) {
                         yieldText = cells[13]?.textContent?.trim() || '';
@@ -282,7 +313,6 @@ class PuppeteerBondScraperV2 {
                         yieldText = cells[11]?.textContent?.trim() || '0';
                     }
                     
-                    // Extract coupon from name
                     const couponMatch = name.match(/(\d+[,\.]\d+)%/);
                     const coupon = couponMatch ? parseFloat(couponMatch[1].replace(',', '.')) : 0;
                     
@@ -294,7 +324,7 @@ class PuppeteerBondScraperV2 {
                     else if (name.includes('CCT')) type = 'CCT';
                     else if (name.includes('CTZ')) type = 'CTZ';
                     
-                    const bond = {
+                    results.push({
                         isin,
                         name,
                         type,
@@ -306,17 +336,19 @@ class PuppeteerBondScraperV2 {
                         price: parseFloat(priceText.replace(',', '.')) || 100,
                         change: '+0.00',
                         lastUpdate: new Date().toISOString().split('T')[0]
-                    };
+                    });
                     
-                    console.log(`[Debug] Row ${rowIdx}: ✓ Valid bond: ${isin} - ${name.substring(0, 30)}...`);
-                    results.push(bond);
+                    if (results.length <= 3) {
+                        console.log(`Bond ${results.length}: ${isin} - ${name.substring(0, 30)}`);
+                    }
                 });
                 
-                console.log(`[Debug] Total valid bonds extracted: ${results.length}`);
+                console.log(`\n=== EXTRACTION COMPLETE ===`);
+                console.log(`Total valid bonds: ${results.length}`);
+                
                 return results;
             });
 
-            // Parse dates
             bonds.forEach(bond => {
                 bond.maturity = this.parseDate(bond.maturity);
             });
@@ -325,7 +357,7 @@ class PuppeteerBondScraperV2 {
             if (bonds.length > 0) {
                 console.log(`[Scraper]   Sample: ${bonds[0].isin} - ${bonds[0].name.substring(0, 40)}...`);
             } else {
-                console.log(`[Scraper]   ⚠ WARNING: No bonds found - may need HTML analysis`);
+                console.log(`[Scraper]   ⚠ WARNING: No bonds found`);
             }
 
             await page.close();
@@ -353,8 +385,8 @@ class PuppeteerBondScraperV2 {
 
     async scrapeAll() {
         console.log('='.repeat(70));
-        console.log('SIMPLETOOL BONDS SCRAPER - PUPPETEER V2 (FIXED PARSING)');
-        console.log('Multiple parsing strategies + validation');
+        console.log('SIMPLETOOL BONDS SCRAPER - PUPPETEER V3 (AJAX WAIT + DEBUG)');
+        console.log('Added: 10s dynamic wait, HTML save, detailed logging');
         console.log('='.repeat(70));
 
         await this.initBrowser();
@@ -370,7 +402,6 @@ class PuppeteerBondScraperV2 {
             }
         };
 
-        // Group monitors
         const monitorMap = new Map();
         
         for (const [catId, catConfig] of Object.entries(this.categories)) {
@@ -394,7 +425,8 @@ class PuppeteerBondScraperV2 {
             monitorIndex++;
             console.log(`[Scraper] Monitor ${monitorIndex}/${monitorMap.size}: ${monitor}`);
             
-            const bonds = await this.scrapeMonitor(monitor);
+            const isFirstMonitor = (monitorIndex === 1);
+            const bonds = await this.scrapeMonitor(monitor, isFirstMonitor);
             monitorData.set(monitor, bonds);
             
             if (bonds.length > 0) {
@@ -403,7 +435,6 @@ class PuppeteerBondScraperV2 {
                 result.statistics.failedMonitors++;
             }
             
-            // Delay between monitors
             if (monitorIndex < monitorMap.size) {
                 console.log('[Scraper] Waiting 3s...\n');
                 await new Promise(resolve => setTimeout(resolve, 3000));
@@ -473,7 +504,7 @@ class PuppeteerBondScraperV2 {
 
 if (require.main === module) {
     (async () => {
-        const scraper = new PuppeteerBondScraperV2();
+        const scraper = new PuppeteerBondScraperV3();
         
         try {
             const data = await scraper.scrapeAll();
@@ -484,6 +515,7 @@ if (require.main === module) {
                 process.exit(0);
             } else if (saved) {
                 console.log('\n⚠ WARNING - File created but no bonds found');
+                console.log('Check debug/ folder for HTML and screenshot');
                 process.exit(1);
             } else {
                 console.error('\n✗ FAILED - Could not save file');
@@ -497,4 +529,4 @@ if (require.main === module) {
     })();
 }
 
-module.exports = PuppeteerBondScraperV2;
+module.exports = PuppeteerBondScraperV3;
