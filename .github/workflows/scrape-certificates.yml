@@ -1,0 +1,79 @@
+name: Scrape Certificates Daily
+
+on:
+  # Run every day at 18:30 UTC (19:30 CET / 20:30 CEST)
+  schedule:
+    - cron: '30 18 * * *'
+  
+  # Allow manual trigger
+  workflow_dispatch:
+
+jobs:
+  scrape-certificates:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      
+      - name: Install dependencies
+        run: |
+          npm install puppeteer
+          echo "✅ Puppeteer installed"
+      
+      - name: Run certificates scraper
+        run: |
+          echo "🚀 Starting certificates scraper..."
+          node certificates-scraper.js
+          echo "✅ Scraper completed"
+      
+      - name: Check for changes
+        id: check_changes
+        run: |
+          if git diff --quiet certificates-data.json; then
+            echo "No changes detected"
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "Changes detected in certificates-data.json"
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Commit and push changes
+        if: steps.check_changes.outputs.has_changes == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "GitHub Actions Bot"
+          git add certificates-data.json
+          git commit -m "🔄 Auto-update certificates data - $(date +'%Y-%m-%d %H:%M')"
+          git push
+          echo "✅ Changes committed and pushed"
+      
+      - name: No changes
+        if: steps.check_changes.outputs.has_changes == 'false'
+        run: |
+          echo "ℹ️ No changes to commit"
+      
+      - name: Workflow summary
+        run: |
+          echo "## 📊 Certificates Scraper Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Date:** $(date +'%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
+          echo "- **Status:** ✅ Completed" >> $GITHUB_STEP_SUMMARY
+          echo "- **Changes:** ${{ steps.check_changes.outputs.has_changes }}" >> $GITHUB_STEP_SUMMARY
+          
+          if [ -f certificates-data.json ]; then
+            CERT_COUNT=$(grep -o '"isin"' certificates-data.json | wc -l)
+            echo "- **Certificates scraped:** ${CERT_COUNT}" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 🔗 Next Steps" >> $GITHUB_STEP_SUMMARY
+          echo "- Render will auto-deploy with new data" >> $GITHUB_STEP_SUMMARY
+          echo "- Frontend will load updated certificates" >> $GITHUB_STEP_SUMMARY
