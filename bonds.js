@@ -2,44 +2,175 @@
  * Copyright (c) 2024-2025 Mutna S.R.L.S. - All Rights Reserved
  * P.IVA: 04219740364
  * 
- * Bond API Routes - Italian Government Bonds
+ * Bonds API Routes
+ * Serves bonds data from bonds-data.json (no live scraping)
  */
 
 const express = require('express');
 const router = express.Router();
-const BorsaItalianaScraper = require('./borsaItalianaScraper');
+const fs = require('fs');
+const path = require('path');
 
-// Initialize Bond Scraper
-const bondScraper = new BorsaItalianaScraper();
+// ===================================
+// LOAD BONDS DATA
+// ===================================
+
+let bondsData = {
+    lastUpdate: null,
+    categories: {}
+};
+
+let allBonds = [];
+
+function loadBondsData() {
+    try {
+        const dataPath = path.join(__dirname, 'data', 'bonds-data.json');
+        if (fs.existsSync(dataPath)) {
+            const rawData = fs.readFileSync(dataPath, 'utf8');
+            bondsData = JSON.parse(rawData);
+            
+            // Flatten all bonds from all categories
+            allBonds = [];
+            Object.keys(bondsData.categories || {}).forEach(catKey => {
+                const category = bondsData.categories[catKey];
+                if (category.bonds && Array.isArray(category.bonds)) {
+                    allBonds = allBonds.concat(category.bonds.map(b => ({
+                        ...b,
+                        categoryId: catKey,
+                        categoryName: category.name
+                    })));
+                }
+            });
+            
+            console.log(`✅ Loaded ${allBonds.length} bonds from ${Object.keys(bondsData.categories || {}).length} categories`);
+        } else {
+            console.warn('⚠️  bonds-data.json not found');
+        }
+    } catch (error) {
+        console.error('❌ Error loading bonds data:', error.message);
+    }
+}
+
+// Load data on startup
+loadBondsData();
+
+// Reload data every 6 hours
+setInterval(loadBondsData, 6 * 60 * 60 * 1000);
+
+// ===================================
+// GET ALL BONDS (with filters)
+// ===================================
+
+router.get('/', async (req, res) => {
+    try {
+        const {
+            category,       // Category filter (e.g. gov-it-btp)
+            type,           // Type filter (e.g. BTP)
+            minYield,       // Minimum yield
+            maxYield,       // Maximum yield
+            minCoupon,      // Minimum coupon
+            maxCoupon,      // Maximum coupon
+            limit = 100     // Results limit
+        } = req.query;
+
+        let filtered = [...allBonds];
+
+        // Apply filters
+        if (category) {
+            filtered = filtered.filter(b => b.categoryId === category);
+        }
+
+        if (type) {
+            filtered = filtered.filter(b => 
+                b.type && b.type.toLowerCase() === type.toLowerCase()
+            );
+        }
+
+        if (minYield) {
+            filtered = filtered.filter(b => 
+                b.yield >= parseFloat(minYield)
+            );
+        }
+
+        if (maxYield) {
+            filtered = filtered.filter(b => 
+                b.yield <= parseFloat(maxYield)
+            );
+        }
+
+        if (minCoupon) {
+            filtered = filtered.filter(b => 
+                b.coupon >= parseFloat(minCoupon)
+            );
+        }
+
+        if (maxCoupon) {
+            filtered = filtered.filter(b => 
+                b.coupon <= parseFloat(maxCoupon)
+            );
+        }
+
+        // Apply limit
+        const limited = filtered.slice(0, parseInt(limit));
+
+        res.json({
+            success: true,
+            count: limited.length,
+            total: filtered.length,
+            bonds: limited,
+            lastUpdate: bondsData.lastUpdate
+        });
+
+    } catch (error) {
+        console.error('[Bonds API] Error:', error);
+        res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+});
 
 // ===================================
 // SEARCH BONDS BY CATEGORY
 // ===================================
+
 router.get('/search', async (req, res) => {
     try {
-        const { category = 'btp', limit = 20 } = req.query;
+        const { category, limit = 100, q } = req.query;
         
         console.log(`[BONDS] Search request: category=${category}, limit=${limit}`);
 
-        // Validate category
-        const validCategories = ['btp', 'bot', 'cct', 'ctz'];
-        if (!validCategories.includes(category.toLowerCase())) {
-            return res.status(400).json({
-                success: false,
-                error: `Invalid category. Valid options: ${validCategories.join(', ')}`
+        let filtered = [...allBonds];
+
+        // Filter by category
+        if (category) {
+            filtered = filtered.filter(b => b.categoryId === category);
+        }
+
+        // Filter by search query
+        if (q) {
+            const query = q.toLowerCase();
+            filtered = filtered.filter(b => {
+                return (
+                    (b.isin && b.isin.toLowerCase().includes(query)) ||
+                    (b.name && b.name.toLowerCase().includes(query)) ||
+                    (b.type && b.type.toLowerCase().includes(query))
+                );
             });
         }
 
-        // Search bonds
-        const results = await bondScraper.searchBonds(category, parseInt(limit));
-        
+        // Apply limit
+        const limited = filtered.slice(0, parseInt(limit));
+
+        console.log(`[BONDS] Returning ${limited.length} bonds for category ${category || 'all'}`);
+
         res.json({
             success: true,
-            category: results.category,
-            count: results.count,
-            bonds: results.bonds,
-            disclaimer: results.disclaimer,
-            timestamp: new Date().toISOString()
+            category: category || 'all',
+            count: limited.length,
+            total: filtered.length,
+            bonds: limited,
+            lastUpdate: bondsData.lastUpdate
         });
 
     } catch (error) {
@@ -52,62 +183,32 @@ router.get('/search', async (req, res) => {
 });
 
 // ===================================
-// GET BOND DETAILS BY ISIN
+// GET BOND BY ISIN
 // ===================================
-router.get('/details/:isin', async (req, res) => {
+
+router.get('/:isin', async (req, res) => {
     try {
         const { isin } = req.params;
-        const { category = 'btp' } = req.query;
         
-        console.log(`[BONDS] Details request: ISIN=${isin}, category=${category}`);
+        const bond = allBonds.find(b => 
+            b.isin && b.isin.toUpperCase() === isin.toUpperCase()
+        );
 
-        // Validate ISIN format
-        if (!/^[A-Z]{2}[A-Z0-9]{10}$/.test(isin.toUpperCase())) {
-            return res.status(400).json({
-                success: false,
-                error: 'Invalid ISIN format'
-            });
-        }
-
-        // Get bond details
-        const details = await bondScraper.getBondDetails(isin, category);
-        
-        if (!details) {
+        if (!bond) {
             return res.status(404).json({
                 success: false,
-                error: 'Bond not found'
+                error: 'Bond not found',
+                isin: isin
             });
         }
 
         res.json({
             success: true,
-            bond: details,
-            timestamp: new Date().toISOString()
+            bond: bond
         });
 
     } catch (error) {
-        console.error('[BONDS] Details error:', error);
-        res.status(404).json({
-            success: false,
-            error: 'Bond not found or temporarily unavailable'
-        });
-    }
-});
-
-// ===================================
-// GET ALL BTP (Quick Access)
-// ===================================
-router.get('/btp', async (req, res) => {
-    try {
-        const { limit = 20 } = req.query;
-        const results = await bondScraper.searchBonds('btp', parseInt(limit));
-        
-        res.json({
-            success: true,
-            ...results
-        });
-    } catch (error) {
-        console.error('[BONDS] BTP error:', error);
+        console.error('[Bonds API] Error:', error);
         res.status(500).json({
             success: false,
             error: error.message
@@ -116,19 +217,26 @@ router.get('/btp', async (req, res) => {
 });
 
 // ===================================
-// GET ALL BOT (Quick Access)
+// GET CATEGORIES
 // ===================================
-router.get('/bot', async (req, res) => {
+
+router.get('/meta/categories', async (req, res) => {
     try {
-        const { limit = 20 } = req.query;
-        const results = await bondScraper.searchBonds('bot', parseInt(limit));
-        
+        const categories = Object.keys(bondsData.categories || {}).map(key => ({
+            id: key,
+            name: bondsData.categories[key].name || key,
+            description: bondsData.categories[key].description || '',
+            count: bondsData.categories[key].bonds ? bondsData.categories[key].bonds.length : 0
+        }));
+
         res.json({
             success: true,
-            ...results
+            count: categories.length,
+            categories: categories
         });
+
     } catch (error) {
-        console.error('[BONDS] BOT error:', error);
+        console.error('[Bonds API] Error:', error);
         res.status(500).json({
             success: false,
             error: error.message
@@ -137,18 +245,38 @@ router.get('/bot', async (req, res) => {
 });
 
 // ===================================
-// CACHE STATISTICS
+// GET STATISTICS
 // ===================================
-router.get('/cache-stats', (req, res) => {
+
+router.get('/meta/stats', async (req, res) => {
     try {
-        const stats = bondScraper.getCacheStats();
-        
+        const stats = {
+            total_bonds: allBonds.length,
+            categories: Object.keys(bondsData.categories || {}).length,
+            
+            avg_yield: calculateAverage(allBonds, 'yield'),
+            avg_coupon: calculateAverage(allBonds, 'coupon'),
+            
+            yield_range: {
+                min: Math.min(...allBonds.map(b => b.yield || 0)),
+                max: Math.max(...allBonds.map(b => b.yield || 0))
+            },
+            
+            coupon_range: {
+                min: Math.min(...allBonds.map(b => b.coupon || 0)),
+                max: Math.max(...allBonds.map(b => b.coupon || 0))
+            },
+            
+            last_update: bondsData.lastUpdate
+        };
+
         res.json({
             success: true,
-            cache: stats,
-            timestamp: new Date().toISOString()
+            statistics: stats
         });
+
     } catch (error) {
+        console.error('[Bonds API] Error:', error);
         res.status(500).json({
             success: false,
             error: error.message
@@ -157,53 +285,14 @@ router.get('/cache-stats', (req, res) => {
 });
 
 // ===================================
-// CLEAR CACHE (Admin)
+// UTILITY FUNCTIONS
 // ===================================
-router.post('/clear-cache', (req, res) => {
-    try {
-        bondScraper.clearCache();
-        
-        res.json({
-            success: true,
-            message: 'Bond cache cleared successfully'
-        });
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            error: error.message
-        });
-    }
-});
 
-// ===================================
-// TEST ENDPOINT
-// ===================================
-router.get('/test', async (req, res) => {
-    try {
-        console.log('[BONDS] Running test...');
-        
-        // Test BTP search
-        const btpTest = await bondScraper.searchBonds('btp', 3);
-        
-        res.json({
-            success: true,
-            timestamp: new Date().toISOString(),
-            test_results: {
-                btp_search: {
-                    status: btpTest.count > 0 ? 'OK' : 'FAIL',
-                    bonds_found: btpTest.count,
-                    sample: btpTest.bonds[0] || null
-                },
-                cache: bondScraper.getCacheStats()
-            }
-        });
-        
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            error: error.message
-        });
-    }
-});
+function calculateAverage(arr, field) {
+    const values = arr.map(item => item[field]).filter(v => v != null && !isNaN(v));
+    if (values.length === 0) return 0;
+    const sum = values.reduce((a, b) => a + b, 0);
+    return parseFloat((sum / values.length).toFixed(2));
+}
 
 module.exports = router;
