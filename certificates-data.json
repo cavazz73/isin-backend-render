@@ -1,7 +1,7 @@
 {
   "metadata": {
     "scraper_version": "1.0",
-    "timestamp": "2025-12-16T15:33:16.675Z",
+    "timestamp": "2025-12-16T18:52:38.271Z",
     "source": "Borsa Italiana SeDeX",
     "total_certificates": 5,
     "scrape_date": "2025-12-16",
@@ -72,7 +72,7 @@
             "underlying_price": 25.5,
             "redemption": 300,
             "pl_pct": -67.91,
-            "pl_annual": -22.64
+            "pl_annual": -22.65
           },
           {
             "variation_pct": -60,
@@ -384,7 +384,7 @@
             "underlying_price": 9600,
             "redemption": 300,
             "pl_pct": -69.4,
-            "pl_annual": -23.14
+            "pl_annual": -23.15
           },
           {
             "variation_pct": -60,
