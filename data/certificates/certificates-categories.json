@@ -1,0 +1,130 @@
+{
+  "categories": [
+    {
+      "id": "phoenix-memory",
+      "name": "Phoenix Memory",
+      "description": "Certificati con memoria delle cedole e autocall",
+      "keywords": ["phoenix", "memory", "softcallable"],
+      "priority": 1
+    },
+    {
+      "id": "cash-collect",
+      "name": "Cash Collect",
+      "description": "Certificati con cedole condizionate mensili",
+      "keywords": ["cash collect", "airbag", "memory airbag"],
+      "priority": 2
+    },
+    {
+      "id": "express",
+      "name": "Express",
+      "description": "Certificati con scadenza anticipata possibile",
+      "keywords": ["express", "autocallable"],
+      "priority": 3
+    },
+    {
+      "id": "bonus-cap",
+      "name": "Bonus Cap",
+      "description": "Certificati con bonus e cap sulla performance",
+      "keywords": ["bonus cap", "bonus certificate"],
+      "priority": 4
+    },
+    {
+      "id": "twin-win",
+      "name": "Twin Win",
+      "description": "Certificati con guadagno in entrambe le direzioni",
+      "keywords": ["twin win", "double chance"],
+      "priority": 5
+    },
+    {
+      "id": "reverse-convertible",
+      "name": "Reverse Convertible",
+      "description": "Certificati con cedola fissa e rischio capitale",
+      "keywords": ["reverse convertible", "reverse"],
+      "priority": 6
+    },
+    {
+      "id": "discount",
+      "name": "Discount",
+      "description": "Certificati con sconto sull'acquisto del sottostante",
+      "keywords": ["discount certificate"],
+      "priority": 7
+    },
+    {
+      "id": "outperformance",
+      "name": "Outperformance",
+      "description": "Certificati con partecipazione maggiorata al rialzo",
+      "keywords": ["outperformance", "super performance"],
+      "priority": 8
+    }
+  ],
+  "issuers": [
+    {
+      "id": "efg",
+      "name": "EFG International",
+      "country": "CH",
+      "rating": "A-"
+    },
+    {
+      "id": "barclays",
+      "name": "Barclays Bank PLC",
+      "country": "GB",
+      "rating": "A"
+    },
+    {
+      "id": "bnp",
+      "name": "BNP Paribas",
+      "country": "FR",
+      "rating": "A+"
+    },
+    {
+      "id": "unicredit",
+      "name": "UniCredit Bank AG",
+      "country": "DE",
+      "rating": "BBB"
+    },
+    {
+      "id": "leonteq",
+      "name": "Leonteq Securities AG",
+      "country": "CH",
+      "rating": "BBB+"
+    },
+    {
+      "id": "société-générale",
+      "name": "Société Générale",
+      "country": "FR",
+      "rating": "A"
+    },
+    {
+      "id": "natixis",
+      "name": "Natixis",
+      "country": "FR",
+      "rating": "A"
+    },
+    {
+      "id": "vontobel",
+      "name": "Vontobel Financial Products",
+      "country": "CH",
+      "rating": "A-"
+    }
+  ],
+  "markets": [
+    {
+      "id": "sedex",
+      "name": "SeDeX",
+      "country": "IT",
+      "exchange": "Borsa Italiana"
+    },
+    {
+      "id": "cert-x",
+      "name": "CERT-X",
+      "country": "IT",
+      "exchange": "Borsa Italiana"
+    },
+    {
+      "id": "scoach",
+      "name": "Scoach",
+      "country": "DE",
+      "exchange": "Deutsche Börse"
+    }
+  ]
+}
