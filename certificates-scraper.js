@@ -15,11 +15,33 @@ const CONFIG = {
     maxCertificates: 100,
     timeout: 60000,
     waitBetweenPages: 2000,
+    dataFolder: path.join(__dirname, 'data', 'certificates'),
     sources: {
         primary: 'https://www.borsaitaliana.it/borsa/certificates/certificates.html',
         alternative: 'https://www.investireoggi.it/certificati/'
     }
 };
+
+// Load helper data
+let CATEGORIES = {};
+let UNDERLYINGS = {};
+
+try {
+    const categoriesPath = path.join(CONFIG.dataFolder, 'certificates-categories.json');
+    const underlyingsPath = path.join(CONFIG.dataFolder, 'certificates-underlyings.json');
+    
+    if (fs.existsSync(categoriesPath)) {
+        CATEGORIES = JSON.parse(fs.readFileSync(categoriesPath, 'utf8'));
+        console.log('✅ Loaded categories configuration');
+    }
+    
+    if (fs.existsSync(underlyingsPath)) {
+        UNDERLYINGS = JSON.parse(fs.readFileSync(underlyingsPath, 'utf8'));
+        console.log('✅ Loaded underlyings configuration');
+    }
+} catch (error) {
+    console.warn('⚠️  Could not load helper files, using defaults');
+}
 
 // Certificate types mapping
 const CERT_TYPES = {
@@ -86,13 +108,22 @@ async function scrapeCertificates() {
                 timestamp: new Date().toISOString(),
                 source: 'Borsa Italiana SeDeX',
                 total_certificates: certificates.length,
-                scrape_date: new Date().toISOString().split('T')[0]
+                scrape_date: new Date().toISOString().split('T')[0],
+                categories: CATEGORIES.categories ? CATEGORIES.categories.length : 0,
+                underlyings_db: UNDERLYINGS.underlyings ? Object.keys(UNDERLYINGS.underlyings).length : 0
             },
             certificates: certificates
         };
         
-        // Save to file
+        // Save to ROOT directory (not data/)
         const outputPath = path.join(__dirname, 'certificates-data.json');
+        
+        // Ensure output directory exists
+        const outputDir = path.dirname(outputPath);
+        if (!fs.existsSync(outputDir)) {
+            fs.mkdirSync(outputDir, { recursive: true });
+        }
+        
         fs.writeFileSync(outputPath, JSON.stringify(output, null, 2), 'utf8');
         
         console.log('\n✅ Scraping completed successfully!');
