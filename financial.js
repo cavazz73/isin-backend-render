@@ -1,6 +1,7 @@
 /**
  * Copyright (c) 2024-2025 Mutna S.R.L.S. - All Rights Reserved
  * Financial API Routes
+ * WITH INSTRUMENT DETAILS ENDPOINT (description, fundamentals, etc)
  */
 
 const express = require('express');
@@ -10,7 +11,8 @@ const DataAggregator = require('./dataAggregator');
 // Initialize Data Aggregator
 const aggregator = new DataAggregator({
     finnhubKey: process.env.FINNHUB_API_KEY,
-    alphavantageKey: process.env.ALPHA_VANTAGE_API_KEY
+    alphavantageKey: process.env.ALPHA_VANTAGE_API_KEY,
+    fmpKey: process.env.FMP_API_KEY
 });
 
 /**
@@ -82,6 +84,41 @@ router.get('/search', async (req, res) => {
 
     } catch (error) {
         console.error('[API] Search error:', error);
+        res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+});
+
+// ===================================
+// INSTRUMENT DETAILS (Complete with fundamentals)
+// ===================================
+router.get('/details/:symbol', async (req, res) => {
+    try {
+        const { symbol } = req.params;
+        
+        console.log(`[API] Details request: ${symbol}`);
+
+        const result = await aggregator.getInstrumentDetails(symbol);
+
+        if (!result.success) {
+            return res.status(404).json({
+                success: false,
+                error: 'Details not found',
+                symbol: symbol
+            });
+        }
+
+        res.json({
+            success: true,
+            data: result.data,
+            source: result.source,
+            fromCache: result.fromCache || false
+        });
+
+    } catch (error) {
+        console.error('[API] Details error:', error);
         res.status(500).json({
             success: false,
             error: error.message
@@ -182,6 +219,17 @@ router.get('/test', async (req, res) => {
             testResults.tests.yahoo = { status: 'ERROR', error: e.message };
         }
 
+        // Test TwelveData
+        try {
+            const twelveResult = await aggregator.twelvedata.search('AAPL');
+            testResults.tests.twelvedata = {
+                status: twelveResult.success ? 'OK' : 'FAIL',
+                results: twelveResult.results?.length || 0
+            };
+        } catch (e) {
+            testResults.tests.twelvedata = { status: 'ERROR', error: e.message };
+        }
+
         // Test Finnhub
         try {
             const finnhubResult = await aggregator.finnhub.search('AAPL');
@@ -202,6 +250,17 @@ router.get('/test', async (req, res) => {
             };
         } catch (e) {
             testResults.tests.alphavantage = { status: 'ERROR', error: e.message };
+        }
+
+        // Test FMP
+        try {
+            const fmpResult = await aggregator.fmp.search('TSLA');
+            testResults.tests.fmp = {
+                status: fmpResult.success ? 'OK' : 'FAIL',
+                results: fmpResult.results?.length || 0
+            };
+        } catch (e) {
+            testResults.tests.fmp = { status: 'ERROR', error: e.message };
         }
 
         res.json(testResults);

@@ -2,21 +2,24 @@
  * Copyright (c) 2024-2025 Mutna S.R.L.S. - All Rights Reserved
  * P.IVA: 04219740364
  * 
- * Multi-Source Data Aggregator V4.0 - WITH REDIS CACHE
- * PRIMARY: TwelveData (excellent for EU markets with correct EUR pricing)
- * FALLBACK: Yahoo Finance, Finnhub, Alpha Vantage
+ * Multi-Source Data Aggregator V4.2 FINAL
+ * SEARCH: TwelveData primary for EU markets
+ * QUOTE: Yahoo primary (complete data), TwelveData fallback + separate fundamentals call
  * CACHE: Redis/Upstash for intelligent caching
+ * PERFORMANCE: Limit 3 results, sequential with delay
  */
 
 const TwelveDataClient = require('./twelveData');
 const YahooFinanceClient = require('./yahooFinance');
 const FinnhubClient = require('./finnhub');
 const AlphaVantageClient = require('./alphaVantage');
+const FinancialModelingPrepClient = require('./financialModelingPrep');
 const RedisCache = require('./redisCache');
 
 class DataAggregatorV4 {
     constructor(config = {}) {
         // Initialize all data sources
+        this.fmp = new FinancialModelingPrepClient(config.fmpKey || process.env.FMP_API_KEY);  // ✅ PRIMARY SOURCE
         this.twelvedata = new TwelveDataClient(config.twelveDataKey || process.env.TWELVE_DATA_API_KEY);
         this.yahoo = new YahooFinanceClient();
         this.finnhub = new FinnhubClient(config.finnhubKey || process.env.FINNHUB_API_KEY);
@@ -25,10 +28,10 @@ class DataAggregatorV4 {
         // Initialize Redis Cache
         this.cache = new RedisCache(config.redisUrl || process.env.REDIS_URL);
         
-        // Priority order: TwelveData > Yahoo > Finnhub > AlphaVantage
-        this.sources = ['twelvedata', 'yahoo', 'finnhub', 'alphavantage'];
+        // Priority for SEARCH: TwelveData > FMP > Yahoo > Finnhub > AlphaVantage
+        this.sources = ['twelvedata', 'fmp', 'yahoo', 'finnhub', 'alphavantage'];
         
-        console.log('[DataAggregatorV4] Initialized with Redis caching');
+        console.log('[DataAggregatorV4] Initialized with FMP (complete fundamentals) + Redis caching');
     }
 
     /**
@@ -76,7 +79,7 @@ class DataAggregatorV4 {
                 if (twelveResult.success && twelveResult.results.length > 0) {
                     console.log(`[DataAggregatorV4] TwelveData found ${twelveResult.results.length} results (EU)`);
                     
-                    // Enrich with quotes
+                    // Enrich with quotes (LIMITED + SEQUENTIAL)
                     const enriched = await this.enrichWithQuotes(twelveResult.results);
                     
                     const response = {
@@ -135,7 +138,7 @@ class DataAggregatorV4 {
             };
         }
 
-        // Enrich results with quotes from best available source
+        // Enrich results with quotes from best available source (LIMITED + SEQUENTIAL)
         const enrichedResults = await this.enrichWithQuotes(mergedResults);
 
         const response = {
@@ -143,7 +146,7 @@ class DataAggregatorV4 {
             results: enrichedResults,
             metadata: {
                 totalResults: enrichedResults.length,
-                sources: this.sources.filter((_, i) => results[i].success),
+                sources: this.sources.filter((_, i) => results[i] && results[i].success),  // ✅ NULL-SAFE
                 timestamp: new Date().toISOString(),
                 fromCache: false
             }
@@ -197,35 +200,56 @@ class DataAggregatorV4 {
     }
 
     /**
-     * Enrich search results with real-time quotes
+     * Enrich search results with real-time quotes + FUNDAMENTAL DATA
+     * FIXED: Limit to 3 results + sequential with delay to avoid rate limiting
      */
     async enrichWithQuotes(results) {
-        const enrichPromises = results.map(async (item) => {
+        // ✅ LIMIT TO 3 RESULTS (like before!)
+        const limitedResults = results.slice(0, 3);
+        const enrichedResults = [];
+
+        console.log(`[DataAggregatorV4] Enriching ${limitedResults.length} results (limited from ${results.length})`);
+
+        // ✅ SEQUENTIAL (not parallel) to avoid rate limiting
+        for (const item of limitedResults) {
+            // If we already have price data, skip
             if (item.price != null && typeof item.price === 'number') {
-                return item;
+                enrichedResults.push(item);
+                continue;
             }
 
             const quote = await this.getQuote(item.symbol);
             
             if (quote.success && quote.data) {
-                return {
+                enrichedResults.push({
                     ...item,
+                    description: quote.data.description || item.description,  // ✅ KEEP DESCRIPTION
                     price: quote.data.price,
                     change: quote.data.change,
                     changePercent: quote.data.changePercent,
                     currency: quote.data.currency || item.currency,
+                    // ✅ FUNDAMENTAL DATA MAPPING
+                    marketCap: quote.data.marketCap || null,
+                    peRatio: quote.data.peRatio || null,
+                    dividendYield: quote.data.dividendYield || null,
+                    week52High: quote.data.week52High || null,
+                    week52Low: quote.data.week52Low || null,
                     quoteSources: [quote.source]
-                };
+                });
+            } else {
+                enrichedResults.push(item);
             }
 
-            return item;
-        });
+            // ✅ SMALL DELAY to avoid rate limiting (like before!)
+            await new Promise(resolve => setTimeout(resolve, 100));
+        }
 
-        return await Promise.all(enrichPromises);
+        return enrichedResults;
     }
 
     /**
      * Get quote with intelligent routing + CACHE
+     * STRATEGY: FMP first (complete fundamentals + description), then Yahoo, then TwelveData
      */
     async getQuote(symbol) {
         console.log(`[DataAggregatorV4] Getting quote for: ${symbol}`);
@@ -240,22 +264,22 @@ class DataAggregatorV4 {
             };
         }
 
-        // Try TwelveData first (best for EU markets)
+        // ✅ TRY FINANCIAL MODELING PREP FIRST (complete fundamentals + description!)
         try {
-            const twelveQuote = await this.twelvedata.getQuote(symbol);
-            if (twelveQuote.success && twelveQuote.data) {
-                console.log(`[twelvedata] Quote found: ${twelveQuote.data.price} ${twelveQuote.data.currency}`);
+            const fmpQuote = await this.fmp.getQuote(symbol);
+            if (fmpQuote.success && fmpQuote.data) {
+                console.log(`[fmp] Quote found: ${fmpQuote.data.price} USD (complete fundamentals + description)`);
                 
                 // SAVE TO CACHE
-                await this.cache.set('quote', symbol, twelveQuote);
+                await this.cache.set('quote', symbol, fmpQuote);
                 
-                return twelveQuote;
+                return fmpQuote;
             }
         } catch (error) {
-            console.error(`[twelvedata] Quote error: ${error.message}`);
+            console.error(`[fmp] Quote error: ${error.message}`);
         }
 
-        // Fallback to Yahoo
+        // ✅ FALLBACK: Yahoo (if available)
         try {
             const yahooQuote = await this.yahoo.getQuote(symbol);
             if (yahooQuote.success && yahooQuote.data) {
@@ -270,7 +294,43 @@ class DataAggregatorV4 {
             console.error(`[yahoo] Quote error: ${error.message}`);
         }
 
-        // Fallback to Finnhub
+        // ✅ FALLBACK: TwelveData for price + separate fundamentals call
+        try {
+            const twelveQuote = await this.twelvedata.getQuote(symbol);
+            if (twelveQuote.success && twelveQuote.data) {
+                console.log(`[twelvedata] Quote found: ${twelveQuote.data.price} ${twelveQuote.data.currency}`);
+                
+                // 🆕 GET FUNDAMENTALS from TwelveData
+                console.log(`[DataAggregatorV4] Fetching fundamentals from TwelveData for ${symbol}...`);
+                const fundamentals = await this.twelvedata.getFundamentals(symbol);
+                
+                // Combine price data with fundamentals
+                const combinedQuote = {
+                    ...twelveQuote,
+                    data: {
+                        ...twelveQuote.data,
+                        marketCap: fundamentals.success ? fundamentals.data.marketCap : null,
+                        peRatio: fundamentals.success ? fundamentals.data.peRatio : null,
+                        dividendYield: fundamentals.success ? fundamentals.data.dividendYield : null,
+                        week52High: fundamentals.success ? fundamentals.data.week52High : null,
+                        week52Low: fundamentals.success ? fundamentals.data.week52Low : null
+                    }
+                };
+                
+                if (fundamentals.success) {
+                    console.log(`[twelvedata] Added fundamentals for ${symbol}`);
+                }
+                
+                // SAVE TO CACHE
+                await this.cache.set('quote', symbol, combinedQuote);
+                
+                return combinedQuote;
+            }
+        } catch (error) {
+            console.error(`[twelvedata] Quote error: ${error.message}`);
+        }
+
+        // Fallback to Finnhub (no fundamentals)
         try {
             const finnhubQuote = await this.finnhub.getQuote(symbol);
             if (finnhubQuote.success && finnhubQuote.data) {
@@ -285,7 +345,7 @@ class DataAggregatorV4 {
             console.error(`[finnhub] Quote error: ${error.message}`);
         }
 
-        // Fallback to Alpha Vantage
+        // Fallback to Alpha Vantage (no fundamentals)
         try {
             const avQuote = await this.alphavantage.getQuote(symbol);
             if (avQuote.success && avQuote.data) {
@@ -411,6 +471,83 @@ class DataAggregatorV4 {
     }
 
     /**
+     * Get complete instrument details with fundamentals (description, marketCap, PE, etc)
+     * PRIMARY: Financial Modeling Prep (complete data)
+     * FALLBACK: Quote data
+     */
+    async getInstrumentDetails(symbol) {
+        console.log(`[DataAggregatorV4] Getting instrument details for: ${symbol}`);
+        
+        // 1. CHECK CACHE FIRST
+        const cached = await this.cache.get('details', symbol);
+        if (cached) {
+            console.log(`[DataAggregatorV4] 🚀 CACHE HIT! Returning cached details`);
+            return {
+                ...cached,
+                fromCache: true
+            };
+        }
+        
+        // 2. Try Financial Modeling Prep (complete fundamentals)
+        try {
+            const fmpResult = await this.fmp.getQuote(symbol);
+            if (fmpResult.success) {
+                console.log(`[FMP] Complete details for ${symbol}: ${fmpResult.data.price} ${fmpResult.data.currency}`);
+                
+                const response = {
+                    success: true,
+                    data: fmpResult.data,
+                    source: 'fmp',
+                    fromCache: false
+                };
+                
+                // SAVE TO CACHE (longer TTL for details: 1 hour)
+                await this.cache.set('details', symbol, response, 3600);
+                
+                return response;
+            }
+        } catch (error) {
+            console.error(`[FMP] Details error: ${error.message}`);
+        }
+        
+        // 3. Fallback: Try to get quote data (less complete but better than nothing)
+        try {
+            const quoteResult = await this.getQuote(symbol);
+            if (quoteResult.success) {
+                console.log(`[DataAggregatorV4] Using quote data as fallback for details`);
+                
+                const response = {
+                    success: true,
+                    data: {
+                        ...quoteResult.data,
+                        description: quoteResult.data.name || `${symbol} stock`,
+                        // Add placeholder fundamentals if missing
+                        marketCap: quoteResult.data.marketCap || null,
+                        peRatio: quoteResult.data.peRatio || null,
+                        dividendYield: quoteResult.data.dividendYield || null,
+                        week52High: quoteResult.data.week52High || null,
+                        week52Low: quoteResult.data.week52Low || null
+                    },
+                    source: quoteResult.source,
+                    fromCache: false
+                };
+                
+                // SAVE TO CACHE
+                await this.cache.set('details', symbol, response, 3600);
+                
+                return response;
+            }
+        } catch (error) {
+            console.error(`[DataAggregatorV4] Fallback details error: ${error.message}`);
+        }
+        
+        return {
+            success: false,
+            error: 'Could not fetch instrument details from any source'
+        };
+    }
+
+    /**
      * Health check for all sources + Redis
      */
     async healthCheck() {
@@ -440,7 +577,7 @@ class DataAggregatorV4 {
 
         return {
             status: 'operational',
-            version: '4.0.0',
+            version: '4.2.0-FINAL',
             sources: sources,
             twelveDataUsage: usageStats,
             redis: {
