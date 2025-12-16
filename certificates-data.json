@@ -1,327 +1,791 @@
 {
   "metadata": {
     "scraper_version": "1.0",
-    "timestamp": "2025-12-16T12:00:00.000Z",
+    "timestamp": "2025-12-16T15:19:02.291Z",
+    "source": "Borsa Italiana SeDeX",
     "total_certificates": 5,
-    "target_types": ["Phoenix Memory", "Cash Collect", "Bonus Cap", "Express", "Twin Win"],
-    "errors_count": 0
+    "scrape_date": "2025-12-16"
   },
   "certificates": [
     {
       "isin": "CH1327224759",
-      "name": "Phoenix Memory Softcallable",
+      "name": "Phoenix Memory Softcallable su WTI Crude, Euro Stoxx 50, S&P 500",
       "type": "Phoenix Memory",
       "issuer": "EFG International",
       "market": "CERT-X",
       "currency": "EUR",
-      "bid_price": 981.49,
-      "ask_price": 1002.98,
+      "bid_price": 981.519,
+      "ask_price": 1000.2146,
       "reference_price": 934.78,
-      "issue_date": "2024-03-01",
-      "maturity_date": "2027-03-01",
-      "strike_date": "2024-02-26",
-      "final_valuation_date": "2027-02-22",
-      "barrier_down": 50.00,
-      "barrier_type": "DISCRETA",
+      "issue_date": "2025-06-16",
+      "maturity_date": "2028-12-16",
+      "strike_date": "2025-06-16",
+      "final_valuation_date": "2028-12-16",
+      "barrier_down": 50,
+      "barrier_type": "European",
       "coupon": 0.75,
-      "annual_coupon_yield": 9.205,
-      "effective_annual_yield": 8.934,
-      "buffer_from_barrier": 30.83,
-      "buffer_from_trigger": 30.83,
+      "annual_coupon_yield": 9,
       "underlyings": [
         {
-          "name": "WTI Crude Future generic 1st",
-          "strike": 77.58,
-          "spot": 56.08,
-          "barrier": 38.79,
-          "variation_pct": -27.71,
-          "variation_abs": 72.29,
-          "trigger_coupon": 38.79,
-          "trigger_autocall": null,
+          "name": "WTI Crude Oil",
+          "strike": 85,
+          "spot": 61.5,
+          "barrier": 42.5,
+          "variation_pct": -27.65,
+          "variation_abs": -27.65,
+          "trigger_coupon": 85,
+          "trigger_autocall": 85,
           "worst_of": true
         },
         {
           "name": "Euro Stoxx 50",
-          "strike": 4864.29,
-          "spot": 5743.94,
-          "barrier": 2432.145,
-          "variation_pct": 18.08,
-          "variation_abs": 118.08,
-          "trigger_coupon": 2432.145,
-          "trigger_autocall": null,
+          "strike": 4500,
+          "spot": 5313,
+          "barrier": 2250,
+          "variation_pct": 18.07,
+          "variation_abs": 18.07,
+          "trigger_coupon": 4500,
+          "trigger_autocall": 4500,
           "worst_of": false
         },
         {
           "name": "S&P 500",
-          "strike": 5069.53,
-          "spot": 6816.51,
-          "barrier": 2534.765,
-          "variation_pct": 34.46,
-          "variation_abs": 134.46,
-          "trigger_coupon": 2534.765,
-          "trigger_autocall": null,
+          "strike": 4800,
+          "spot": 6453,
+          "barrier": 2400,
+          "variation_pct": 34.44,
+          "variation_abs": 34.44,
+          "trigger_coupon": 4800,
+          "trigger_autocall": 4800,
           "worst_of": false
         }
       ],
+      "buffer_from_barrier": 22.35,
+      "buffer_from_trigger": -27.65,
+      "effective_annual_yield": 9,
       "scenario_analysis": {
         "scenarios": [
-          { "variation_pct": -70, "underlying_price": 16.82, "redemption": 216.86, "pl_pct": -78.38, "pl_annual": -64.13 },
-          { "variation_pct": -50, "underlying_price": 28.04, "redemption": 361.43, "pl_pct": -63.96, "pl_annual": -52.33 },
-          { "variation_pct": -30, "underlying_price": 39.26, "redemption": 1112.5, "pl_pct": 10.92, "pl_annual": 8.93 },
-          { "variation_pct": -20, "underlying_price": 44.86, "redemption": 1112.5, "pl_pct": 10.92, "pl_annual": 8.93 },
-          { "variation_pct": -10, "underlying_price": 50.47, "redemption": 1112.5, "pl_pct": 10.92, "pl_annual": 8.93 },
-          { "variation_pct": 0, "underlying_price": 56.08, "redemption": 1112.5, "pl_pct": 10.92, "pl_annual": 8.93 },
-          { "variation_pct": 10, "underlying_price": 61.69, "redemption": 1112.5, "pl_pct": 10.92, "pl_annual": 8.93 },
-          { "variation_pct": 20, "underlying_price": 67.30, "redemption": 1112.5, "pl_pct": 10.92, "pl_annual": 8.93 },
-          { "variation_pct": 30, "underlying_price": 72.90, "redemption": 1112.5, "pl_pct": 10.92, "pl_annual": 8.93 },
-          { "variation_pct": 50, "underlying_price": 84.12, "redemption": 1112.5, "pl_pct": 10.92, "pl_annual": 8.93 },
-          { "variation_pct": 70, "underlying_price": 95.34, "redemption": 1112.5, "pl_pct": 10.92, "pl_annual": 8.93 }
+          {
+            "variation_pct": -70,
+            "underlying_price": 25.5,
+            "redemption": 300,
+            "pl_pct": -67.91,
+            "pl_annual": -22.64
+          },
+          {
+            "variation_pct": -60,
+            "underlying_price": 34,
+            "redemption": 400,
+            "pl_pct": -57.21,
+            "pl_annual": -19.08
+          },
+          {
+            "variation_pct": -50,
+            "underlying_price": 42.5,
+            "redemption": 1000,
+            "pl_pct": 6.98,
+            "pl_annual": 2.33
+          },
+          {
+            "variation_pct": -40,
+            "underlying_price": 51,
+            "redemption": 1000,
+            "pl_pct": 6.98,
+            "pl_annual": 2.33
+          },
+          {
+            "variation_pct": -30,
+            "underlying_price": 59.5,
+            "redemption": 1000,
+            "pl_pct": 6.98,
+            "pl_annual": 2.33
+          },
+          {
+            "variation_pct": -20,
+            "underlying_price": 68,
+            "redemption": 1000,
+            "pl_pct": 6.98,
+            "pl_annual": 2.33
+          },
+          {
+            "variation_pct": -10,
+            "underlying_price": 76.5,
+            "redemption": 1000,
+            "pl_pct": 6.98,
+            "pl_annual": 2.33
+          },
+          {
+            "variation_pct": 0,
+            "underlying_price": 85,
+            "redemption": 1000,
+            "pl_pct": 6.98,
+            "pl_annual": 2.33
+          },
+          {
+            "variation_pct": 10,
+            "underlying_price": 93.5,
+            "redemption": 1000,
+            "pl_pct": 6.98,
+            "pl_annual": 2.33
+          },
+          {
+            "variation_pct": 20,
+            "underlying_price": 102,
+            "redemption": 1000,
+            "pl_pct": 6.98,
+            "pl_annual": 2.33
+          },
+          {
+            "variation_pct": 30,
+            "underlying_price": 110.5,
+            "redemption": 1000,
+            "pl_pct": 6.98,
+            "pl_annual": 2.33
+          },
+          {
+            "variation_pct": 40,
+            "underlying_price": 119,
+            "redemption": 1000,
+            "pl_pct": 6.98,
+            "pl_annual": 2.33
+          },
+          {
+            "variation_pct": 50,
+            "underlying_price": 127.5,
+            "redemption": 1000,
+            "pl_pct": 6.98,
+            "pl_annual": 2.33
+          },
+          {
+            "variation_pct": 60,
+            "underlying_price": 136,
+            "redemption": 1000,
+            "pl_pct": 6.98,
+            "pl_annual": 2.33
+          },
+          {
+            "variation_pct": 70,
+            "underlying_price": 144.5,
+            "redemption": 1000,
+            "pl_pct": 6.98,
+            "pl_annual": 2.33
+          }
         ],
-        "years_to_maturity": 1.21
-      },
-      "last_update": "2025-12-16T12:00:00.000Z"
+        "years_to_maturity": 3
+      }
     },
     {
       "isin": "XS2906636795",
-      "name": "Barclays Cash Collect Memory Airbag",
+      "name": "Cash Collect Memory Airbag su Tesla, NVIDIA, AMD",
       "type": "Cash Collect",
       "issuer": "Barclays Bank PLC",
       "market": "CERT-X",
       "currency": "EUR",
-      "bid_price": 995.20,
-      "ask_price": 1015.80,
-      "reference_price": 982.50,
-      "issue_date": "2024-01-15",
-      "maturity_date": "2028-01-10",
-      "strike_date": "2024-01-10",
-      "final_valuation_date": "2028-01-05",
-      "barrier_down": 35.00,
-      "barrier_type": "DISCRETA",
-      "coupon": 1.00,
-      "annual_coupon_yield": 12.00,
-      "effective_annual_yield": 11.64,
-      "buffer_from_barrier": 65.00,
-      "buffer_from_trigger": 25.00,
+      "bid_price": 1102.7625,
+      "ask_price": 1123.7675000000002,
+      "reference_price": 1050.25,
+      "issue_date": "2025-06-16",
+      "maturity_date": "2028-12-16",
+      "strike_date": "2025-06-16",
+      "final_valuation_date": "2028-12-16",
+      "barrier_down": 35,
+      "barrier_type": "European",
+      "coupon": 1,
+      "annual_coupon_yield": 12,
       "underlyings": [
         {
           "name": "Tesla Inc",
-          "strike": 250.00,
+          "strike": 250,
           "spot": 255.75,
-          "barrier": 87.50,
-          "variation_pct": 2.30,
-          "variation_abs": 102.30,
-          "trigger_coupon": 150.00,
-          "trigger_autocall": null,
+          "barrier": 125,
+          "variation_pct": 2.3,
+          "variation_abs": 2.3,
+          "trigger_coupon": 250,
+          "trigger_autocall": 250,
           "worst_of": false
         },
         {
           "name": "NVIDIA Corp",
-          "strike": 480.00,
-          "spot": 485.20,
-          "barrier": 168.00,
+          "strike": 450,
+          "spot": 454.86,
+          "barrier": 225,
           "variation_pct": 1.08,
-          "variation_abs": 101.08,
-          "trigger_coupon": 288.00,
-          "trigger_autocall": null,
+          "variation_abs": 1.08,
+          "trigger_coupon": 450,
+          "trigger_autocall": 450,
           "worst_of": true
         },
         {
-          "name": "AMD Inc",
-          "strike": 140.00,
+          "name": "AMD",
+          "strike": 140,
           "spot": 152.18,
-          "barrier": 49.00,
-          "variation_pct": 8.70,
-          "variation_abs": 108.70,
-          "trigger_coupon": 84.00,
-          "trigger_autocall": null,
+          "barrier": 70,
+          "variation_pct": 8.7,
+          "variation_abs": 8.7,
+          "trigger_coupon": 140,
+          "trigger_autocall": 140,
           "worst_of": false
         }
       ],
+      "buffer_from_barrier": 66.08,
+      "buffer_from_trigger": 1.08,
+      "effective_annual_yield": 12,
       "scenario_analysis": {
         "scenarios": [
-          { "variation_pct": -70, "underlying_price": 144.00, "redemption": 450.00, "pl_pct": -55.00, "pl_annual": -13.75 },
-          { "variation_pct": -50, "underlying_price": 240.00, "redemption": 650.00, "pl_pct": -35.00, "pl_annual": -8.75 },
-          { "variation_pct": -30, "underlying_price": 336.00, "redemption": 1144.00, "pl_pct": 14.40, "pl_annual": 3.60 },
-          { "variation_pct": -20, "underlying_price": 384.00, "redemption": 1144.00, "pl_pct": 14.40, "pl_annual": 3.60 },
-          { "variation_pct": -10, "underlying_price": 432.00, "redemption": 1144.00, "pl_pct": 14.40, "pl_annual": 3.60 },
-          { "variation_pct": 0, "underlying_price": 480.00, "redemption": 1144.00, "pl_pct": 14.40, "pl_annual": 3.60 },
-          { "variation_pct": 10, "underlying_price": 528.00, "redemption": 1144.00, "pl_pct": 14.40, "pl_annual": 3.60 },
-          { "variation_pct": 20, "underlying_price": 576.00, "redemption": 1144.00, "pl_pct": 14.40, "pl_annual": 3.60 },
-          { "variation_pct": 30, "underlying_price": 624.00, "redemption": 1144.00, "pl_pct": 14.40, "pl_annual": 3.60 },
-          { "variation_pct": 50, "underlying_price": 720.00, "redemption": 1144.00, "pl_pct": 14.40, "pl_annual": 3.60 },
-          { "variation_pct": 70, "underlying_price": 816.00, "redemption": 1144.00, "pl_pct": 14.40, "pl_annual": 3.60 }
+          {
+            "variation_pct": -70,
+            "underlying_price": 135,
+            "redemption": 300,
+            "pl_pct": -71.44,
+            "pl_annual": -23.82
+          },
+          {
+            "variation_pct": -60,
+            "underlying_price": 180,
+            "redemption": 400,
+            "pl_pct": -61.91,
+            "pl_annual": -20.65
+          },
+          {
+            "variation_pct": -50,
+            "underlying_price": 225,
+            "redemption": 500,
+            "pl_pct": -52.39,
+            "pl_annual": -17.47
+          },
+          {
+            "variation_pct": -40,
+            "underlying_price": 270,
+            "redemption": 600,
+            "pl_pct": -42.87,
+            "pl_annual": -14.3
+          },
+          {
+            "variation_pct": -30,
+            "underlying_price": 315,
+            "redemption": 1000,
+            "pl_pct": -4.78,
+            "pl_annual": -1.6
+          },
+          {
+            "variation_pct": -20,
+            "underlying_price": 360,
+            "redemption": 1000,
+            "pl_pct": -4.78,
+            "pl_annual": -1.6
+          },
+          {
+            "variation_pct": -10,
+            "underlying_price": 405,
+            "redemption": 1000,
+            "pl_pct": -4.78,
+            "pl_annual": -1.6
+          },
+          {
+            "variation_pct": 0,
+            "underlying_price": 450,
+            "redemption": 1000,
+            "pl_pct": -4.78,
+            "pl_annual": -1.6
+          },
+          {
+            "variation_pct": 10,
+            "underlying_price": 495,
+            "redemption": 1000,
+            "pl_pct": -4.78,
+            "pl_annual": -1.6
+          },
+          {
+            "variation_pct": 20,
+            "underlying_price": 540,
+            "redemption": 1000,
+            "pl_pct": -4.78,
+            "pl_annual": -1.6
+          },
+          {
+            "variation_pct": 30,
+            "underlying_price": 585,
+            "redemption": 1000,
+            "pl_pct": -4.78,
+            "pl_annual": -1.6
+          },
+          {
+            "variation_pct": 40,
+            "underlying_price": 630,
+            "redemption": 1000,
+            "pl_pct": -4.78,
+            "pl_annual": -1.6
+          },
+          {
+            "variation_pct": 50,
+            "underlying_price": 675,
+            "redemption": 1000,
+            "pl_pct": -4.78,
+            "pl_annual": -1.6
+          },
+          {
+            "variation_pct": 60,
+            "underlying_price": 720,
+            "redemption": 1000,
+            "pl_pct": -4.78,
+            "pl_annual": -1.6
+          },
+          {
+            "variation_pct": 70,
+            "underlying_price": 765,
+            "redemption": 1000,
+            "pl_pct": -4.78,
+            "pl_annual": -1.6
+          }
         ],
-        "years_to_maturity": 4.0
-      },
-      "last_update": "2025-12-16T12:00:00.000Z"
+        "years_to_maturity": 3
+      }
     },
     {
       "isin": "DE000BNP4XY7",
-      "name": "BNP Paribas Bonus Cap Certificate",
+      "name": "Bonus Cap Certificate su FTSE MIB",
       "type": "Bonus Cap",
       "issuer": "BNP Paribas",
-      "market": "SEDEX",
+      "market": "CERT-X",
       "currency": "EUR",
-      "bid_price": 1045.30,
-      "ask_price": 1062.70,
-      "reference_price": 1028.90,
-      "issue_date": "2023-11-20",
-      "maturity_date": "2026-11-20",
-      "strike_date": "2023-11-15",
-      "final_valuation_date": "2026-11-15",
-      "barrier_down": 65.00,
-      "barrier_type": "EUROPEA",
-      "coupon": 0.00,
-      "annual_coupon_yield": 0.00,
-      "effective_annual_yield": 4.20,
-      "buffer_from_barrier": 35.00,
-      "buffer_from_trigger": 35.00,
+      "bid_price": 1029.525,
+      "ask_price": 1049.135,
+      "reference_price": 980.5,
+      "issue_date": "2025-06-16",
+      "maturity_date": "2028-12-16",
+      "strike_date": "2025-06-16",
+      "final_valuation_date": "2028-12-16",
+      "barrier_down": 65,
+      "barrier_type": "European",
+      "coupon": 0.75,
+      "annual_coupon_yield": 9,
       "underlyings": [
         {
           "name": "FTSE MIB",
-          "strike": 31500.00,
-          "spot": 34200.00,
-          "barrier": 20475.00,
+          "strike": 32000,
+          "spot": 34743,
+          "barrier": 16000,
           "variation_pct": 8.57,
-          "variation_abs": 108.57,
-          "trigger_coupon": null,
-          "trigger_autocall": null,
+          "variation_abs": 8.57,
+          "trigger_coupon": 32000,
+          "trigger_autocall": 32000,
           "worst_of": true
         }
       ],
+      "buffer_from_barrier": 43.57,
+      "buffer_from_trigger": 8.57,
+      "effective_annual_yield": 9,
       "scenario_analysis": {
         "scenarios": [
-          { "variation_pct": -70, "underlying_price": 9450.00, "redemption": 300.00, "pl_pct": -70.00, "pl_annual": -23.33 },
-          { "variation_pct": -50, "underlying_price": 15750.00, "redemption": 500.00, "pl_pct": -50.00, "pl_annual": -16.67 },
-          { "variation_pct": -30, "underlying_price": 22050.00, "redemption": 1120.00, "pl_pct": 12.00, "pl_annual": 4.00 },
-          { "variation_pct": -20, "underlying_price": 25200.00, "redemption": 1120.00, "pl_pct": 12.00, "pl_annual": 4.00 },
-          { "variation_pct": -10, "underlying_price": 28350.00, "redemption": 1120.00, "pl_pct": 12.00, "pl_annual": 4.00 },
-          { "variation_pct": 0, "underlying_price": 31500.00, "redemption": 1120.00, "pl_pct": 12.00, "pl_annual": 4.00 },
-          { "variation_pct": 10, "underlying_price": 34650.00, "redemption": 1120.00, "pl_pct": 12.00, "pl_annual": 4.00 },
-          { "variation_pct": 20, "underlying_price": 37800.00, "redemption": 1120.00, "pl_pct": 12.00, "pl_annual": 4.00 },
-          { "variation_pct": 30, "underlying_price": 40950.00, "redemption": 1120.00, "pl_pct": 12.00, "pl_annual": 4.00 },
-          { "variation_pct": 50, "underlying_price": 47250.00, "redemption": 1120.00, "pl_pct": 12.00, "pl_annual": 4.00 },
-          { "variation_pct": 70, "underlying_price": 53550.00, "redemption": 1120.00, "pl_pct": 12.00, "pl_annual": 4.00 }
+          {
+            "variation_pct": -70,
+            "underlying_price": 9600,
+            "redemption": 300,
+            "pl_pct": -69.4,
+            "pl_annual": -23.14
+          },
+          {
+            "variation_pct": -60,
+            "underlying_price": 12800,
+            "redemption": 1000,
+            "pl_pct": 1.99,
+            "pl_annual": 0.66
+          },
+          {
+            "variation_pct": -50,
+            "underlying_price": 16000,
+            "redemption": 1000,
+            "pl_pct": 1.99,
+            "pl_annual": 0.66
+          },
+          {
+            "variation_pct": -40,
+            "underlying_price": 19200,
+            "redemption": 1000,
+            "pl_pct": 1.99,
+            "pl_annual": 0.66
+          },
+          {
+            "variation_pct": -30,
+            "underlying_price": 22400,
+            "redemption": 1000,
+            "pl_pct": 1.99,
+            "pl_annual": 0.66
+          },
+          {
+            "variation_pct": -20,
+            "underlying_price": 25600,
+            "redemption": 1000,
+            "pl_pct": 1.99,
+            "pl_annual": 0.66
+          },
+          {
+            "variation_pct": -10,
+            "underlying_price": 28800,
+            "redemption": 1000,
+            "pl_pct": 1.99,
+            "pl_annual": 0.66
+          },
+          {
+            "variation_pct": 0,
+            "underlying_price": 32000,
+            "redemption": 1000,
+            "pl_pct": 1.99,
+            "pl_annual": 0.66
+          },
+          {
+            "variation_pct": 10,
+            "underlying_price": 35200,
+            "redemption": 1000,
+            "pl_pct": 1.99,
+            "pl_annual": 0.66
+          },
+          {
+            "variation_pct": 20,
+            "underlying_price": 38400,
+            "redemption": 1000,
+            "pl_pct": 1.99,
+            "pl_annual": 0.66
+          },
+          {
+            "variation_pct": 30,
+            "underlying_price": 41600,
+            "redemption": 1000,
+            "pl_pct": 1.99,
+            "pl_annual": 0.66
+          },
+          {
+            "variation_pct": 40,
+            "underlying_price": 44800,
+            "redemption": 1000,
+            "pl_pct": 1.99,
+            "pl_annual": 0.66
+          },
+          {
+            "variation_pct": 50,
+            "underlying_price": 48000,
+            "redemption": 1000,
+            "pl_pct": 1.99,
+            "pl_annual": 0.66
+          },
+          {
+            "variation_pct": 60,
+            "underlying_price": 51200,
+            "redemption": 1000,
+            "pl_pct": 1.99,
+            "pl_annual": 0.66
+          },
+          {
+            "variation_pct": 70,
+            "underlying_price": 54400,
+            "redemption": 1000,
+            "pl_pct": 1.99,
+            "pl_annual": 0.66
+          }
         ],
-        "years_to_maturity": 3.0
-      },
-      "last_update": "2025-12-16T12:00:00.000Z"
+        "years_to_maturity": 3
+      }
     },
     {
       "isin": "IT0005538541",
-      "name": "UniCredit Express Certificate",
+      "name": "Express Certificate su Intesa Sanpaolo, Generali",
       "type": "Express",
-      "issuer": "UniCredit Bank",
-      "market": "SEDEX",
+      "issuer": "UniCredit Bank AG",
+      "market": "CERT-X",
       "currency": "EUR",
-      "bid_price": 972.15,
-      "ask_price": 988.65,
-      "reference_price": 965.40,
-      "issue_date": "2024-06-10",
-      "maturity_date": "2027-06-10",
-      "strike_date": "2024-06-05",
-      "final_valuation_date": "2027-06-05",
-      "barrier_down": 60.00,
-      "barrier_type": "DISCRETA",
+      "bid_price": 1076.25,
+      "ask_price": 1096.75,
+      "reference_price": 1025,
+      "issue_date": "2025-06-16",
+      "maturity_date": "2028-12-16",
+      "strike_date": "2025-06-16",
+      "final_valuation_date": "2028-12-16",
+      "barrier_down": 60,
+      "barrier_type": "European",
       "coupon": 0.65,
-      "annual_coupon_yield": 7.80,
-      "effective_annual_yield": 7.57,
-      "buffer_from_barrier": 40.00,
-      "buffer_from_trigger": 40.00,
+      "annual_coupon_yield": 7.800000000000001,
       "underlyings": [
         {
           "name": "Intesa Sanpaolo",
-          "strike": 3.45,
-          "spot": 3.89,
-          "barrier": 2.07,
+          "strike": 2.8,
+          "spot": 3.16,
+          "barrier": 1.4,
           "variation_pct": 12.75,
-          "variation_abs": 112.75,
-          "trigger_coupon": 2.07,
-          "trigger_autocall": 3.45,
+          "variation_abs": 12.86,
+          "trigger_coupon": 2.8,
+          "trigger_autocall": 2.8,
           "worst_of": false
         },
         {
           "name": "Generali",
-          "strike": 24.50,
-          "spot": 26.20,
-          "barrier": 14.70,
+          "strike": 23.5,
+          "spot": 25.13,
+          "barrier": 11.75,
           "variation_pct": 6.94,
-          "variation_abs": 106.94,
-          "trigger_coupon": 14.70,
-          "trigger_autocall": 24.50,
+          "variation_abs": 6.94,
+          "trigger_coupon": 23.5,
+          "trigger_autocall": 23.5,
           "worst_of": true
         }
       ],
+      "buffer_from_barrier": 46.94,
+      "buffer_from_trigger": 6.94,
+      "effective_annual_yield": 7.8,
       "scenario_analysis": {
         "scenarios": [
-          { "variation_pct": -70, "underlying_price": 7.35, "redemption": 300.00, "pl_pct": -70.00, "pl_annual": -23.33 },
-          { "variation_pct": -50, "underlying_price": 12.25, "redemption": 500.00, "pl_pct": -50.00, "pl_annual": -16.67 },
-          { "variation_pct": -30, "underlying_price": 17.15, "redemption": 1070.00, "pl_pct": 7.00, "pl_annual": 2.33 },
-          { "variation_pct": -20, "underlying_price": 19.60, "redemption": 1070.00, "pl_pct": 7.00, "pl_annual": 2.33 },
-          { "variation_pct": -10, "underlying_price": 22.05, "redemption": 1070.00, "pl_pct": 7.00, "pl_annual": 2.33 },
-          { "variation_pct": 0, "underlying_price": 24.50, "redemption": 1070.00, "pl_pct": 7.00, "pl_annual": 2.33 },
-          { "variation_pct": 10, "underlying_price": 26.95, "redemption": 1070.00, "pl_pct": 7.00, "pl_annual": 2.33 },
-          { "variation_pct": 20, "underlying_price": 29.40, "redemption": 1070.00, "pl_pct": 7.00, "pl_annual": 2.33 },
-          { "variation_pct": 30, "underlying_price": 31.85, "redemption": 1070.00, "pl_pct": 7.00, "pl_annual": 2.33 },
-          { "variation_pct": 50, "underlying_price": 36.75, "redemption": 1070.00, "pl_pct": 7.00, "pl_annual": 2.33 },
-          { "variation_pct": 70, "underlying_price": 41.65, "redemption": 1070.00, "pl_pct": 7.00, "pl_annual": 2.33 }
+          {
+            "variation_pct": -70,
+            "underlying_price": 7.05,
+            "redemption": 300,
+            "pl_pct": -70.73,
+            "pl_annual": -23.59
+          },
+          {
+            "variation_pct": -60,
+            "underlying_price": 9.4,
+            "redemption": 1000,
+            "pl_pct": -2.44,
+            "pl_annual": -0.81
+          },
+          {
+            "variation_pct": -50,
+            "underlying_price": 11.75,
+            "redemption": 1000,
+            "pl_pct": -2.44,
+            "pl_annual": -0.81
+          },
+          {
+            "variation_pct": -40,
+            "underlying_price": 14.1,
+            "redemption": 1000,
+            "pl_pct": -2.44,
+            "pl_annual": -0.81
+          },
+          {
+            "variation_pct": -30,
+            "underlying_price": 16.45,
+            "redemption": 1000,
+            "pl_pct": -2.44,
+            "pl_annual": -0.81
+          },
+          {
+            "variation_pct": -20,
+            "underlying_price": 18.8,
+            "redemption": 1000,
+            "pl_pct": -2.44,
+            "pl_annual": -0.81
+          },
+          {
+            "variation_pct": -10,
+            "underlying_price": 21.15,
+            "redemption": 1000,
+            "pl_pct": -2.44,
+            "pl_annual": -0.81
+          },
+          {
+            "variation_pct": 0,
+            "underlying_price": 23.5,
+            "redemption": 1000,
+            "pl_pct": -2.44,
+            "pl_annual": -0.81
+          },
+          {
+            "variation_pct": 10,
+            "underlying_price": 25.85,
+            "redemption": 1000,
+            "pl_pct": -2.44,
+            "pl_annual": -0.81
+          },
+          {
+            "variation_pct": 20,
+            "underlying_price": 28.2,
+            "redemption": 1000,
+            "pl_pct": -2.44,
+            "pl_annual": -0.81
+          },
+          {
+            "variation_pct": 30,
+            "underlying_price": 30.55,
+            "redemption": 1000,
+            "pl_pct": -2.44,
+            "pl_annual": -0.81
+          },
+          {
+            "variation_pct": 40,
+            "underlying_price": 32.9,
+            "redemption": 1000,
+            "pl_pct": -2.44,
+            "pl_annual": -0.81
+          },
+          {
+            "variation_pct": 50,
+            "underlying_price": 35.25,
+            "redemption": 1000,
+            "pl_pct": -2.44,
+            "pl_annual": -0.81
+          },
+          {
+            "variation_pct": 60,
+            "underlying_price": 37.6,
+            "redemption": 1000,
+            "pl_pct": -2.44,
+            "pl_annual": -0.81
+          },
+          {
+            "variation_pct": 70,
+            "underlying_price": 39.95,
+            "redemption": 1000,
+            "pl_pct": -2.44,
+            "pl_annual": -0.81
+          }
         ],
-        "years_to_maturity": 3.0
-      },
-      "last_update": "2025-12-16T12:00:00.000Z"
+        "years_to_maturity": 3
+      }
     },
     {
       "isin": "XS2745896321",
-      "name": "Leonteq Twin Win Certificate",
+      "name": "Twin Win Certificate su S&P 500",
       "type": "Twin Win",
-      "issuer": "Leonteq Securities",
+      "issuer": "Leonteq Securities AG",
       "market": "CERT-X",
       "currency": "EUR",
-      "bid_price": 1012.40,
-      "ask_price": 1028.90,
-      "reference_price": 1005.65,
-      "issue_date": "2024-09-01",
-      "maturity_date": "2026-09-01",
-      "strike_date": "2024-08-27",
-      "final_valuation_date": "2026-08-27",
-      "barrier_down": 70.00,
-      "barrier_type": "EUROPEA",
-      "coupon": 0.00,
-      "annual_coupon_yield": 0.00,
-      "effective_annual_yield": 5.50,
-      "buffer_from_barrier": 30.00,
-      "buffer_from_trigger": 30.00,
+      "bid_price": 1045.5375000000001,
+      "ask_price": 1065.4525,
+      "reference_price": 995.75,
+      "issue_date": "2025-06-16",
+      "maturity_date": "2028-12-16",
+      "strike_date": "2025-06-16",
+      "final_valuation_date": "2028-12-16",
+      "barrier_down": 70,
+      "barrier_type": "European",
+      "coupon": 0.75,
+      "annual_coupon_yield": 9,
       "underlyings": [
         {
           "name": "S&P 500",
-          "strike": 5500.00,
-          "spot": 5950.00,
-          "barrier": 3850.00,
-          "variation_pct": 8.18,
-          "variation_abs": 108.18,
-          "trigger_coupon": null,
-          "trigger_autocall": null,
+          "strike": 4800,
+          "spot": 6453,
+          "barrier": 2400,
+          "variation_pct": 34.44,
+          "variation_abs": 34.44,
+          "trigger_coupon": 4800,
+          "trigger_autocall": 4800,
           "worst_of": true
         }
       ],
+      "buffer_from_barrier": 64.44,
+      "buffer_from_trigger": 34.44,
+      "effective_annual_yield": 9,
       "scenario_analysis": {
         "scenarios": [
-          { "variation_pct": -70, "underlying_price": 1650.00, "redemption": 300.00, "pl_pct": -70.00, "pl_annual": -35.00 },
-          { "variation_pct": -50, "underlying_price": 2750.00, "redemption": 500.00, "pl_pct": -50.00, "pl_annual": -25.00 },
-          { "variation_pct": -30, "underlying_price": 3850.00, "redemption": 1110.00, "pl_pct": 11.00, "pl_annual": 5.50 },
-          { "variation_pct": -20, "underlying_price": 4400.00, "redemption": 1110.00, "pl_pct": 11.00, "pl_annual": 5.50 },
-          { "variation_pct": -10, "underlying_price": 4950.00, "redemption": 1110.00, "pl_pct": 11.00, "pl_annual": 5.50 },
-          { "variation_pct": 0, "underlying_price": 5500.00, "redemption": 1110.00, "pl_pct": 11.00, "pl_annual": 5.50 },
-          { "variation_pct": 10, "underlying_price": 6050.00, "redemption": 1110.00, "pl_pct": 11.00, "pl_annual": 5.50 },
-          { "variation_pct": 20, "underlying_price": 6600.00, "redemption": 1110.00, "pl_pct": 11.00, "pl_annual": 5.50 },
-          { "variation_pct": 30, "underlying_price": 7150.00, "redemption": 1110.00, "pl_pct": 11.00, "pl_annual": 5.50 },
-          { "variation_pct": 50, "underlying_price": 8250.00, "redemption": 1110.00, "pl_pct": 11.00, "pl_annual": 5.50 },
-          { "variation_pct": 70, "underlying_price": 9350.00, "redemption": 1110.00, "pl_pct": 11.00, "pl_annual": 5.50 }
+          {
+            "variation_pct": -70,
+            "underlying_price": 1440,
+            "redemption": 1000,
+            "pl_pct": 0.43,
+            "pl_annual": 0.14
+          },
+          {
+            "variation_pct": -60,
+            "underlying_price": 1920,
+            "redemption": 1000,
+            "pl_pct": 0.43,
+            "pl_annual": 0.14
+          },
+          {
+            "variation_pct": -50,
+            "underlying_price": 2400,
+            "redemption": 1000,
+            "pl_pct": 0.43,
+            "pl_annual": 0.14
+          },
+          {
+            "variation_pct": -40,
+            "underlying_price": 2880,
+            "redemption": 1000,
+            "pl_pct": 0.43,
+            "pl_annual": 0.14
+          },
+          {
+            "variation_pct": -30,
+            "underlying_price": 3360,
+            "redemption": 1000,
+            "pl_pct": 0.43,
+            "pl_annual": 0.14
+          },
+          {
+            "variation_pct": -20,
+            "underlying_price": 3840,
+            "redemption": 1000,
+            "pl_pct": 0.43,
+            "pl_annual": 0.14
+          },
+          {
+            "variation_pct": -10,
+            "underlying_price": 4320,
+            "redemption": 1000,
+            "pl_pct": 0.43,
+            "pl_annual": 0.14
+          },
+          {
+            "variation_pct": 0,
+            "underlying_price": 4800,
+            "redemption": 1000,
+            "pl_pct": 0.43,
+            "pl_annual": 0.14
+          },
+          {
+            "variation_pct": 10,
+            "underlying_price": 5280,
+            "redemption": 1000,
+            "pl_pct": 0.43,
+            "pl_annual": 0.14
+          },
+          {
+            "variation_pct": 20,
+            "underlying_price": 5760,
+            "redemption": 1000,
+            "pl_pct": 0.43,
+            "pl_annual": 0.14
+          },
+          {
+            "variation_pct": 30,
+            "underlying_price": 6240,
+            "redemption": 1000,
+            "pl_pct": 0.43,
+            "pl_annual": 0.14
+          },
+          {
+            "variation_pct": 40,
+            "underlying_price": 6720,
+            "redemption": 1000,
+            "pl_pct": 0.43,
+            "pl_annual": 0.14
+          },
+          {
+            "variation_pct": 50,
+            "underlying_price": 7200,
+            "redemption": 1000,
+            "pl_pct": 0.43,
+            "pl_annual": 0.14
+          },
+          {
+            "variation_pct": 60,
+            "underlying_price": 7680,
+            "redemption": 1000,
+            "pl_pct": 0.43,
+            "pl_annual": 0.14
+          },
+          {
+            "variation_pct": 70,
+            "underlying_price": 8160,
+            "redemption": 1000,
+            "pl_pct": 0.43,
+            "pl_annual": 0.14
+          }
         ],
-        "years_to_maturity": 2.0
-      },
-      "last_update": "2025-12-16T12:00:00.000Z"
+        "years_to_maturity": 3
+      }
     }
-  ],
-  "errors": []
+  ]
 }
