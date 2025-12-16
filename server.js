@@ -3,7 +3,7 @@
  * P.IVA: 04219740364
  * 
  * ISIN Research Backend - Multi-Source Financial Data API
- * Version: 2.1
+ * Version: 2.2
  */
 
 const express = require('express');
@@ -76,7 +76,7 @@ app.get('/health', (req, res) => {
         status: 'ok',
         timestamp: new Date().toISOString(),
         uptime: process.uptime(),
-        version: '2.1.0',
+        version: '2.2.0',
         modules: {
             financial: financialModule ? 'loaded' : 'not available',
             certificates: certificatesModule ? 'loaded' : 'not available',
@@ -157,7 +157,7 @@ app.use((err, req, res, next) => {
 
 app.listen(PORT, () => {
     console.log('='.repeat(60));
-    console.log('ISIN Research Backend - Multi-Source v2.1');
+    console.log('ISIN Research Backend - Multi-Source v2.2');
     console.log('Copyright (c) 2024-2025 Mutna S.R.L.S.');
     console.log('='.repeat(60));
     console.log(`Server running on port ${PORT}`);
@@ -181,31 +181,66 @@ function createBondsModuleFromJSON(dataPath) {
     const express = require('express');
     const router = express.Router();
     
-    let bondsData = { bonds: [] };
+    let allBonds = [];
+    let categoriesData = {};
     
     try {
         const rawData = fs.readFileSync(dataPath, 'utf8');
-        bondsData = JSON.parse(rawData);
-        console.log(`✅ Loaded ${bondsData.bonds ? bondsData.bonds.length : 0} bonds`);
+        const data = JSON.parse(rawData);
+        
+        // Check structure type
+        if (data.bonds) {
+            // Simple structure: { bonds: [...] }
+            allBonds = data.bonds;
+            console.log(`✅ Loaded ${allBonds.length} bonds (simple structure)`);
+        } else if (data.categories) {
+            // Categories structure: { categories: { cat1: { bonds: [...] }, ... } }
+            categoriesData = data.categories;
+            
+            // Flatten all bonds from all categories
+            Object.keys(categoriesData).forEach(catKey => {
+                const category = categoriesData[catKey];
+                if (category.bonds && Array.isArray(category.bonds)) {
+                    allBonds = allBonds.concat(category.bonds);
+                }
+            });
+            
+            console.log(`✅ Loaded ${allBonds.length} bonds from ${Object.keys(categoriesData).length} categories`);
+        } else {
+            console.warn('⚠️  Unknown bonds data structure');
+        }
     } catch (error) {
         console.error('❌ Error loading bonds data:', error.message);
     }
     
     // GET all bonds
     router.get('/', (req, res) => {
+        const { category, limit = 100 } = req.query;
+        
+        let filtered = allBonds;
+        
+        // Filter by category if specified
+        if (category && categoriesData[category]) {
+            filtered = categoriesData[category].bonds || [];
+        }
+        
+        // Apply limit
+        const limited = filtered.slice(0, parseInt(limit));
+        
         res.json({
             success: true,
-            count: bondsData.bonds ? bondsData.bonds.length : 0,
-            bonds: bondsData.bonds || []
+            count: limited.length,
+            total: filtered.length,
+            bonds: limited
         });
     });
     
     // GET bond by ISIN
     router.get('/:isin', (req, res) => {
         const { isin } = req.params;
-        const bond = bondsData.bonds ? bondsData.bonds.find(b => 
+        const bond = allBonds.find(b => 
             b.isin && b.isin.toUpperCase() === isin.toUpperCase()
-        ) : null;
+        );
         
         if (!bond) {
             return res.status(404).json({
@@ -233,19 +268,36 @@ function createBondsModuleFromJSON(dataPath) {
         }
         
         const query = q.toLowerCase();
-        const results = bondsData.bonds ? bondsData.bonds.filter(b => {
+        const results = allBonds.filter(b => {
             return (
                 (b.isin && b.isin.toLowerCase().includes(query)) ||
                 (b.name && b.name.toLowerCase().includes(query)) ||
-                (b.issuer && b.issuer.toLowerCase().includes(query))
+                (b.issuer && b.issuer.toLowerCase().includes(query)) ||
+                (b.type && b.type.toLowerCase().includes(query))
             );
-        }) : [];
+        });
         
         res.json({
             success: true,
             count: results.length,
             query: q,
             bonds: results.slice(0, 50)
+        });
+    });
+    
+    // GET categories
+    router.get('/meta/categories', (req, res) => {
+        const categories = Object.keys(categoriesData).map(key => ({
+            id: key,
+            name: categoriesData[key].name || key,
+            description: categoriesData[key].description || '',
+            count: categoriesData[key].bonds ? categoriesData[key].bonds.length : 0
+        }));
+        
+        res.json({
+            success: true,
+            count: categories.length,
+            categories: categories
         });
     });
     
