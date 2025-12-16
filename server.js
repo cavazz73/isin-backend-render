@@ -3,14 +3,16 @@
  * P.IVA: 04219740364
  * 
  * ISIN Research Backend - Multi-Source Financial Data API
- * Version: 2.1 - Certificates Update
+ * Version: 2.1
  */
 
 const express = require('express');
 const cors = require('cors');
+const fs = require('fs');
+const path = require('path');
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 10000;
 
 // Middleware
 app.use(cors());
@@ -22,247 +24,124 @@ app.use((req, res, next) => {
     next();
 });
 
-// Health check
+// ===================================
+// LOAD MODULES WITH FALLBACK
+// ===================================
+
+let financialModule = null;
+let certificatesModule = null;
+let bondsModule = null;
+
+// Try to load Financial module (stocks, quotes, etc)
+try {
+    financialModule = require('./financial');
+    console.log('✅ Financial module loaded from root');
+} catch (error) {
+    console.warn('⚠️  Financial module not found:', error.message);
+}
+
+// Try to load Certificates module
+try {
+    certificatesModule = require('./certificates');
+    console.log('✅ Certificates module loaded from root');
+} catch (error) {
+    console.warn('⚠️  Certificates module not found:', error.message);
+}
+
+// Try to load Bonds module (if exists)
+try {
+    bondsModule = require('./bonds');
+    console.log('✅ Bonds module loaded from root');
+} catch (error) {
+    // Bonds module is optional, try inline fallback
+    try {
+        const bondsDataPath = path.join(__dirname, 'bonds-data.json');
+        if (fs.existsSync(bondsDataPath)) {
+            console.log('✅ Using bonds-data.json fallback');
+            bondsModule = createBondsModuleFromJSON(bondsDataPath);
+        } else {
+            console.warn('⚠️  Bonds module not found (optional)');
+        }
+    } catch (fallbackError) {
+        console.warn('⚠️  Bonds data not available');
+    }
+}
+
+// ===================================
+// HEALTH CHECK
+// ===================================
+
 app.get('/health', (req, res) => {
     res.json({
         status: 'ok',
         timestamp: new Date().toISOString(),
         uptime: process.uptime(),
         version: '2.1.0',
-        endpoints: {
-            financial: '/api/financial',
-            certificates: '/api/certificates',
-            health: '/health'
+        modules: {
+            financial: financialModule ? 'loaded' : 'not available',
+            certificates: certificatesModule ? 'loaded' : 'not available',
+            bonds: bondsModule ? 'loaded' : 'not available'
         }
     });
 });
 
 // ===================================
-// LOAD MODULES FROM ROOT
+// API ROUTES
 // ===================================
 
-// Financial routes (existing)
-let financialRoutes;
-try {
-    financialRoutes = require('./financial');  // ← ROOT level
-    app.use('/api/financial', financialRoutes);
-    console.log('✅ Financial module loaded from root');
-} catch (error) {
-    console.warn('⚠️  Financial module not found:', error.message);
+// Financial API (stocks, quotes, charts)
+if (financialModule) {
+    app.use('/api/financial', financialModule);
+} else {
+    app.use('/api/financial', (req, res) => {
+        res.status(503).json({
+            success: false,
+            error: 'Financial module not available',
+            message: 'Please check server configuration'
+        });
+    });
 }
 
-// Certificates routes (new)
-let certificatesRoutes;
-try {
-    certificatesRoutes = require('./certificates');  // ← ROOT level
-    app.use('/api/certificates', certificatesRoutes);
-    console.log('✅ Certificates module loaded from root');
-} catch (error) {
-    console.error('❌ Certificates module error:', error.message);
-    console.log('⚠️  Will use fallback mode with JSON data');
+// Certificates API
+if (certificatesModule) {
+    app.use('/api/certificates', certificatesModule);
+} else {
+    app.use('/api/certificates', (req, res) => {
+        res.status(503).json({
+            success: false,
+            error: 'Certificates module not available',
+            message: 'Please check server configuration'
+        });
+    });
 }
 
-// ===================================
-// FALLBACK CERTIFICATES ENDPOINT
-// ===================================
-
-if (!certificatesRoutes) {
-    console.log('📦 Loading certificates from JSON (fallback mode)');
-    
-    let certificatesData = { certificates: [] };
-    try {
-        const fs = require('fs');
-        const path = require('path');
-        const dataPath = path.join(__dirname, 'certificates-data.json');
-        const rawData = fs.readFileSync(dataPath, 'utf8');
-        certificatesData = JSON.parse(rawData);
-        console.log(`✅ Loaded ${certificatesData.certificates.length} certificates from JSON`);
-    } catch (error) {
-        console.error('❌ Error loading certificates-data.json:', error.message);
-    }
-    
-    // GET /api/certificates - List all
-    app.get('/api/certificates', (req, res) => {
-        try {
-            const { limit = 100, type, issuer, minYield, minBarrier, maxBarrier } = req.query;
-            
-            let filtered = certificatesData.certificates;
-            
-            // Apply filters
-            if (type) {
-                filtered = filtered.filter(c => c.type === type);
-            }
-            if (issuer) {
-                filtered = filtered.filter(c => c.issuer === issuer);
-            }
-            if (minYield) {
-                filtered = filtered.filter(c => c.annual_coupon_yield >= parseFloat(minYield));
-            }
-            if (minBarrier) {
-                filtered = filtered.filter(c => c.barrier_down >= parseFloat(minBarrier));
-            }
-            if (maxBarrier) {
-                filtered = filtered.filter(c => c.barrier_down <= parseFloat(maxBarrier));
-            }
-            
-            const limited = filtered.slice(0, parseInt(limit));
-            
-            res.json({
-                success: true,
-                count: limited.length,
-                total: filtered.length,
-                metadata: certificatesData.metadata || {},
-                certificates: limited
-            });
-        } catch (error) {
-            res.status(500).json({
-                success: false,
-                error: error.message
-            });
-        }
-    });
-    
-    // GET /api/certificates/:isin - Single certificate
-    app.get('/api/certificates/:isin', (req, res) => {
-        try {
-            const { isin } = req.params;
-            const cert = certificatesData.certificates.find(c => 
-                c.isin && c.isin.toUpperCase() === isin.toUpperCase()
-            );
-            
-            if (!cert) {
-                return res.status(404).json({
-                    success: false,
-                    error: 'Certificate not found',
-                    isin: isin
-                });
-            }
-            
-            res.json({ success: true, certificate: cert });
-        } catch (error) {
-            res.status(500).json({ success: false, error: error.message });
-        }
-    });
-    
-    // GET /api/certificates/search - Search
-    app.get('/api/certificates/search', (req, res) => {
-        try {
-            const { q } = req.query;
-            
-            if (!q) {
-                return res.status(400).json({
-                    success: false,
-                    error: 'Query parameter "q" is required'
-                });
-            }
-            
-            const query = q.toLowerCase();
-            const results = certificatesData.certificates.filter(c => {
-                return (
-                    (c.isin && c.isin.toLowerCase().includes(query)) ||
-                    (c.name && c.name.toLowerCase().includes(query)) ||
-                    (c.issuer && c.issuer.toLowerCase().includes(query)) ||
-                    (c.type && c.type.toLowerCase().includes(query))
-                );
-            });
-            
-            res.json({
-                success: true,
-                count: results.length,
-                query: q,
-                certificates: results.slice(0, 50)
-            });
-        } catch (error) {
-            res.status(500).json({ success: false, error: error.message });
-        }
-    });
-    
-    // GET /api/certificates/meta/types
-    app.get('/api/certificates/meta/types', (req, res) => {
-        try {
-            const types = [...new Set(certificatesData.certificates
-                .map(c => c.type)
-                .filter(t => t)
-            )];
-            res.json({ success: true, count: types.length, types: types.sort() });
-        } catch (error) {
-            res.status(500).json({ success: false, error: error.message });
-        }
-    });
-    
-    // GET /api/certificates/meta/issuers
-    app.get('/api/certificates/meta/issuers', (req, res) => {
-        try {
-            const issuers = [...new Set(certificatesData.certificates
-                .map(c => c.issuer)
-                .filter(i => i)
-            )];
-            res.json({ success: true, count: issuers.length, issuers: issuers.sort() });
-        } catch (error) {
-            res.status(500).json({ success: false, error: error.message });
-        }
-    });
-    
-    // GET /api/certificates/meta/stats
-    app.get('/api/certificates/meta/stats', (req, res) => {
-        try {
-            const certs = certificatesData.certificates;
-            const calculateAvg = (field) => {
-                const values = certs.map(c => c[field]).filter(v => v != null && !isNaN(v));
-                return values.length > 0 ? values.reduce((a,b) => a+b, 0) / values.length : 0;
-            };
-            
-            res.json({
-                success: true,
-                statistics: {
-                    total_certificates: certs.length,
-                    types: [...new Set(certs.map(c => c.type).filter(t => t))].length,
-                    issuers: [...new Set(certs.map(c => c.issuer).filter(i => i))].length,
-                    avg_annual_yield: parseFloat(calculateAvg('annual_coupon_yield').toFixed(2)),
-                    avg_barrier: parseFloat(calculateAvg('barrier_down').toFixed(2)),
-                    yield_range: {
-                        min: Math.min(...certs.map(c => c.annual_coupon_yield || 0)),
-                        max: Math.max(...certs.map(c => c.annual_coupon_yield || 0))
-                    },
-                    barrier_range: {
-                        min: Math.min(...certs.map(c => c.barrier_down || 0)),
-                        max: Math.max(...certs.map(c => c.barrier_down || 0))
-                    },
-                    last_update: certificatesData.metadata?.timestamp || new Date().toISOString()
-                }
-            });
-        } catch (error) {
-            res.status(500).json({ success: false, error: error.message });
-        }
+// Bonds API
+if (bondsModule) {
+    app.use('/api/bonds', bondsModule);
+} else {
+    app.use('/api/bonds', (req, res) => {
+        res.status(503).json({
+            success: false,
+            error: 'Bonds module not available',
+            message: 'Bonds data not found'
+        });
     });
 }
 
 // ===================================
-// 404 HANDLER
+// ERROR HANDLERS
 // ===================================
 
+// 404 handler
 app.use((req, res) => {
     res.status(404).json({
         success: false,
         error: 'Endpoint not found',
-        path: req.path,
-        available_endpoints: [
-            '/health',
-            '/api/financial/search (if loaded)',
-            '/api/certificates',
-            '/api/certificates/:isin',
-            '/api/certificates/search',
-            '/api/certificates/meta/types',
-            '/api/certificates/meta/issuers',
-            '/api/certificates/meta/stats'
-        ]
+        path: req.path
     });
 });
 
-// ===================================
-// ERROR HANDLER
-// ===================================
-
+// Global error handler
 app.use((err, req, res, next) => {
     console.error('Unhandled error:', err);
     res.status(500).json({
@@ -285,11 +164,92 @@ app.listen(PORT, () => {
     console.log(`Health check: http://localhost:${PORT}/health`);
     console.log(`API Financial: http://localhost:${PORT}/api/financial`);
     console.log(`API Certificates: http://localhost:${PORT}/api/certificates`);
+    console.log(`API Bonds: http://localhost:${PORT}/api/bonds`);
     console.log('='.repeat(60));
     console.log('Modules loaded:');
-    console.log(`  Financial: ${financialRoutes ? '✅ Active' : '⚠️  Not found (optional)'}`);
-    console.log(`  Certificates: ${certificatesRoutes ? '✅ Module mode' : '📦 Fallback mode (JSON)'}`);
+    console.log(`  Financial: ${financialModule ? '✅ Active' : '⚠️  Not found (optional)'}`);
+    console.log(`  Certificates: ${certificatesModule ? '✅ Module mode' : '⚠️  Not found'}`);
+    console.log(`  Bonds: ${bondsModule ? '✅ Active' : '⚠️  Not found (optional)'}`);
     console.log('='.repeat(60));
 });
+
+// ===================================
+// UTILITY: Create Bonds Module from JSON
+// ===================================
+
+function createBondsModuleFromJSON(dataPath) {
+    const express = require('express');
+    const router = express.Router();
+    
+    let bondsData = { bonds: [] };
+    
+    try {
+        const rawData = fs.readFileSync(dataPath, 'utf8');
+        bondsData = JSON.parse(rawData);
+        console.log(`✅ Loaded ${bondsData.bonds ? bondsData.bonds.length : 0} bonds`);
+    } catch (error) {
+        console.error('❌ Error loading bonds data:', error.message);
+    }
+    
+    // GET all bonds
+    router.get('/', (req, res) => {
+        res.json({
+            success: true,
+            count: bondsData.bonds ? bondsData.bonds.length : 0,
+            bonds: bondsData.bonds || []
+        });
+    });
+    
+    // GET bond by ISIN
+    router.get('/:isin', (req, res) => {
+        const { isin } = req.params;
+        const bond = bondsData.bonds ? bondsData.bonds.find(b => 
+            b.isin && b.isin.toUpperCase() === isin.toUpperCase()
+        ) : null;
+        
+        if (!bond) {
+            return res.status(404).json({
+                success: false,
+                error: 'Bond not found',
+                isin: isin
+            });
+        }
+        
+        res.json({
+            success: true,
+            bond: bond
+        });
+    });
+    
+    // Search bonds
+    router.get('/search', (req, res) => {
+        const { q } = req.query;
+        
+        if (!q) {
+            return res.status(400).json({
+                success: false,
+                error: 'Query parameter "q" is required'
+            });
+        }
+        
+        const query = q.toLowerCase();
+        const results = bondsData.bonds ? bondsData.bonds.filter(b => {
+            return (
+                (b.isin && b.isin.toLowerCase().includes(query)) ||
+                (b.name && b.name.toLowerCase().includes(query)) ||
+                (b.issuer && b.issuer.toLowerCase().includes(query))
+            );
+        }) : [];
+        
+        res.json({
+            success: true,
+            count: results.length,
+            query: q,
+            bonds: results.slice(0, 50)
+        });
+    });
+    
+    return router;
+}
 
 module.exports = app;
