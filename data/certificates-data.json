@@ -1,0 +1,313 @@
+{
+  "lastUpdate": "2025-12-17T17:00:00.000Z",
+  "totalCertificates": 30,
+  "source": "Sample Data - Replace with real scraper data",
+  "categories": {
+    "phoenixMemory": {
+      "name": "Phoenix Memory",
+      "count": 10,
+      "description": "Certificati con memoria e protezione del capitale condizionata"
+    },
+    "cashCollect": {
+      "name": "Cash Collect",
+      "count": 10,
+      "description": "Certificati con cedole condizionate periodiche"
+    },
+    "bonusCap": {
+      "name": "Bonus Cap",
+      "count": 5,
+      "description": "Certificati con protezione condizionata e partecipazione limitata"
+    },
+    "express": {
+      "name": "Express",
+      "count": 5,
+      "description": "Certificati con rimborso anticipato automatico"
+    }
+  },
+  "certificates": [
+    {
+      "isin": "DE000HV4AAA1",
+      "name": "Phoenix Memory su FTSE MIB",
+      "type": "phoenixMemory",
+      "issuer": "UniCredit",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 98.50,
+      "coupon": 1.50,
+      "annual_coupon_yield": 18.00,
+      "barrier_down": 60.0,
+      "barrier_type": "DISCRETA",
+      "issue_date": "2024-01-15",
+      "maturity_date": "2027-01-15",
+      "underlyings": [
+        {
+          "name": "FTSE MIB",
+          "strike": 30000,
+          "spot": 35000,
+          "barrier": 18000,
+          "variation_pct": 16.67,
+          "worst_of": true
+        }
+      ],
+      "last_update": "2025-12-17T17:00:00.000Z"
+    },
+    {
+      "isin": "IT0005563912",
+      "name": "Phoenix Memory su Euro Stoxx 50",
+      "type": "phoenixMemory",
+      "issuer": "BNP Paribas",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 102.30,
+      "coupon": 1.25,
+      "annual_coupon_yield": 15.00,
+      "barrier_down": 55.0,
+      "barrier_type": "EUROPEA",
+      "issue_date": "2024-03-20",
+      "maturity_date": "2027-03-20",
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50",
+          "strike": 4500,
+          "spot": 5100,
+          "barrier": 2475,
+          "variation_pct": 13.33,
+          "worst_of": true
+        }
+      ],
+      "last_update": "2025-12-17T17:00:00.000Z"
+    },
+    {
+      "isin": "XS2314567890",
+      "name": "Cash Collect su Basket Europeo",
+      "type": "cashCollect",
+      "issuer": "Société Générale",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 99.80,
+      "coupon": 1.20,
+      "annual_coupon_yield": 14.40,
+      "barrier_down": 65.0,
+      "barrier_type": "DISCRETA",
+      "issue_date": "2024-02-10",
+      "maturity_date": "2026-02-10",
+      "underlyings": [
+        {
+          "name": "S&P 500",
+          "strike": 5000,
+          "spot": 5800,
+          "barrier": 3250,
+          "variation_pct": 16.00,
+          "worst_of": false
+        },
+        {
+          "name": "Euro Stoxx 50",
+          "strike": 4600,
+          "spot": 5100,
+          "barrier": 2990,
+          "variation_pct": 10.87,
+          "worst_of": true
+        }
+      ],
+      "last_update": "2025-12-17T17:00:00.000Z"
+    },
+    {
+      "isin": "DE000HV5BBB2",
+      "name": "Bonus Cap su DAX",
+      "type": "bonusCap",
+      "issuer": "Deutsche Bank",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 95.00,
+      "coupon": 0.00,
+      "annual_coupon_yield": 5.26,
+      "barrier_down": 70.0,
+      "barrier_type": "EUROPEA",
+      "issue_date": "2024-05-01",
+      "maturity_date": "2026-05-01",
+      "underlyings": [
+        {
+          "name": "DAX",
+          "strike": 17000,
+          "spot": 19500,
+          "barrier": 11900,
+          "variation_pct": 14.71,
+          "worst_of": true
+        }
+      ],
+      "last_update": "2025-12-17T17:00:00.000Z"
+    },
+    {
+      "isin": "XS2456789012",
+      "name": "Express Autocall su Tech Basket",
+      "type": "express",
+      "issuer": "Barclays",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 101.50,
+      "coupon": 2.00,
+      "annual_coupon_yield": 24.00,
+      "barrier_down": 60.0,
+      "barrier_type": "DISCRETA",
+      "issue_date": "2024-06-15",
+      "maturity_date": "2026-06-15",
+      "underlyings": [
+        {
+          "name": "Nasdaq 100",
+          "strike": 16000,
+          "spot": 19200,
+          "barrier": 9600,
+          "variation_pct": 20.00,
+          "worst_of": true
+        }
+      ],
+      "last_update": "2025-12-17T17:00:00.000Z"
+    },
+    {
+      "isin": "IT0005678901",
+      "name": "Phoenix Memory Multi Asset",
+      "type": "phoenixMemory",
+      "issuer": "Intesa Sanpaolo",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 97.20,
+      "coupon": 1.40,
+      "annual_coupon_yield": 16.80,
+      "barrier_down": 58.0,
+      "barrier_type": "DISCRETA",
+      "issue_date": "2024-04-10",
+      "maturity_date": "2027-04-10",
+      "underlyings": [
+        {
+          "name": "FTSE MIB",
+          "strike": 31000,
+          "spot": 35000,
+          "barrier": 17980,
+          "variation_pct": 12.90,
+          "worst_of": true
+        },
+        {
+          "name": "DAX",
+          "strike": 17500,
+          "spot": 19500,
+          "barrier": 10150,
+          "variation_pct": 11.43,
+          "worst_of": false
+        }
+      ],
+      "last_update": "2025-12-17T17:00:00.000Z"
+    },
+    {
+      "isin": "DE000HV6CCC3",
+      "name": "Cash Collect Premium su FTSE MIB",
+      "type": "cashCollect",
+      "issuer": "UniCredit",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 100.00,
+      "coupon": 1.80,
+      "annual_coupon_yield": 21.60,
+      "barrier_down": 50.0,
+      "barrier_type": "DISCRETA",
+      "issue_date": "2024-07-01",
+      "maturity_date": "2026-07-01",
+      "underlyings": [
+        {
+          "name": "FTSE MIB",
+          "strike": 32000,
+          "spot": 35000,
+          "barrier": 16000,
+          "variation_pct": 9.38,
+          "worst_of": true
+        }
+      ],
+      "last_update": "2025-12-17T17:00:00.000Z"
+    },
+    {
+      "isin": "XS2567890123",
+      "name": "Phoenix Memory su Basket Italia-Germania",
+      "type": "phoenixMemory",
+      "issuer": "BNP Paribas",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 96.50,
+      "coupon": 1.60,
+      "annual_coupon_yield": 19.20,
+      "barrier_down": 55.0,
+      "barrier_type": "EUROPEA",
+      "issue_date": "2024-08-15",
+      "maturity_date": "2027-08-15",
+      "underlyings": [
+        {
+          "name": "FTSE MIB",
+          "strike": 30500,
+          "spot": 35000,
+          "barrier": 16775,
+          "variation_pct": 14.75,
+          "worst_of": true
+        },
+        {
+          "name": "DAX",
+          "strike": 17200,
+          "spot": 19500,
+          "barrier": 9460,
+          "variation_pct": 13.37,
+          "worst_of": false
+        }
+      ],
+      "last_update": "2025-12-17T17:00:00.000Z"
+    },
+    {
+      "isin": "IT0005789012",
+      "name": "Bonus Cap Europa",
+      "type": "bonusCap",
+      "issuer": "Société Générale",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 93.00,
+      "coupon": 0.00,
+      "annual_coupon_yield": 7.53,
+      "barrier_down": 65.0,
+      "barrier_type": "EUROPEA",
+      "issue_date": "2024-09-01",
+      "maturity_date": "2026-09-01",
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50",
+          "strike": 4700,
+          "spot": 5100,
+          "barrier": 3055,
+          "variation_pct": 8.51,
+          "worst_of": true
+        }
+      ],
+      "last_update": "2025-12-17T17:00:00.000Z"
+    },
+    {
+      "isin": "DE000HV7DDD4",
+      "name": "Express Trimestrale su S&P 500",
+      "type": "express",
+      "issuer": "Barclays",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 103.00,
+      "coupon": 2.50,
+      "annual_coupon_yield": 30.00,
+      "barrier_down": 60.0,
+      "barrier_type": "DISCRETA",
+      "issue_date": "2024-10-01",
+      "maturity_date": "2026-10-01",
+      "underlyings": [
+        {
+          "name": "S&P 500",
+          "strike": 5200,
+          "spot": 6000,
+          "barrier": 3120,
+          "variation_pct": 15.38,
+          "worst_of": true
+        }
+      ],
+      "last_update": "2025-12-17T17:00:00.000Z"
+    }
+  ]
+}
