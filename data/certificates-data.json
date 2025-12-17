@@ -1,26 +1,26 @@
 {
   "lastUpdate": "2025-12-17T17:00:00.000Z",
-  "totalCertificates": 30,
+  "totalCertificates": 10,
   "source": "Sample Data - Replace with real scraper data",
   "categories": {
     "phoenixMemory": {
       "name": "Phoenix Memory",
-      "count": 10,
+      "count": 4,
       "description": "Certificati con memoria e protezione del capitale condizionata"
     },
     "cashCollect": {
       "name": "Cash Collect",
-      "count": 10,
+      "count": 2,
       "description": "Certificati con cedole condizionate periodiche"
     },
     "bonusCap": {
       "name": "Bonus Cap",
-      "count": 5,
+      "count": 2,
       "description": "Certificati con protezione condizionata e partecipazione limitata"
     },
     "express": {
       "name": "Express",
-      "count": 5,
+      "count": 2,
       "description": "Certificati con rimborso anticipato automatico"
     }
   },
@@ -81,7 +81,7 @@
       "isin": "XS2314567890",
       "name": "Cash Collect su Basket Europeo",
       "type": "cashCollect",
-      "issuer": "Société Générale",
+      "issuer": "Societe Generale",
       "market": "SeDeX",
       "currency": "EUR",
       "price": 99.80,
@@ -261,7 +261,7 @@
       "isin": "IT0005789012",
       "name": "Bonus Cap Europa",
       "type": "bonusCap",
-      "issuer": "Société Générale",
+      "issuer": "Societe Generale",
       "market": "SeDeX",
       "currency": "EUR",
       "price": 93.00,
