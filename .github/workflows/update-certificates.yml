@@ -2,11 +2,8 @@ name: Update Certificates Data
 
 on:
   schedule:
-    # Run every day at 18:30 UTC (after market close)
     - cron: '30 18 * * *'
-  
-  workflow_dispatch:  # Allow manual trigger
-  
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -30,15 +27,10 @@ jobs:
           node-version: '20'
       
       - name: Install dependencies
-        run: |
-          npm ci
-          echo "✅ Dependencies installed"
+        run: npm install
       
       - name: Run certificates scraper
-        run: |
-          echo "🚀 Starting certificates scraper..."
-          node certificates-scraper-PRODUCTION.js
-          echo "✅ Scraper completed"
+        run: node certificates-scraper-PRODUCTION.js
         continue-on-error: false
       
       - name: Check if data changed
@@ -46,10 +38,8 @@ jobs:
         run: |
           if git diff --quiet data/certificates/; then
             echo "changed=false" >> $GITHUB_OUTPUT
-            echo "ℹ️  No changes detected"
           else
             echo "changed=true" >> $GITHUB_OUTPUT
-            echo "✅ Changes detected"
           fi
       
       - name: Commit and push changes
@@ -57,34 +47,15 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          
           git add data/certificates/
-          git commit -m "🤖 Auto-update certificates data - $(date +'%Y-%m-%d %H:%M UTC')"
+          git commit -m "Auto-update certificates data"
           git push
-          
-          echo "✅ Changes committed and pushed"
       
-      - name: Create deployment summary
+      - name: Summary
         if: always()
         run: |
-          echo "## 📊 Certificates Update Summary" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Timestamp:** $(date -u +'%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
-          echo "**Status:** ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          
+          echo "## Certificates Update" >> $GITHUB_STEP_SUMMARY
+          echo "Status: ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
           if [ -f "data/certificates/certificates-data.json" ]; then
-            CERT_COUNT=$(jq '.totalCertificates' data/certificates/certificates-data.json)
-            echo "**Total Certificates:** $CERT_COUNT" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "### By Type:" >> $GITHUB_STEP_SUMMARY
-            jq -r '.categories | to_entries | .[] | "- **\(.key):** \(.value.count) certificates"' data/certificates/certificates-data.json >> $GITHUB_STEP_SUMMARY
-          else
-            echo "⚠️ No data file found" >> $GITHUB_STEP_SUMMARY
+            jq '.totalCertificates' data/certificates/certificates-data.json >> $GITHUB_STEP_SUMMARY
           fi
-      
-      - name: Trigger Render deployment
-        if: steps.check_changes.outputs.changed == 'true'
-        run: |
-          echo "🚀 Render will auto-deploy on git push"
-          echo "✅ Backend will update automatically"
