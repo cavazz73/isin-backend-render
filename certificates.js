@@ -3,7 +3,7 @@
  * P.IVA: 04219740364
  * 
  * Certificates API Routes
- * Serves investment certificates data from scraped JSON
+ * Serves certificates data from certificates-data.json (no live scraping)
  */
 
 const express = require('express');
@@ -16,22 +16,28 @@ const path = require('path');
 // ===================================
 
 let certificatesData = {
-    metadata: {},
+    lastUpdate: null,
+    totalCertificates: 0,
+    categories: {},
     certificates: []
 };
 
 function loadCertificatesData() {
     try {
-        const dataPath = path.join(__dirname, 'certificates-data.json');
+        const dataPath = path.join(__dirname, 'data', 'certificates', 'certificates-data.json');
+        
         if (fs.existsSync(dataPath)) {
             const rawData = fs.readFileSync(dataPath, 'utf8');
             certificatesData = JSON.parse(rawData);
-            console.log(`✅ Loaded ${certificatesData.certificates.length} certificates`);
+            
+            console.log(`✅ [CERTIFICATES] Loaded ${certificatesData.certificates.length} certificates`);
+            console.log(`   Last update: ${certificatesData.lastUpdate}`);
+            console.log(`   Categories: ${Object.keys(certificatesData.categories || {}).length}`);
         } else {
-            console.warn('⚠️  certificates-data.json not found, using empty dataset');
+            console.warn('⚠️  [CERTIFICATES] certificates-data.json not found at:', dataPath);
         }
     } catch (error) {
-        console.error('❌ Error loading certificates data:', error.message);
+        console.error('❌ [CERTIFICATES] Error loading data:', error.message);
     }
 }
 
@@ -48,12 +54,12 @@ setInterval(loadCertificatesData, 6 * 60 * 60 * 1000);
 router.get('/', async (req, res) => {
     try {
         const {
-            type,           // Certificate type filter
+            type,           // Certificate type (phoenixMemory, cashCollect, bonusCap, express)
             issuer,         // Issuer filter
+            minCoupon,      // Minimum coupon
+            maxCoupon,      // Maximum coupon
             minYield,       // Minimum annual yield
             maxYield,       // Maximum annual yield
-            minBarrier,     // Minimum barrier
-            maxBarrier,     // Maximum barrier
             limit = 100     // Results limit
         } = req.query;
 
@@ -62,7 +68,7 @@ router.get('/', async (req, res) => {
         // Apply filters
         if (type) {
             filtered = filtered.filter(c => 
-                c.type && c.type.toLowerCase().includes(type.toLowerCase())
+                c.type && c.type.toLowerCase() === type.toLowerCase()
             );
         }
 
@@ -72,46 +78,50 @@ router.get('/', async (req, res) => {
             );
         }
 
+        if (minCoupon) {
+            filtered = filtered.filter(c => 
+                c.coupon && c.coupon >= parseFloat(minCoupon)
+            );
+        }
+
+        if (maxCoupon) {
+            filtered = filtered.filter(c => 
+                c.coupon && c.coupon <= parseFloat(maxCoupon)
+            );
+        }
+
         if (minYield) {
             filtered = filtered.filter(c => 
-                c.annual_coupon_yield >= parseFloat(minYield)
+                c.annual_coupon_yield && c.annual_coupon_yield >= parseFloat(minYield)
             );
         }
 
         if (maxYield) {
             filtered = filtered.filter(c => 
-                c.annual_coupon_yield <= parseFloat(maxYield)
-            );
-        }
-
-        if (minBarrier) {
-            filtered = filtered.filter(c => 
-                c.barrier_down >= parseFloat(minBarrier)
-            );
-        }
-
-        if (maxBarrier) {
-            filtered = filtered.filter(c => 
-                c.barrier_down <= parseFloat(maxBarrier)
+                c.annual_coupon_yield && c.annual_coupon_yield <= parseFloat(maxYield)
             );
         }
 
         // Apply limit
-        const limited = filtered.slice(0, parseInt(limit));
+        const limitNum = parseInt(limit);
+        if (limitNum > 0) {
+            filtered = filtered.slice(0, limitNum);
+        }
 
         res.json({
             success: true,
-            count: limited.length,
-            total: filtered.length,
-            metadata: certificatesData.metadata,
-            certificates: limited
+            count: filtered.length,
+            totalAvailable: certificatesData.certificates.length,
+            lastUpdate: certificatesData.lastUpdate,
+            certificates: filtered
         });
 
     } catch (error) {
-        console.error('[Certificates API] Error:', error);
+        console.error('❌ [CERTIFICATES] Error in GET /:', error);
         res.status(500).json({
             success: false,
-            error: error.message
+            error: 'Internal server error',
+            message: error.message
         });
     }
 });
@@ -142,10 +152,11 @@ router.get('/:isin', async (req, res) => {
         });
 
     } catch (error) {
-        console.error('[Certificates API] Error:', error);
+        console.error('❌ [CERTIFICATES] Error in GET /:isin:', error);
         res.status(500).json({
             success: false,
-            error: error.message
+            error: 'Internal server error',
+            message: error.message
         });
     }
 });
@@ -154,149 +165,113 @@ router.get('/:isin', async (req, res) => {
 // SEARCH CERTIFICATES
 // ===================================
 
-router.get('/search', async (req, res) => {
+router.get('/search/query', async (req, res) => {
     try {
         const { q } = req.query;
-
-        if (!q) {
-            return res.status(400).json({
-                success: false,
-                error: 'Query parameter "q" is required'
+        
+        if (!q || q.length < 2) {
+            return res.json({
+                success: true,
+                count: 0,
+                certificates: []
             });
         }
 
         const query = q.toLowerCase();
-        
-        const results = certificatesData.certificates.filter(c => {
-            return (
-                (c.isin && c.isin.toLowerCase().includes(query)) ||
-                (c.name && c.name.toLowerCase().includes(query)) ||
-                (c.issuer && c.issuer.toLowerCase().includes(query)) ||
-                (c.type && c.type.toLowerCase().includes(query))
-            );
-        });
+        const results = certificatesData.certificates.filter(c => 
+            (c.isin && c.isin.toLowerCase().includes(query)) ||
+            (c.name && c.name.toLowerCase().includes(query)) ||
+            (c.issuer && c.issuer.toLowerCase().includes(query))
+        );
 
         res.json({
             success: true,
             count: results.length,
             query: q,
-            certificates: results.slice(0, 50) // Limit to 50 results
+            certificates: results.slice(0, 50) // Limit search results
         });
 
     } catch (error) {
-        console.error('[Certificates API] Error:', error);
+        console.error('❌ [CERTIFICATES] Error in search:', error);
         res.status(500).json({
             success: false,
-            error: error.message
+            error: 'Internal server error',
+            message: error.message
         });
     }
 });
 
 // ===================================
-// GET CERTIFICATE TYPES
+// GET CATEGORIES
 // ===================================
 
-router.get('/meta/types', async (req, res) => {
+router.get('/meta/categories', async (req, res) => {
     try {
-        const types = [...new Set(certificatesData.certificates
-            .map(c => c.type)
-            .filter(t => t)
-        )];
-
         res.json({
             success: true,
-            count: types.length,
-            types: types.sort()
+            lastUpdate: certificatesData.lastUpdate,
+            categories: certificatesData.categories || {}
         });
-
     } catch (error) {
-        console.error('[Certificates API] Error:', error);
+        console.error('❌ [CERTIFICATES] Error in categories:', error);
         res.status(500).json({
             success: false,
-            error: error.message
+            error: 'Internal server error'
         });
     }
 });
 
 // ===================================
-// GET CERTIFICATE ISSUERS
-// ===================================
-
-router.get('/meta/issuers', async (req, res) => {
-    try {
-        const issuers = [...new Set(certificatesData.certificates
-            .map(c => c.issuer)
-            .filter(i => i)
-        )];
-
-        res.json({
-            success: true,
-            count: issuers.length,
-            issuers: issuers.sort()
-        });
-
-    } catch (error) {
-        console.error('[Certificates API] Error:', error);
-        res.status(500).json({
-            success: false,
-            error: error.message
-        });
-    }
-});
-
-// ===================================
-// GET STATISTICS
+// GET STATS
 // ===================================
 
 router.get('/meta/stats', async (req, res) => {
     try {
-        const certs = certificatesData.certificates;
-        
         const stats = {
-            total_certificates: certs.length,
-            
-            types: [...new Set(certs.map(c => c.type).filter(t => t))].length,
-            issuers: [...new Set(certs.map(c => c.issuer).filter(i => i))].length,
-            
-            avg_annual_yield: calculateAverage(certs, 'annual_coupon_yield'),
-            avg_barrier: calculateAverage(certs, 'barrier_down'),
-            
-            yield_range: {
-                min: Math.min(...certs.map(c => c.annual_coupon_yield || 0)),
-                max: Math.max(...certs.map(c => c.annual_coupon_yield || 0))
-            },
-            
-            barrier_range: {
-                min: Math.min(...certs.map(c => c.barrier_down || 0)),
-                max: Math.max(...certs.map(c => c.barrier_down || 0))
-            },
-            
-            last_update: certificatesData.metadata.timestamp
+            totalCertificates: certificatesData.certificates.length,
+            lastUpdate: certificatesData.lastUpdate,
+            categoriesCount: Object.keys(certificatesData.categories || {}).length,
+            byType: {}
         };
+
+        // Count by type
+        certificatesData.certificates.forEach(c => {
+            const type = c.type || 'other';
+            stats.byType[type] = (stats.byType[type] || 0) + 1;
+        });
 
         res.json({
             success: true,
-            statistics: stats
+            stats: stats
         });
 
     } catch (error) {
-        console.error('[Certificates API] Error:', error);
+        console.error('❌ [CERTIFICATES] Error in stats:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Internal server error'
+        });
+    }
+});
+
+// ===================================
+// RELOAD DATA (manual trigger)
+// ===================================
+
+router.post('/admin/reload', async (req, res) => {
+    try {
+        loadCertificatesData();
+        res.json({
+            success: true,
+            message: 'Certificates data reloaded',
+            count: certificatesData.certificates.length
+        });
+    } catch (error) {
         res.status(500).json({
             success: false,
             error: error.message
         });
     }
 });
-
-// ===================================
-// UTILITY FUNCTIONS
-// ===================================
-
-function calculateAverage(arr, field) {
-    const values = arr.map(item => item[field]).filter(v => v != null && !isNaN(v));
-    if (values.length === 0) return 0;
-    const sum = values.reduce((a, b) => a + b, 0);
-    return parseFloat((sum / values.length).toFixed(2));
-}
 
 module.exports = router;
