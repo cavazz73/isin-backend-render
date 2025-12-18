@@ -1,313 +1,6029 @@
 {
-  "lastUpdate": "2025-12-17T17:00:00.000Z",
-  "totalCertificates": 10,
-  "source": "Sample Data - Replace with real scraper data",
+  "lastUpdate": "2025-12-18T08:31:27.661Z",
+  "totalCertificates": 100,
+  "source": "Generated from Borsa Italiana SeDeX patterns",
   "categories": {
     "phoenixMemory": {
-      "name": "Phoenix Memory",
-      "count": 4,
-      "description": "Certificati con memoria e protezione del capitale condizionata"
+      "name": "phoenixMemory",
+      "count": 34,
+      "avg_coupon": 1.41
     },
     "cashCollect": {
-      "name": "Cash Collect",
-      "count": 2,
-      "description": "Certificati con cedole condizionate periodiche"
+      "name": "cashCollect",
+      "count": 22,
+      "avg_coupon": 1.26
     },
     "bonusCap": {
-      "name": "Bonus Cap",
-      "count": 2,
-      "description": "Certificati con protezione condizionata e partecipazione limitata"
+      "name": "bonusCap",
+      "count": 22,
+      "avg_coupon": 0.28
     },
     "express": {
-      "name": "Express",
-      "count": 2,
-      "description": "Certificati con rimborso anticipato automatico"
+      "name": "express",
+      "count": 22,
+      "avg_coupon": 2.28
     }
   },
   "certificates": [
     {
-      "isin": "DE000HV4AAA1",
-      "name": "Phoenix Memory su FTSE MIB",
+      "isin": "XS2376890100",
+      "name": "Phoenix Memory su FTSE MIB 1",
       "type": "phoenixMemory",
-      "issuer": "UniCredit",
+      "issuer": "BNP Paribas",
       "market": "SeDeX",
       "currency": "EUR",
-      "price": 98.50,
-      "coupon": 1.50,
-      "annual_coupon_yield": 18.00,
-      "barrier_down": 60.0,
-      "barrier_type": "DISCRETA",
-      "issue_date": "2024-01-15",
-      "maturity_date": "2027-01-15",
+      "price": 98.41156281317141,
+      "coupon": 1.76,
+      "annual_coupon_yield": 21.16,
+      "barrier_down": 58.6,
+      "barrier_type": "EUROPEA",
+      "issue_date": "2024-05-01",
+      "maturity_date": "2028-04-12",
+      "strike_date": "2025-03-22",
       "underlyings": [
         {
           "name": "FTSE MIB",
           "strike": 30000,
           "spot": 35000,
-          "barrier": 18000,
+          "barrier": 17589,
           "variation_pct": 16.67,
+          "variation_abs": 116.67,
           "worst_of": true
         }
       ],
-      "last_update": "2025-12-17T17:00:00.000Z"
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 17.16,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 19.16,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 21.16,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 23.16,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 25.16,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.657Z"
     },
     {
-      "isin": "IT0005563912",
-      "name": "Phoenix Memory su Euro Stoxx 50",
+      "isin": "DE000HV4ZZ01",
+      "name": "Phoenix Memory su Euro Stoxx 50 2",
       "type": "phoenixMemory",
-      "issuer": "BNP Paribas",
+      "issuer": "UniCredit",
       "market": "SeDeX",
       "currency": "EUR",
-      "price": 102.30,
-      "coupon": 1.25,
-      "annual_coupon_yield": 15.00,
-      "barrier_down": 55.0,
+      "price": 99.94519473972248,
+      "coupon": 1.4,
+      "annual_coupon_yield": 16.8,
+      "barrier_down": 62,
       "barrier_type": "EUROPEA",
-      "issue_date": "2024-03-20",
-      "maturity_date": "2027-03-20",
+      "issue_date": "2024-01-30",
+      "maturity_date": "2027-10-25",
+      "strike_date": "2025-04-18",
       "underlyings": [
         {
           "name": "Euro Stoxx 50",
           "strike": 4500,
           "spot": 5100,
-          "barrier": 2475,
+          "barrier": 2792,
           "variation_pct": 13.33,
+          "variation_abs": 113.33,
           "worst_of": true
         }
       ],
-      "last_update": "2025-12-17T17:00:00.000Z"
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 12.8,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 14.8,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 16.8,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 18.8,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 20.8,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.657Z"
     },
     {
-      "isin": "XS2314567890",
-      "name": "Cash Collect su Basket Europeo",
-      "type": "cashCollect",
+      "isin": "XS2401234502",
+      "name": "Phoenix Memory su S&P 500 3",
+      "type": "phoenixMemory",
       "issuer": "Societe Generale",
       "market": "SeDeX",
       "currency": "EUR",
-      "price": 99.80,
-      "coupon": 1.20,
-      "annual_coupon_yield": 14.40,
-      "barrier_down": 65.0,
+      "price": 94.6350034015413,
+      "coupon": 1.04,
+      "annual_coupon_yield": 12.45,
+      "barrier_down": 57.5,
       "barrier_type": "DISCRETA",
-      "issue_date": "2024-02-10",
-      "maturity_date": "2026-02-10",
+      "issue_date": "2025-05-11",
+      "maturity_date": "2027-04-23",
+      "strike_date": "2024-07-16",
       "underlyings": [
         {
           "name": "S&P 500",
           "strike": 5000,
           "spot": 5800,
-          "barrier": 3250,
-          "variation_pct": 16.00,
-          "worst_of": false
-        },
-        {
-          "name": "Euro Stoxx 50",
-          "strike": 4600,
-          "spot": 5100,
-          "barrier": 2990,
-          "variation_pct": 10.87,
+          "barrier": 2877,
+          "variation_pct": 16,
+          "variation_abs": 116,
           "worst_of": true
         }
       ],
-      "last_update": "2025-12-17T17:00:00.000Z"
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 8.45,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 10.45,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 12.45,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 14.45,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 16.45,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.658Z"
     },
     {
-      "isin": "DE000HV5BBB2",
-      "name": "Bonus Cap su DAX",
-      "type": "bonusCap",
-      "issuer": "Deutsche Bank",
+      "isin": "IT0005567803",
+      "name": "Cash Collect su DAX 4",
+      "type": "cashCollect",
+      "issuer": "Intesa Sanpaolo",
       "market": "SeDeX",
       "currency": "EUR",
-      "price": 95.00,
-      "coupon": 0.00,
-      "annual_coupon_yield": 5.26,
-      "barrier_down": 70.0,
+      "price": 102.11532768284086,
+      "coupon": 0.96,
+      "annual_coupon_yield": 11.56,
+      "barrier_down": 65.8,
       "barrier_type": "EUROPEA",
-      "issue_date": "2024-05-01",
-      "maturity_date": "2026-05-01",
+      "issue_date": "2024-05-27",
+      "maturity_date": "2027-11-16",
+      "strike_date": "2024-06-23",
       "underlyings": [
         {
           "name": "DAX",
           "strike": 17000,
           "spot": 19500,
-          "barrier": 11900,
+          "barrier": 11179,
           "variation_pct": 14.71,
+          "variation_abs": 114.71,
           "worst_of": true
         }
       ],
-      "last_update": "2025-12-17T17:00:00.000Z"
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 7.56,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 9.56,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 11.56,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 13.56,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 15.56,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.658Z"
     },
     {
-      "isin": "XS2456789012",
-      "name": "Express Autocall su Tech Basket",
-      "type": "express",
-      "issuer": "Barclays",
+      "isin": "XS2423456704",
+      "name": "Cash Collect su Nasdaq 100 5",
+      "type": "cashCollect",
+      "issuer": "BNP Paribas",
       "market": "SeDeX",
       "currency": "EUR",
-      "price": 101.50,
-      "coupon": 2.00,
-      "annual_coupon_yield": 24.00,
-      "barrier_down": 60.0,
-      "barrier_type": "DISCRETA",
-      "issue_date": "2024-06-15",
-      "maturity_date": "2026-06-15",
+      "price": 103.39899336459099,
+      "coupon": 1.08,
+      "annual_coupon_yield": 12.93,
+      "barrier_down": 63.5,
+      "barrier_type": "EUROPEA",
+      "issue_date": "2025-01-11",
+      "maturity_date": "2027-07-21",
+      "strike_date": "2024-06-09",
       "underlyings": [
         {
           "name": "Nasdaq 100",
           "strike": 16000,
           "spot": 19200,
-          "barrier": 9600,
-          "variation_pct": 20.00,
+          "barrier": 10166,
+          "variation_pct": 20,
+          "variation_abs": 120,
           "worst_of": true
         }
       ],
-      "last_update": "2025-12-17T17:00:00.000Z"
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 8.93,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 10.93,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 12.93,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 14.93,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 16.93,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.658Z"
     },
     {
-      "isin": "IT0005678901",
-      "name": "Phoenix Memory Multi Asset",
-      "type": "phoenixMemory",
-      "issuer": "Intesa Sanpaolo",
+      "isin": "DE000DB7ZZ05",
+      "name": "Bonus Cap su FTSE MIB 6",
+      "type": "bonusCap",
+      "issuer": "Deutsche Bank",
       "market": "SeDeX",
       "currency": "EUR",
-      "price": 97.20,
-      "coupon": 1.40,
-      "annual_coupon_yield": 16.80,
-      "barrier_down": 58.0,
-      "barrier_type": "DISCRETA",
-      "issue_date": "2024-04-10",
-      "maturity_date": "2027-04-10",
+      "price": 104.39750273885946,
+      "coupon": 0.47,
+      "annual_coupon_yield": 5.69,
+      "barrier_down": 61.6,
+      "barrier_type": "EUROPEA",
+      "issue_date": "2024-10-06",
+      "maturity_date": "2028-01-28",
+      "strike_date": "2025-03-06",
       "underlyings": [
         {
           "name": "FTSE MIB",
-          "strike": 31000,
+          "strike": 30000,
           "spot": 35000,
-          "barrier": 17980,
-          "variation_pct": 12.90,
+          "barrier": 18479,
+          "variation_pct": 16.67,
+          "variation_abs": 116.67,
           "worst_of": true
-        },
-        {
-          "name": "DAX",
-          "strike": 17500,
-          "spot": 19500,
-          "barrier": 10150,
-          "variation_pct": 11.43,
-          "worst_of": false
         }
       ],
-      "last_update": "2025-12-17T17:00:00.000Z"
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 1.69,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 3.69,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 5.69,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 7.69,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 9.69,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.658Z"
     },
     {
-      "isin": "DE000HV6CCC3",
-      "name": "Cash Collect Premium su FTSE MIB",
-      "type": "cashCollect",
+      "isin": "XS2445678906",
+      "name": "Bonus Cap su Euro Stoxx 50 7",
+      "type": "bonusCap",
+      "issuer": "Barclays",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 103.03611993601963,
+      "coupon": 0.11,
+      "annual_coupon_yield": 1.37,
+      "barrier_down": 64.6,
+      "barrier_type": "DISCRETA",
+      "issue_date": "2025-03-17",
+      "maturity_date": "2028-11-10",
+      "strike_date": "2025-01-24",
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50",
+          "strike": 4500,
+          "spot": 5100,
+          "barrier": 2907,
+          "variation_pct": 13.33,
+          "variation_abs": 113.33,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": -2.63,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": -0.63,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 1.37,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 3.37,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 5.37,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.658Z"
+    },
+    {
+      "isin": "XS2467890107",
+      "name": "Express su S&P 500 8",
+      "type": "express",
+      "issuer": "Societe Generale",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 101.90943731720479,
+      "coupon": 2.5,
+      "annual_coupon_yield": 30.01,
+      "barrier_down": 59.5,
+      "barrier_type": "DISCRETA",
+      "issue_date": "2024-03-27",
+      "maturity_date": "2027-07-24",
+      "strike_date": "2025-05-11",
+      "underlyings": [
+        {
+          "name": "S&P 500",
+          "strike": 5000,
+          "spot": 5800,
+          "barrier": 2973,
+          "variation_pct": 16,
+          "variation_abs": 116,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 26.01,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 28.01,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 30.01,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 32.01,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 34.01,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.658Z"
+    },
+    {
+      "isin": "IT0005678908",
+      "name": "Express su DAX 9",
+      "type": "express",
       "issuer": "UniCredit",
       "market": "SeDeX",
       "currency": "EUR",
-      "price": 100.00,
-      "coupon": 1.80,
-      "annual_coupon_yield": 21.60,
-      "barrier_down": 50.0,
-      "barrier_type": "DISCRETA",
-      "issue_date": "2024-07-01",
-      "maturity_date": "2026-07-01",
+      "price": 98.80195154912806,
+      "coupon": 2.01,
+      "annual_coupon_yield": 24.07,
+      "barrier_down": 63.3,
+      "barrier_type": "EUROPEA",
+      "issue_date": "2024-05-27",
+      "maturity_date": "2028-05-06",
+      "strike_date": "2025-01-23",
       "underlyings": [
         {
-          "name": "FTSE MIB",
-          "strike": 32000,
-          "spot": 35000,
-          "barrier": 16000,
-          "variation_pct": 9.38,
+          "name": "DAX",
+          "strike": 17000,
+          "spot": 19500,
+          "barrier": 10760,
+          "variation_pct": 14.71,
+          "variation_abs": 114.71,
           "worst_of": true
         }
       ],
-      "last_update": "2025-12-17T17:00:00.000Z"
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 20.07,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 22.07,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 24.07,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 26.07,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 28.07,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.658Z"
     },
     {
-      "isin": "XS2567890123",
-      "name": "Phoenix Memory su Basket Italia-Germania",
+      "isin": "XS2376890109",
+      "name": "Phoenix Memory su Nasdaq 100 10",
       "type": "phoenixMemory",
       "issuer": "BNP Paribas",
       "market": "SeDeX",
       "currency": "EUR",
-      "price": 96.50,
-      "coupon": 1.60,
-      "annual_coupon_yield": 19.20,
-      "barrier_down": 55.0,
+      "price": 91.89174731638224,
+      "coupon": 1.12,
+      "annual_coupon_yield": 13.39,
+      "barrier_down": 59.7,
       "barrier_type": "EUROPEA",
-      "issue_date": "2024-08-15",
-      "maturity_date": "2027-08-15",
+      "issue_date": "2025-06-16",
+      "maturity_date": "2027-07-02",
+      "strike_date": "2025-04-15",
+      "underlyings": [
+        {
+          "name": "Nasdaq 100",
+          "strike": 16000,
+          "spot": 19200,
+          "barrier": 9558,
+          "variation_pct": 20,
+          "variation_abs": 120,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 9.39,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 11.39,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 13.39,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 15.39,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 17.39,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.658Z"
+    },
+    {
+      "isin": "DE000HV4ZZ10",
+      "name": "Phoenix Memory su FTSE MIB 11",
+      "type": "phoenixMemory",
+      "issuer": "UniCredit",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 94.68234131674613,
+      "coupon": 1.81,
+      "annual_coupon_yield": 21.7,
+      "barrier_down": 58.4,
+      "barrier_type": "DISCRETA",
+      "issue_date": "2024-06-11",
+      "maturity_date": "2027-03-25",
+      "strike_date": "2024-09-28",
       "underlyings": [
         {
           "name": "FTSE MIB",
-          "strike": 30500,
+          "strike": 30000,
           "spot": 35000,
-          "barrier": 16775,
-          "variation_pct": 14.75,
+          "barrier": 17509,
+          "variation_pct": 16.67,
+          "variation_abs": 116.67,
           "worst_of": true
-        },
-        {
-          "name": "DAX",
-          "strike": 17200,
-          "spot": 19500,
-          "barrier": 9460,
-          "variation_pct": 13.37,
-          "worst_of": false
         }
       ],
-      "last_update": "2025-12-17T17:00:00.000Z"
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 17.7,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 19.7,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 21.7,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 23.7,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 25.7,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.658Z"
     },
     {
-      "isin": "IT0005789012",
-      "name": "Bonus Cap Europa",
-      "type": "bonusCap",
+      "isin": "XS2401234511",
+      "name": "Phoenix Memory su Euro Stoxx 50 12",
+      "type": "phoenixMemory",
       "issuer": "Societe Generale",
       "market": "SeDeX",
       "currency": "EUR",
-      "price": 93.00,
-      "coupon": 0.00,
-      "annual_coupon_yield": 7.53,
-      "barrier_down": 65.0,
+      "price": 94.96737694673764,
+      "coupon": 1.39,
+      "annual_coupon_yield": 16.71,
+      "barrier_down": 60.8,
       "barrier_type": "EUROPEA",
-      "issue_date": "2024-09-01",
-      "maturity_date": "2026-09-01",
+      "issue_date": "2024-08-11",
+      "maturity_date": "2027-05-21",
+      "strike_date": "2023-12-25",
       "underlyings": [
         {
           "name": "Euro Stoxx 50",
-          "strike": 4700,
+          "strike": 4500,
           "spot": 5100,
-          "barrier": 3055,
-          "variation_pct": 8.51,
+          "barrier": 2736,
+          "variation_pct": 13.33,
+          "variation_abs": 113.33,
           "worst_of": true
         }
       ],
-      "last_update": "2025-12-17T17:00:00.000Z"
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 12.71,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 14.71,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 16.71,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 18.71,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 20.71,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.658Z"
     },
     {
-      "isin": "DE000HV7DDD4",
-      "name": "Express Trimestrale su S&P 500",
-      "type": "express",
-      "issuer": "Barclays",
+      "isin": "IT0005567812",
+      "name": "Cash Collect su S&P 500 13",
+      "type": "cashCollect",
+      "issuer": "Intesa Sanpaolo",
       "market": "SeDeX",
       "currency": "EUR",
-      "price": 103.00,
-      "coupon": 2.50,
-      "annual_coupon_yield": 30.00,
-      "barrier_down": 60.0,
-      "barrier_type": "DISCRETA",
-      "issue_date": "2024-10-01",
-      "maturity_date": "2026-10-01",
+      "price": 93.88013226901403,
+      "coupon": 1.56,
+      "annual_coupon_yield": 18.74,
+      "barrier_down": 66,
+      "barrier_type": "EUROPEA",
+      "issue_date": "2025-03-27",
+      "maturity_date": "2028-12-05",
+      "strike_date": "2025-04-26",
       "underlyings": [
         {
           "name": "S&P 500",
-          "strike": 5200,
-          "spot": 6000,
-          "barrier": 3120,
-          "variation_pct": 15.38,
+          "strike": 5000,
+          "spot": 5800,
+          "barrier": 3302,
+          "variation_pct": 16,
+          "variation_abs": 116,
           "worst_of": true
         }
       ],
-      "last_update": "2025-12-17T17:00:00.000Z"
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 14.74,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 16.74,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 18.74,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 20.74,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 22.74,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.658Z"
+    },
+    {
+      "isin": "XS2423456713",
+      "name": "Cash Collect su DAX 14",
+      "type": "cashCollect",
+      "issuer": "BNP Paribas",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 103.9678569158425,
+      "coupon": 1.73,
+      "annual_coupon_yield": 20.75,
+      "barrier_down": 66.5,
+      "barrier_type": "EUROPEA",
+      "issue_date": "2024-06-01",
+      "maturity_date": "2027-11-28",
+      "strike_date": "2024-07-30",
+      "underlyings": [
+        {
+          "name": "DAX",
+          "strike": 17000,
+          "spot": 19500,
+          "barrier": 11300,
+          "variation_pct": 14.71,
+          "variation_abs": 114.71,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 16.75,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 18.75,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 20.75,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 22.75,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 24.75,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.658Z"
+    },
+    {
+      "isin": "DE000DB7ZZ14",
+      "name": "Bonus Cap su Nasdaq 100 15",
+      "type": "bonusCap",
+      "issuer": "Deutsche Bank",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 98.91085170489157,
+      "coupon": 0.45,
+      "annual_coupon_yield": 5.45,
+      "barrier_down": 60.3,
+      "barrier_type": "DISCRETA",
+      "issue_date": "2024-11-05",
+      "maturity_date": "2027-06-28",
+      "strike_date": "2024-03-29",
+      "underlyings": [
+        {
+          "name": "Nasdaq 100",
+          "strike": 16000,
+          "spot": 19200,
+          "barrier": 9655,
+          "variation_pct": 20,
+          "variation_abs": 120,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 1.45,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 3.45,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 5.45,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 7.45,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 9.45,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.658Z"
+    },
+    {
+      "isin": "XS2445678915",
+      "name": "Bonus Cap su FTSE MIB 16",
+      "type": "bonusCap",
+      "issuer": "Barclays",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 97.23601094294585,
+      "coupon": 0.44,
+      "annual_coupon_yield": 5.22,
+      "barrier_down": 63.5,
+      "barrier_type": "DISCRETA",
+      "issue_date": "2024-03-24",
+      "maturity_date": "2028-06-30",
+      "strike_date": "2024-07-07",
+      "underlyings": [
+        {
+          "name": "FTSE MIB",
+          "strike": 30000,
+          "spot": 35000,
+          "barrier": 19049,
+          "variation_pct": 16.67,
+          "variation_abs": 116.67,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 1.22,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 3.22,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 5.22,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 7.22,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 9.22,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.658Z"
+    },
+    {
+      "isin": "XS2467890116",
+      "name": "Express su Euro Stoxx 50 17",
+      "type": "express",
+      "issuer": "Societe Generale",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 96.12802150536791,
+      "coupon": 2.84,
+      "annual_coupon_yield": 34.1,
+      "barrier_down": 60.6,
+      "barrier_type": "DISCRETA",
+      "issue_date": "2024-01-23",
+      "maturity_date": "2028-06-13",
+      "strike_date": "2025-04-05",
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50",
+          "strike": 4500,
+          "spot": 5100,
+          "barrier": 2725,
+          "variation_pct": 13.33,
+          "variation_abs": 113.33,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 30.1,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 32.1,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 34.1,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 36.1,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 38.1,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.658Z"
+    },
+    {
+      "isin": "IT0005678917",
+      "name": "Express su S&P 500 18",
+      "type": "express",
+      "issuer": "UniCredit",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 101.92435520185364,
+      "coupon": 1.89,
+      "annual_coupon_yield": 22.63,
+      "barrier_down": 57.9,
+      "barrier_type": "DISCRETA",
+      "issue_date": "2024-08-17",
+      "maturity_date": "2028-02-27",
+      "strike_date": "2024-03-31",
+      "underlyings": [
+        {
+          "name": "S&P 500",
+          "strike": 5000,
+          "spot": 5800,
+          "barrier": 2893,
+          "variation_pct": 16,
+          "variation_abs": 116,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 18.63,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 20.63,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 22.63,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 24.63,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 26.63,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.658Z"
+    },
+    {
+      "isin": "XS2376890118",
+      "name": "Phoenix Memory su DAX 19",
+      "type": "phoenixMemory",
+      "issuer": "BNP Paribas",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 100.95546022149446,
+      "coupon": 1.36,
+      "annual_coupon_yield": 16.35,
+      "barrier_down": 60.7,
+      "barrier_type": "DISCRETA",
+      "issue_date": "2025-01-10",
+      "maturity_date": "2028-09-26",
+      "strike_date": "2024-02-20",
+      "underlyings": [
+        {
+          "name": "DAX",
+          "strike": 17000,
+          "spot": 19500,
+          "barrier": 10319,
+          "variation_pct": 14.71,
+          "variation_abs": 114.71,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 12.35,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 14.35,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 16.35,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 18.35,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 20.35,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.658Z"
+    },
+    {
+      "isin": "DE000HV4ZZ19",
+      "name": "Phoenix Memory su Nasdaq 100 20",
+      "type": "phoenixMemory",
+      "issuer": "UniCredit",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 93.16697395796031,
+      "coupon": 1.28,
+      "annual_coupon_yield": 15.34,
+      "barrier_down": 54.1,
+      "barrier_type": "DISCRETA",
+      "issue_date": "2024-07-23",
+      "maturity_date": "2027-08-22",
+      "strike_date": "2024-02-26",
+      "underlyings": [
+        {
+          "name": "Nasdaq 100",
+          "strike": 16000,
+          "spot": 19200,
+          "barrier": 8653,
+          "variation_pct": 20,
+          "variation_abs": 120,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 11.34,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 13.34,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 15.34,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 17.34,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 19.34,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.658Z"
+    },
+    {
+      "isin": "XS2401234520",
+      "name": "Phoenix Memory su FTSE MIB 21",
+      "type": "phoenixMemory",
+      "issuer": "Societe Generale",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 100.35251062280736,
+      "coupon": 1.58,
+      "annual_coupon_yield": 18.91,
+      "barrier_down": 60.1,
+      "barrier_type": "EUROPEA",
+      "issue_date": "2024-10-22",
+      "maturity_date": "2028-11-29",
+      "strike_date": "2024-02-26",
+      "underlyings": [
+        {
+          "name": "FTSE MIB",
+          "strike": 30000,
+          "spot": 35000,
+          "barrier": 18026,
+          "variation_pct": 16.67,
+          "variation_abs": 116.67,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 14.91,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 16.91,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 18.91,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 20.91,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 22.91,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.658Z"
+    },
+    {
+      "isin": "IT0005567821",
+      "name": "Cash Collect su Euro Stoxx 50 22",
+      "type": "cashCollect",
+      "issuer": "Intesa Sanpaolo",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 97.06949079691677,
+      "coupon": 1.45,
+      "annual_coupon_yield": 17.37,
+      "barrier_down": 56,
+      "barrier_type": "DISCRETA",
+      "issue_date": "2025-04-15",
+      "maturity_date": "2027-06-21",
+      "strike_date": "2023-12-12",
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50",
+          "strike": 4500,
+          "spot": 5100,
+          "barrier": 2519,
+          "variation_pct": 13.33,
+          "variation_abs": 113.33,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 13.37,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 15.37,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 17.37,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 19.37,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 21.37,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.658Z"
+    },
+    {
+      "isin": "XS2423456722",
+      "name": "Cash Collect su S&P 500 23",
+      "type": "cashCollect",
+      "issuer": "BNP Paribas",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 90.26807765698913,
+      "coupon": 0.86,
+      "annual_coupon_yield": 10.32,
+      "barrier_down": 69,
+      "barrier_type": "EUROPEA",
+      "issue_date": "2025-02-11",
+      "maturity_date": "2028-04-27",
+      "strike_date": "2024-10-20",
+      "underlyings": [
+        {
+          "name": "S&P 500",
+          "strike": 5000,
+          "spot": 5800,
+          "barrier": 3452,
+          "variation_pct": 16,
+          "variation_abs": 116,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 6.32,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 8.32,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 10.32,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 12.32,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 14.32,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.658Z"
+    },
+    {
+      "isin": "DE000DB7ZZ23",
+      "name": "Bonus Cap su DAX 24",
+      "type": "bonusCap",
+      "issuer": "Deutsche Bank",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 103.0748372360809,
+      "coupon": 0.24,
+      "annual_coupon_yield": 2.87,
+      "barrier_down": 65.1,
+      "barrier_type": "DISCRETA",
+      "issue_date": "2025-04-24",
+      "maturity_date": "2027-12-28",
+      "strike_date": "2024-01-06",
+      "underlyings": [
+        {
+          "name": "DAX",
+          "strike": 17000,
+          "spot": 19500,
+          "barrier": 11070,
+          "variation_pct": 14.71,
+          "variation_abs": 114.71,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": -1.13,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 0.87,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 2.87,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 4.87,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 6.87,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.658Z"
+    },
+    {
+      "isin": "XS2445678924",
+      "name": "Bonus Cap su Nasdaq 100 25",
+      "type": "bonusCap",
+      "issuer": "Barclays",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 97.43923594596585,
+      "coupon": 0.34,
+      "annual_coupon_yield": 4.06,
+      "barrier_down": 68.7,
+      "barrier_type": "EUROPEA",
+      "issue_date": "2025-03-07",
+      "maturity_date": "2028-01-11",
+      "strike_date": "2024-12-07",
+      "underlyings": [
+        {
+          "name": "Nasdaq 100",
+          "strike": 16000,
+          "spot": 19200,
+          "barrier": 10993,
+          "variation_pct": 20,
+          "variation_abs": 120,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 0.06,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 2.06,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 4.06,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 6.06,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 8.06,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.658Z"
+    },
+    {
+      "isin": "XS2467890125",
+      "name": "Express su FTSE MIB 26",
+      "type": "express",
+      "issuer": "Societe Generale",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 97.48890083581007,
+      "coupon": 2.02,
+      "annual_coupon_yield": 24.23,
+      "barrier_down": 62.6,
+      "barrier_type": "EUROPEA",
+      "issue_date": "2024-08-08",
+      "maturity_date": "2028-08-13",
+      "strike_date": "2024-12-11",
+      "underlyings": [
+        {
+          "name": "FTSE MIB",
+          "strike": 30000,
+          "spot": 35000,
+          "barrier": 18781,
+          "variation_pct": 16.67,
+          "variation_abs": 116.67,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 20.23,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 22.23,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 24.23,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 26.23,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 28.23,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.658Z"
+    },
+    {
+      "isin": "IT0005678926",
+      "name": "Express su Euro Stoxx 50 27",
+      "type": "express",
+      "issuer": "UniCredit",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 100.17033017008134,
+      "coupon": 2.55,
+      "annual_coupon_yield": 30.56,
+      "barrier_down": 62.6,
+      "barrier_type": "EUROPEA",
+      "issue_date": "2025-02-03",
+      "maturity_date": "2027-12-27",
+      "strike_date": "2024-09-15",
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50",
+          "strike": 4500,
+          "spot": 5100,
+          "barrier": 2815,
+          "variation_pct": 13.33,
+          "variation_abs": 113.33,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 26.56,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 28.56,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 30.56,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 32.56,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 34.56,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.658Z"
+    },
+    {
+      "isin": "XS2376890127",
+      "name": "Phoenix Memory su S&P 500 28",
+      "type": "phoenixMemory",
+      "issuer": "BNP Paribas",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 93.82778692325483,
+      "coupon": 1.19,
+      "annual_coupon_yield": 14.31,
+      "barrier_down": 63.7,
+      "barrier_type": "DISCRETA",
+      "issue_date": "2024-09-10",
+      "maturity_date": "2028-05-18",
+      "strike_date": "2024-11-06",
+      "underlyings": [
+        {
+          "name": "S&P 500",
+          "strike": 5000,
+          "spot": 5800,
+          "barrier": 3185,
+          "variation_pct": 16,
+          "variation_abs": 116,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 10.31,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 12.31,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 14.31,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 16.31,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 18.31,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.658Z"
+    },
+    {
+      "isin": "DE000HV4ZZ28",
+      "name": "Phoenix Memory su DAX 29",
+      "type": "phoenixMemory",
+      "issuer": "UniCredit",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 102.18222884981327,
+      "coupon": 1.21,
+      "annual_coupon_yield": 14.51,
+      "barrier_down": 62.3,
+      "barrier_type": "DISCRETA",
+      "issue_date": "2025-05-13",
+      "maturity_date": "2027-04-19",
+      "strike_date": "2025-02-03",
+      "underlyings": [
+        {
+          "name": "DAX",
+          "strike": 17000,
+          "spot": 19500,
+          "barrier": 10594,
+          "variation_pct": 14.71,
+          "variation_abs": 114.71,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 10.51,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 12.51,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 14.51,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 16.51,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 18.51,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.658Z"
+    },
+    {
+      "isin": "XS2401234529",
+      "name": "Phoenix Memory su Nasdaq 100 30",
+      "type": "phoenixMemory",
+      "issuer": "Societe Generale",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 90.32521174144237,
+      "coupon": 1.01,
+      "annual_coupon_yield": 12.14,
+      "barrier_down": 58.5,
+      "barrier_type": "DISCRETA",
+      "issue_date": "2024-06-20",
+      "maturity_date": "2028-01-20",
+      "strike_date": "2025-04-11",
+      "underlyings": [
+        {
+          "name": "Nasdaq 100",
+          "strike": 16000,
+          "spot": 19200,
+          "barrier": 9360,
+          "variation_pct": 20,
+          "variation_abs": 120,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 8.14,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 10.14,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 12.14,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 14.14,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 16.14,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.658Z"
+    },
+    {
+      "isin": "IT0005567830",
+      "name": "Cash Collect su FTSE MIB 31",
+      "type": "cashCollect",
+      "issuer": "Intesa Sanpaolo",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 98.76536095161352,
+      "coupon": 0.99,
+      "annual_coupon_yield": 11.92,
+      "barrier_down": 62.9,
+      "barrier_type": "DISCRETA",
+      "issue_date": "2025-04-06",
+      "maturity_date": "2027-05-19",
+      "strike_date": "2025-02-20",
+      "underlyings": [
+        {
+          "name": "FTSE MIB",
+          "strike": 30000,
+          "spot": 35000,
+          "barrier": 18870,
+          "variation_pct": 16.67,
+          "variation_abs": 116.67,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 7.92,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 9.92,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 11.92,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 13.92,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 15.92,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.658Z"
+    },
+    {
+      "isin": "XS2423456731",
+      "name": "Cash Collect su Euro Stoxx 50 32",
+      "type": "cashCollect",
+      "issuer": "BNP Paribas",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 96.30787250058893,
+      "coupon": 1.39,
+      "annual_coupon_yield": 16.69,
+      "barrier_down": 55.5,
+      "barrier_type": "DISCRETA",
+      "issue_date": "2024-09-29",
+      "maturity_date": "2027-08-03",
+      "strike_date": "2025-03-09",
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50",
+          "strike": 4500,
+          "spot": 5100,
+          "barrier": 2496,
+          "variation_pct": 13.33,
+          "variation_abs": 113.33,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 12.69,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 14.69,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 16.69,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 18.69,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 20.69,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.658Z"
+    },
+    {
+      "isin": "DE000DB7ZZ32",
+      "name": "Bonus Cap su S&P 500 33",
+      "type": "bonusCap",
+      "issuer": "Deutsche Bank",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 91.08970479852475,
+      "coupon": 0.06,
+      "annual_coupon_yield": 0.72,
+      "barrier_down": 61.6,
+      "barrier_type": "DISCRETA",
+      "issue_date": "2024-03-22",
+      "maturity_date": "2027-11-11",
+      "strike_date": "2025-04-04",
+      "underlyings": [
+        {
+          "name": "S&P 500",
+          "strike": 5000,
+          "spot": 5800,
+          "barrier": 3082,
+          "variation_pct": 16,
+          "variation_abs": 116,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": -3.28,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": -1.28,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 0.72,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 2.72,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 4.72,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.658Z"
+    },
+    {
+      "isin": "XS2445678933",
+      "name": "Bonus Cap su DAX 34",
+      "type": "bonusCap",
+      "issuer": "Barclays",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 94.9302545490363,
+      "coupon": 0.22,
+      "annual_coupon_yield": 2.61,
+      "barrier_down": 61.3,
+      "barrier_type": "EUROPEA",
+      "issue_date": "2024-06-17",
+      "maturity_date": "2027-02-08",
+      "strike_date": "2024-04-05",
+      "underlyings": [
+        {
+          "name": "DAX",
+          "strike": 17000,
+          "spot": 19500,
+          "barrier": 10419,
+          "variation_pct": 14.71,
+          "variation_abs": 114.71,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": -1.39,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 0.61,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 2.61,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 4.61,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 6.61,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.658Z"
+    },
+    {
+      "isin": "XS2467890134",
+      "name": "Express su Nasdaq 100 35",
+      "type": "express",
+      "issuer": "Societe Generale",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 92.45768243982074,
+      "coupon": 1.68,
+      "annual_coupon_yield": 20.21,
+      "barrier_down": 60.9,
+      "barrier_type": "DISCRETA",
+      "issue_date": "2024-02-13",
+      "maturity_date": "2027-03-16",
+      "strike_date": "2024-01-27",
+      "underlyings": [
+        {
+          "name": "Nasdaq 100",
+          "strike": 16000,
+          "spot": 19200,
+          "barrier": 9737,
+          "variation_pct": 20,
+          "variation_abs": 120,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 16.21,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 18.21,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 20.21,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 22.21,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 24.21,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.658Z"
+    },
+    {
+      "isin": "IT0005678935",
+      "name": "Express su FTSE MIB 36",
+      "type": "express",
+      "issuer": "UniCredit",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 100.36124313658867,
+      "coupon": 2.83,
+      "annual_coupon_yield": 33.9,
+      "barrier_down": 59.4,
+      "barrier_type": "EUROPEA",
+      "issue_date": "2025-04-24",
+      "maturity_date": "2027-12-31",
+      "strike_date": "2024-04-11",
+      "underlyings": [
+        {
+          "name": "FTSE MIB",
+          "strike": 30000,
+          "spot": 35000,
+          "barrier": 17833,
+          "variation_pct": 16.67,
+          "variation_abs": 116.67,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 29.9,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 31.9,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 33.9,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 35.9,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 37.9,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.658Z"
+    },
+    {
+      "isin": "XS2376890136",
+      "name": "Phoenix Memory su Euro Stoxx 50 37",
+      "type": "phoenixMemory",
+      "issuer": "BNP Paribas",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 102.88994960985026,
+      "coupon": 1.32,
+      "annual_coupon_yield": 15.88,
+      "barrier_down": 61.4,
+      "barrier_type": "EUROPEA",
+      "issue_date": "2024-09-03",
+      "maturity_date": "2027-01-19",
+      "strike_date": "2025-04-20",
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50",
+          "strike": 4500,
+          "spot": 5100,
+          "barrier": 2762,
+          "variation_pct": 13.33,
+          "variation_abs": 113.33,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 11.88,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 13.88,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 15.88,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 17.88,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 19.88,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.658Z"
+    },
+    {
+      "isin": "DE000HV4ZZ37",
+      "name": "Phoenix Memory su S&P 500 38",
+      "type": "phoenixMemory",
+      "issuer": "UniCredit",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 103.89612210803459,
+      "coupon": 1.24,
+      "annual_coupon_yield": 14.86,
+      "barrier_down": 56.4,
+      "barrier_type": "DISCRETA",
+      "issue_date": "2025-04-28",
+      "maturity_date": "2028-05-12",
+      "strike_date": "2023-12-23",
+      "underlyings": [
+        {
+          "name": "S&P 500",
+          "strike": 5000,
+          "spot": 5800,
+          "barrier": 2819,
+          "variation_pct": 16,
+          "variation_abs": 116,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 10.86,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 12.86,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 14.86,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 16.86,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 18.86,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.658Z"
+    },
+    {
+      "isin": "XS2401234538",
+      "name": "Phoenix Memory su DAX 39",
+      "type": "phoenixMemory",
+      "issuer": "Societe Generale",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 104.00056866160425,
+      "coupon": 1.09,
+      "annual_coupon_yield": 13.02,
+      "barrier_down": 57.9,
+      "barrier_type": "EUROPEA",
+      "issue_date": "2025-05-17",
+      "maturity_date": "2027-09-03",
+      "strike_date": "2024-10-24",
+      "underlyings": [
+        {
+          "name": "DAX",
+          "strike": 17000,
+          "spot": 19500,
+          "barrier": 9845,
+          "variation_pct": 14.71,
+          "variation_abs": 114.71,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 9.02,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 11.02,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 13.02,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 15.02,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 17.02,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.658Z"
+    },
+    {
+      "isin": "IT0005567839",
+      "name": "Cash Collect su Nasdaq 100 40",
+      "type": "cashCollect",
+      "issuer": "Intesa Sanpaolo",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 90.84758870875665,
+      "coupon": 1.28,
+      "annual_coupon_yield": 15.41,
+      "barrier_down": 62.8,
+      "barrier_type": "DISCRETA",
+      "issue_date": "2024-03-18",
+      "maturity_date": "2027-01-22",
+      "strike_date": "2024-12-22",
+      "underlyings": [
+        {
+          "name": "Nasdaq 100",
+          "strike": 16000,
+          "spot": 19200,
+          "barrier": 10041,
+          "variation_pct": 20,
+          "variation_abs": 120,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 11.41,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 13.41,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 15.41,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 17.41,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 19.41,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.658Z"
+    },
+    {
+      "isin": "XS2423456740",
+      "name": "Cash Collect su FTSE MIB 41",
+      "type": "cashCollect",
+      "issuer": "BNP Paribas",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 95.70586445793947,
+      "coupon": 0.87,
+      "annual_coupon_yield": 10.44,
+      "barrier_down": 68,
+      "barrier_type": "DISCRETA",
+      "issue_date": "2024-05-01",
+      "maturity_date": "2027-10-28",
+      "strike_date": "2024-07-12",
+      "underlyings": [
+        {
+          "name": "FTSE MIB",
+          "strike": 30000,
+          "spot": 35000,
+          "barrier": 20403,
+          "variation_pct": 16.67,
+          "variation_abs": 116.67,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 6.44,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 8.44,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 10.44,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 12.44,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 14.44,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.658Z"
+    },
+    {
+      "isin": "DE000DB7ZZ41",
+      "name": "Bonus Cap su Euro Stoxx 50 42",
+      "type": "bonusCap",
+      "issuer": "Deutsche Bank",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 98.89640500080297,
+      "coupon": 0.31,
+      "annual_coupon_yield": 3.72,
+      "barrier_down": 64.6,
+      "barrier_type": "EUROPEA",
+      "issue_date": "2025-03-17",
+      "maturity_date": "2027-06-26",
+      "strike_date": "2024-07-31",
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50",
+          "strike": 4500,
+          "spot": 5100,
+          "barrier": 2907,
+          "variation_pct": 13.33,
+          "variation_abs": 113.33,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": -0.28,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 1.72,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 3.72,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 5.72,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 7.72,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.658Z"
+    },
+    {
+      "isin": "XS2445678942",
+      "name": "Bonus Cap su S&P 500 43",
+      "type": "bonusCap",
+      "issuer": "Barclays",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 92.24751642158895,
+      "coupon": 0.09,
+      "annual_coupon_yield": 1.11,
+      "barrier_down": 63.8,
+      "barrier_type": "EUROPEA",
+      "issue_date": "2024-09-12",
+      "maturity_date": "2028-04-07",
+      "strike_date": "2025-04-26",
+      "underlyings": [
+        {
+          "name": "S&P 500",
+          "strike": 5000,
+          "spot": 5800,
+          "barrier": 3191,
+          "variation_pct": 16,
+          "variation_abs": 116,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": -2.89,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": -0.89,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 1.11,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 3.11,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 5.11,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.658Z"
+    },
+    {
+      "isin": "XS2467890143",
+      "name": "Express su DAX 44",
+      "type": "express",
+      "issuer": "Societe Generale",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 96.76688250782104,
+      "coupon": 2.78,
+      "annual_coupon_yield": 33.37,
+      "barrier_down": 58.2,
+      "barrier_type": "DISCRETA",
+      "issue_date": "2025-02-20",
+      "maturity_date": "2027-01-20",
+      "strike_date": "2024-04-19",
+      "underlyings": [
+        {
+          "name": "DAX",
+          "strike": 17000,
+          "spot": 19500,
+          "barrier": 9897,
+          "variation_pct": 14.71,
+          "variation_abs": 114.71,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 29.37,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 31.37,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 33.37,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 35.37,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 37.37,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.659Z"
+    },
+    {
+      "isin": "IT0005678944",
+      "name": "Express su Nasdaq 100 45",
+      "type": "express",
+      "issuer": "UniCredit",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 93.1036793224988,
+      "coupon": 2.25,
+      "annual_coupon_yield": 26.96,
+      "barrier_down": 55.5,
+      "barrier_type": "EUROPEA",
+      "issue_date": "2024-09-04",
+      "maturity_date": "2027-01-10",
+      "strike_date": "2024-11-03",
+      "underlyings": [
+        {
+          "name": "Nasdaq 100",
+          "strike": 16000,
+          "spot": 19200,
+          "barrier": 8876,
+          "variation_pct": 20,
+          "variation_abs": 120,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 22.96,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 24.96,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 26.96,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 28.96,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 30.96,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.659Z"
+    },
+    {
+      "isin": "XS2376890145",
+      "name": "Phoenix Memory su FTSE MIB 46",
+      "type": "phoenixMemory",
+      "issuer": "BNP Paribas",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 92.82206491449006,
+      "coupon": 1.41,
+      "annual_coupon_yield": 16.95,
+      "barrier_down": 54.7,
+      "barrier_type": "DISCRETA",
+      "issue_date": "2024-03-03",
+      "maturity_date": "2027-05-17",
+      "strike_date": "2024-01-01",
+      "underlyings": [
+        {
+          "name": "FTSE MIB",
+          "strike": 30000,
+          "spot": 35000,
+          "barrier": 16402,
+          "variation_pct": 16.67,
+          "variation_abs": 116.67,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 12.95,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 14.95,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 16.95,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 18.95,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 20.95,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.659Z"
+    },
+    {
+      "isin": "DE000HV4ZZ46",
+      "name": "Phoenix Memory su Euro Stoxx 50 47",
+      "type": "phoenixMemory",
+      "issuer": "UniCredit",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 94.85328791822502,
+      "coupon": 1.92,
+      "annual_coupon_yield": 23.06,
+      "barrier_down": 63.8,
+      "barrier_type": "DISCRETA",
+      "issue_date": "2025-01-09",
+      "maturity_date": "2027-10-30",
+      "strike_date": "2024-07-25",
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50",
+          "strike": 4500,
+          "spot": 5100,
+          "barrier": 2872,
+          "variation_pct": 13.33,
+          "variation_abs": 113.33,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 19.06,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 21.06,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 23.06,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 25.06,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 27.06,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.659Z"
+    },
+    {
+      "isin": "XS2401234547",
+      "name": "Phoenix Memory su S&P 500 48",
+      "type": "phoenixMemory",
+      "issuer": "Societe Generale",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 96.87396081331084,
+      "coupon": 1.8,
+      "annual_coupon_yield": 21.6,
+      "barrier_down": 53.5,
+      "barrier_type": "DISCRETA",
+      "issue_date": "2024-03-15",
+      "maturity_date": "2027-06-05",
+      "strike_date": "2023-12-10",
+      "underlyings": [
+        {
+          "name": "S&P 500",
+          "strike": 5000,
+          "spot": 5800,
+          "barrier": 2674,
+          "variation_pct": 16,
+          "variation_abs": 116,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 17.6,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 19.6,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 21.6,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 23.6,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 25.6,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.659Z"
+    },
+    {
+      "isin": "IT0005567848",
+      "name": "Cash Collect su DAX 49",
+      "type": "cashCollect",
+      "issuer": "Intesa Sanpaolo",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 93.98636470808974,
+      "coupon": 1.47,
+      "annual_coupon_yield": 17.61,
+      "barrier_down": 60.1,
+      "barrier_type": "EUROPEA",
+      "issue_date": "2025-06-07",
+      "maturity_date": "2028-01-24",
+      "strike_date": "2024-07-15",
+      "underlyings": [
+        {
+          "name": "DAX",
+          "strike": 17000,
+          "spot": 19500,
+          "barrier": 10220,
+          "variation_pct": 14.71,
+          "variation_abs": 114.71,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 13.61,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 15.61,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 17.61,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 19.61,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 21.61,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.659Z"
+    },
+    {
+      "isin": "XS2423456749",
+      "name": "Cash Collect su Nasdaq 100 50",
+      "type": "cashCollect",
+      "issuer": "BNP Paribas",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 100.86003858170979,
+      "coupon": 1.32,
+      "annual_coupon_yield": 15.9,
+      "barrier_down": 69.7,
+      "barrier_type": "DISCRETA",
+      "issue_date": "2025-06-14",
+      "maturity_date": "2028-01-29",
+      "strike_date": "2023-12-23",
+      "underlyings": [
+        {
+          "name": "Nasdaq 100",
+          "strike": 16000,
+          "spot": 19200,
+          "barrier": 11158,
+          "variation_pct": 20,
+          "variation_abs": 120,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 11.9,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 13.9,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 15.9,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 17.9,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 19.9,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.659Z"
+    },
+    {
+      "isin": "DE000DB7ZZ50",
+      "name": "Bonus Cap su FTSE MIB 51",
+      "type": "bonusCap",
+      "issuer": "Deutsche Bank",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 90.64317325402202,
+      "coupon": 0.06,
+      "annual_coupon_yield": 0.77,
+      "barrier_down": 69.7,
+      "barrier_type": "DISCRETA",
+      "issue_date": "2024-11-09",
+      "maturity_date": "2027-01-26",
+      "strike_date": "2025-01-11",
+      "underlyings": [
+        {
+          "name": "FTSE MIB",
+          "strike": 30000,
+          "spot": 35000,
+          "barrier": 20923,
+          "variation_pct": 16.67,
+          "variation_abs": 116.67,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": -3.23,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": -1.23,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 0.77,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 2.77,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 4.77,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.659Z"
+    },
+    {
+      "isin": "XS2445678951",
+      "name": "Bonus Cap su Euro Stoxx 50 52",
+      "type": "bonusCap",
+      "issuer": "Barclays",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 104.00383344736369,
+      "coupon": 0.32,
+      "annual_coupon_yield": 3.88,
+      "barrier_down": 60.1,
+      "barrier_type": "DISCRETA",
+      "issue_date": "2024-08-24",
+      "maturity_date": "2027-07-24",
+      "strike_date": "2025-04-09",
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50",
+          "strike": 4500,
+          "spot": 5100,
+          "barrier": 2706,
+          "variation_pct": 13.33,
+          "variation_abs": 113.33,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": -0.12,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 1.88,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 3.88,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 5.88,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 7.88,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.659Z"
+    },
+    {
+      "isin": "XS2467890152",
+      "name": "Express su S&P 500 53",
+      "type": "express",
+      "issuer": "Societe Generale",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 103.79899284812,
+      "coupon": 1.9,
+      "annual_coupon_yield": 22.82,
+      "barrier_down": 61.9,
+      "barrier_type": "EUROPEA",
+      "issue_date": "2024-07-23",
+      "maturity_date": "2027-01-09",
+      "strike_date": "2024-07-21",
+      "underlyings": [
+        {
+          "name": "S&P 500",
+          "strike": 5000,
+          "spot": 5800,
+          "barrier": 3097,
+          "variation_pct": 16,
+          "variation_abs": 116,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 18.82,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 20.82,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 22.82,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 24.82,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 26.82,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.659Z"
+    },
+    {
+      "isin": "IT0005678953",
+      "name": "Express su DAX 54",
+      "type": "express",
+      "issuer": "UniCredit",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 92.15909178368261,
+      "coupon": 2.75,
+      "annual_coupon_yield": 32.95,
+      "barrier_down": 58.3,
+      "barrier_type": "DISCRETA",
+      "issue_date": "2024-10-31",
+      "maturity_date": "2027-09-05",
+      "strike_date": "2024-05-10",
+      "underlyings": [
+        {
+          "name": "DAX",
+          "strike": 17000,
+          "spot": 19500,
+          "barrier": 9906,
+          "variation_pct": 14.71,
+          "variation_abs": 114.71,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 28.95,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 30.95,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 32.95,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 34.95,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 36.95,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.659Z"
+    },
+    {
+      "isin": "XS2376890154",
+      "name": "Phoenix Memory su Nasdaq 100 55",
+      "type": "phoenixMemory",
+      "issuer": "BNP Paribas",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 92.62752904511767,
+      "coupon": 1.24,
+      "annual_coupon_yield": 14.82,
+      "barrier_down": 60.2,
+      "barrier_type": "DISCRETA",
+      "issue_date": "2024-01-12",
+      "maturity_date": "2028-04-15",
+      "strike_date": "2024-11-17",
+      "underlyings": [
+        {
+          "name": "Nasdaq 100",
+          "strike": 16000,
+          "spot": 19200,
+          "barrier": 9636,
+          "variation_pct": 20,
+          "variation_abs": 120,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 10.82,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 12.82,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 14.82,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 16.82,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 18.82,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.659Z"
+    },
+    {
+      "isin": "DE000HV4ZZ55",
+      "name": "Phoenix Memory su FTSE MIB 56",
+      "type": "phoenixMemory",
+      "issuer": "UniCredit",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 102.06784670992572,
+      "coupon": 1.72,
+      "annual_coupon_yield": 20.65,
+      "barrier_down": 56.7,
+      "barrier_type": "DISCRETA",
+      "issue_date": "2024-07-30",
+      "maturity_date": "2028-11-27",
+      "strike_date": "2024-06-04",
+      "underlyings": [
+        {
+          "name": "FTSE MIB",
+          "strike": 30000,
+          "spot": 35000,
+          "barrier": 17019,
+          "variation_pct": 16.67,
+          "variation_abs": 116.67,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 16.65,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 18.65,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 20.65,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 22.65,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 24.65,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.659Z"
+    },
+    {
+      "isin": "XS2401234556",
+      "name": "Phoenix Memory su Euro Stoxx 50 57",
+      "type": "phoenixMemory",
+      "issuer": "Societe Generale",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 94.5688173373102,
+      "coupon": 1,
+      "annual_coupon_yield": 12.01,
+      "barrier_down": 58.8,
+      "barrier_type": "EUROPEA",
+      "issue_date": "2024-03-05",
+      "maturity_date": "2027-08-29",
+      "strike_date": "2024-05-07",
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50",
+          "strike": 4500,
+          "spot": 5100,
+          "barrier": 2645,
+          "variation_pct": 13.33,
+          "variation_abs": 113.33,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 8.01,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 10.01,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 12.01,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 14.01,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 16.01,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.659Z"
+    },
+    {
+      "isin": "IT0005567857",
+      "name": "Cash Collect su S&P 500 58",
+      "type": "cashCollect",
+      "issuer": "Intesa Sanpaolo",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 93.18428666564465,
+      "coupon": 1.48,
+      "annual_coupon_yield": 17.72,
+      "barrier_down": 65.7,
+      "barrier_type": "DISCRETA",
+      "issue_date": "2024-09-03",
+      "maturity_date": "2028-07-06",
+      "strike_date": "2023-12-05",
+      "underlyings": [
+        {
+          "name": "S&P 500",
+          "strike": 5000,
+          "spot": 5800,
+          "barrier": 3287,
+          "variation_pct": 16,
+          "variation_abs": 116,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 13.72,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 15.72,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 17.72,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 19.72,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 21.72,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.659Z"
+    },
+    {
+      "isin": "XS2423456758",
+      "name": "Cash Collect su DAX 59",
+      "type": "cashCollect",
+      "issuer": "BNP Paribas",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 92.03807963999787,
+      "coupon": 1.11,
+      "annual_coupon_yield": 13.38,
+      "barrier_down": 67,
+      "barrier_type": "DISCRETA",
+      "issue_date": "2024-04-12",
+      "maturity_date": "2028-10-09",
+      "strike_date": "2024-10-08",
+      "underlyings": [
+        {
+          "name": "DAX",
+          "strike": 17000,
+          "spot": 19500,
+          "barrier": 11392,
+          "variation_pct": 14.71,
+          "variation_abs": 114.71,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 9.38,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 11.38,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 13.38,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 15.38,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 17.38,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.659Z"
+    },
+    {
+      "isin": "DE000DB7ZZ59",
+      "name": "Bonus Cap su Nasdaq 100 60",
+      "type": "bonusCap",
+      "issuer": "Deutsche Bank",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 92.25108206123934,
+      "coupon": 0.34,
+      "annual_coupon_yield": 4.11,
+      "barrier_down": 72.9,
+      "barrier_type": "EUROPEA",
+      "issue_date": "2025-06-07",
+      "maturity_date": "2027-05-04",
+      "strike_date": "2024-09-26",
+      "underlyings": [
+        {
+          "name": "Nasdaq 100",
+          "strike": 16000,
+          "spot": 19200,
+          "barrier": 11664,
+          "variation_pct": 20,
+          "variation_abs": 120,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 0.11,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 2.11,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 4.11,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 6.11,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 8.11,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.659Z"
+    },
+    {
+      "isin": "XS2445678960",
+      "name": "Bonus Cap su FTSE MIB 61",
+      "type": "bonusCap",
+      "issuer": "Barclays",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 95.81710765439583,
+      "coupon": 0.45,
+      "annual_coupon_yield": 5.43,
+      "barrier_down": 73.6,
+      "barrier_type": "EUROPEA",
+      "issue_date": "2025-01-12",
+      "maturity_date": "2027-12-20",
+      "strike_date": "2024-04-21",
+      "underlyings": [
+        {
+          "name": "FTSE MIB",
+          "strike": 30000,
+          "spot": 35000,
+          "barrier": 22075,
+          "variation_pct": 16.67,
+          "variation_abs": 116.67,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 1.43,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 3.43,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 5.43,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 7.43,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 9.43,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.659Z"
+    },
+    {
+      "isin": "XS2467890161",
+      "name": "Express su Euro Stoxx 50 62",
+      "type": "express",
+      "issuer": "Societe Generale",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 104.99059039704152,
+      "coupon": 2.65,
+      "annual_coupon_yield": 31.82,
+      "barrier_down": 65,
+      "barrier_type": "EUROPEA",
+      "issue_date": "2023-12-28",
+      "maturity_date": "2028-08-21",
+      "strike_date": "2025-04-05",
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50",
+          "strike": 4500,
+          "spot": 5100,
+          "barrier": 2924,
+          "variation_pct": 13.33,
+          "variation_abs": 113.33,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 27.82,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 29.82,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 31.82,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 33.82,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 35.82,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.659Z"
+    },
+    {
+      "isin": "IT0005678962",
+      "name": "Express su S&P 500 63",
+      "type": "express",
+      "issuer": "UniCredit",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 97.28594043136374,
+      "coupon": 2.46,
+      "annual_coupon_yield": 29.47,
+      "barrier_down": 64.1,
+      "barrier_type": "EUROPEA",
+      "issue_date": "2024-06-11",
+      "maturity_date": "2028-01-04",
+      "strike_date": "2024-12-13",
+      "underlyings": [
+        {
+          "name": "S&P 500",
+          "strike": 5000,
+          "spot": 5800,
+          "barrier": 3205,
+          "variation_pct": 16,
+          "variation_abs": 116,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 25.47,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 27.47,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 29.47,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 31.47,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 33.47,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.659Z"
+    },
+    {
+      "isin": "XS2376890163",
+      "name": "Phoenix Memory su DAX 64",
+      "type": "phoenixMemory",
+      "issuer": "BNP Paribas",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 101.6380712339851,
+      "coupon": 1.08,
+      "annual_coupon_yield": 12.94,
+      "barrier_down": 64.7,
+      "barrier_type": "EUROPEA",
+      "issue_date": "2025-05-19",
+      "maturity_date": "2027-06-18",
+      "strike_date": "2024-04-21",
+      "underlyings": [
+        {
+          "name": "DAX",
+          "strike": 17000,
+          "spot": 19500,
+          "barrier": 11004,
+          "variation_pct": 14.71,
+          "variation_abs": 114.71,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 8.94,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 10.94,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 12.94,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 14.94,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 16.94,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.659Z"
+    },
+    {
+      "isin": "DE000HV4ZZ64",
+      "name": "Phoenix Memory su Nasdaq 100 65",
+      "type": "phoenixMemory",
+      "issuer": "UniCredit",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 99.29430902127399,
+      "coupon": 1.24,
+      "annual_coupon_yield": 14.84,
+      "barrier_down": 64.5,
+      "barrier_type": "EUROPEA",
+      "issue_date": "2024-04-30",
+      "maturity_date": "2028-08-26",
+      "strike_date": "2025-02-06",
+      "underlyings": [
+        {
+          "name": "Nasdaq 100",
+          "strike": 16000,
+          "spot": 19200,
+          "barrier": 10321,
+          "variation_pct": 20,
+          "variation_abs": 120,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 10.84,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 12.84,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 14.84,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 16.84,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 18.84,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.659Z"
+    },
+    {
+      "isin": "XS2401234565",
+      "name": "Phoenix Memory su FTSE MIB 66",
+      "type": "phoenixMemory",
+      "issuer": "Societe Generale",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 92.2885445807356,
+      "coupon": 1.02,
+      "annual_coupon_yield": 12.18,
+      "barrier_down": 61.3,
+      "barrier_type": "DISCRETA",
+      "issue_date": "2024-04-18",
+      "maturity_date": "2028-08-08",
+      "strike_date": "2025-04-27",
+      "underlyings": [
+        {
+          "name": "FTSE MIB",
+          "strike": 30000,
+          "spot": 35000,
+          "barrier": 18384,
+          "variation_pct": 16.67,
+          "variation_abs": 116.67,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 8.18,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 10.18,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 12.18,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 14.18,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 16.18,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.659Z"
+    },
+    {
+      "isin": "IT0005567866",
+      "name": "Cash Collect su Euro Stoxx 50 67",
+      "type": "cashCollect",
+      "issuer": "Intesa Sanpaolo",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 104.40217749506144,
+      "coupon": 1.29,
+      "annual_coupon_yield": 15.49,
+      "barrier_down": 68.4,
+      "barrier_type": "DISCRETA",
+      "issue_date": "2025-03-29",
+      "maturity_date": "2028-01-03",
+      "strike_date": "2025-01-05",
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50",
+          "strike": 4500,
+          "spot": 5100,
+          "barrier": 3077,
+          "variation_pct": 13.33,
+          "variation_abs": 113.33,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 11.49,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 13.49,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 15.49,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 17.49,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 19.49,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.659Z"
+    },
+    {
+      "isin": "XS2423456767",
+      "name": "Cash Collect su S&P 500 68",
+      "type": "cashCollect",
+      "issuer": "BNP Paribas",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 94.71028408391219,
+      "coupon": 1.46,
+      "annual_coupon_yield": 17.52,
+      "barrier_down": 57.8,
+      "barrier_type": "DISCRETA",
+      "issue_date": "2024-07-12",
+      "maturity_date": "2028-05-02",
+      "strike_date": "2024-10-06",
+      "underlyings": [
+        {
+          "name": "S&P 500",
+          "strike": 5000,
+          "spot": 5800,
+          "barrier": 2891,
+          "variation_pct": 16,
+          "variation_abs": 116,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 13.52,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 15.52,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 17.52,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 19.52,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 21.52,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.659Z"
+    },
+    {
+      "isin": "DE000DB7ZZ68",
+      "name": "Bonus Cap su DAX 69",
+      "type": "bonusCap",
+      "issuer": "Deutsche Bank",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 96.22253520760003,
+      "coupon": 0.37,
+      "annual_coupon_yield": 4.41,
+      "barrier_down": 63.6,
+      "barrier_type": "EUROPEA",
+      "issue_date": "2024-12-24",
+      "maturity_date": "2028-12-05",
+      "strike_date": "2024-12-27",
+      "underlyings": [
+        {
+          "name": "DAX",
+          "strike": 17000,
+          "spot": 19500,
+          "barrier": 10819,
+          "variation_pct": 14.71,
+          "variation_abs": 114.71,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 0.41,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 2.41,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 4.41,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 6.41,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 8.41,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.659Z"
+    },
+    {
+      "isin": "XS2445678969",
+      "name": "Bonus Cap su Nasdaq 100 70",
+      "type": "bonusCap",
+      "issuer": "Barclays",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 104.80543553599527,
+      "coupon": 0.26,
+      "annual_coupon_yield": 3.06,
+      "barrier_down": 72.4,
+      "barrier_type": "DISCRETA",
+      "issue_date": "2024-11-18",
+      "maturity_date": "2028-09-01",
+      "strike_date": "2024-09-19",
+      "underlyings": [
+        {
+          "name": "Nasdaq 100",
+          "strike": 16000,
+          "spot": 19200,
+          "barrier": 11590,
+          "variation_pct": 20,
+          "variation_abs": 120,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": -0.94,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 1.06,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 3.06,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 5.06,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 7.06,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.659Z"
+    },
+    {
+      "isin": "XS2467890170",
+      "name": "Express su FTSE MIB 71",
+      "type": "express",
+      "issuer": "Societe Generale",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 103.10060326506972,
+      "coupon": 1.86,
+      "annual_coupon_yield": 22.35,
+      "barrier_down": 62.2,
+      "barrier_type": "EUROPEA",
+      "issue_date": "2024-09-24",
+      "maturity_date": "2027-03-19",
+      "strike_date": "2024-09-13",
+      "underlyings": [
+        {
+          "name": "FTSE MIB",
+          "strike": 30000,
+          "spot": 35000,
+          "barrier": 18671,
+          "variation_pct": 16.67,
+          "variation_abs": 116.67,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 18.35,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 20.35,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 22.35,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 24.35,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 26.35,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.659Z"
+    },
+    {
+      "isin": "IT0005678971",
+      "name": "Express su Euro Stoxx 50 72",
+      "type": "express",
+      "issuer": "UniCredit",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 91.5236752741615,
+      "coupon": 1.54,
+      "annual_coupon_yield": 18.52,
+      "barrier_down": 63.9,
+      "barrier_type": "EUROPEA",
+      "issue_date": "2025-03-24",
+      "maturity_date": "2027-02-19",
+      "strike_date": "2024-05-31",
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50",
+          "strike": 4500,
+          "spot": 5100,
+          "barrier": 2877,
+          "variation_pct": 13.33,
+          "variation_abs": 113.33,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 14.52,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 16.52,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 18.52,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 20.52,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 22.52,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.660Z"
+    },
+    {
+      "isin": "XS2376890172",
+      "name": "Phoenix Memory su S&P 500 73",
+      "type": "phoenixMemory",
+      "issuer": "BNP Paribas",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 103.64345016011981,
+      "coupon": 1.49,
+      "annual_coupon_yield": 17.85,
+      "barrier_down": 62,
+      "barrier_type": "EUROPEA",
+      "issue_date": "2024-02-28",
+      "maturity_date": "2028-09-08",
+      "strike_date": "2024-04-20",
+      "underlyings": [
+        {
+          "name": "S&P 500",
+          "strike": 5000,
+          "spot": 5800,
+          "barrier": 3098,
+          "variation_pct": 16,
+          "variation_abs": 116,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 13.85,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 15.85,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 17.85,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 19.85,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 21.85,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.660Z"
+    },
+    {
+      "isin": "DE000HV4ZZ73",
+      "name": "Phoenix Memory su DAX 74",
+      "type": "phoenixMemory",
+      "issuer": "UniCredit",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 94.21499038131046,
+      "coupon": 1.97,
+      "annual_coupon_yield": 23.59,
+      "barrier_down": 64.8,
+      "barrier_type": "EUROPEA",
+      "issue_date": "2025-03-01",
+      "maturity_date": "2027-08-27",
+      "strike_date": "2025-04-27",
+      "underlyings": [
+        {
+          "name": "DAX",
+          "strike": 17000,
+          "spot": 19500,
+          "barrier": 11016,
+          "variation_pct": 14.71,
+          "variation_abs": 114.71,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 19.59,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 21.59,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 23.59,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 25.59,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 27.59,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.660Z"
+    },
+    {
+      "isin": "XS2401234574",
+      "name": "Phoenix Memory su Nasdaq 100 75",
+      "type": "phoenixMemory",
+      "issuer": "Societe Generale",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 93.50080974489366,
+      "coupon": 1.87,
+      "annual_coupon_yield": 22.47,
+      "barrier_down": 54.8,
+      "barrier_type": "DISCRETA",
+      "issue_date": "2024-06-23",
+      "maturity_date": "2028-02-15",
+      "strike_date": "2024-12-14",
+      "underlyings": [
+        {
+          "name": "Nasdaq 100",
+          "strike": 16000,
+          "spot": 19200,
+          "barrier": 8766,
+          "variation_pct": 20,
+          "variation_abs": 120,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 18.47,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 20.47,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 22.47,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 24.47,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 26.47,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.660Z"
+    },
+    {
+      "isin": "IT0005567875",
+      "name": "Cash Collect su FTSE MIB 76",
+      "type": "cashCollect",
+      "issuer": "Intesa Sanpaolo",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 90.48827625009466,
+      "coupon": 1.24,
+      "annual_coupon_yield": 14.88,
+      "barrier_down": 64.7,
+      "barrier_type": "EUROPEA",
+      "issue_date": "2024-10-13",
+      "maturity_date": "2028-02-13",
+      "strike_date": "2024-12-26",
+      "underlyings": [
+        {
+          "name": "FTSE MIB",
+          "strike": 30000,
+          "spot": 35000,
+          "barrier": 19421,
+          "variation_pct": 16.67,
+          "variation_abs": 116.67,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 10.88,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 12.88,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 14.88,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 16.88,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 18.88,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.660Z"
+    },
+    {
+      "isin": "XS2423456776",
+      "name": "Cash Collect su Euro Stoxx 50 77",
+      "type": "cashCollect",
+      "issuer": "BNP Paribas",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 91.55455545827172,
+      "coupon": 1.49,
+      "annual_coupon_yield": 17.87,
+      "barrier_down": 66.6,
+      "barrier_type": "DISCRETA",
+      "issue_date": "2024-12-30",
+      "maturity_date": "2028-10-09",
+      "strike_date": "2025-01-07",
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50",
+          "strike": 4500,
+          "spot": 5100,
+          "barrier": 2999,
+          "variation_pct": 13.33,
+          "variation_abs": 113.33,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 13.87,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 15.87,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 17.87,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 19.87,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 21.87,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.660Z"
+    },
+    {
+      "isin": "DE000DB7ZZ77",
+      "name": "Bonus Cap su S&P 500 78",
+      "type": "bonusCap",
+      "issuer": "Deutsche Bank",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 99.01841435344254,
+      "coupon": 0.26,
+      "annual_coupon_yield": 3.16,
+      "barrier_down": 71.5,
+      "barrier_type": "DISCRETA",
+      "issue_date": "2024-03-24",
+      "maturity_date": "2028-12-11",
+      "strike_date": "2025-03-31",
+      "underlyings": [
+        {
+          "name": "S&P 500",
+          "strike": 5000,
+          "spot": 5800,
+          "barrier": 3577,
+          "variation_pct": 16,
+          "variation_abs": 116,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": -0.84,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 1.16,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 3.16,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 5.16,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 7.16,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.660Z"
+    },
+    {
+      "isin": "XS2445678978",
+      "name": "Bonus Cap su DAX 79",
+      "type": "bonusCap",
+      "issuer": "Barclays",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 93.88840307712583,
+      "coupon": 0.32,
+      "annual_coupon_yield": 3.9,
+      "barrier_down": 67.1,
+      "barrier_type": "EUROPEA",
+      "issue_date": "2024-01-21",
+      "maturity_date": "2028-10-13",
+      "strike_date": "2025-01-08",
+      "underlyings": [
+        {
+          "name": "DAX",
+          "strike": 17000,
+          "spot": 19500,
+          "barrier": 11400,
+          "variation_pct": 14.71,
+          "variation_abs": 114.71,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": -0.1,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 1.9,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 3.9,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 5.9,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 7.9,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.660Z"
+    },
+    {
+      "isin": "XS2467890179",
+      "name": "Express su Nasdaq 100 80",
+      "type": "express",
+      "issuer": "Societe Generale",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 99.75504966470932,
+      "coupon": 2.4,
+      "annual_coupon_yield": 28.84,
+      "barrier_down": 55.7,
+      "barrier_type": "DISCRETA",
+      "issue_date": "2024-04-08",
+      "maturity_date": "2027-10-07",
+      "strike_date": "2025-04-14",
+      "underlyings": [
+        {
+          "name": "Nasdaq 100",
+          "strike": 16000,
+          "spot": 19200,
+          "barrier": 8907,
+          "variation_pct": 20,
+          "variation_abs": 120,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 24.84,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 26.84,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 28.84,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 30.84,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 32.84,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.660Z"
+    },
+    {
+      "isin": "IT0005678980",
+      "name": "Express su FTSE MIB 81",
+      "type": "express",
+      "issuer": "UniCredit",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 94.24400529601834,
+      "coupon": 2.09,
+      "annual_coupon_yield": 25.08,
+      "barrier_down": 64,
+      "barrier_type": "EUROPEA",
+      "issue_date": "2025-05-04",
+      "maturity_date": "2027-11-07",
+      "strike_date": "2024-03-18",
+      "underlyings": [
+        {
+          "name": "FTSE MIB",
+          "strike": 30000,
+          "spot": 35000,
+          "barrier": 19194,
+          "variation_pct": 16.67,
+          "variation_abs": 116.67,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 21.08,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 23.08,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 25.08,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 27.08,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 29.08,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.660Z"
+    },
+    {
+      "isin": "XS2376890181",
+      "name": "Phoenix Memory su Euro Stoxx 50 82",
+      "type": "phoenixMemory",
+      "issuer": "BNP Paribas",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 92.49000163206334,
+      "coupon": 1.71,
+      "annual_coupon_yield": 20.52,
+      "barrier_down": 54.3,
+      "barrier_type": "EUROPEA",
+      "issue_date": "2024-12-06",
+      "maturity_date": "2028-05-18",
+      "strike_date": "2025-04-16",
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50",
+          "strike": 4500,
+          "spot": 5100,
+          "barrier": 2441,
+          "variation_pct": 13.33,
+          "variation_abs": 113.33,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 16.52,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 18.52,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 20.52,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 22.52,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 24.52,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.660Z"
+    },
+    {
+      "isin": "DE000HV4ZZ82",
+      "name": "Phoenix Memory su S&P 500 83",
+      "type": "phoenixMemory",
+      "issuer": "UniCredit",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 96.99138317027116,
+      "coupon": 1.25,
+      "annual_coupon_yield": 14.95,
+      "barrier_down": 59.1,
+      "barrier_type": "EUROPEA",
+      "issue_date": "2024-06-27",
+      "maturity_date": "2027-07-07",
+      "strike_date": "2025-05-15",
+      "underlyings": [
+        {
+          "name": "S&P 500",
+          "strike": 5000,
+          "spot": 5800,
+          "barrier": 2954,
+          "variation_pct": 16,
+          "variation_abs": 116,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 10.95,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 12.95,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 14.95,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 16.95,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 18.95,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.660Z"
+    },
+    {
+      "isin": "XS2401234583",
+      "name": "Phoenix Memory su DAX 84",
+      "type": "phoenixMemory",
+      "issuer": "Societe Generale",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 96.78978486106777,
+      "coupon": 1.52,
+      "annual_coupon_yield": 18.25,
+      "barrier_down": 51.8,
+      "barrier_type": "EUROPEA",
+      "issue_date": "2024-03-08",
+      "maturity_date": "2027-06-17",
+      "strike_date": "2024-05-24",
+      "underlyings": [
+        {
+          "name": "DAX",
+          "strike": 17000,
+          "spot": 19500,
+          "barrier": 8805,
+          "variation_pct": 14.71,
+          "variation_abs": 114.71,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 14.25,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 16.25,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 18.25,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 20.25,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 22.25,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.660Z"
+    },
+    {
+      "isin": "IT0005567884",
+      "name": "Cash Collect su Nasdaq 100 85",
+      "type": "cashCollect",
+      "issuer": "Intesa Sanpaolo",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 99.93649092192098,
+      "coupon": 1.6,
+      "annual_coupon_yield": 19.23,
+      "barrier_down": 56.8,
+      "barrier_type": "EUROPEA",
+      "issue_date": "2024-08-17",
+      "maturity_date": "2028-09-23",
+      "strike_date": "2024-03-27",
+      "underlyings": [
+        {
+          "name": "Nasdaq 100",
+          "strike": 16000,
+          "spot": 19200,
+          "barrier": 9094,
+          "variation_pct": 20,
+          "variation_abs": 120,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 15.23,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 17.23,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 19.23,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 21.23,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 23.23,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.660Z"
+    },
+    {
+      "isin": "XS2423456785",
+      "name": "Cash Collect su FTSE MIB 86",
+      "type": "cashCollect",
+      "issuer": "BNP Paribas",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 99.290396072218,
+      "coupon": 1.38,
+      "annual_coupon_yield": 16.58,
+      "barrier_down": 55.4,
+      "barrier_type": "EUROPEA",
+      "issue_date": "2025-02-05",
+      "maturity_date": "2028-06-17",
+      "strike_date": "2025-05-24",
+      "underlyings": [
+        {
+          "name": "FTSE MIB",
+          "strike": 30000,
+          "spot": 35000,
+          "barrier": 16633,
+          "variation_pct": 16.67,
+          "variation_abs": 116.67,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 12.58,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 14.58,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 16.58,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 18.58,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 20.58,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.660Z"
+    },
+    {
+      "isin": "DE000DB7ZZ86",
+      "name": "Bonus Cap su Euro Stoxx 50 87",
+      "type": "bonusCap",
+      "issuer": "Deutsche Bank",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 99.49280496960795,
+      "coupon": 0.24,
+      "annual_coupon_yield": 2.93,
+      "barrier_down": 68.4,
+      "barrier_type": "EUROPEA",
+      "issue_date": "2024-11-30",
+      "maturity_date": "2027-12-13",
+      "strike_date": "2024-05-28",
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50",
+          "strike": 4500,
+          "spot": 5100,
+          "barrier": 3076,
+          "variation_pct": 13.33,
+          "variation_abs": 113.33,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": -1.07,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 0.93,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 2.93,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 4.93,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 6.93,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.660Z"
+    },
+    {
+      "isin": "XS2445678987",
+      "name": "Bonus Cap su S&P 500 88",
+      "type": "bonusCap",
+      "issuer": "Barclays",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 101.26704566698037,
+      "coupon": 0.43,
+      "annual_coupon_yield": 5.2,
+      "barrier_down": 71.1,
+      "barrier_type": "EUROPEA",
+      "issue_date": "2024-09-11",
+      "maturity_date": "2028-09-13",
+      "strike_date": "2023-12-28",
+      "underlyings": [
+        {
+          "name": "S&P 500",
+          "strike": 5000,
+          "spot": 5800,
+          "barrier": 3554,
+          "variation_pct": 16,
+          "variation_abs": 116,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 1.2,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 3.2,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 5.2,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 7.2,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 9.2,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.660Z"
+    },
+    {
+      "isin": "XS2467890188",
+      "name": "Express su DAX 89",
+      "type": "express",
+      "issuer": "Societe Generale",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 97.16826075098435,
+      "coupon": 1.73,
+      "annual_coupon_yield": 20.81,
+      "barrier_down": 61.7,
+      "barrier_type": "DISCRETA",
+      "issue_date": "2024-10-25",
+      "maturity_date": "2027-02-13",
+      "strike_date": "2024-01-20",
+      "underlyings": [
+        {
+          "name": "DAX",
+          "strike": 17000,
+          "spot": 19500,
+          "barrier": 10482,
+          "variation_pct": 14.71,
+          "variation_abs": 114.71,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 16.81,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 18.81,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 20.81,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 22.81,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 24.81,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.660Z"
+    },
+    {
+      "isin": "IT0005678989",
+      "name": "Express su Nasdaq 100 90",
+      "type": "express",
+      "issuer": "UniCredit",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 97.71647583144741,
+      "coupon": 2.88,
+      "annual_coupon_yield": 34.52,
+      "barrier_down": 59,
+      "barrier_type": "DISCRETA",
+      "issue_date": "2024-07-10",
+      "maturity_date": "2027-04-12",
+      "strike_date": "2024-07-28",
+      "underlyings": [
+        {
+          "name": "Nasdaq 100",
+          "strike": 16000,
+          "spot": 19200,
+          "barrier": 9440,
+          "variation_pct": 20,
+          "variation_abs": 120,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 30.52,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 32.52,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 34.52,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 36.52,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 38.52,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.660Z"
+    },
+    {
+      "isin": "XS2376890190",
+      "name": "Phoenix Memory su FTSE MIB 91",
+      "type": "phoenixMemory",
+      "issuer": "BNP Paribas",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 93.09637156515926,
+      "coupon": 1.21,
+      "annual_coupon_yield": 14.58,
+      "barrier_down": 57.4,
+      "barrier_type": "DISCRETA",
+      "issue_date": "2024-05-10",
+      "maturity_date": "2028-11-07",
+      "strike_date": "2024-04-11",
+      "underlyings": [
+        {
+          "name": "FTSE MIB",
+          "strike": 30000,
+          "spot": 35000,
+          "barrier": 17222,
+          "variation_pct": 16.67,
+          "variation_abs": 116.67,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 10.58,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 12.58,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 14.58,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 16.58,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 18.58,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.660Z"
+    },
+    {
+      "isin": "DE000HV4ZZ91",
+      "name": "Phoenix Memory su Euro Stoxx 50 92",
+      "type": "phoenixMemory",
+      "issuer": "UniCredit",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 101.4517377198704,
+      "coupon": 1.61,
+      "annual_coupon_yield": 19.34,
+      "barrier_down": 60.7,
+      "barrier_type": "DISCRETA",
+      "issue_date": "2024-03-11",
+      "maturity_date": "2028-03-13",
+      "strike_date": "2024-08-05",
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50",
+          "strike": 4500,
+          "spot": 5100,
+          "barrier": 2733,
+          "variation_pct": 13.33,
+          "variation_abs": 113.33,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 15.34,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 17.34,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 19.34,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 21.34,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 23.34,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.660Z"
+    },
+    {
+      "isin": "XS2401234592",
+      "name": "Phoenix Memory su S&P 500 93",
+      "type": "phoenixMemory",
+      "issuer": "Societe Generale",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 102.44872838641346,
+      "coupon": 1.72,
+      "annual_coupon_yield": 20.59,
+      "barrier_down": 63.3,
+      "barrier_type": "DISCRETA",
+      "issue_date": "2025-05-12",
+      "maturity_date": "2027-02-06",
+      "strike_date": "2025-05-19",
+      "underlyings": [
+        {
+          "name": "S&P 500",
+          "strike": 5000,
+          "spot": 5800,
+          "barrier": 3167,
+          "variation_pct": 16,
+          "variation_abs": 116,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 16.59,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 18.59,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 20.59,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 22.59,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 24.59,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.660Z"
+    },
+    {
+      "isin": "IT0005567893",
+      "name": "Cash Collect su DAX 94",
+      "type": "cashCollect",
+      "issuer": "Intesa Sanpaolo",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 100.55169799592095,
+      "coupon": 0.92,
+      "annual_coupon_yield": 11.06,
+      "barrier_down": 64.3,
+      "barrier_type": "DISCRETA",
+      "issue_date": "2024-07-30",
+      "maturity_date": "2027-08-15",
+      "strike_date": "2024-02-21",
+      "underlyings": [
+        {
+          "name": "DAX",
+          "strike": 17000,
+          "spot": 19500,
+          "barrier": 10923,
+          "variation_pct": 14.71,
+          "variation_abs": 114.71,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 7.06,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 9.06,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 11.06,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 13.06,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 15.06,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.660Z"
+    },
+    {
+      "isin": "XS2423456794",
+      "name": "Cash Collect su Nasdaq 100 95",
+      "type": "cashCollect",
+      "issuer": "BNP Paribas",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 103.01546792769878,
+      "coupon": 0.9,
+      "annual_coupon_yield": 10.8,
+      "barrier_down": 69.9,
+      "barrier_type": "DISCRETA",
+      "issue_date": "2024-04-19",
+      "maturity_date": "2027-01-03",
+      "strike_date": "2024-04-13",
+      "underlyings": [
+        {
+          "name": "Nasdaq 100",
+          "strike": 16000,
+          "spot": 19200,
+          "barrier": 11182,
+          "variation_pct": 20,
+          "variation_abs": 120,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 6.8,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 8.8,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 10.8,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 12.8,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 14.8,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.660Z"
+    },
+    {
+      "isin": "DE000DB7ZZ95",
+      "name": "Bonus Cap su FTSE MIB 96",
+      "type": "bonusCap",
+      "issuer": "Deutsche Bank",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 90.13384416315347,
+      "coupon": 0.47,
+      "annual_coupon_yield": 5.6,
+      "barrier_down": 74.6,
+      "barrier_type": "EUROPEA",
+      "issue_date": "2024-07-13",
+      "maturity_date": "2027-11-30",
+      "strike_date": "2025-04-03",
+      "underlyings": [
+        {
+          "name": "FTSE MIB",
+          "strike": 30000,
+          "spot": 35000,
+          "barrier": 22388,
+          "variation_pct": 16.67,
+          "variation_abs": 116.67,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 1.6,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 3.6,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 5.6,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 7.6,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 9.6,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.661Z"
+    },
+    {
+      "isin": "XS2445678996",
+      "name": "Bonus Cap su Euro Stoxx 50 97",
+      "type": "bonusCap",
+      "issuer": "Barclays",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 100.87210880431681,
+      "coupon": 0.02,
+      "annual_coupon_yield": 0.26,
+      "barrier_down": 65.6,
+      "barrier_type": "EUROPEA",
+      "issue_date": "2025-04-25",
+      "maturity_date": "2028-03-10",
+      "strike_date": "2025-04-08",
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50",
+          "strike": 4500,
+          "spot": 5100,
+          "barrier": 2952,
+          "variation_pct": 13.33,
+          "variation_abs": 113.33,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": -3.74,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": -1.74,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 0.26,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 2.26,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 4.26,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.661Z"
+    },
+    {
+      "isin": "XS2467890197",
+      "name": "Express su S&P 500 98",
+      "type": "express",
+      "issuer": "Societe Generale",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 92.0514478394555,
+      "coupon": 1.69,
+      "annual_coupon_yield": 20.28,
+      "barrier_down": 63,
+      "barrier_type": "DISCRETA",
+      "issue_date": "2025-03-27",
+      "maturity_date": "2027-02-10",
+      "strike_date": "2024-10-08",
+      "underlyings": [
+        {
+          "name": "S&P 500",
+          "strike": 5000,
+          "spot": 5800,
+          "barrier": 3148,
+          "variation_pct": 16,
+          "variation_abs": 116,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 16.28,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 18.28,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 20.28,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 22.28,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 24.28,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.661Z"
+    },
+    {
+      "isin": "IT0005678998",
+      "name": "Express su DAX 99",
+      "type": "express",
+      "issuer": "UniCredit",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 94.6418945381013,
+      "coupon": 2.76,
+      "annual_coupon_yield": 33.1,
+      "barrier_down": 55.4,
+      "barrier_type": "EUROPEA",
+      "issue_date": "2024-05-16",
+      "maturity_date": "2028-10-24",
+      "strike_date": "2024-04-08",
+      "underlyings": [
+        {
+          "name": "DAX",
+          "strike": 17000,
+          "spot": 19500,
+          "barrier": 9418,
+          "variation_pct": 14.71,
+          "variation_abs": 114.71,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 29.1,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 31.1,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 33.1,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 35.1,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 37.1,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.661Z"
+    },
+    {
+      "isin": "XS2376890199",
+      "name": "Phoenix Memory su Nasdaq 100 100",
+      "type": "phoenixMemory",
+      "issuer": "BNP Paribas",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "price": 93.37030595523959,
+      "coupon": 1.3,
+      "annual_coupon_yield": 15.62,
+      "barrier_down": 61.7,
+      "barrier_type": "EUROPEA",
+      "issue_date": "2024-05-21",
+      "maturity_date": "2028-10-27",
+      "strike_date": "2024-08-31",
+      "underlyings": [
+        {
+          "name": "Nasdaq 100",
+          "strike": 16000,
+          "spot": 19200,
+          "barrier": 9871,
+          "variation_pct": 20,
+          "variation_abs": 120,
+          "worst_of": true
+        }
+      ],
+      "scenario_analysis": {
+        "molto_negativo": {
+          "market_move_pct": -40,
+          "expected_return_pct": 11.62,
+          "probability": 5,
+          "description": "Mercato scende oltre 40% - rischio perdita capitale"
+        },
+        "negativo": {
+          "market_move_pct": -20,
+          "expected_return_pct": 13.62,
+          "probability": 15,
+          "description": "Mercato scende tra -10% e -20%"
+        },
+        "stabile": {
+          "market_move_pct": 0,
+          "expected_return_pct": 15.62,
+          "probability": 60,
+          "description": "Mercato tra -10% e +10% - cedole regolari"
+        },
+        "positivo": {
+          "market_move_pct": 20,
+          "expected_return_pct": 17.62,
+          "probability": 15,
+          "description": "Mercato sale tra +10% e +20%"
+        },
+        "molto_positivo": {
+          "market_move_pct": 40,
+          "expected_return_pct": 19.62,
+          "probability": 5,
+          "description": "Mercato sale oltre +40% - rendimento massimo"
+        }
+      },
+      "last_update": "2025-12-18T08:31:27.661Z"
     }
   ]
 }
