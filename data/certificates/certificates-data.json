@@ -1,1 +1,20 @@
-
+{
+  "lastUpdate": "2025-12-18T09:35:45.368Z",
+  "totalCertificates": 0,
+  "source": "CedLab (fallback)",
+  "categories": {},
+  "underlyings": [],
+  "certificates": [],
+  "stats": {
+    "totalProcessed": 0,
+    "successful": 0,
+    "errors": 0,
+    "source": "CedLab (fallback)",
+    "byType": {
+      "phoenixMemory": 0,
+      "cashCollect": 0,
+      "bonusCap": 0,
+      "express": 0
+    }
+  }
+}
