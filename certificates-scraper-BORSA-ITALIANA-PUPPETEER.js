@@ -60,12 +60,12 @@ class BorsaItalianaCertificatesScraper {
             });
             
             // Wait for page to load
-            await this.page.waitForTimeout(3000);
+            await new Promise(resolve => setTimeout(resolve, 3000));
             
             // Try to find and accept cookies if present
             try {
                 await this.page.click('button[id*="accept"], button[class*="accept-cookie"]', { timeout: 5000 });
-                await this.page.waitForTimeout(1000);
+                await new Promise(resolve => setTimeout(resolve, 1000));
             } catch (e) {
                 console.log('ℹ️  No cookie banner found');
             }
@@ -84,7 +84,7 @@ class BorsaItalianaCertificatesScraper {
                 allCertificates.push(...certs);
                 
                 // Don't overload server
-                await this.page.waitForTimeout(2000);
+                await new Promise(resolve => setTimeout(resolve, 2000));
             }
             
             console.log(`\n🎉 Total certificates scraped: ${allCertificates.length}`);
