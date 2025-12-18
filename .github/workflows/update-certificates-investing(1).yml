@@ -1,0 +1,81 @@
+name: Update Certificates from Investing.com
+
+on:
+  schedule:
+    # Run every day at 19:00 UTC (20:00 CET) - after market close
+    - cron: '0 19 * * *'
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  scrape-certificates:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          
+      - name: Install dependencies
+        run: |
+          npm install puppeteer
+          
+      - name: Create data directory
+        run: mkdir -p data
+          
+      - name: Run Investing.com certificates scraper
+        run: node certificates-scraper-INVESTING.js
+        env:
+          PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: false
+        continue-on-error: false
+        
+      - name: Check if data changed
+        id: check_changes
+        run: |
+          if [ -f data/certificates-data.json ]; then
+            git diff --quiet data/certificates-data.json || echo "changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+          
+      - name: Commit and push if changed
+        if: steps.check_changes.outputs.changed == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git pull --rebase origin main
+          git add data/certificates-data.json
+          git commit -m "Update certificates data from Investing.com - $(date -u +'%Y-%m-%d %H:%M') UTC"
+          git push
+          
+      - name: Generate summary
+        if: always()
+        run: |
+          if [ -f data/certificates-data.json ]; then
+            echo "## ✅ Certificates Update Summary" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "**Source:** Investing.com" >> $GITHUB_STEP_SUMMARY
+            echo "**Total Certificates:** $(jq '.totalCertificates' data/certificates-data.json)" >> $GITHUB_STEP_SUMMARY
+            echo "**Last Update:** $(jq -r '.lastUpdate' data/certificates-data.json)" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "### Categories:" >> $GITHUB_STEP_SUMMARY
+            jq -r '.categories | to_entries[] | "- **\(.key)**: \(.value)"' data/certificates-data.json >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "### Sample Certificates:" >> $GITHUB_STEP_SUMMARY
+            jq -r '.certificates[:5] | .[] | "- **\(.name)** (ISIN: \(.isin)) - Price: €\(.last_price) | Change: \(.change_percent)%"' data/certificates-data.json >> $GITHUB_STEP_SUMMARY
+          else
+            echo "## ❌ Scraping Failed" >> $GITHUB_STEP_SUMMARY
+            echo "No data file generated" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+      - name: Upload artifact (on failure)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scraper-logs
+          path: |
+            *.log
+            data/
