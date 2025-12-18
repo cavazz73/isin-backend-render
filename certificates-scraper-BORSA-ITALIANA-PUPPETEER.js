@@ -214,7 +214,7 @@ class BorsaItalianaCertificatesScraper {
             // If no certificates found from table, generate sample based on category
             if (certificates.length === 0) {
                 console.log(`   ⚠️  No certificates found in DOM for ${category.name}, generating samples...`);
-                return this.generateSampleCertificates(category, 25);
+                return this.generateSampleCertificates(category, 125);
             }
             
             // Enrich certificates with additional data
@@ -223,7 +223,7 @@ class BorsaItalianaCertificatesScraper {
         } catch (error) {
             console.error(`   ❌ Error scraping ${category.name}:`, error.message);
             // Return sample data as fallback
-            return this.generateSampleCertificates(category, 25);
+            return this.generateSampleCertificates(category, 125);
         }
     }
 
