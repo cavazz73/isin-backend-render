@@ -24,7 +24,7 @@ let certificatesData = {
 
 function loadCertificatesData() {
     try {
-        const dataPath = path.join(__dirname, 'data', 'certificates', 'certificates-data.json');
+        const dataPath = path.join(__dirname, 'data', 'certificates-data.json');
         
         if (fs.existsSync(dataPath)) {
             const rawData = fs.readFileSync(dataPath, 'utf8');
