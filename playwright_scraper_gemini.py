@@ -99,23 +99,39 @@ async def scrape_certificate(isin):
         if emittente_section:
             # Find the table in the same panel
             parent_div = emittente_section.find_parent('div', class_='panel-body')
+            if not parent_div:
+                parent_div = emittente_section.find_parent('div')
+            
             if parent_div:
                 table = parent_div.find('table')
                 if table:
                     # Issuer is typically in thead > tr > td
                     thead = table.find('thead')
                     if thead:
-                        issuer_td = thead.find('td')
-                        if issuer_td:
-                            issuer_text = issuer_td.get_text(strip=True)
-                            if issuer_text and len(issuer_text) > 1:
+                        tds = thead.find_all('td')
+                        for td in tds:
+                            issuer_text = td.get_text(strip=True)
+                            if issuer_text and len(issuer_text) > 1 and 'Rating' not in issuer_text:
                                 return issuer_text
-                    # Fallback: first td in table
-                    first_td = table.find('td')
-                    if first_td:
-                        issuer_text = first_td.get_text(strip=True)
-                        if issuer_text and len(issuer_text) > 1 and 'Rating' not in issuer_text:
+                    
+                    # Fallback: first td in table that's not "Rating"
+                    all_tds = table.find_all('td')
+                    for td in all_tds:
+                        issuer_text = td.get_text(strip=True)
+                        if issuer_text and len(issuer_text) > 1 and 'Rating' not in issuer_text and ':' not in issuer_text:
                             return issuer_text
+        
+        # Method 2: Search for known issuers in entire page
+        known_issuers = [
+            'Santander', 'Leonteq', 'Vontobel', 'BNP Paribas', 'UniCredit',
+            'Intesa Sanpaolo', 'Barclays', 'Citigroup', 'UBS', 'Goldman Sachs',
+            'Societe Generale', 'Morgan Stanley', 'Banca Akros', 'EFG International'
+        ]
+        page_text = soup.get_text()
+        for issuer in known_issuers:
+            if issuer in page_text:
+                return issuer
+        
         return None
     
     # Extract barrier from "Barriera Down" section
