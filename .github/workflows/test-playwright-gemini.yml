@@ -1,0 +1,80 @@
+name: Test Playwright Scraper
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-playwright:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          pip install playwright beautifulsoup4
+          playwright install chromium
+          playwright install-deps
+      
+      - name: Run Playwright scraper
+        run: |
+          python playwright_scraper_gemini.py
+      
+      - name: Display results
+        if: always()
+        run: |
+          echo "=== TEST RESULTS ==="
+          if [ -f playwright_test_results.json ]; then
+            cat playwright_test_results.json
+          else
+            echo "No results file generated"
+          fi
+      
+      - name: Upload debug HTML files
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-html-files
+          path: debug_*.html
+          if-no-files-found: warn
+      
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-test-results
+          path: playwright_test_results.json
+          if-no-files-found: warn
+      
+      - name: Check success
+        if: always()
+        run: |
+          if [ -f playwright_test_results.json ]; then
+            SUCCESS=$(cat playwright_test_results.json | grep -o '"successful": [0-9]*' | grep -o '[0-9]*')
+            echo "Certificates successfully scraped: $SUCCESS"
+            
+            # Check if we extracted actual data (not just metadata)
+            HAS_PRICE=$(cat playwright_test_results.json | grep -c '"price"' || echo "0")
+            HAS_COUPON=$(cat playwright_test_results.json | grep -c '"coupon"' || echo "0")
+            
+            echo "Certificates with price: $HAS_PRICE"
+            echo "Certificates with coupon: $HAS_COUPON"
+            
+            if [ "$SUCCESS" -gt 0 ] && [ "$HAS_PRICE" -gt 0 ]; then
+              echo "✅ SUCCESS! Extracted real certificate data!"
+              exit 0
+            else
+              echo "⚠️  Partial success - connected but limited data extraction"
+              exit 0
+            fi
+          else
+            echo "❌ FAILED - No results file"
+            exit 1
+          fi
