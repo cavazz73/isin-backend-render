@@ -61,20 +61,29 @@ jobs:
             echo "Certificates successfully scraped: $SUCCESS"
             
             # Check if we extracted actual real data
-            HAS_ISSUER=$(cat playwright_test_results.json | grep -c '"issuer": "[^N]' || echo "0")
-            HAS_COUPON=$(cat playwright_test_results.json | grep -c '"coupon":' || echo "0")
-            HAS_BARRIER=$(cat playwright_test_results.json | grep -c '"barrier":' || echo "0")
-            HAS_PRICE=$(cat playwright_test_results.json | grep -c '"price":' || echo "0")
+            HAS_ISSUER=$(grep -c '"issuer":[[:space:]]*"[^N"][^"]*"' playwright_test_results.json 2>/dev/null || echo "0")
+            HAS_COUPON=$(grep -c '"coupon":' playwright_test_results.json 2>/dev/null || echo "0")
+            HAS_BARRIER=$(grep -c '"barrier":' playwright_test_results.json 2>/dev/null || echo "0")
+            HAS_PRICE=$(grep -c '"price":' playwright_test_results.json 2>/dev/null || echo "0")
             
-            echo "Certificates with issuer: $HAS_ISSUER"
+            echo "Certificates with issuer (non-N/A): $HAS_ISSUER"
             echo "Certificates with coupon: $HAS_COUPON"
             echo "Certificates with barrier: $HAS_BARRIER"
             echo "Certificates with price: $HAS_PRICE"
+            echo ""
             
-            # Calculate completeness score
-            TOTAL_FIELDS=$((HAS_ISSUER + HAS_COUPON + HAS_BARRIER + HAS_PRICE))
-            MAX_FIELDS=$((SUCCESS * 4))
-            COMPLETENESS=$((TOTAL_FIELDS * 100 / MAX_FIELDS))
+            # Calculate completeness score safely
+            if [ "$SUCCESS" -gt 0 ]; then
+              TOTAL_FIELDS=$((HAS_ISSUER + HAS_COUPON + HAS_BARRIER + HAS_PRICE))
+              MAX_FIELDS=$((SUCCESS * 4))
+              if [ "$MAX_FIELDS" -gt 0 ]; then
+                COMPLETENESS=$((TOTAL_FIELDS * 100 / MAX_FIELDS))
+              else
+                COMPLETENESS=0
+              fi
+            else
+              COMPLETENESS=0
+            fi
             
             echo ""
             echo "Data completeness: $COMPLETENESS%"
