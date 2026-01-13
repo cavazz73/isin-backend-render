@@ -23,29 +23,52 @@ jobs:
           playwright install chromium
           playwright install-deps
       
+      - name: Verify test script exists
+        run: |
+          if [ ! -f test_crawl4ai.py ]; then
+            echo "ERROR: test_crawl4ai.py not found in repository"
+            echo "Please upload test_crawl4ai.py to the root of the repository"
+            exit 1
+          fi
+          echo "✓ test_crawl4ai.py found"
+      
       - name: Run test script
         run: |
-          python test_crawl4ai.py
+          echo "Running Crawl4AI test..."
+          python test_crawl4ai.py || echo "Script failed but continuing to show results"
       
       - name: Display results
+        if: always()
         run: |
           echo "=== TEST RESULTS ==="
-          cat crawl4ai_test_results.json
+          if [ -f crawl4ai_test_results.json ]; then
+            cat crawl4ai_test_results.json
+          else
+            echo "No results file generated"
+          fi
       
       - name: Upload results as artifact
-        uses: actions/upload-artifact@v3
+        if: always()
+        uses: actions/upload-artifact@v4
         with:
           name: crawl4ai-test-results
           path: crawl4ai_test_results.json
+          if-no-files-found: warn
       
       - name: Check if successful
+        if: always()
         run: |
-          SUCCESS=$(cat crawl4ai_test_results.json | grep -o '"successful": [0-9]*' | grep -o '[0-9]*')
-          echo "Certificates successfully scraped: $SUCCESS"
-          if [ "$SUCCESS" -gt 0 ]; then
-            echo "✅ CRAWL4AI WORKS! Found real data!"
-            exit 0
+          if [ -f crawl4ai_test_results.json ]; then
+            SUCCESS=$(cat crawl4ai_test_results.json | grep -o '"successful": [0-9]*' | grep -o '[0-9]*')
+            echo "Certificates successfully scraped: $SUCCESS"
+            if [ "$SUCCESS" -gt 0 ]; then
+              echo "✅ CRAWL4AI WORKS! Found real data!"
+              exit 0
+            else
+              echo "❌ CRAWL4AI FAILED - No data extracted"
+              exit 1
+            fi
           else
-            echo "❌ CRAWL4AI FAILED - No data extracted"
+            echo "❌ No results file - script failed to run"
             exit 1
           fi
