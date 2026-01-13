@@ -151,17 +151,40 @@ class ProductionScraper:
                     if table:
                         for td in table.find_all('td'):
                             text = td.get_text(strip=True)
-                            if text and len(text) > 1 and 'Rating' not in text and ':' not in text:
-                                return text
+                            # Better filtering: short name, has letters, no Rating/percentages
+                            if text and 2 < len(text) < 50 and 'Rating' not in text and ':' not in text and '%' not in text:
+                                if any(char.isalpha() for char in text):
+                                    return text
             
-            # Fallback: known issuers
-            known = ['Santander', 'Leonteq', 'Vontobel', 'BNP Paribas', 'UniCredit',
-                    'Intesa Sanpaolo', 'Barclays', 'Citigroup', 'UBS', 'Goldman Sachs',
-                    'Societe Generale', 'Morgan Stanley', 'Banca Akros']
-            text = soup.get_text()
-            for issuer in known:
-                if issuer in text:
-                    return issuer
+            # Fallback: expanded known issuers with variants
+            known_issuers = {
+                'Santander': ['Santander', 'SANTANDER'],
+                'Leonteq': ['Leonteq', 'LEONTEQ'],
+                'Vontobel': ['Vontobel', 'VONTOBEL'],
+                'BNP Paribas': ['BNP Paribas', 'BNP PARIBAS', 'BNPP', 'Bnp'],
+                'UniCredit': ['UniCredit', 'UNICREDIT', 'Unicredit'],
+                'Intesa Sanpaolo': ['Intesa Sanpaolo', 'INTESA SANPAOLO', 'Intesa'],
+                'Barclays': ['Barclays', 'BARCLAYS'],
+                'Citigroup': ['Citigroup', 'CITIGROUP', 'Citi'],
+                'UBS': ['UBS'],
+                'Goldman Sachs': ['Goldman Sachs', 'GOLDMAN SACHS', 'Goldman'],
+                'Societe Generale': ['Societe Generale', 'SOCIETE GENERALE', 'SocGen'],
+                'Morgan Stanley': ['Morgan Stanley', 'MORGAN STANLEY'],
+                'Banca Akros': ['Banca Akros', 'BANCA AKROS', 'Akros'],
+                'Mediobanca': ['Mediobanca', 'MEDIOBANCA'],
+                'Natixis': ['Natixis', 'NATIXIS'],
+                'HSBC': ['HSBC'],
+                'Credit Suisse': ['Credit Suisse', 'CREDIT SUISSE'],
+                'Deutsche Bank': ['Deutsche Bank', 'DEUTSCHE BANK'],
+                'JP Morgan': ['JP Morgan', 'JPMORGAN', 'JPMorgan'],
+                'Marex': ['Marex', 'MAREX']
+            }
+            
+            page_text = soup.get_text()
+            for issuer_name, variants in known_issuers.items():
+                for variant in variants:
+                    if variant in page_text:
+                        return issuer_name
             return None
         
         # Get barrier
@@ -207,6 +230,49 @@ class ProductionScraper:
                             return float(match.group(1))
             return None
         
+        # Get maturity date
+        def get_maturity():
+            patterns = ['Data Valutazione finale', 'Scadenza', 'Maturity']
+            for pattern in patterns:
+                th = soup.find('th', string=re.compile(pattern, re.IGNORECASE))
+                if th:
+                    row = th.find_parent('tr')
+                    if row:
+                        td = row.find('td')
+                        if td:
+                            return td.get_text(strip=True)
+            return None
+        
+        # Get strike level
+        def get_strike():
+            th = soup.find('th', string=re.compile('Trigger', re.IGNORECASE))
+            if th:
+                row = th.find_parent('tr')
+                if row:
+                    td = row.find('td')
+                    if td:
+                        text = td.get_text(strip=True)
+                        match = re.search(r'(\d+)', text)
+                        if match:
+                            return int(match.group(1))
+            return None
+        
+        # Get underlying name
+        def get_underlying_name():
+            # Try to find sottostante section
+            section = soup.find('h3', string=re.compile('Scheda Sottostante', re.IGNORECASE))
+            if section:
+                parent = section.find_parent('div')
+                if parent:
+                    table = parent.find('table')
+                    if table:
+                        first_td = table.find('td')
+                        if first_td:
+                            text = first_td.get_text(strip=True)
+                            if text and len(text) > 2:
+                                return text
+            return None
+        
         # Build certificate
         cert = {
             'isin': isin,
@@ -232,6 +298,9 @@ class ProductionScraper:
         cert['barrier'] = get_barrier()
         cert['coupon'] = get_coupon()
         cert['price'] = get_price()
+        cert['maturity'] = get_maturity()
+        cert['strike'] = get_strike()
+        cert['underlying'] = get_underlying_name()
         cert['underlying_category'] = underlying_type  # Add underlying info
         
         if cert['price']:
@@ -257,6 +326,21 @@ class ProductionScraper:
         # Calculate annual yield
         if cert.get('coupon'):
             cert['annual_coupon_yield'] = round(cert['coupon'] * 12, 1)
+        
+        # Build description
+        desc_parts = []
+        if cert.get('type'):
+            desc_parts.append(cert['type'].title())
+        if cert.get('issuer'):
+            desc_parts.append(f"emesso da {cert['issuer']}")
+        if cert.get('underlying'):
+            desc_parts.append(f"su {cert['underlying']}")
+        if cert.get('barrier'):
+            desc_parts.append(f"con barriera {cert['barrier']}%")
+        if cert.get('coupon'):
+            desc_parts.append(f"cedola {cert['coupon']}%")
+        
+        cert['description'] = ' - '.join(desc_parts) if desc_parts else f"Certificato {isin}"
         
         # Market info
         cert['market'] = 'SeDeX'
