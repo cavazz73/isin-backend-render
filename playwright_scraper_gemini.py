@@ -97,31 +97,58 @@ async def scrape_certificate(isin):
         """Extract issuer from Scheda Emittente section"""
         emittente_section = soup.find('h3', string=re.compile('Scheda Emittente', re.IGNORECASE))
         if emittente_section:
-            table = emittente_section.find_parent('div').find('table')
-            if table:
-                first_td = table.find('td')
-                if first_td:
-                    return first_td.get_text(strip=True)
+            # Find the table in the same panel
+            parent_div = emittente_section.find_parent('div', class_='panel-body')
+            if parent_div:
+                table = parent_div.find('table')
+                if table:
+                    # Issuer is typically in thead > tr > td
+                    thead = table.find('thead')
+                    if thead:
+                        issuer_td = thead.find('td')
+                        if issuer_td:
+                            issuer_text = issuer_td.get_text(strip=True)
+                            if issuer_text and len(issuer_text) > 1:
+                                return issuer_text
+                    # Fallback: first td in table
+                    first_td = table.find('td')
+                    if first_td:
+                        issuer_text = first_td.get_text(strip=True)
+                        if issuer_text and len(issuer_text) > 1 and 'Rating' not in issuer_text:
+                            return issuer_text
         return None
     
     # Extract barrier from "Barriera Down" section
     def get_barrier():
         """Extract barrier percentage"""
+        # Method 1: Look for "Barriera Down" section
         barriera_section = soup.find('h3', string=re.compile('Barriera Down', re.IGNORECASE))
         if barriera_section:
-            # Look for the table in same div
-            parent_div = barriera_section.find_parent('div', class_='panel-body')
-            if parent_div:
-                # Try to find in div with id="barriera"
-                barriera_div = parent_div.find('div', id='barriera')
+            # Look for div with id="barriera"
+            parent_panel = barriera_section.find_parent('div', class_='panel')
+            if parent_panel:
+                barriera_div = parent_panel.find('div', id='barriera')
                 if barriera_div:
-                    # Look for percentage in first column
-                    first_td = barriera_div.find('td')
-                    if first_td:
-                        text = first_td.get_text(strip=True)
+                    # Look for first td with percentage
+                    tds = barriera_div.find_all('td')
+                    for td in tds:
+                        text = td.get_text(strip=True)
                         match = re.search(r'(\d+)\s*%', text)
                         if match:
                             return int(match.group(1))
+        
+        # Method 2: Search in all text for "Barriera" label
+        barriera_th = soup.find('th', string=re.compile('Barriera', re.IGNORECASE))
+        if barriera_th:
+            row = barriera_th.find_parent('tr')
+            if row:
+                tds = row.find_all('td')
+                for td in tds:
+                    text = td.get_text(strip=True)
+                    match = re.search(r'(\d+)\s*%', text)
+                    if match:
+                        return int(match.group(1))
+        
         return None
     
     # Extract coupon from rilevamento table
@@ -297,9 +324,15 @@ async def main():
         print("DATA QUALITY CHECK:")
         print(f"  Name extracted: {'✅' if sample.get('name') and len(sample['name']) > 10 else '❌'}")
         print(f"  Issuer extracted: {'✅' if sample.get('issuer') and sample['issuer'] != 'N/A' else '❌'}")
+        print(f"  Type detected: {'✅' if sample.get('type') else '❌'}")
         print(f"  Price extracted: {'✅' if sample.get('price') else '❌'}")
         print(f"  Coupon extracted: {'✅' if sample.get('coupon') else '❌'}")
         print(f"  Barrier extracted: {'✅' if sample.get('barrier') else '❌'}")
+        
+        # Count how many certificates have complete data
+        complete = sum(1 for r in results if r.get('issuer') != 'N/A' and r.get('coupon') and r.get('barrier'))
+        print("")
+        print(f"Certificates with complete data: {complete}/{len(results)}")
 
 if __name__ == "__main__":
     asyncio.run(main())
