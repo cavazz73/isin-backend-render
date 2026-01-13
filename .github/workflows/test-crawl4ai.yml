@@ -1,0 +1,51 @@
+name: Test Crawl4AI
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-crawl4ai:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      
+      - name: Install Crawl4AI
+        run: |
+          pip install crawl4ai
+          playwright install chromium
+          playwright install-deps
+      
+      - name: Run test script
+        run: |
+          python test_crawl4ai.py
+      
+      - name: Display results
+        run: |
+          echo "=== TEST RESULTS ==="
+          cat crawl4ai_test_results.json
+      
+      - name: Upload results as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: crawl4ai-test-results
+          path: crawl4ai_test_results.json
+      
+      - name: Check if successful
+        run: |
+          SUCCESS=$(cat crawl4ai_test_results.json | grep -o '"successful": [0-9]*' | grep -o '[0-9]*')
+          echo "Certificates successfully scraped: $SUCCESS"
+          if [ "$SUCCESS" -gt 0 ]; then
+            echo "✅ CRAWL4AI WORKS! Found real data!"
+            exit 0
+          else
+            echo "❌ CRAWL4AI FAILED - No data extracted"
+            exit 1
+          fi
