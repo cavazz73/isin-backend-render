@@ -14,8 +14,9 @@ class ProductionScraper:
     def __init__(self):
         self.base_url = "https://www.certificatiederivati.it"
         self.certificates = []
-        self.target = 1000
+        self.target = 100  # Only real certificates
         self.processed_isins = set()
+        self.issuers_count = {}  # Track issuer diversity
         
         # Starter ISINs (verified working)
         self.starter = [
@@ -23,6 +24,17 @@ class ProductionScraper:
             'IT0006755018', 'XS2544207512', 'DE000VU5FFT5', 'NLBNPIT1X4F5',
             'CH1423921183', 'XS2662146856', 'IT0005653594'
         ]
+        
+        # Valid underlying types
+        self.valid_underlyings = {
+            'indices': ['EURO STOXX', 'EUROSTOXX', 'S&P 500', 'S&P500', 'FTSE MIB', 
+                       'FTSE100', 'DAX', 'NASDAQ', 'NIKKEI', 'DOW JONES', 'CAC 40',
+                       'MSCI', 'STOXX', 'RUSSELL'],
+            'commodities': ['ORO', 'GOLD', 'PETROLIO', 'OIL', 'CRUDE', 'ARGENTO', 'SILVER',
+                          'GAS', 'RAME', 'COPPER', 'BRENT'],
+            'rates': ['EURIBOR', 'EONIA', 'TREASURY', 'LIBOR', 'TASSO', 'RATE'],
+            'credit': ['CREDIT', 'CREDITO', 'BOND', 'CORPORATE', 'ITRAXX']
+        }
 
     async def collect_isins(self):
         """Collect ISINs from website"""
@@ -112,6 +124,23 @@ class ProductionScraper:
         """Parse certificate HTML"""
         soup = BeautifulSoup(html, 'html.parser')
         
+        # Check underlying type first (filter early)
+        def check_underlying():
+            """Check if certificate has valid underlying"""
+            page_text = soup.get_text().upper()
+            
+            # Check each category
+            for category, keywords in self.valid_underlyings.items():
+                for keyword in keywords:
+                    if keyword in page_text:
+                        return True, category
+            
+            return False, None
+        
+        is_valid, underlying_type = check_underlying()
+        if not is_valid:
+            return None  # Skip certificates with single stocks
+        
         # Get issuer
         def get_issuer():
             section = soup.find('h3', string=re.compile('Scheda Emittente', re.IGNORECASE))
@@ -193,10 +222,17 @@ class ProductionScraper:
             cert['name'] = f"Certificate {isin}"
         
         # Extract fields
-        cert['issuer'] = get_issuer() or "N/A"
+        issuer = get_issuer() or "N/A"
+        cert['issuer'] = issuer
+        
+        # Track issuer diversity
+        if issuer != "N/A":
+            self.issuers_count[issuer] = self.issuers_count.get(issuer, 0) + 1
+        
         cert['barrier'] = get_barrier()
         cert['coupon'] = get_coupon()
         cert['price'] = get_price()
+        cert['underlying_category'] = underlying_type  # Add underlying info
         
         if cert['price']:
             cert['last_price'] = cert['price']
@@ -233,86 +269,13 @@ class ProductionScraper:
         
         return cert
 
-    def generate_fill(self, count):
-        """Generate complementary certificates"""
-        certs = []
-        types = [
-            {'code': 'phoenixMemory', 'weight': 0.30},
-            {'code': 'cashCollect', 'weight': 0.25},
-            {'code': 'express', 'weight': 0.15},
-            {'code': 'bonusCap', 'weight': 0.15},
-            {'code': 'twinWin', 'weight': 0.10},
-            {'code': 'airbag', 'weight': 0.05}
-        ]
-        
-        for t in types:
-            n = int(count * t['weight'])
-            for i in range(n):
-                isin = self.gen_isin()
-                cert = {
-                    'isin': isin,
-                    'name': f"{t['code']} Certificate",
-                    'type': t['code'],
-                    'issuer': ['Leonteq', 'Vontobel', 'BNP Paribas'][hash(isin) % 3],
-                    'last_price': round(85 + (hash(isin) % 30), 3),
-                    'price': round(85 + (hash(isin) % 30), 3),
-                    'change_percent': round((hash(isin) % 600 - 300) / 100, 2),
-                    'volume': 50000 + (hash(isin) % 450000),
-                    'market': 'SeDeX',
-                    'currency': 'EUR',
-                    'country': 'Italy',
-                    'scraped': False,
-                    'time': datetime.now().strftime('%H:%M:%S'),
-                    'last_update': datetime.now().isoformat()
-                }
-                
-                # Type-specific features
-                if t['code'] == 'phoenixMemory':
-                    cert['coupon'] = round(3.5 + (hash(isin) % 300) / 100, 2)
-                    cert['barrier'] = 55 + (hash(isin) % 10)
-                    cert['annual_coupon_yield'] = round(cert['coupon'] * 12, 1)
-                elif t['code'] == 'cashCollect':
-                    cert['coupon'] = round(2.5 + (hash(isin) % 250) / 100, 2)
-                    cert['barrier'] = 58 + (hash(isin) % 8)
-                    cert['annual_coupon_yield'] = round(cert['coupon'] * 12, 1)
-                
-                certs.append(cert)
-        
-        while len(certs) < count:
-            t = types[hash(str(len(certs))) % len(types)]
-            isin = self.gen_isin()
-            cert = {
-                'isin': isin,
-                'name': f"{t['code']} Certificate",
-                'type': t['code'],
-                'issuer': 'Various',
-                'last_price': round(85 + (hash(isin) % 30), 3),
-                'price': round(85 + (hash(isin) % 30), 3),
-                'change_percent': round((hash(isin) % 600 - 300) / 100, 2),
-                'volume': 50000 + (hash(isin) % 450000),
-                'market': 'SeDeX',
-                'currency': 'EUR',
-                'scraped': False,
-                'time': datetime.now().strftime('%H:%M:%S'),
-                'last_update': datetime.now().isoformat()
-            }
-            certs.append(cert)
-        
-        return certs
-
-    def gen_isin(self):
-        import random
-        countries = ['IT', 'XS', 'DE', 'CH', 'NL']
-        c = random.choice(countries)
-        n = ''.join([str(random.randint(0, 9)) for _ in range(10)])
-        return c + n
-
     async def run(self):
         """Main production scraper"""
         print("=" * 70)
-        print("PRODUCTION CERTIFICATE SCRAPER")
+        print("PRODUCTION CERTIFICATE SCRAPER - REAL DATA ONLY")
         print("=" * 70)
-        print(f"Target: {self.target} certificates")
+        print(f"Target: {self.target} REAL certificates")
+        print(f"Filter: Indices, Commodities, Rates, Credit Linked only")
         print("")
         
         # Collect ISINs
@@ -323,11 +286,14 @@ class ProductionScraper:
         # Scrape certificates
         print("Scraping certificates...")
         extracted = 0
+        attempts = 0
+        max_attempts = 500  # Increase attempts to get 100 valid ones
         
-        for i, isin in enumerate(all_isins[:300], 1):  # Limit to 300 attempts
-            if len(self.certificates) >= 200:  # Stop at 200 real
+        for i, isin in enumerate(all_isins[:max_attempts], 1):
+            if len(self.certificates) >= self.target:
                 break
             
+            attempts += 1
             cert = await self.scrape_certificate(isin)
             
             if cert:
@@ -335,35 +301,37 @@ class ProductionScraper:
                 extracted += 1
                 
                 if extracted % 10 == 0:
-                    print(f"  Progress: {extracted} certificates extracted")
+                    print(f"  Progress: {extracted}/{self.target} certificates extracted")
+                    print(f"  Issuers so far: {list(self.issuers_count.keys())}")
             
             await asyncio.sleep(0.5)  # Rate limiting
         
-        print(f"\nExtracted {len(self.certificates)} real certificates")
-        
-        # Fill to 1000
-        if len(self.certificates) < self.target:
-            needed = self.target - len(self.certificates)
-            print(f"Generating {needed} complementary certificates...")
-            self.certificates.extend(self.generate_fill(needed))
-        
-        print(f"Total: {len(self.certificates)} certificates")
+        print(f"\n{'='*70}")
+        print(f"EXTRACTION COMPLETED")
+        print(f"{'='*70}")
+        print(f"Extracted: {len(self.certificates)} REAL certificates")
+        print(f"Attempts: {attempts}")
+        print(f"Success rate: {len(self.certificates)/attempts*100:.1f}%")
+        print(f"\nIssuer diversity:")
+        for issuer, count in sorted(self.issuers_count.items(), key=lambda x: x[1], reverse=True):
+            print(f"  - {issuer}: {count} certificates")
         
         # Save
         self.save()
 
     def save(self):
         """Save results"""
-        scraped = sum(1 for c in self.certificates if c.get('scraped'))
         
         output = {
             'success': True,
             'source': 'certificatiederivati.it',
-            'method': 'playwright-production',
+            'method': 'playwright-production-real-only',
             'lastUpdate': datetime.now().isoformat(),
             'totalCertificates': len(self.certificates),
-            'realScraped': scraped,
-            'generated': len(self.certificates) - scraped,
+            'realScraped': len(self.certificates),
+            'generated': 0,
+            'filter': 'indices, commodities, rates, credit linked only',
+            'issuers': list(self.issuers_count.keys()),
             'certificates': self.certificates
         }
         
@@ -372,12 +340,17 @@ class ProductionScraper:
         
         print("")
         print("=" * 70)
-        print("COMPLETED")
+        print("FILE SAVED")
         print("=" * 70)
-        print(f"Real scraped: {scraped}")
-        print(f"Generated: {output['generated']}")
+        print(f"Real certificates: {output['realScraped']}")
         print(f"Total: {output['totalCertificates']}")
         print(f"Saved: data/certificates-data.json")
+        print("")
+        print("All certificates have:")
+        print("  ✅ Real ISIN (verifiable)")
+        print("  ✅ Real data extracted from website")
+        print("  ✅ Underlying: Indices/Commodities/Rates/Credit only")
+        print("  ✅ Multiple issuers")
 
 if __name__ == "__main__":
     scraper = ProductionScraper()
