@@ -143,48 +143,52 @@ class ProductionScraper:
         
         # Get issuer
         def get_issuer():
+            """Extract issuer ONLY from Scheda Emittente table - NO fallback"""
             section = soup.find('h3', string=re.compile('Scheda Emittente', re.IGNORECASE))
             if section:
-                parent = section.find_parent('div')
+                # Find panel or parent div
+                parent = section.find_parent('div', class_='panel')
+                if not parent:
+                    parent = section.find_parent('div', class_='panel-body')
+                if not parent:
+                    parent = section.find_parent('div')
+                
                 if parent:
                     table = parent.find('table')
                     if table:
-                        for td in table.find_all('td'):
+                        # Strategy: Issuer is typically the FIRST td that contains ONLY letters/spaces
+                        # and is NOT a rating
+                        all_tds = table.find_all('td')
+                        
+                        for td in all_tds:
                             text = td.get_text(strip=True)
-                            # Better filtering: short name, has letters, no Rating/percentages
-                            if text and 2 < len(text) < 50 and 'Rating' not in text and ':' not in text and '%' not in text:
-                                if any(char.isalpha() for char in text):
-                                    return text
+                            
+                            # Skip if empty or too short
+                            if not text or len(text) < 3:
+                                continue
+                            
+                            # Skip if contains "Rating" or ":" or "%" 
+                            if any(x in text for x in ['Rating', ':', '%', 'del', '/']):
+                                continue
+                            
+                            # Skip if contains numbers (ratings often have numbers)
+                            if any(char.isdigit() for char in text):
+                                continue
+                            
+                            # Skip if all uppercase and very long (probably description)
+                            if text.isupper() and len(text) > 30:
+                                continue
+                            
+                            # This should be the issuer!
+                            # Clean it up
+                            text = text.strip()
+                            
+                            # Return first valid match
+                            if len(text) > 2 and len(text) < 50:
+                                return text
             
-            # Fallback: expanded known issuers with variants
-            known_issuers = {
-                'Santander': ['Santander', 'SANTANDER'],
-                'Leonteq': ['Leonteq', 'LEONTEQ'],
-                'Vontobel': ['Vontobel', 'VONTOBEL'],
-                'BNP Paribas': ['BNP Paribas', 'BNP PARIBAS', 'BNPP', 'Bnp'],
-                'UniCredit': ['UniCredit', 'UNICREDIT', 'Unicredit'],
-                'Intesa Sanpaolo': ['Intesa Sanpaolo', 'INTESA SANPAOLO', 'Intesa'],
-                'Barclays': ['Barclays', 'BARCLAYS'],
-                'Citigroup': ['Citigroup', 'CITIGROUP', 'Citi'],
-                'UBS': ['UBS'],
-                'Goldman Sachs': ['Goldman Sachs', 'GOLDMAN SACHS', 'Goldman'],
-                'Societe Generale': ['Societe Generale', 'SOCIETE GENERALE', 'SocGen'],
-                'Morgan Stanley': ['Morgan Stanley', 'MORGAN STANLEY'],
-                'Banca Akros': ['Banca Akros', 'BANCA AKROS', 'Akros'],
-                'Mediobanca': ['Mediobanca', 'MEDIOBANCA'],
-                'Natixis': ['Natixis', 'NATIXIS'],
-                'HSBC': ['HSBC'],
-                'Credit Suisse': ['Credit Suisse', 'CREDIT SUISSE'],
-                'Deutsche Bank': ['Deutsche Bank', 'DEUTSCHE BANK'],
-                'JP Morgan': ['JP Morgan', 'JPMORGAN', 'JPMorgan'],
-                'Marex': ['Marex', 'MAREX']
-            }
-            
-            page_text = soup.get_text()
-            for issuer_name, variants in known_issuers.items():
-                for variant in variants:
-                    if variant in page_text:
-                        return issuer_name
+            # NO FALLBACK! Return None if not found in table
+            # This forces us to skip certificates where we can't identify issuer properly
             return None
         
         # Get barrier
@@ -288,7 +292,13 @@ class ProductionScraper:
             cert['name'] = f"Certificate {isin}"
         
         # Extract fields
-        issuer = get_issuer() or "N/A"
+        issuer = get_issuer()
+        
+        # CRITICAL: Skip certificate if we can't identify issuer
+        # This prevents "Vontobel" fallback pollution
+        if not issuer or issuer == "N/A":
+            return None  # Skip this certificate
+        
         cert['issuer'] = issuer
         
         # Track issuer diversity
@@ -296,15 +306,21 @@ class ProductionScraper:
             self.issuers_count[issuer] = self.issuers_count.get(issuer, 0) + 1
         
         cert['barrier'] = get_barrier()
+        cert['barrier_down'] = cert['barrier']  # Backend expects barrier_down
         cert['coupon'] = get_coupon()
+        cert['coupon_monthly'] = cert['coupon']  # Store monthly too
         cert['price'] = get_price()
         cert['maturity'] = get_maturity()
+        cert['maturity_date'] = cert['maturity']  # Alias
         cert['strike'] = get_strike()
+        cert['strike_level'] = cert['strike']  # Alias
         cert['underlying'] = get_underlying_name()
+        cert['underlying_name'] = cert['underlying']  # Alias
         cert['underlying_category'] = underlying_type  # Add underlying info
         
         if cert['price']:
             cert['last_price'] = cert['price']
+            cert['emission_price'] = cert['price']
         
         # Type detection
         text = soup.get_text().lower()
@@ -351,6 +367,18 @@ class ProductionScraper:
         cert['time'] = datetime.now().strftime('%H:%M:%S')
         cert['last_update'] = datetime.now().isoformat()
         
+        # Additional frontend fields
+        cert['emission_date'] = None  # Could be extracted if needed
+        cert['valuation_date'] = cert.get('maturity')
+        cert['autocallable'] = 'express' in cert.get('type', '').lower() or 'autocall' in text
+        cert['capital_protection'] = 'airbag' in cert.get('type', '').lower() or 'protect' in text
+        cert['memory_effect'] = 'memory' in cert.get('type', '').lower()
+        
+        # Ensure all N/A fields are None for proper JSON handling
+        for key in ['barrier', 'barrier_down', 'coupon', 'price', 'maturity', 'strike', 'underlying']:
+            if cert.get(key) == "N/A" or cert.get(key) == "":
+                cert[key] = None
+        
         return cert
 
     async def run(self):
@@ -371,7 +399,7 @@ class ProductionScraper:
         print("Scraping certificates...")
         extracted = 0
         attempts = 0
-        max_attempts = 500  # Increase attempts to get 100 valid ones
+        max_attempts = 800  # Increase to account for issuer filtering
         
         for i, isin in enumerate(all_isins[:max_attempts], 1):
             if len(self.certificates) >= self.target:
@@ -387,6 +415,11 @@ class ProductionScraper:
                 if extracted % 10 == 0:
                     print(f"  Progress: {extracted}/{self.target} certificates extracted")
                     print(f"  Issuers so far: {list(self.issuers_count.keys())}")
+            
+            # Stop if we've tried many and have decent diversity
+            if attempts >= 400 and len(self.certificates) >= 50 and len(self.issuers_count) >= 5:
+                print(f"  Early stop: {len(self.certificates)} certs with {len(self.issuers_count)} issuers")
+                break
             
             await asyncio.sleep(0.5)  # Rate limiting
         
@@ -406,6 +439,18 @@ class ProductionScraper:
     def save(self):
         """Save results"""
         
+        # Build metadata matching backend expectations
+        metadata = {
+            'timestamp': datetime.now().isoformat(),
+            'lastUpdate': datetime.now().isoformat(),
+            'source': 'certificatiederivati.it',
+            'method': 'playwright-production-real-only',
+            'total': len(self.certificates),
+            'filter': 'indices, commodities, rates, credit linked only',
+            'issuers_count': len(self.issuers_count),
+            'issuers': list(self.issuers_count.keys())
+        }
+        
         output = {
             'success': True,
             'source': 'certificatiederivati.it',
@@ -416,6 +461,7 @@ class ProductionScraper:
             'generated': 0,
             'filter': 'indices, commodities, rates, credit linked only',
             'issuers': list(self.issuers_count.keys()),
+            'metadata': metadata,  # Add metadata object
             'certificates': self.certificates
         }
         
