@@ -1,57 +1,55 @@
-name: Production - Update Certificates
+name: Production Certificates Scraper
 
 on:
   schedule:
-    - cron: '0 2 * * *'  # Daily at 2 AM
-  workflow_dispatch:
+    # Esegue ogni giorno alle 02:00 AM UTC
+    - cron: '0 2 * * *'
+  workflow_dispatch: # Permette di avviare manualmente il workflow da GitHub
 
 jobs:
-  update-certificates:
+  scrape-and-update:
     runs-on: ubuntu-latest
-    timeout-minutes: 90  # Increased for 100 real certificates
     
+    permissions:
+      contents: write # Permesso fondamentale per fare commit del file JSON
+
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v3
-      
-      - name: Setup Python
+
+      - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.11'
-      
+          python-version: '3.9'
+
       - name: Install dependencies
         run: |
-          pip install playwright beautifulsoup4
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          
+      - name: Install Playwright Browsers
+        run: |
           playwright install chromium
-          playwright install-deps
-      
-      - name: Create data directory
-        run: mkdir -p data
-      
-      - name: Run production scraper
+          
+      - name: Run Scraper
         run: python production_scraper.py
-      
-      - name: Verify output
+        
+      - name: Check for changes
+        id: git-check
         run: |
-          if [ -f data/certificates-data.json ]; then
-            echo "✅ File created"
-            CERT_COUNT=$(grep -o '"isin"' data/certificates-data.json | wc -l)
-            echo "Certificates: $CERT_COUNT"
-            
-            if [ "$CERT_COUNT" -ge 50 ]; then
-              echo "✅ Count OK (target: 100, minimum: 50)"
-              echo "All certificates are REAL with verified underlyings"
-            else
-              echo "⚠️  Only $CERT_COUNT certificates (expected 50-100)"
-            fi
-          else
-            echo "❌ File not found"
-            exit 1
-          fi
-      
-      - name: Commit and push
-        run: |
-          git config user.email "action@github.com"
-          git config user.name "GitHub Action"
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
           git add data/certificates-data.json
-          git diff --staged --quiet || git commit -m "Update certificates $(date +'%Y-%m-%d %H:%M')" && git push
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+            echo "changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "Changes detected"
+            echo "changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit and Push changes
+        if: steps.git-check.outputs.changes == 'true'
+        run: |
+          git commit -m "🤖 Auto-update: Dati certificati aggiornati"
+          git push
