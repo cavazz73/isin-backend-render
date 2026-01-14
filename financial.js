@@ -6,270 +6,138 @@
 
 const express = require('express');
 const router = express.Router();
+const fs = require('fs');
+const path = require('path');
+const { exec } = require('child_process');
+const util = require('util');
+const execPromise = util.promisify(exec);
 const DataAggregator = require('./dataAggregator');
 
-// Initialize Data Aggregator
-const aggregator = new DataAggregator({
-    finnhubKey: process.env.FINNHUB_API_KEY,
-    alphavantageKey: process.env.ALPHA_VANTAGE_API_KEY,
-    fmpKey: process.env.FMP_API_KEY
-});
+// Inizializza aggregatore esterno (Yahoo/Finnhub)
+const aggregator = new DataAggregator();
 
-/**
- * Detect query type: ISIN, symbol, or company name
- */
-function detectQueryType(query) {
-    const cleaned = query.trim().toUpperCase();
-    
-    // ISIN: 12 characters, starts with 2 letters
-    if (/^[A-Z]{2}[A-Z0-9]{10}$/.test(cleaned)) {
-        return 'isin';
+// --- FUNZIONE: Carica dati dai file JSON locali ---
+function searchLocalDatabase(filename, query, typeLabel) {
+    try {
+        const filePath = path.join(__dirname, 'data', filename);
+        if (!fs.existsSync(filePath)) return [];
+
+        const raw = fs.readFileSync(filePath, 'utf8');
+        const data = JSON.parse(raw);
+        
+        // Normalizza i dati: i bond a volte sono nidificati, i certificati sono liste piatte
+        let items = [];
+        
+        if (filename.includes('certificates')) {
+            items = data.certificates || [];
+        } else if (filename.includes('bonds')) {
+            // Se i bonds sono divisi per categorie, li appiattiamo
+            if (data.categories) {
+                Object.values(data.categories).forEach(cat => {
+                    if (cat.bonds) items.push(...cat.bonds);
+                });
+            } else if (Array.isArray(data)) {
+                items = data;
+            }
+        }
+
+        const q = query.toUpperCase();
+        
+        // Filtro
+        return items.filter(item => {
+            const isin = (item.isin || "").toUpperCase();
+            const name = (item.name || "").toUpperCase();
+            return isin.includes(q) || name.includes(q);
+        }).slice(0, 5).map(item => ({
+            symbol: item.isin,         // Standardizziamo su 'symbol' per il frontend
+            name: item.name,
+            type: typeLabel,           // 'CERTIFICATE' o 'BOND'
+            price: item.price || item.bid_price || 0,
+            currency: item.currency || 'EUR',
+            source: 'Local DB',
+            score: item.isin === q ? 100 : 50 // Priorità ai match esatti
+        }));
+
+    } catch (e) {
+        console.error(`Errore lettura ${filename}:`, e.message);
+        return [];
     }
-    
-    // Symbol: Usually 1-5 letters, may include .
-    if (/^[A-Z]{1,5}(\.[A-Z]{1,2})?$/.test(cleaned)) {
-        return 'symbol';
-    }
-    
-    // Otherwise assume company name
-    return 'name';
 }
 
-// ===================================
-// UNIFIED SEARCH
-// ===================================
+// --- ENDPOINT RICERCA UNIFICATA ---
 router.get('/search', async (req, res) => {
-    try {
-        const { q } = req.query;
-        
-        if (!q) {
-            return res.status(400).json({
-                success: false,
-                error: 'Query parameter "q" is required'
-            });
-        }
+    const query = req.query.q;
+    if (!query || query.length < 2) return res.json({ success: false, error: 'Query too short' });
 
-        console.log(`[API] Search request: "${q}"`);
+    const qUpper = query.toUpperCase();
+    console.log(`🔍 [SEARCH] Query: "${qUpper}"`);
 
-        // Detect query type
-        const queryType = detectQueryType(q);
-        console.log(`[API] Query type detected: ${queryType}`);
+    // 1. CERCA LOCALMENTE (Certificati e Bond)
+    const localCerts = searchLocalDatabase('certificates-data.json', qUpper, 'CERTIFICATE');
+    const localBonds = searchLocalDatabase('bonds-data.json', qUpper, 'BOND');
+    
+    let results = [...localCerts, ...localBonds];
 
-        let result;
+    // 2. SE È UN ISIN E NON LO TROVIAMO -> LIVE SCRAPING (Python)
+    const isISIN = /^[A-Z]{2}[A-Z0-9]{9}\d$/.test(qUpper);
+    const exactMatchFound = results.some(r => r.symbol === qUpper);
 
-        if (queryType === 'isin') {
-            result = await aggregator.searchByISIN(q);
-        } else {
-            result = await aggregator.search(q);
-        }
-
-        if (!result.success) {
-            return res.status(404).json({
-                success: false,
-                error: 'No results found',
-                query: q,
-                queryType: queryType
-            });
-        }
-
-        res.json({
-            success: true,
-            results: result.results,
-            metadata: {
-                ...result.metadata,
-                query: q,
-                queryType: queryType
+    if (isISIN && !exactMatchFound) {
+        console.log(`⚠️ ISIN sconosciuto localmente. Avvio Hunter Python...`);
+        try {
+            // Chiama lo scraper in modalità "ISIN singolo"
+            // Timeout 15 secondi per non far aspettare troppo l'utente
+            const { stdout } = await execPromise(`python production_scraper.py --isin ${qUpper}`, { timeout: 15000 });
+            
+            if (stdout.trim()) {
+                try {
+                    const liveData = JSON.parse(stdout);
+                    if (!liveData.error) {
+                        results.unshift({
+                            symbol: liveData.isin,
+                            name: liveData.name,
+                            type: liveData.type, // CERTIFICATE (o altro se espandiamo python)
+                            price: liveData.price,
+                            currency: liveData.currency,
+                            source: 'Live Web',
+                            score: 100
+                        });
+                    }
+                } catch (jsonErr) {
+                    console.warn("Output Python non valido:", stdout);
+                }
             }
-        });
-
-    } catch (error) {
-        console.error('[API] Search error:', error);
-        res.status(500).json({
-            success: false,
-            error: error.message
-        });
+        } catch (err) {
+            console.warn("Hunter Python timeout o errore:", err.message);
+        }
     }
-});
 
-// ===================================
-// INSTRUMENT DETAILS (Complete with fundamentals)
-// ===================================
-router.get('/details/:symbol', async (req, res) => {
-    try {
-        const { symbol } = req.params;
-        
-        console.log(`[API] Details request: ${symbol}`);
-
-        const result = await aggregator.getInstrumentDetails(symbol);
-
-        if (!result.success) {
-            return res.status(404).json({
-                success: false,
-                error: 'Details not found',
-                symbol: symbol
-            });
+    // 3. CERCA ESTERNAMENTE (Azioni/ETF via Yahoo/Finnhub)
+    // Solo se non è un ISIN palese (per risparmiare chiamate API) o se l'utente vuole tutto
+    if (!isISIN || results.length === 0) {
+        try {
+            const externalResults = await aggregator.search(query);
+            if (externalResults && externalResults.results) {
+                // Aggiungiamo solo se non duplicano (per ISIN rari che Yahoo conosce)
+                const newItems = externalResults.results.filter(ext => 
+                    !results.some(loc => loc.symbol === ext.symbol)
+                );
+                results.push(...newItems);
+            }
+        } catch (e) {
+            console.warn("API Esterne saltate o errore:", e.message);
         }
-
-        res.json({
-            success: true,
-            data: result.data,
-            source: result.source,
-            fromCache: result.fromCache || false
-        });
-
-    } catch (error) {
-        console.error('[API] Details error:', error);
-        res.status(500).json({
-            success: false,
-            error: error.message
-        });
     }
-});
 
-// ===================================
-// REAL-TIME QUOTE
-// ===================================
-router.get('/quote/:symbol', async (req, res) => {
-    try {
-        const { symbol } = req.params;
-        
-        console.log(`[API] Quote request: ${symbol}`);
+    // 4. ORDINAMENTO E RISPOSTA
+    // Mette in cima i match esatti e i dati locali
+    results.sort((a, b) => (b.score || 0) - (a.score || 0));
 
-        const result = await aggregator.getQuote(symbol);
-
-        if (!result.success) {
-            return res.status(404).json({
-                success: false,
-                error: 'Quote not found',
-                symbol: symbol
-            });
-        }
-
-        res.json({
-            success: true,
-            data: result.data,
-            source: result.source
-        });
-
-    } catch (error) {
-        console.error('[API] Quote error:', error);
-        res.status(500).json({
-            success: false,
-            error: error.message
-        });
-    }
-});
-
-// ===================================
-// HISTORICAL DATA
-// ===================================
-router.get('/historical/:symbol', async (req, res) => {
-    try {
-        const { symbol } = req.params;
-        const { period = '1M' } = req.query;
-
-        console.log(`[API] Historical data request: ${symbol}, period: ${period}`);
-
-        const result = await aggregator.getHistoricalData(symbol, period);
-
-        if (!result.success) {
-            return res.status(404).json({
-                success: false,
-                error: 'Historical data not found',
-                symbol: symbol,
-                period: period
-            });
-        }
-
-        res.json({
-            success: true,
-            symbol: result.symbol,
-            data: result.data,
-            source: result.source,
-            period: period
-        });
-
-    } catch (error) {
-        console.error('[API] Historical data error:', error);
-        res.status(500).json({
-            success: false,
-            error: error.message
-        });
-    }
-});
-
-// ===================================
-// TEST ENDPOINT
-// ===================================
-router.get('/test', async (req, res) => {
-    try {
-        const testResults = {
-            timestamp: new Date().toISOString(),
-            tests: {}
-        };
-
-        // Test Yahoo Finance
-        try {
-            const yahooResult = await aggregator.yahoo.search('ENEL');
-            testResults.tests.yahoo = {
-                status: yahooResult.success ? 'OK' : 'FAIL',
-                results: yahooResult.results?.length || 0
-            };
-        } catch (e) {
-            testResults.tests.yahoo = { status: 'ERROR', error: e.message };
-        }
-
-        // Test TwelveData
-        try {
-            const twelveResult = await aggregator.twelvedata.search('AAPL');
-            testResults.tests.twelvedata = {
-                status: twelveResult.success ? 'OK' : 'FAIL',
-                results: twelveResult.results?.length || 0
-            };
-        } catch (e) {
-            testResults.tests.twelvedata = { status: 'ERROR', error: e.message };
-        }
-
-        // Test Finnhub
-        try {
-            const finnhubResult = await aggregator.finnhub.search('AAPL');
-            testResults.tests.finnhub = {
-                status: finnhubResult.success ? 'OK' : 'FAIL',
-                results: finnhubResult.results?.length || 0
-            };
-        } catch (e) {
-            testResults.tests.finnhub = { status: 'ERROR', error: e.message };
-        }
-
-        // Test Alpha Vantage
-        try {
-            const avResult = await aggregator.alphavantage.search('IBM');
-            testResults.tests.alphavantage = {
-                status: avResult.success ? 'OK' : 'FAIL',
-                results: avResult.results?.length || 0
-            };
-        } catch (e) {
-            testResults.tests.alphavantage = { status: 'ERROR', error: e.message };
-        }
-
-        // Test FMP
-        try {
-            const fmpResult = await aggregator.fmp.search('TSLA');
-            testResults.tests.fmp = {
-                status: fmpResult.success ? 'OK' : 'FAIL',
-                results: fmpResult.results?.length || 0
-            };
-        } catch (e) {
-            testResults.tests.fmp = { status: 'ERROR', error: e.message };
-        }
-
-        res.json(testResults);
-
-    } catch (error) {
-        res.status(500).json({
-            error: error.message
-        });
-    }
+    res.json({
+        success: true,
+        count: results.length,
+        results: results.slice(0, 15) // Top 15 risultati misti
+    });
 });
 
 module.exports = router;
