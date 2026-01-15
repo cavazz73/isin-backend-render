@@ -2,12 +2,8 @@
  * Copyright (c) 2024-2025 Mutna S.R.L.S. - All Rights Reserved
  * P.IVA: 04219740364
  * 
- * Certificates API Routes - FIXED VERSION
- * Adds automatic calculation of missing fields:
- * - buffer_from_barrier
- * - buffer_from_trigger  
- * - effective_annual_yield
- * - scenario_analysis
+ * Certificates API Routes
+ * Serves certificates data from certificates-data.json (no live scraping)
  */
 
 const express = require('express');
@@ -20,22 +16,28 @@ const path = require('path');
 // ===================================
 
 let certificatesData = {
-    metadata: {},
+    lastUpdate: null,
+    totalCertificates: 0,
+    categories: {},
     certificates: []
 };
 
 function loadCertificatesData() {
     try {
-        const dataPath = path.join(__dirname, 'certificates-data.json');
+        const dataPath = path.join(__dirname, 'data', 'certificates-data.json');
+        
         if (fs.existsSync(dataPath)) {
             const rawData = fs.readFileSync(dataPath, 'utf8');
             certificatesData = JSON.parse(rawData);
-            console.log(`✅ Loaded ${certificatesData.certificates.length} certificates`);
+            
+            console.log(`✅ [CERTIFICATES] Loaded ${certificatesData.certificates.length} certificates`);
+            console.log(`   Last update: ${certificatesData.lastUpdate}`);
+            console.log(`   Categories: ${Object.keys(certificatesData.categories || {}).length}`);
         } else {
-            console.warn('⚠️  certificates-data.json not found, using empty dataset');
+            console.warn('⚠️  [CERTIFICATES] certificates-data.json not found at:', dataPath);
         }
     } catch (error) {
-        console.error('❌ Error loading certificates data:', error.message);
+        console.error('❌ [CERTIFICATES] Error loading data:', error.message);
     }
 }
 
@@ -52,21 +54,35 @@ setInterval(loadCertificatesData, 6 * 60 * 60 * 1000);
 router.get('/', async (req, res) => {
     try {
         const {
-            type,           // Certificate type filter
+            // Filters
+            type,           // Certificate type
             issuer,         // Issuer filter
+            minCoupon,      // Minimum coupon
+            maxCoupon,      // Maximum coupon
             minYield,       // Minimum annual yield
             maxYield,       // Maximum annual yield
-            minBarrier,     // Minimum barrier
-            maxBarrier,     // Maximum barrier
-            limit = 100     // Results limit
+            search,         // Search in ISIN/Name
+            
+            // Pagination
+            page = 1,       // Current page
+            limit = 20,     // Items per page
+            
+            // Sorting
+            sortBy = 'name',     // Sort field
+            sortOrder = 'asc'    // Sort order (asc/desc)
         } = req.query;
+
+        // Parse pagination params
+        const pageNum = Math.max(1, parseInt(page));
+        const limitNum = Math.min(Math.max(1, parseInt(limit)), 100); // Max 100 per page
+        const offset = (pageNum - 1) * limitNum;
 
         let filtered = [...certificatesData.certificates];
 
         // Apply filters
         if (type) {
             filtered = filtered.filter(c => 
-                c.type && c.type.toLowerCase().includes(type.toLowerCase())
+                c.type && c.type.toLowerCase() === type.toLowerCase()
             );
         }
 
@@ -76,49 +92,128 @@ router.get('/', async (req, res) => {
             );
         }
 
-        if (minYield) {
+        if (minCoupon) {
             filtered = filtered.filter(c => 
-                c.annual_coupon_yield >= parseFloat(minYield)
+                c.coupon && c.coupon >= parseFloat(minCoupon)
             );
+        }
+
+        if (maxCoupon) {
+            filtered = filtered.filter(c => 
+                c.coupon && c.coupon <= parseFloat(maxCoupon)
+            );
+        }
+
+        if (minYield) {
+            const minYieldVal = parseFloat(minYield);
+            filtered = filtered.filter(c => {
+                const yieldVal = c.annual_coupon_yield || c.change_percent || 0;
+                return yieldVal >= minYieldVal;
+            });
         }
 
         if (maxYield) {
+            const maxYieldVal = parseFloat(maxYield);
+            filtered = filtered.filter(c => {
+                const yieldVal = c.annual_coupon_yield || c.change_percent || 0;
+                return yieldVal <= maxYieldVal;
+            });
+        }
+
+        // Search filter
+        if (search && search.trim().length > 0) {
+            const searchLower = search.toLowerCase().trim();
             filtered = filtered.filter(c => 
-                c.annual_coupon_yield <= parseFloat(maxYield)
+                (c.isin && c.isin.toLowerCase().includes(searchLower)) ||
+                (c.name && c.name.toLowerCase().includes(searchLower)) ||
+                (c.symbol && c.symbol.toLowerCase().includes(searchLower)) ||
+                (c.issuer && c.issuer.toLowerCase().includes(searchLower))
             );
         }
 
-        if (minBarrier) {
-            filtered = filtered.filter(c => 
-                c.barrier_down >= parseFloat(minBarrier)
-            );
-        }
+        // Sorting
+        filtered.sort((a, b) => {
+            let aVal, bVal;
 
-        if (maxBarrier) {
-            filtered = filtered.filter(c => 
-                c.barrier_down <= parseFloat(maxBarrier)
-            );
-        }
+            switch(sortBy) {
+                case 'price':
+                    aVal = a.last_price || a.price || 0;
+                    bVal = b.last_price || b.price || 0;
+                    break;
+                case 'yield':
+                    aVal = a.annual_coupon_yield || a.change_percent || 0;
+                    bVal = b.annual_coupon_yield || b.change_percent || 0;
+                    break;
+                case 'coupon':
+                    aVal = a.coupon || 0;
+                    bVal = b.coupon || 0;
+                    break;
+                case 'issuer':
+                    aVal = (a.issuer || '').toLowerCase();
+                    bVal = (b.issuer || '').toLowerCase();
+                    break;
+                case 'name':
+                default:
+                    aVal = (a.name || '').toLowerCase();
+                    bVal = (b.name || '').toLowerCase();
+                    break;
+            }
 
-        // Apply limit
-        const limited = filtered.slice(0, parseInt(limit));
+            if (sortOrder === 'desc') {
+                return aVal > bVal ? -1 : aVal < bVal ? 1 : 0;
+            } else {
+                return aVal < bVal ? -1 : aVal > bVal ? 1 : 0;
+            }
+        });
 
-        // ENHANCE certificates with calculated fields
-        const enhanced = limited.map(cert => enhanceCertificate(cert));
+        // Calculate pagination
+        const total = filtered.length;
+        const totalPages = Math.ceil(total / limitNum);
+        const paginated = filtered.slice(offset, offset + limitNum);
 
         res.json({
             success: true,
-            count: enhanced.length,
-            total: filtered.length,
-            metadata: certificatesData.metadata,
-            certificates: enhanced
+            count: paginated.length,
+            total: total,
+            totalAvailable: certificatesData.certificates.length,
+            lastUpdate: certificatesData.lastUpdate,
+            certificates: paginated,
+            
+            // Pagination metadata
+            pagination: {
+                page: pageNum,
+                limit: limitNum,
+                totalPages: totalPages,
+                hasNext: pageNum < totalPages,
+                hasPrev: pageNum > 1,
+                nextPage: pageNum < totalPages ? pageNum + 1 : null,
+                prevPage: pageNum > 1 ? pageNum - 1 : null
+            },
+            
+            // Applied filters (for frontend)
+            filters: {
+                type: type || null,
+                issuer: issuer || null,
+                minCoupon: minCoupon || null,
+                maxCoupon: maxCoupon || null,
+                minYield: minYield || null,
+                maxYield: maxYield || null,
+                search: search || null
+            },
+            
+            // Applied sorting (for frontend)
+            sort: {
+                by: sortBy,
+                order: sortOrder
+            }
         });
 
     } catch (error) {
-        console.error('[Certificates API] Error:', error);
+        console.error('❌ [CERTIFICATES] Error in GET /:', error);
         res.status(500).json({
             success: false,
-            error: error.message
+            error: 'Internal server error',
+            message: error.message
         });
     }
 });
@@ -143,19 +238,17 @@ router.get('/:isin', async (req, res) => {
             });
         }
 
-        // ENHANCE with calculated fields
-        const enhanced = enhanceCertificate(certificate);
-
         res.json({
             success: true,
-            certificate: enhanced
+            certificate: certificate
         });
 
     } catch (error) {
-        console.error('[Certificates API] Error:', error);
+        console.error('❌ [CERTIFICATES] Error in GET /:isin:', error);
         res.status(500).json({
             success: false,
-            error: error.message
+            error: 'Internal server error',
+            message: error.message
         });
     }
 });
@@ -164,245 +257,113 @@ router.get('/:isin', async (req, res) => {
 // SEARCH CERTIFICATES
 // ===================================
 
-router.get('/search', async (req, res) => {
+router.get('/search/query', async (req, res) => {
     try {
         const { q } = req.query;
-
-        if (!q) {
-            return res.status(400).json({
-                success: false,
-                error: 'Query parameter "q" is required'
+        
+        if (!q || q.length < 2) {
+            return res.json({
+                success: true,
+                count: 0,
+                certificates: []
             });
         }
 
         const query = q.toLowerCase();
-        
-        const results = certificatesData.certificates.filter(c => {
-            return (
-                (c.isin && c.isin.toLowerCase().includes(query)) ||
-                (c.name && c.name.toLowerCase().includes(query)) ||
-                (c.issuer && c.issuer.toLowerCase().includes(query)) ||
-                (c.type && c.type.toLowerCase().includes(query))
-            );
-        });
-
-        // ENHANCE results
-        const enhanced = results.map(cert => enhanceCertificate(cert));
+        const results = certificatesData.certificates.filter(c => 
+            (c.isin && c.isin.toLowerCase().includes(query)) ||
+            (c.name && c.name.toLowerCase().includes(query)) ||
+            (c.issuer && c.issuer.toLowerCase().includes(query))
+        );
 
         res.json({
             success: true,
-            count: enhanced.length,
+            count: results.length,
             query: q,
-            certificates: enhanced.slice(0, 50) // Limit to 50 results
+            certificates: results.slice(0, 50) // Limit search results
         });
 
     } catch (error) {
-        console.error('[Certificates API] Error:', error);
+        console.error('❌ [CERTIFICATES] Error in search:', error);
         res.status(500).json({
             success: false,
-            error: error.message
+            error: 'Internal server error',
+            message: error.message
         });
     }
 });
 
 // ===================================
-// GET CERTIFICATE TYPES
+// GET CATEGORIES
 // ===================================
 
-router.get('/meta/types', async (req, res) => {
+router.get('/meta/categories', async (req, res) => {
     try {
-        const types = [...new Set(certificatesData.certificates
-            .map(c => c.type)
-            .filter(t => t)
-        )];
-
         res.json({
             success: true,
-            count: types.length,
-            types: types.sort()
+            lastUpdate: certificatesData.lastUpdate,
+            categories: certificatesData.categories || {}
         });
-
     } catch (error) {
-        console.error('[Certificates API] Error:', error);
+        console.error('❌ [CERTIFICATES] Error in categories:', error);
         res.status(500).json({
             success: false,
-            error: error.message
+            error: 'Internal server error'
         });
     }
 });
 
 // ===================================
-// GET CERTIFICATE ISSUERS
-// ===================================
-
-router.get('/meta/issuers', async (req, res) => {
-    try {
-        const issuers = [...new Set(certificatesData.certificates
-            .map(c => c.issuer)
-            .filter(i => i)
-        )];
-
-        res.json({
-            success: true,
-            count: issuers.length,
-            issuers: issuers.sort()
-        });
-
-    } catch (error) {
-        console.error('[Certificates API] Error:', error);
-        res.status(500).json({
-            success: false,
-            error: error.message
-        });
-    }
-});
-
-// ===================================
-// GET STATISTICS
+// GET STATS
 // ===================================
 
 router.get('/meta/stats', async (req, res) => {
     try {
-        const certs = certificatesData.certificates;
-        
         const stats = {
-            total_certificates: certs.length,
-            
-            types: [...new Set(certs.map(c => c.type).filter(t => t))].length,
-            issuers: [...new Set(certs.map(c => c.issuer).filter(i => i))].length,
-            
-            avg_annual_yield: calculateAverage(certs, 'annual_coupon_yield'),
-            avg_barrier: calculateAverage(certs, 'barrier_down'),
-            
-            yield_range: {
-                min: Math.min(...certs.map(c => c.annual_coupon_yield || 0)),
-                max: Math.max(...certs.map(c => c.annual_coupon_yield || 0))
-            },
-            
-            barrier_range: {
-                min: Math.min(...certs.map(c => c.barrier_down || 0)),
-                max: Math.max(...certs.map(c => c.barrier_down || 0))
-            },
-            
-            last_update: certificatesData.metadata.timestamp
+            totalCertificates: certificatesData.certificates.length,
+            lastUpdate: certificatesData.lastUpdate,
+            categoriesCount: Object.keys(certificatesData.categories || {}).length,
+            byType: {}
         };
+
+        // Count by type
+        certificatesData.certificates.forEach(c => {
+            const type = c.type || 'other';
+            stats.byType[type] = (stats.byType[type] || 0) + 1;
+        });
 
         res.json({
             success: true,
-            statistics: stats
+            stats: stats
         });
 
     } catch (error) {
-        console.error('[Certificates API] Error:', error);
+        console.error('❌ [CERTIFICATES] Error in stats:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Internal server error'
+        });
+    }
+});
+
+// ===================================
+// RELOAD DATA (manual trigger)
+// ===================================
+
+router.post('/admin/reload', async (req, res) => {
+    try {
+        loadCertificatesData();
+        res.json({
+            success: true,
+            message: 'Certificates data reloaded',
+            count: certificatesData.certificates.length
+        });
+    } catch (error) {
         res.status(500).json({
             success: false,
             error: error.message
         });
     }
 });
-
-// ===================================
-// UTILITY FUNCTIONS
-// ===================================
-
-function calculateAverage(arr, field) {
-    const values = arr.map(item => item[field]).filter(v => v != null && !isNaN(v));
-    if (values.length === 0) return 0;
-    const sum = values.reduce((a, b) => a + b, 0);
-    return parseFloat((sum / values.length).toFixed(2));
-}
-
-/**
- * Enhance certificate with calculated fields
- */
-function enhanceCertificate(cert) {
-    // Calculate worst-of underlying (lowest variation)
-    const worstUnderlying = cert.underlyings && cert.underlyings.length > 0
-        ? cert.underlyings.reduce((worst, u) => 
-            (u.variation_pct < worst.variation_pct) ? u : worst
-          )
-        : null;
-
-    // Buffer from barrier (quanto manca alla barriera)
-    const buffer_from_barrier = worstUnderlying 
-        ? parseFloat((worstUnderlying.variation_pct - (-(100 - cert.barrier_down))).toFixed(2))
-        : 0;
-
-    // Buffer from trigger (quanto manca al trigger autocall)
-    const buffer_from_trigger = worstUnderlying && worstUnderlying.trigger_autocall
-        ? parseFloat((worstUnderlying.spot - worstUnderlying.trigger_autocall) / worstUnderlying.trigger_autocall * 100).toFixed(2)
-        : 0;
-
-    // Effective annual yield (considerando il prezzo corrente)
-    const currentPrice = cert.ask_price || cert.reference_price || 1000;
-    const effective_annual_yield = cert.annual_coupon_yield 
-        ? parseFloat((cert.annual_coupon_yield * (1000 / currentPrice)).toFixed(3))
-        : cert.annual_coupon_yield || 0;
-
-    // Generate scenario analysis
-    const scenario_analysis = generateScenarioAnalysis(cert, worstUnderlying);
-
-    return {
-        ...cert,
-        buffer_from_barrier,
-        buffer_from_trigger,
-        effective_annual_yield,
-        scenario_analysis
-    };
-}
-
-/**
- * Generate scenario analysis for certificate
- */
-function generateScenarioAnalysis(cert, worstUnderlying) {
-    if (!worstUnderlying) {
-        return {
-            scenarios: []
-        };
-    }
-
-    const currentSpot = worstUnderlying.spot;
-    const strike = worstUnderlying.strike;
-    const barrier = worstUnderlying.barrier;
-    const purchasePrice = cert.ask_price || cert.reference_price || 1000;
-
-    // Generate scenarios: -50%, -40%, -30%, -20%, -10%, 0%, +10%, +20%
-    const variations = [-50, -40, -30, -20, -10, 0, 10, 20];
-    
-    const scenarios = variations.map(varPct => {
-        const underlyingPrice = strike * (1 + varPct / 100);
-        
-        // Calculate redemption
-        let redemption;
-        if (underlyingPrice >= strike) {
-            // Above strike: full redemption (1000 EUR nominal)
-            redemption = 1000;
-        } else if (underlyingPrice >= barrier) {
-            // Between strike and barrier: full redemption (1000 EUR)
-            redemption = 1000;
-        } else {
-            // Below barrier: proportional loss
-            redemption = 1000 * (underlyingPrice / strike);
-        }
-
-        // P&L calculation
-        const pl = redemption - purchasePrice;
-        const pl_pct = (pl / purchasePrice) * 100;
-
-        return {
-            variation_pct: varPct,
-            underlying_price: parseFloat(underlyingPrice.toFixed(2)),
-            redemption: parseFloat(redemption.toFixed(2)),
-            pl: parseFloat(pl.toFixed(2)),
-            pl_pct: parseFloat(pl_pct.toFixed(2))
-        };
-    });
-
-    return {
-        scenarios,
-        purchase_price: purchasePrice,
-        worst_underlying: worstUnderlying.name
-    };
-}
 
 module.exports = router;
