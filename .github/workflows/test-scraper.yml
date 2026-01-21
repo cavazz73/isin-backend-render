@@ -1,0 +1,49 @@
+name: Test Scraper (Single Certificate)
+
+on:
+  # Solo esecuzione manuale
+  workflow_dispatch:
+    inputs:
+      isin:
+        description: 'ISIN to test (default: DE000VH6MX98)'
+        required: false
+        default: 'DE000VH6MX98'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📦 Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      
+      - name: 📥 Install dependencies
+        run: |
+          npm install playwright
+          npx playwright install chromium
+          npx playwright install-deps
+      
+      - name: 🧪 Run test scraper
+        run: |
+          node test-scraper.js ${{ github.event.inputs.isin }}
+      
+      - name: 📸 Upload screenshots
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-screenshots
+          path: |
+            test-screenshot-*.png
+            test-html-*.html
+          retention-days: 7
+      
+      - name: 📊 Display results
+        run: |
+          echo "🎉 Test completed!"
+          echo "📸 Screenshots saved as artifacts"
+          echo "👉 Download them from the Actions tab"
