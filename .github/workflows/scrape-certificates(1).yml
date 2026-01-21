@@ -1,0 +1,82 @@
+name: Scrape Certificates Data
+
+on:
+  # Esegui automaticamente ogni giorno alle 3:00 AM UTC
+  schedule:
+    - cron: '0 3 * * *'
+  
+  # Permetti esecuzione manuale dal tab Actions di GitHub
+  workflow_dispatch:
+  
+  # Esegui anche su push al branch main (opzionale)
+  # push:
+  #   branches: [ main ]
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # 1. Checkout del repository
+      - name: 📦 Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      # 2. Setup Node.js
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      
+      # 3. Installa dipendenze
+      - name: 📥 Install dependencies
+        run: |
+          npm install playwright
+          npx playwright install chromium
+          npx playwright install-deps
+      
+      # 4. Crea cartella data se non esiste
+      - name: 📁 Create data directory
+        run: mkdir -p data
+      
+      # 5. Esegui lo scraper
+      - name: 🕷️ Run certificates scraper
+        run: node certificates-scraper-fixed.js
+        continue-on-error: true
+      
+      # 6. Verifica che il file sia stato creato
+      - name: ✅ Verify data file exists
+        run: |
+          if [ -f "data/certificates-data.json" ]; then
+            echo "✅ certificates-data.json created successfully"
+            ls -lh data/certificates-data.json
+            echo "📊 File size: $(du -h data/certificates-data.json | cut -f1)"
+            echo "📋 Certificates count: $(grep -o '"isin"' data/certificates-data.json | wc -l)"
+          else
+            echo "❌ certificates-data.json not found"
+            exit 1
+          fi
+      
+      # 7. Configura Git
+      - name: ⚙️ Configure Git
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+      
+      # 8. Commit e push dei cambiamenti
+      - name: 📤 Commit and push changes
+        run: |
+          git add data/certificates-data.json
+          git diff --staged --quiet || git commit -m "Auto-update certificates data - $(date '+%Y-%m-%d %H:%M:%S')"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      # 9. Notifica successo
+      - name: 🎉 Success notification
+        if: success()
+        run: |
+          echo "✅ Certificates scraping completed successfully!"
+          echo "📦 Data updated and pushed to repository"
+          echo "🔄 Render will auto-deploy the new data"
