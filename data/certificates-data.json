@@ -2,13 +2,13 @@
   "success": true,
   "source": "Borsa Italiana + Teleborsa",
   "method": "playwright-real-scraping",
-  "lastUpdate": "2026-01-21T15:40:01.902Z",
-  "totalCertificates": 2,
+  "lastUpdate": "2026-01-21T15:48:10.501Z",
+  "totalCertificates": 5,
   "errors": 0,
   "metadata": {
-    "timestamp": "2026-01-21T15:40:01.902Z",
+    "timestamp": "2026-01-21T15:48:10.501Z",
     "source": "Borsa Italiana SeDeX",
-    "total": 2,
+    "total": 5,
     "complete_certificates": 0,
     "errors_count": 0
   },
@@ -20,6 +20,21 @@
     },
     {
       "isin": "XS2309091220",
+      "scraped": false,
+      "error": "No data available from any source"
+    },
+    {
+      "isin": "IT0005558470",
+      "scraped": false,
+      "error": "No data available from any source"
+    },
+    {
+      "isin": "DE000SY64HA8",
+      "scraped": false,
+      "error": "No data available from any source"
+    },
+    {
+      "isin": "NLBNPIT31O01",
       "scraped": false,
       "error": "No data available from any source"
     }
