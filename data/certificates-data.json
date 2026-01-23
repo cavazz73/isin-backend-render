@@ -1,41 +1,16 @@
 {
   "metadata": {
-    "version": "6.0",
-    "timestamp": "2026-01-23T15:50:00.305672",
+    "version": "7.0-advanced-search",
+    "timestamp": "2026-01-23T15:59:39.900649",
     "source": "certificatiederivati.it",
-    "total": 2,
-    "filter": "indices, rates, currencies, commodities"
+    "total": 0,
+    "categories": [
+      "index",
+      "commodity",
+      "currency",
+      "rate"
+    ],
+    "method": "advanced_search"
   },
-  "certificates": [
-    {
-      "isin": "XS3239690780",
-      "name": "PHOENIX MEMORY",
-      "type": "Phoenix Memory",
-      "issuer": "Barclays",
-      "market": "CX",
-      "currency": "EUR",
-      "underlying": "Basket of Indices",
-      "underlying_category": "index",
-      "issue_date": "2026-01-22",
-      "maturity_date": null,
-      "barrier_down": null,
-      "coupon": null,
-      "scraped_at": "2026-01-23T15:50:00.305655"
-    },
-    {
-      "isin": "DE000UN3FZ31",
-      "name": "CASH COLLECT MEMORY STEP DOWN",
-      "type": "Cash Collect",
-      "issuer": "UniCredit",
-      "market": "CX",
-      "currency": "EUR",
-      "underlying": "Basket of Indices",
-      "underlying_category": "index",
-      "issue_date": "2026-01-21",
-      "maturity_date": null,
-      "barrier_down": null,
-      "coupon": null,
-      "scraped_at": "2026-01-23T15:50:00.305669"
-    }
-  ]
+  "certificates": []
 }
