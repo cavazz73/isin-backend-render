@@ -13,13 +13,13 @@ TARGET_COUNT = 80
 OUTPUT_FILE = "data/certificates-data.json"
 
 # --- FILTRO ASSET CLASS ---
-# Queste keyword identificano Indici, Commodities e Tassi.
-# Se il nome/sottostante non ne contiene nessuna, viene considerato Azione e scartato.
+# Keyword per accettare solo Indici, Materie Prime, Valute e Tassi.
+# Tutto il resto (Azioni singole) viene scartato.
 VALID_KEYWORDS = [
     # Indici
     "EURO STOXX", "EUROSTOXX", "S&P", "SP500", "NASDAQ", "DOW JONES", "FTSE", "DAX", 
     "CAC", "IBEX", "NIKKEI", "HANG SENG", "MSCI", "STOXX", "BANKS", "AUTOMOBILES", 
-    "INSURANCE", "UTILITIES", "ENERGY", "TECH", "MIB", "LEONARDO", "ENI", "ENEL", "INTESA", # Aggiunti per sicurezza su blue chip italiane comuni negli indici
+    "INSURANCE", "UTILITIES", "ENERGY", "TECH", "MIB", "LEONARDO", "ENI", "ENEL", "INTESA",
     # Commodities
     "GOLD", "ORO", "SILVER", "ARGENTO", "OIL", "PETROLIO", "BRENT", "WTI", "GAS", 
     "COPPER", "RAME", "PALLADIUM", "PLATINUM", "WHEAT", "CORN", "NATURAL GAS",
@@ -36,8 +36,10 @@ def clean_text(text):
 def parse_float(text):
     if not text: return 0.0
     text = text.upper().replace('EUR', '').replace('€', '').replace('%', '').strip()
+    # Gestione formati: 1.234,56 vs 1234.56
     if ',' in text and '.' in text: text = text.replace('.', '').replace(',', '.')
     elif ',' in text: text = text.replace(',', '.')
+    
     clean = re.sub(r'[^\d.]', '', text)
     try: return float(clean)
     except: return 0.0
@@ -49,6 +51,7 @@ def is_valid_asset(underlying_name):
     return False
 
 def calculate_scenarios(price, strike, barrier):
+    """Genera scenari matematici per i grafici se mancano i dati"""
     if not price or price <= 0: return []
     if not strike or strike <= 0: strike = price
     if not barrier or barrier <= 0: barrier = strike * 0.60 
@@ -83,6 +86,8 @@ async def scrape_certificate(page, isin):
 
         content = await page.content()
         soup = BeautifulSoup(content, 'html.parser')
+        
+        # Estrazione Testo Grezzo ("Raggi X")
         full_text = clean_text(soup.get_text(separator=' | '))
 
         if "EMITTENTE" not in full_text.upper(): return None
@@ -93,7 +98,7 @@ async def scrape_certificate(page, isin):
         
         # 2. SOTTOSTANTE (Per filtro)
         sottostante = "N/D"
-        # Cerca la parola Sottostante seguita da testo
+        # Regex per trovare il sottostante
         m_und = re.search(r'Sottostante[^a-zA-Z0-9]{0,15}([a-zA-Z0-9 &/\.\-\+]{3,50})', full_text, re.IGNORECASE)
         if m_und: 
             sottostante = clean_text(m_und.group(1))
@@ -101,31 +106,10 @@ async def scrape_certificate(page, isin):
             sottostante = nome
 
         # FILTRO ASSET CLASS
-        # Se non è un asset valido (Indice/Commodity/Valuta), lo saltiamo
         if not is_valid_asset(sottostante) and not is_valid_asset(nome):
             return "SKIPPED_TYPE"
 
         # 3. PREZZO
         prezzo = 0.0
-        # Cerca Prezzo/Ultimo/Valore seguito da un numero
-        regex_prezzo = r'(?:Prezzo|Ultimo|Valore|Quotazione|Ask|Lettera)[^0-9]{0,30}(\d+[.,]\d+)'
-        match = re.search(regex_prezzo, full_text, re.IGNORECASE)
-        if match: prezzo = parse_float(match.group(1))
-        
-        if prezzo <= 0: return None
-
-        # 4. DATI TECNICI
-        def get_regex_val(keywords):
-            for kw in keywords:
-                pat = kw + r'[^0-9]{0,30}(\d+[.,]\d+)'
-                m = re.search(pat, full_text, re.IGNORECASE)
-                if m: return parse_float(m.group(1))
-            return 0.0
-
-        strike = get_regex_val(["Strike", "Iniziale", "Strike Level"])
-        barriera = get_regex_val(["Barriera", "Barrier", "Livello Barriera"])
-        cedola = get_regex_val(["Cedola", "Premio", "Bonus"])
-        
-        emittente = "N/D"
-        # Regex corretta per Emittente
-        m_em = re.search(r'Emittente[^a-zA-Z0-
+        # Cerca Prezzo seguito da un numero (ignorando testo intermedio)
+        regex_prezzo = r'(?:Prezzo|Ultimo|Valore|Quotazione|Ask|Lettera)[^0-9]{0,30}(\
