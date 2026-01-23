@@ -11,6 +11,7 @@ from datetime import datetime, timedelta
 # --- CONFIGURAZIONE ---
 TARGET_COUNT = 80
 OUTPUT_FILE = "data/certificates-data.json"
+ERROR_DIR = "debug_screenshots" # Cartella dove salverà le foto degli errori
 
 # --- HELPER ---
 def clean_text(text):
@@ -51,93 +52,92 @@ def calculate_scenarios(price, strike, barrier):
     return scenarios
 
 async def handle_cookies(page):
-    """Cerca e distrugge i banner dei cookie"""
+    """Tentativo aggressivo di chiudere i cookie"""
     try:
-        # Lista di selettori comuni per bottoni cookie
-        selectors = [
-            "#iubenda-cs-banner button.iubenda-cs-accept-btn", # Teleborsa
-            "button[class*='agree']", 
-            "button[class*='accept']", 
-            "button[id*='accept']",
-            "a[class*='iubenda-cs-accept-btn']",
-            "text=Accetta",
-            "text=Acconsento",
-            "text=Accept"
+        # Iubenda (Teleborsa)
+        if await page.is_visible("#iubenda-cs-banner", timeout=2000):
+            await page.click(".iubenda-cs-accept-btn", timeout=1000)
+            await asyncio.sleep(0.5)
+            return
+
+        # Generico
+        common_selectors = [
+            "text=Accetta tutto", "text=Acconsento", "text=Accept All", 
+            "button[class*='cookie']", "#cookie-banner button"
         ]
-        for sel in selectors:
-            try:
-                if await page.is_visible(sel, timeout=500):
-                    await page.click(sel)
-                    # print("   🍪 Cookie banner abbattuto.")
-                    await asyncio.sleep(0.5)
-                    return
-            except: pass
+        for sel in common_selectors:
+            if await page.is_visible(sel, timeout=500):
+                await page.click(sel)
+                return
     except: pass
 
 # ==========================================
-# ENGINE 1: TELEBORSA (STEALTH MODE)
+# ENGINE 1: TELEBORSA (Refined)
 # ==========================================
 async def scrape_teleborsa(page, isin):
     url = f"https://www.teleborsa.it/Ricerca?q={isin}"
     try:
-        await page.goto(url, timeout=30000, wait_until="domcontentloaded")
+        await page.goto(url, timeout=20000, wait_until="domcontentloaded")
         await handle_cookies(page)
 
-        # Gestione Lista Risultati
+        # Se siamo nella lista di ricerca
         if "Ricerca" in page.url:
-            # print(f"   🔎 Ricerca Teleborsa: Cerco link per {isin}...")
             try:
-                # Cerca link specifico o generico nella tabella risultati
-                await page.click(f"a[href*='{isin.lower()}'], a[href*='{isin.upper()}'], .search-results a", timeout=4000)
+                # Cerca link con ISIN
+                link_selector = f"a[href*='{isin.lower()}'], a[href*='{isin.upper()}']"
+                await page.wait_for_selector(link_selector, timeout=5000)
+                await page.click(link_selector)
                 await page.wait_for_load_state("domcontentloaded")
             except:
-                # print("   ⚠️ Nessun link cliccabile trovato nella ricerca.")
-                pass
+                # Screenshot debug se fallisce il click (spesso colpa dei cookie)
+                await page.screenshot(path=f"{ERROR_DIR}/fail_search_{isin}.png")
+                return None
+
+        # Attesa esplicita del prezzo
+        try:
+            # Teleborsa price classes: .t-text-xxl, or itemprop="price"
+            await page.wait_for_selector(".t-text-xxl, [itemprop='price']", timeout=5000)
+        except:
+            # Se timeout, forse pagina bianca o blocco
+            await page.screenshot(path=f"{ERROR_DIR}/fail_load_{isin}.png")
+            return None
 
         content = await page.content()
         soup = BeautifulSoup(content, 'html.parser')
 
-        # Check Nome
+        # Nome
         h1 = soup.find('h1')
-        if not h1: 
-            # print("   ⚠️ H1 non trovato (Pagina bianca?)")
-            return None
-            
-        nome = clean_text(h1.get_text())
-        
-        # Check Prezzo (Strategia Multipla)
+        nome = clean_text(h1.get_text()) if h1 else "N/D"
+
+        # Prezzo
         prezzo = 0.0
-        
-        # 1. Cerca nella classe specifica di Teleborsa
-        p_tag = soup.select_one(".t-text-xxl")
+        p_tag = soup.select_one(".t-text-xxl") or soup.select_one("[itemprop='price']")
         if p_tag: prezzo = parse_float(p_tag.get_text())
-        
-        # 2. Se fallisce, cerca itemprop="price"
-        if prezzo == 0:
-            p_tag = soup.select_one("[itemprop='price']")
-            if p_tag: prezzo = parse_float(p_tag.get_text())
-            
-        # 3. Se fallisce, cerca vicino alla parola "Prezzo"
-        if prezzo == 0:
-            lbl = soup.find(string=re.compile("Prezzo|Valore|Ultimo"))
-            if lbl:
-                # Cerca nei parenti o fratelli
-                clean_val = parse_float(lbl.find_next("span").get_text())
-                if clean_val > 0: prezzo = clean_val
 
         if prezzo <= 0: 
-            # print(f"   ⚠️ Prezzo 0 o non trovato per {nome}")
-            return None
+            # Ultimo tentativo: cerca "Prezzo" nel testo
+            x = soup.find(string=re.compile("Prezzo|Ultimo"))
+            if x: 
+                v = x.find_next("span")
+                if v: prezzo = parse_float(v.get_text())
 
-        # Dati Tecnici (Scanning brutale della pagina)
+        if prezzo <= 0: return None
+
+        # Dati Tecnici
         strike = 0.0
         barriera = 0.0
         cedola = 0.0
-        full_text = soup.get_text().upper()
         
-        # Parsing euristico se la tabella non è standard
-        # (Semplificato per velocità: usiamo defaults se non troviamo)
-        
+        # Scansiona tabelle
+        for td in soup.find_all("td"):
+            txt = clean_text(td.get_text()).upper()
+            val_tag = td.find_next_sibling("td")
+            if val_tag:
+                val = parse_float(val_tag.get_text())
+                if "CEDOLA" in txt: cedola = val
+                if "STRIKE" in txt or "LIVELLO INIZIALE" in txt: strike = val
+                if "BARRIERA" in txt: barriera = val
+
         if strike == 0: strike = prezzo
         if barriera == 0: barriera = prezzo * 0.60
 
@@ -161,28 +161,29 @@ async def scrape_teleborsa(page, isin):
         }
 
     except Exception as e:
-        # print(f"   ❌ Teleborsa Err: {e}")
         return None
 
 # ==========================================
-# ENGINE 2: CERTIFICATI & DERIVATI (STEALTH)
+# ENGINE 2: CED (Refined)
 # ==========================================
 async def scrape_ced(page, isin):
     url = f"https://www.certificatiederivati.it/db_bs_scheda_certificato.asp?isin={isin}"
     try:
-        await page.goto(url, timeout=30000, wait_until="domcontentloaded")
+        await page.goto(url, timeout=20000, wait_until="domcontentloaded")
         
-        # Check Redirect
         if "home.asp" in page.url: return None 
+
+        try:
+            await page.wait_for_selector("text=Scheda Sottostante", timeout=5000)
+        except: pass
 
         content = await page.content()
         soup = BeautifulSoup(content, 'html.parser')
 
-        # Check Validità
-        if not soup.find(string=re.compile("Emittente|Sottostante", re.IGNORECASE)):
+        if not soup.find(string=re.compile("Emittente", re.IGNORECASE)):
+            await page.screenshot(path=f"{ERROR_DIR}/fail_ced_{isin}.png")
             return None
 
-        # Helper
         def get_val(labels):
             if isinstance(labels, str): labels = [labels]
             for label in labels:
@@ -193,7 +194,8 @@ async def scrape_ced(page, isin):
             return None
 
         nome = clean_text(soup.find('td', class_='titolo_scheda').get_text())
-        prezzo = parse_float(get_val(["Prezzo", "Ultimo", "Valore"]))
+        # Aggiunti Denaro/Lettera/Quotazione per robustezza
+        prezzo = parse_float(get_val(["Prezzo", "Ultimo", "Valore", "Quotazione", "Denaro", "Lettera"]))
         
         if prezzo <= 0: return None
 
@@ -231,18 +233,22 @@ async def scrape_ced(page, isin):
 # ORCHESTRATOR
 # ==========================================
 async def process_isin(page, isin):
-    # Prova Teleborsa
+    # Teleborsa
     data = await scrape_teleborsa(page, isin)
     if data: return data
     
-    # Prova C&D
+    # CED
     data = await scrape_ced(page, isin)
     if data: return data
 
     return None
 
 async def run_batch():
-    print("--- 🚀 AVVIO STEALTH SCRAPER (Anti-Bot Mode) ---")
+    print("--- 🚀 AVVIO DIAGNOSTIC SCRAPER (With Screenshots) ---")
+    
+    if not os.path.exists(ERROR_DIR):
+        os.makedirs(ERROR_DIR)
+        
     results = []
     
     # Lista ISIN
@@ -254,18 +260,13 @@ async def run_batch():
     ]
     
     async with async_playwright() as p:
-        # LAUNCHER STEALTH: Argomenti per sembrare un vero Chrome
         browser = await p.chromium.launch(
             headless=True,
             args=[
                 '--disable-blink-features=AutomationControlled',
                 '--no-sandbox',
                 '--disable-setuid-sandbox',
-                '--disable-infobars',
-                '--window-position=0,0',
-                '--ignore-certifcate-errors',
-                '--ignore-certifcate-errors-spki-list',
-                '--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+                '--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36'
             ]
         )
         
@@ -273,11 +274,14 @@ async def run_batch():
             viewport={'width': 1920, 'height': 1080},
             locale='it-IT'
         )
+        
+        # Trucco per nascondere il driver al sito
+        await context.add_init_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
+
         page = await context.new_page()
 
-        # Discovery Rapida
+        # Discovery
         try:
-            # print("   📡 Discovery Nuove Emissioni...")
             await page.goto("https://www.certificatiederivati.it/db_bs_nuove_emissioni.asp", timeout=15000)
             links = await page.locator("a[href*='isin=']").all()
             for l in links[:30]:
@@ -299,7 +303,7 @@ async def run_batch():
                 results.append(data)
                 print(f"✅ OK: {isin} | {data['price']}€ ({data['source']})          ")
             else:
-                print(f"❌ SKIP: {isin} (Bloccato o Inesistente)          ")
+                print(f"❌ SKIP: {isin} (Vedi screenshot in {ERROR_DIR})          ")
         
         await browser.close()
 
@@ -316,13 +320,15 @@ async def run_batch():
     print(f"\n💾 Salvati {len(results)} certificati.")
 
 async def run_live(isin):
-    # Logica identica al batch ma per singolo ISIN
     async with async_playwright() as p:
         browser = await p.chromium.launch(
             headless=True,
-            args=['--disable-blink-features=AutomationControlled', '--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36']
+            args=['--disable-blink-features=AutomationControlled', '--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36']
         )
-        page = await browser.new_page()
+        context = await browser.new_context()
+        await context.add_init_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
+        page = await context.new_page()
+        
         data = await process_isin(page, isin)
         await browser.close()
         print(json.dumps(data if data else {"error": "not_found"}))
