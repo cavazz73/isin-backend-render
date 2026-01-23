@@ -59,8 +59,7 @@ def calculate_scenarios(price, strike, barrier):
             "pl_pct": round(pl_pct, 2)
         })
     return scenarios
-
-# --- CORE SCRAPER ---
+    # --- CORE SCRAPER ---
 async def scrape_certificate(page, isin):
     url = f"https://www.certificatiederivati.it/db_bs_scheda_certificato.asp?isin={isin}"
     try:
