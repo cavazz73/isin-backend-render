@@ -7,11 +7,9 @@ from playwright.async_api import async_playwright
 from bs4 import BeautifulSoup
 from datetime import datetime, timedelta
 
-# --- CONFIGURAZIONE ---
 TARGET_COUNT = 80
 OUTPUT_FILE = "data/certificates-data.json"
 
-# --- FILTRO ASSET CLASS ---
 VALID_KEYWORDS = [
     "EURO STOXX", "EUROSTOXX", "S&P", "SP500", "NASDAQ", "DOW JONES", "FTSE", "DAX", 
     "CAC", "IBEX", "NIKKEI", "HANG SENG", "MSCI", "STOXX", "BANKS", "AUTOMOBILES", 
@@ -59,41 +57,47 @@ def calculate_scenarios(price, strike, barrier):
             "pl_pct": round(pl_pct, 2)
         })
     return scenarios
-    # --- CORE SCRAPER ---
+
 async def scrape_certificate(page, isin):
     url = f"https://www.certificatiederivati.it/db_bs_scheda_certificato.asp?isin={isin}"
     try:
-        await page.goto(url, timeout=20000, wait_until="domcontentloaded")
-        if "home.asp" in page.url: return None
+        await page.goto(url, timeout=15000, wait_until="domcontentloaded")
+        if "home.asp" in page.url: return "ERR_REDIRECT"
 
         content = await page.content()
         soup = BeautifulSoup(content, 'html.parser')
-        full_text = clean_text(soup.get_text(separator=' | '))
+        full_text = clean_text(soup.get_text(separator=' ')) # Separator spazio semplice
 
-        if "EMITTENTE" not in full_text.upper(): return None
+        if "EMITTENTE" not in full_text.upper(): return "ERR_NO_DATA"
 
-        # 1. DATI BASE
+        # 1. NOME
         nome_tag = soup.find('td', class_='titolo_scheda')
         nome = clean_text(nome_tag.get_text()) if nome_tag else f"Cert {isin}"
         
-        m_und = re.search(r'Sottostante[^a-zA-Z0-9]{0,15}([a-zA-Z0-9 &/\.\-\+]{3,50})', full_text, re.IGNORECASE)
+        # 2. SOTTOSTANTE
+        m_und = re.search(r'Sottostante.{0,30}?([a-zA-Z0-9 &/\.\-\+]{3,50})', full_text, re.IGNORECASE)
         sottostante = clean_text(m_und.group(1)) if m_und else nome
 
-        # 2. FILTRO
+        # 3. FILTRO
         if not is_valid_asset(sottostante) and not is_valid_asset(nome):
             return "SKIPPED_TYPE"
 
-        # 3. PREZZO (Regex sicura)
+        # 4. PREZZO (Logica "Bulldozer")
         prezzo = 0.0
-        regex_prezzo = r'(?:Prezzo|Ultimo|Valore|Quotazione|Ask|Lettera)[^0-9]{0,30}(\d+[.,]\d+)'
-        match = re.search(regex_prezzo, full_text, re.IGNORECASE)
-        if match: prezzo = parse_float(match.group(1))
+        # A) Cerca con etichetta (fino a 80 caratteri di distanza)
+        regex_lbl = r'(?:Prezzo|Ultimo|Valore|Quotazione|Ask|Lettera|Denaro).{0,80}?(\d+[.,]\d+)'
+        match = re.search(regex_lbl, full_text, re.IGNORECASE)
+        if match: 
+            prezzo = parse_float(match.group(1))
         
-        if prezzo <= 0: return None
-
-        # 4. DATI TECNICI
+        # B) Fallback: Cerca un numero con formato valuta (XXX,XX)
+        if prezzo <= 0:
+            # Cerca numeri tipo 100,00 o 98.50 isolati
+            fallback = re.search(r' (\d{2,5}[.,]\d{2}) ', full_text)
+            if fallback: prezzo = parse_float(fallback.group(1))
+# 5. DATI TECNICI
         def get_val(kw):
-            pat = kw + r'[^0-9]{0,30}(\d+[.,]\d+)'
+            pat = kw + r'.{0,50}?(\d+[.,]\d+)'
             m = re.search(pat, full_text, re.IGNORECASE)
             return parse_float(m.group(1)) if m else 0.0
 
@@ -101,9 +105,8 @@ async def scrape_certificate(page, isin):
         barriera = get_val("Barriera|Barrier")
         cedola = get_val("Cedola|Premio")
         
-        emittente = "N/D"
-        m_em = re.search(r'Emittente[^a-zA-Z0-9]{0,20}([a-zA-Z ]{3,30})', full_text, re.IGNORECASE)
-        if m_em: emittente = clean_text(m_em.group(1))
+        m_em = re.search(r'Emittente.{0,30}?([a-zA-Z ]{3,30})', full_text, re.IGNORECASE)
+        emittente = clean_text(m_em.group(1)) if m_em else "N/D"
 
         if strike == 0: strike = prezzo
         if barriera == 0: barriera = prezzo * 0.60
@@ -118,11 +121,10 @@ async def scrape_certificate(page, isin):
             "scenario_analysis": calculate_scenarios(prezzo, strike, barriera),
             "source": "Certificati&Derivati"
         }
-    except: return None
+    except Exception as e: return f"ERR_EXC_{str(e)[:20]}"
 
-# --- RUNNER ---
 async def run_batch():
-    print("--- 🚀 AVVIO SCRAPER ---")
+    print("--- 🚀 AVVIO SCRAPER (Filtro Attivo) ---")
     results = []
     async with async_playwright() as p:
         browser = await p.chromium.launch(
@@ -137,22 +139,24 @@ async def run_batch():
             for h in hrefs:
                 m = re.search(r'isin=([A-Z0-9]{12})', h or "", re.IGNORECASE)
                 if m: isins.append(m.group(1))
-            isins = list(set(isins))[:200]
-        except: isins = ['IT0006771510', 'DE000HD8SXZ1']
+            isins = list(set(isins))[:150] # Primi 150
+        except: isins = ['IT0006771510']
 
         print(f"📋 Coda: {len(isins)} ISIN")
         for isin in isins:
             if len(results) >= TARGET_COUNT: break
             print(f"Analisi {isin}...", end="\r")
-            await asyncio.sleep(0.5)
+            await asyncio.sleep(0.3)
             data = await scrape_certificate(page, isin)
+            
             if isinstance(data, dict):
                 results.append(data)
-                print(f"✅ PRESO: {isin} | {data['price']}€")
+                print(f"✅ PRESO: {isin} | {data['price']}€ | {data['underlyings'][0]['name']}")
             elif data == "SKIPPED_TYPE":
-                print(f"⏩ SALTATO: {isin} (Asset)")
+                print(f"⏩ SKIP (Asset): {isin}               ")
             else:
-                print(f"❌ SKIP: {isin}")
+                # Stampa l'errore specifico (NO_PRICE, NO_DATA, etc)
+                print(f"❌ FAIL ({data}): {isin}               ")
         
         await browser.close()
 
@@ -174,3 +178,4 @@ if __name__ == "__main__":
         asyncio.run(scrape_certificate(args.isin))
     else:
         asyncio.run(run_batch())
+        if prezzo <= 0: return "ERR_NO_PRICE"
