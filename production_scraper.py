@@ -3,11 +3,17 @@
 Copyright (c) 2024-2025 Mutna S.R.L.S. - All Rights Reserved
 P.IVA: 04219740364
 
-Production Certificates Scraper v8.0 - ALL NEW EMISSIONS
-Gets ALL certificates from new emissions page (no filtering)
-Frontend can filter by underlying category as needed.
+Production Certificates Scraper v9.0 - DATABASE PAGINATION
+Scrapes multiple pages from the full database to find certificates on:
+- Indices (Basket di indici)
+- Rates/Bonds
+- Commodities
+- Currencies
 
-Output includes underlying_category field for filtering.
+Strategy:
+1. Paginate through database results (fase=quotazione)
+2. Filter for non-stock underlyings
+3. Get details for matched certificates
 """
 
 import json
@@ -19,46 +25,38 @@ from playwright.sync_api import sync_playwright
 from bs4 import BeautifulSoup
 
 CONFIG = {
-    'emissions_url': 'https://www.certificatiederivati.it/db_bs_nuove_emissioni.asp',
+    'search_url': 'https://www.certificatiederivati.it/db_bs_estrazione_ricerca.asp',
     'detail_url': 'https://www.certificatiederivati.it/db_bs_scheda_certificato.asp?isin=',
     'page_timeout': 30000,
-    'wait_for_content': 3000,
-    'wait_between_details': 600,
+    'wait_for_content': 2000,
+    'wait_between_pages': 1000,
+    'wait_between_details': 500,
     'output_dir': 'data',
-    'max_details': 100,  # Limit detail page visits
+    'max_pages': 50,  # Scan first 50 pages (1000 certificates)
+    'max_details': 150,  # Limit detail page visits
 }
 
-# Keywords to categorize underlyings
-UNDERLYING_CATEGORIES = {
-    'index': [
-        'FTSE MIB', 'FTSEMIB', 'EURO STOXX', 'EUROSTOXX', 'S&P 500', 'S&P500',
-        'NASDAQ', 'DAX', 'CAC 40', 'CAC40', 'NIKKEI', 'HANG SENG', 'IBEX',
-        'STOXX 600', 'DOW JONES', 'RUSSELL', 'SMI', 'MSCI', 'TOPIX',
-        'INDICE', 'INDEX', 'BASKET DI INDICI', 'BASKET OF INDICES',
-    ],
-    'commodity': [
-        'GOLD', 'ORO', 'SILVER', 'ARGENTO', 'OIL', 'PETROLIO', 'WTI', 'BRENT',
-        'NATURAL GAS', 'GAS NATURALE', 'COPPER', 'RAME', 'PLATINUM', 'PLATINO',
-        'PALLADIUM', 'PALLADIO', 'WHEAT', 'GRANO', 'CORN', 'MAIS', 'COFFEE',
-        'SUGAR', 'COTTON', 'SOYBEAN', 'COMMODITY', 'COMMODITIES',
-    ],
-    'currency': [
-        'EUR/USD', 'EUR/JPY', 'EUR/GBP', 'EUR/CHF', 'USD/JPY', 'GBP/USD',
-        'USD/CHF', 'EUR/CAD', 'FOREX', 'CURRENCY', 'VALUTA', 'CAMBIO',
-    ],
-    'rate': [
-        'EURIBOR', 'LIBOR', 'SOFR', 'BTP', 'BUND', 'T-BOND', 'CMS', 'SWAP',
-        'TASSO', 'RATE', 'OAT', 'T-NOTE', 'INTEREST',
-    ],
-}
+# Keywords to identify non-stock underlyings
+INDEX_KEYWORDS = ['basket di indici', 'indici', 'index', 'indices']
+RATE_KEYWORDS = ['btp', 'bund', 'euribor', 'tasso', 'rate', 'bond', 'oat']
+COMMODITY_KEYWORDS = ['gold', 'oro', 'silver', 'oil', 'petrolio', 'commodity', 'gas', 'copper']
+CURRENCY_KEYWORDS = ['eur/usd', 'usd/jpy', 'forex', 'currency', 'cambio']
 
 
-class EmissionsScraper:
+class DatabaseScraper:
     def __init__(self):
         self.certificates = []
+        self.seen_isins = set()
         self.browser = None
         self.context = None
         self.playwright = None
+        self.stats = {
+            'pages_scanned': 0,
+            'total_rows': 0,
+            'matched': 0,
+            'skipped_stocks': 0,
+            'skipped_leverage': 0,
+        }
         
     def start_browser(self):
         self.playwright = sync_playwright().start()
@@ -80,21 +78,23 @@ class EmissionsScraper:
     
     def run(self):
         print('=' * 70)
-        print('CERTIFICATES SCRAPER v8.0 - ALL NEW EMISSIONS')
-        print('Gets all certificates, categories for filtering')
+        print('CERTIFICATES SCRAPER v9.0 - DATABASE PAGINATION')
+        print('Target: INDICES | RATES | COMMODITIES | CURRENCIES')
         print('Copyright (c) 2024-2025 Mutna S.R.L.S.')
         print('=' * 70)
         print(f'Date: {datetime.now().isoformat()}')
+        print(f'Max pages: {CONFIG["max_pages"]} (~{CONFIG["max_pages"] * 20} certificates)')
         print('=' * 70)
         
         self.start_browser()
         
         try:
-            # Step 1: Get all new emissions
-            self.scrape_emissions()
+            # Step 1: Scan database pages
+            self.scan_database()
             
-            # Step 2: Get details for certificates (limited)
-            self.fetch_details()
+            # Step 2: Get details for matched certificates
+            if self.certificates:
+                self.fetch_details()
             
             # Step 3: Summary and save
             self.print_summary()
@@ -104,135 +104,142 @@ class EmissionsScraper:
             self.close_browser()
             print('\n🔒 Browser closed')
     
-    def scrape_emissions(self):
-        """Scrape all certificates from new emissions page"""
+    def scan_database(self):
+        """Scan database pages for non-stock certificates"""
+        print(f'\n📋 Scanning database...')
+        
         page = self.context.new_page()
         
         try:
-            print(f'\n📋 Loading new emissions...')
-            page.goto(CONFIG['emissions_url'], timeout=CONFIG['page_timeout'], wait_until='domcontentloaded')
-            page.wait_for_timeout(CONFIG['wait_for_content'])
-            
-            soup = BeautifulSoup(page.content(), 'html.parser')
-            
-            # Find all tables
-            tables = soup.find_all('table')
-            
-            for table in tables:
-                rows = table.find_all('tr')
+            for page_num in range(1, CONFIG['max_pages'] + 1):
+                # Build URL for this page
+                url = f'{CONFIG["search_url"]}?p={page_num}&db=2&fase=quotazione&FiltroDal=2020-1-1&FiltroAl=2099-12-31'
                 
-                for row in rows[1:]:  # Skip header
-                    cells = row.find_all('td')
-                    if len(cells) >= 6:
-                        isin = cells[0].get_text(strip=True)
+                try:
+                    page.goto(url, timeout=CONFIG['page_timeout'], wait_until='domcontentloaded')
+                    page.wait_for_timeout(CONFIG['wait_for_content'])
+                    
+                    soup = BeautifulSoup(page.content(), 'html.parser')
+                    
+                    # Find table
+                    found_on_page = 0
+                    tables = soup.find_all('table')
+                    
+                    for table in tables:
+                        rows = table.find_all('tr')
                         
-                        # Validate ISIN
-                        if not re.match(r'^[A-Z]{2}[A-Z0-9]{10}$', isin):
-                            continue
-                        
-                        name = cells[1].get_text(strip=True)
-                        emittente = cells[2].get_text(strip=True)
-                        sottostante_raw = cells[3].get_text(strip=True)
-                        mercato = cells[4].get_text(strip=True)
-                        data_str = cells[5].get_text(strip=True)
-                        
-                        # Skip leverage products
-                        name_upper = name.upper()
-                        if any(x in name_upper for x in ['TURBO', 'LEVA FISSA', 'MINI FUTURE', 'STAYUP', 'STAYDOWN', 'CORRIDOR']):
-                            continue
-                        
-                        # Extract underlying from name (e.g., "su Tesla, NVIDIA")
-                        underlying, category = self.extract_underlying(name, sottostante_raw)
-                        
-                        cert = {
-                            'isin': isin,
-                            'name': name,
-                            'type': self.detect_type(name),
-                            'issuer': self.normalize_issuer(emittente),
-                            'market': mercato,
-                            'currency': 'EUR',
-                            'underlying': underlying,
-                            'underlying_raw': sottostante_raw,
-                            'underlying_category': category,
-                            'issue_date': self.parse_date(data_str),
-                        }
-                        
-                        self.certificates.append(cert)
-            
-            print(f'   Found: {len(self.certificates)} investment certificates')
-            
-            # Show category breakdown
-            by_cat = {}
-            for c in self.certificates:
-                cat = c['underlying_category']
-                by_cat[cat] = by_cat.get(cat, 0) + 1
-            
-            icons = {'index': '📊', 'commodity': '🛢️', 'currency': '💱', 'rate': '💹', 'stock': '📈', 'unknown': '❓'}
-            for cat, n in sorted(by_cat.items(), key=lambda x: -x[1]):
-                print(f'   {icons.get(cat, "📄")} {cat}: {n}')
-                
-        except Exception as e:
-            print(f'   ⚠️ Error: {e}')
+                        for row in rows[1:]:  # Skip header
+                            cells = row.find_all('td')
+                            if len(cells) >= 7:
+                                self.stats['total_rows'] += 1
+                                
+                                isin = cells[0].get_text(strip=True)
+                                
+                                # Validate ISIN
+                                if not re.match(r'^[A-Z]{2}[A-Z0-9]{10}$', isin):
+                                    continue
+                                
+                                # Skip duplicates
+                                if isin in self.seen_isins:
+                                    continue
+                                self.seen_isins.add(isin)
+                                
+                                name = cells[1].get_text(strip=True)
+                                emittente = cells[2].get_text(strip=True)
+                                sottostante = cells[3].get_text(strip=True)
+                                scadenza = cells[7].get_text(strip=True) if len(cells) > 7 else ''
+                                
+                                # Skip leverage products
+                                name_upper = name.upper()
+                                if any(x in name_upper for x in ['TURBO', 'LEVA FISSA', 'MINI FUTURE', 'STAYUP', 'STAYDOWN', 'CORRIDOR', 'DAILY LEVERAGE']):
+                                    self.stats['skipped_leverage'] += 1
+                                    continue
+                                
+                                # Categorize underlying
+                                category = self.categorize_underlying(sottostante, name)
+                                
+                                if category == 'stock':
+                                    self.stats['skipped_stocks'] += 1
+                                    continue
+                                
+                                # Match! Add certificate
+                                self.stats['matched'] += 1
+                                found_on_page += 1
+                                
+                                cert = {
+                                    'isin': isin,
+                                    'name': name,
+                                    'type': self.detect_type(name),
+                                    'issuer': self.normalize_issuer(emittente),
+                                    'underlying_raw': sottostante,
+                                    'underlying_category': category,
+                                    'maturity_date': self.parse_date(scadenza),
+                                    'currency': 'EUR',
+                                }
+                                
+                                self.certificates.append(cert)
+                    
+                    self.stats['pages_scanned'] += 1
+                    
+                    # Progress
+                    if page_num % 10 == 0:
+                        print(f'   Page {page_num}: {len(self.certificates)} matched so far')
+                    
+                    # Stop if we have enough
+                    if len(self.certificates) >= CONFIG['max_details']:
+                        print(f'   Reached {CONFIG["max_details"]} certificates, stopping scan')
+                        break
+                    
+                    time.sleep(CONFIG['wait_between_pages'] / 1000)
+                    
+                except Exception as e:
+                    print(f'   ⚠️ Error on page {page_num}: {str(e)[:40]}')
+                    continue
+                    
         finally:
             page.close()
+        
+        print(f'   ✅ Scanned {self.stats["pages_scanned"]} pages')
+        print(f'   ✅ Found {len(self.certificates)} non-stock certificates')
     
-    def extract_underlying(self, name, sottostante_raw):
-        """Extract underlying and categorize"""
-        # Combine name and raw sottostante for matching
-        text = f'{name} {sottostante_raw}'.upper()
+    def categorize_underlying(self, sottostante, name):
+        """Categorize underlying based on keywords"""
+        text = f'{sottostante} {name}'.lower()
         
-        # Check each category
-        for category, keywords in UNDERLYING_CATEGORIES.items():
-            for kw in keywords:
-                if kw in text:
-                    # Extract specific underlying name
-                    underlying = self.extract_specific_underlying(name, sottostante_raw, category)
-                    return underlying, category
+        # Check for indices
+        for kw in INDEX_KEYWORDS:
+            if kw in text:
+                return 'index'
         
-        # If no category match, it's probably a stock
-        underlying = self.extract_specific_underlying(name, sottostante_raw, 'stock')
-        return underlying, 'stock'
-    
-    def extract_specific_underlying(self, name, sottostante_raw, category):
-        """Extract specific underlying name from certificate name"""
-        # Try to extract from "su X, Y, Z" pattern
-        match = re.search(r'\bsu\s+([^,]+(?:,\s*[^,]+)*)', name, re.IGNORECASE)
-        if match:
-            underlying = match.group(1).strip()
-            # Clean up
-            underlying = re.sub(r'\s+', ' ', underlying)
-            return underlying
+        # Check for rates
+        for kw in RATE_KEYWORDS:
+            if kw in text:
+                return 'rate'
         
-        # Use raw sottostante if available and not generic
-        if sottostante_raw and not any(x in sottostante_raw.lower() for x in ['basket', 'worst of', 'singolo']):
-            return sottostante_raw
+        # Check for commodities
+        for kw in COMMODITY_KEYWORDS:
+            if kw in text:
+                return 'commodity'
         
-        # Category-based defaults
-        if category == 'index' and 'BASKET DI INDICI' in sottostante_raw.upper():
-            return 'Basket of Indices'
+        # Check for currencies
+        for kw in CURRENCY_KEYWORDS:
+            if kw in text:
+                return 'currency'
         
-        return sottostante_raw or 'Unknown'
+        # Default: stock
+        return 'stock'
     
     def fetch_details(self):
         """Fetch additional details from certificate pages"""
-        # Prioritize non-stock certificates for detail fetching
-        priority = [c for c in self.certificates if c['underlying_category'] != 'stock']
-        others = [c for c in self.certificates if c['underlying_category'] == 'stock']
+        print(f'\n📋 Fetching details for {len(self.certificates)} certificates...')
         
-        to_fetch = priority + others[:max(0, CONFIG['max_details'] - len(priority))]
-        
-        if not to_fetch:
-            return
-        
-        print(f'\n📋 Fetching details for {len(to_fetch)} certificates...')
-        
-        for i, cert in enumerate(to_fetch):
+        for i, cert in enumerate(self.certificates):
             detail = self.get_certificate_detail(cert['isin'])
             if detail:
                 cert.update(detail)
             
             if (i + 1) % 20 == 0:
-                print(f'   {i + 1}/{len(to_fetch)}')
+                print(f'   {i + 1}/{len(self.certificates)}')
             
             time.sleep(CONFIG['wait_between_details'] / 1000)
     
@@ -255,7 +262,7 @@ class EmissionsScraper:
                         label = cells[0].get_text(strip=True).upper()
                         value = cells[1].get_text(strip=True)
                         
-                        if 'BARRIERA' in label and '%' not in label:
+                        if 'BARRIERA' in label and '%' not in label and 'DOWN' in label:
                             m = re.search(r'(\d+[,.]?\d*)', value)
                             if m:
                                 data['barrier_down'] = float(m.group(1).replace(',', '.'))
@@ -265,11 +272,16 @@ class EmissionsScraper:
                             if m:
                                 data['coupon'] = float(m.group(1).replace(',', '.'))
                         
-                        elif 'SCADENZA' in label and 'DATA' in label:
-                            data['maturity_date'] = self.parse_date(value)
+                        elif 'MERCATO' in label:
+                            data['market'] = value
                         
-                        elif 'FASE' in label:
-                            data['phase'] = value.lower()
+                        elif 'EMISSIONE' in label and 'DATA' in label:
+                            data['issue_date'] = self.parse_date(value)
+                        
+                        # Extract specific underlying from detail page
+                        elif 'SOTTOSTANTE' in label and 'SCHEDA' not in label:
+                            if value and len(value) > 2:
+                                data['underlying'] = value
         except:
             pass
         finally:
@@ -345,7 +357,11 @@ class EmissionsScraper:
         print('\n' + '=' * 70)
         print('📊 SUMMARY')
         print('=' * 70)
-        print(f'Total certificates: {len(self.certificates)}')
+        print(f'Pages scanned: {self.stats["pages_scanned"]}')
+        print(f'Total rows processed: {self.stats["total_rows"]}')
+        print(f'Skipped (leverage): {self.stats["skipped_leverage"]}')
+        print(f'Skipped (stocks): {self.stats["skipped_stocks"]}')
+        print(f'Matched certificates: {len(self.certificates)}')
         
         # By category
         by_cat = {}
@@ -354,13 +370,9 @@ class EmissionsScraper:
             by_cat[cat] = by_cat.get(cat, 0) + 1
         
         print('\nBy category:')
-        icons = {'index': '📊', 'commodity': '🛢️', 'currency': '💱', 'rate': '💹', 'stock': '📈', 'unknown': '❓'}
+        icons = {'index': '📊', 'commodity': '🛢️', 'currency': '💱', 'rate': '💹'}
         for cat, n in sorted(by_cat.items(), key=lambda x: -x[1]):
             print(f'   {icons.get(cat, "📄")} {cat}: {n}')
-        
-        # Non-stock count
-        non_stock = len([c for c in self.certificates if c['underlying_category'] != 'stock'])
-        print(f'\n✅ Non-stock (indices/commodities/rates/currencies): {non_stock}')
         
         # By issuer
         by_i = {}
@@ -368,7 +380,7 @@ class EmissionsScraper:
             i = c.get('issuer', '?')
             by_i[i] = by_i.get(i, 0) + 1
         
-        print('\nBy issuer:')
+        print('\nTop issuers:')
         for i, n in sorted(by_i.items(), key=lambda x: -x[1])[:8]:
             print(f'   {i}: {n}')
         
@@ -378,9 +390,20 @@ class EmissionsScraper:
             t = c.get('type', '?')
             by_t[t] = by_t.get(t, 0) + 1
         
-        print('\nBy type:')
+        print('\nTop types:')
         for t, n in sorted(by_t.items(), key=lambda x: -x[1])[:6]:
             print(f'   {t}: {n}')
+        
+        # Sample underlyings
+        print('\nSample underlyings:')
+        seen = set()
+        for c in self.certificates[:30]:
+            u = c.get('underlying') or c.get('underlying_raw', '?')
+            if u not in seen:
+                seen.add(u)
+                print(f'   • {u[:50]}')
+            if len(seen) >= 8:
+                break
         
         print('=' * 70)
     
@@ -396,7 +419,7 @@ class EmissionsScraper:
                 'issuer': c['issuer'],
                 'market': c.get('market', 'SeDeX'),
                 'currency': c.get('currency', 'EUR'),
-                'underlying': c.get('underlying'),
+                'underlying': c.get('underlying') or c.get('underlying_raw'),
                 'underlying_category': c.get('underlying_category'),
                 'issue_date': c.get('issue_date'),
                 'maturity_date': c.get('maturity_date'),
@@ -407,19 +430,18 @@ class EmissionsScraper:
         
         data = {
             'metadata': {
-                'version': '8.0-all-emissions',
+                'version': '9.0-database-pagination',
                 'timestamp': datetime.now().isoformat(),
                 'source': 'certificatiederivati.it',
                 'total': len(out),
-                'non_stock': len([c for c in out if c['underlying_category'] != 'stock']),
+                'pages_scanned': self.stats['pages_scanned'],
                 'categories': {
                     'index': len([c for c in out if c['underlying_category'] == 'index']),
                     'commodity': len([c for c in out if c['underlying_category'] == 'commodity']),
                     'currency': len([c for c in out if c['underlying_category'] == 'currency']),
                     'rate': len([c for c in out if c['underlying_category'] == 'rate']),
-                    'stock': len([c for c in out if c['underlying_category'] == 'stock']),
                 },
-                'method': 'new_emissions_all'
+                'method': 'database_pagination'
             },
             'certificates': out
         }
@@ -437,5 +459,5 @@ class EmissionsScraper:
 
 
 if __name__ == '__main__':
-    scraper = EmissionsScraper()
+    scraper = DatabaseScraper()
     scraper.run()
