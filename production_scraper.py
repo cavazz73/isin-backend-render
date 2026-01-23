@@ -3,11 +3,14 @@
 Copyright (c) 2024-2025 Mutna S.R.L.S. - All Rights Reserved
 P.IVA: 04219740364
 
-Production Certificates Scraper - FIXED VERSION
-Extracts REAL certificates from certificatiederivati.it
+Production Certificates Scraper v3.0 - CORRECTED URLs
+Source: certificatiederivati.it
 
-FIX: Improved get_underlying_name() function with 3-strategy approach
-to correctly extract underlying assets (e.g., "Alibaba" instead of "DAX")
+FIXES:
+1. Correct URL: db_bs_scheda_certificato.asp?isin=ISIN (NOT /certificates/ISIN)
+2. Correct emissions URL: db_bs_nuove_emissioni.asp
+3. Wait for JavaScript content to load ("Scheda Sottostante")
+4. Extract from actual page structure (tables with specific headers)
 """
 
 import json
@@ -18,79 +21,25 @@ from datetime import datetime
 from playwright.sync_api import sync_playwright
 from bs4 import BeautifulSoup
 
-# Configuration
+# Configuration - CORRECTED URLs
 CONFIG = {
     'base_url': 'https://www.certificatiederivati.it',
-    'list_url': 'https://www.certificatiederivati.it/certificates/top-certificates',
-    'emissions_url': 'https://www.certificatiederivati.it/certificates/nuove-emissioni',
+    'detail_url': 'https://www.certificatiederivati.it/db_bs_scheda_certificato.asp?isin=',
+    'emissions_url': 'https://www.certificatiederivati.it/db_bs_nuove_emissioni.asp',
+    'search_url': 'https://www.certificatiederivati.it/db_bs_ricerca_avanzata.asp',
     'max_certificates': 100,
     'timeout': 60000,
-    'wait_between_pages': 1500,
+    'wait_for_content': 5000,  # Wait for dynamic content
+    'wait_between_pages': 2000,
     'output_dir': 'data'
 }
 
-# Known underlying mappings (fallback)
-UNDERLYING_MAPPINGS = {
-    'EURO STOXX 50': 'Euro Stoxx 50',
-    'EUROSTOXX50': 'Euro Stoxx 50',
-    'S&P500': 'S&P 500',
-    'S&P 500': 'S&P 500',
-    'FTSEMIB': 'FTSE MIB',
-    'FTSE MIB': 'FTSE MIB',
-    'INTESA': 'Intesa Sanpaolo',
-    'ISP': 'Intesa Sanpaolo',
-    'UCG': 'UniCredit',
-    'UNICREDIT': 'UniCredit',
-    'ENI': 'ENI',
-    'ENEL': 'ENEL',
-    'TSLA': 'Tesla',
-    'TESLA': 'Tesla',
-    'NVDA': 'NVIDIA',
-    'NVIDIA': 'NVIDIA',
-    'AAPL': 'Apple',
-    'APPLE': 'Apple',
-    'AMZN': 'Amazon',
-    'AMAZON': 'Amazon',
-    'GOOGL': 'Alphabet',
-    'GOOGLE': 'Alphabet',
-    'META': 'Meta',
-    'FACEBOOK': 'Meta',
-    'MSFT': 'Microsoft',
-    'MICROSOFT': 'Microsoft',
-    'BABA': 'Alibaba',
-    'ALIBABA': 'Alibaba',
-    'AMD': 'AMD',
-    'STELLANTIS': 'Stellantis',
-    'STLA': 'Stellantis',
-    'GENERALI': 'Generali',
-    'DAX': 'DAX',
-}
 
-
-def normalize_underlying_name(name):
-    """Normalize and clean underlying name"""
-    if not name:
-        return None
-    
-    # Clean up
-    name = name.strip().upper()
-    
-    # Remove common suffixes
-    name = re.sub(r'\s*(INDEX|PERFORMANCE|TOTAL RETURN|TR|PR|NET|GROSS).*$', '', name, flags=re.IGNORECASE)
-    name = re.sub(r'\s*\([^)]*\)$', '', name)  # Remove trailing parentheses
-    
-    # Check mappings
-    if name in UNDERLYING_MAPPINGS:
-        return UNDERLYING_MAPPINGS[name]
-    
-    # Title case for readability
-    return name.title()
-
-
-class CertificatesScraper:
+class CertificatesScraperV3:
     def __init__(self):
         self.browser = None
         self.context = None
+        self.playwright = None
         self.certificates = []
         self.processed_isins = set()
         
@@ -124,340 +73,406 @@ class CertificatesScraper:
             self.playwright.stop()
         print('🔒 Browser closed')
     
-    def get_isin_list(self):
-        """Get list of ISINs from new emissions page"""
+    def get_isin_list_from_emissions(self):
+        """Get ISIN list from new emissions page (quotazione tab)"""
         print('\n📋 Fetching ISIN list from new emissions...')
+        print(f'   URL: {CONFIG["emissions_url"]}')
+        
         page = self.context.new_page()
-        isins = set()
+        isins = []
         
         try:
-            # Try new emissions page
             page.goto(CONFIG['emissions_url'], timeout=CONFIG['timeout'])
             page.wait_for_timeout(3000)
-            
-            # Extract ISINs from page
-            content = page.content()
-            
-            # Find all ISIN patterns
-            isin_pattern = r'\b([A-Z]{2}[A-Z0-9]{10})\b'
-            found_isins = re.findall(isin_pattern, content)
-            isins.update(found_isins)
-            
-            print(f'  Found {len(isins)} ISINs from new emissions')
-            
-            # Also try top certificates page
-            page.goto(CONFIG['list_url'], timeout=CONFIG['timeout'])
-            page.wait_for_timeout(3000)
-            content = page.content()
-            found_isins = re.findall(isin_pattern, content)
-            isins.update(found_isins)
-            
-            print(f'  Total unique ISINs: {len(isins)}')
-            
-        except Exception as e:
-            print(f'  ⚠️ Error fetching ISIN list: {e}')
-        finally:
-            page.close()
-        
-        return list(isins)
-    
-    def scrape_certificate(self, isin):
-        """Scrape single certificate details"""
-        if isin in self.processed_isins:
-            return None
-            
-        page = self.context.new_page()
-        certificate = None
-        
-        try:
-            url = f'{CONFIG["base_url"]}/certificates/{isin}'
-            page.goto(url, timeout=CONFIG['timeout'])
-            page.wait_for_timeout(2000)
             
             content = page.content()
             soup = BeautifulSoup(content, 'html.parser')
             
-            # ===================================
-            # FIXED: UNDERLYING NAME EXTRACTION
-            # Uses 3-strategy approach
-            # ===================================
+            # Find all tables
+            tables = soup.find_all('table')
+            print(f'   Found {len(tables)} tables')
             
-            def get_underlying_name():
-                """
-                FIXED: Extract underlying name with 3 strategies
-                Strategy 1: Extract from page title (most reliable)
-                Strategy 2: Search for labeled cells in table
-                Strategy 3: Intelligent fallback with filtering
-                """
-                
-                # ---------------------------------
-                # STRATEGY 1: Extract from title
-                # ---------------------------------
-                # Look for patterns like "CashCollect su ALIBABA", "Phoenix su DAX"
-                name_elem = soup.find('font', size='+1')
-                if not name_elem:
-                    name_elem = soup.find('h1')
-                if not name_elem:
-                    name_elem = soup.find('title')
-                    
-                if name_elem:
-                    title = name_elem.get_text(strip=True)
-                    
-                    # Pattern: "su UNDERLYING_NAME"
-                    match = re.search(r'\bsu\s+([A-Za-z][A-Za-z0-9\s&\.\-\']+?)(?:\s+\d|$|\s*[-–]|\s+con|\s+Barriera)', title, re.IGNORECASE)
-                    if match:
-                        underlying = match.group(1).strip()
-                        # Clean up common suffixes
-                        underlying = re.sub(r'\s+(GROUP|INC|CORP|LTD|AG|SPA|PLC).*$', '', underlying, flags=re.IGNORECASE)
-                        underlying = re.sub(r'\s+$', '', underlying)
-                        if len(underlying) >= 2 and not underlying.isdigit():
-                            normalized = normalize_underlying_name(underlying)
-                            if normalized:
-                                print(f'    → Strategy 1 (title): {normalized}')
-                                return normalized
-                
-                # ---------------------------------
-                # STRATEGY 2: Search labeled cells
-                # ---------------------------------
-                section = soup.find('h3', string=re.compile('Scheda Sottostante|Sottostante', re.IGNORECASE))
-                if section:
-                    parent = section.find_parent('div')
-                    if parent:
-                        table = parent.find('table')
-                        if table:
-                            # Search for cells with labels
-                            for row in table.find_all('tr'):
-                                cells = row.find_all('td')
-                                for i, cell in enumerate(cells):
-                                    cell_text = cell.get_text(strip=True).lower()
-                                    
-                                    # If this cell is a label for underlying name
-                                    if any(keyword in cell_text for keyword in ['nome sottostante', 'sottostante', 'nome', 'ticker', 'asset']):
-                                        # Value should be in next cell
-                                        if i + 1 < len(cells):
-                                            value = cells[i + 1].get_text(strip=True)
-                                            if value and len(value) >= 2 and not re.match(r'^[\d\.,\-\+%]+$', value):
-                                                normalized = normalize_underlying_name(value)
-                                                if normalized:
-                                                    print(f'    → Strategy 2 (labeled): {normalized}')
-                                                    return normalized
-                                        # Or check if value is in same cell after colon
-                                        if ':' in cell_text:
-                                            parts = cell.get_text(strip=True).split(':')
-                                            if len(parts) > 1:
-                                                value = parts[1].strip()
-                                                if value and len(value) >= 2:
-                                                    normalized = normalize_underlying_name(value)
-                                                    if normalized:
-                                                        print(f'    → Strategy 2 (colon): {normalized}')
-                                                        return normalized
-                
-                # ---------------------------------
-                # STRATEGY 3: Intelligent fallback
-                # ---------------------------------
-                # Scan all tables for potential underlying names
-                tables = soup.find_all('table')
-                for table in tables:
-                    for cell in table.find_all('td'):
-                        text = cell.get_text(strip=True)
-                        
-                        # Skip if it looks like a number, percentage, date, or currency
-                        if re.match(r'^[\d\.,\-\+%€$£]+$', text):
-                            continue
-                        if re.match(r'^\d{1,2}[/\-\.]\d{1,2}[/\-\.]\d{2,4}$', text):
-                            continue
-                        if len(text) < 3 or len(text) > 50:
-                            continue
-                        if text.lower() in ['nome', 'sottostante', 'ticker', 'asset', 'isin', 'data', 'prezzo', 'barriera', 'strike', 'scadenza']:
-                            continue
-                        
-                        # Check if it looks like a company/index name
-                        if re.match(r'^[A-Za-z][A-Za-z0-9\s&\.\-\']+$', text):
-                            # Check against known underlyings
-                            text_upper = text.upper()
-                            for key in UNDERLYING_MAPPINGS.keys():
-                                if key in text_upper or text_upper in key:
-                                    normalized = normalize_underlying_name(text)
-                                    if normalized:
-                                        print(f'    → Strategy 3 (fallback): {normalized}')
-                                        return normalized
-                
-                return None
+            for table in tables:
+                rows = table.find_all('tr')
+                for row in rows:
+                    cells = row.find_all('td')
+                    if cells:
+                        # First cell should contain ISIN
+                        first_cell = cells[0].get_text(strip=True)
+                        # Validate ISIN format
+                        if re.match(r'^[A-Z]{2}[A-Z0-9]{10}$', first_cell):
+                            # Skip TURBO and LEVA FISSA (leverage products)
+                            if len(cells) >= 2:
+                                name = cells[1].get_text(strip=True).upper() if len(cells) > 1 else ''
+                                if 'TURBO' not in name and 'LEVA FISSA' not in name:
+                                    isins.append(first_cell)
+            
+            print(f'   ✓ Found {len(isins)} investment certificates (excluding Turbo/Leva)')
+            
+        except Exception as e:
+            print(f'   ⚠️ Error: {e}')
+        finally:
+            page.close()
+        
+        return isins[:CONFIG['max_certificates']]
+    
+    def scrape_certificate(self, isin):
+        """Scrape single certificate from detail page"""
+        if isin in self.processed_isins:
+            return None
+            
+        url = f'{CONFIG["detail_url"]}{isin}'
+        page = self.context.new_page()
+        certificate = None
+        
+        try:
+            page.goto(url, timeout=CONFIG['timeout'])
+            
+            # Wait for dynamic content to load
+            # The page has "Caricamento in corso..." that gets replaced
+            page.wait_for_timeout(CONFIG['wait_for_content'])
+            
+            # Try to wait for specific elements
+            try:
+                page.wait_for_selector('table', timeout=10000)
+            except:
+                pass
+            
+            content = page.content()
+            soup = BeautifulSoup(content, 'html.parser')
             
             # ---------------------------------
-            # Extract all certificate data
+            # EXTRACT CERTIFICATE NAME
             # ---------------------------------
-            
-            def get_text(selector):
-                """Helper to extract text from selector"""
-                elem = soup.select_one(selector)
-                return elem.get_text(strip=True) if elem else None
-            
-            def extract_value(pattern, text=None):
-                """Extract numeric value using regex"""
-                if text is None:
-                    text = str(soup)
-                match = re.search(pattern, text, re.IGNORECASE)
-                if match:
-                    value = match.group(1).replace(',', '.')
-                    try:
-                        return float(value)
-                    except:
-                        return None
-                return None
-            
-            def extract_percentage(label):
-                """Extract percentage value near a label"""
-                pattern = rf'{label}[:\s]*([0-9]+[,.]?[0-9]*)%?'
-                return extract_value(pattern)
-            
-            def extract_date(label):
-                """Extract date near a label"""
-                pattern = rf'{label}[:\s]*(\d{{1,2}}[/\-\.]\d{{1,2}}[/\-\.]\d{{2,4}})'
-                text = str(soup)
-                match = re.search(pattern, text, re.IGNORECASE)
-                if match:
-                    date_str = match.group(1)
-                    # Convert to ISO format
-                    parts = re.split(r'[/\-\.]', date_str)
-                    if len(parts) == 3:
-                        day, month, year = parts
-                        if len(year) == 2:
-                            year = '20' + year
-                        return f'{year}-{month.zfill(2)}-{day.zfill(2)}'
-                return None
-            
-            # Get certificate name from page
-            name_elem = soup.find('font', size='+1') or soup.find('h1')
-            cert_name = name_elem.get_text(strip=True) if name_elem else f'Certificate {isin}'
-            
-            # Get issuer
-            issuer = None
-            issuer_pattern = r'Emittente[:\s]*([A-Za-z][A-Za-z0-9\s&\.\-]+?)(?:\s*[<\|]|$)'
-            match = re.search(issuer_pattern, str(soup), re.IGNORECASE)
-            if match:
-                issuer = match.group(1).strip()
-            
-            # Get certificate type
-            cert_type = 'Certificate'
-            type_keywords = {
-                'cash collect': 'Cash Collect',
-                'phoenix': 'Phoenix Memory',
-                'bonus': 'Bonus Cap',
-                'express': 'Express',
-                'twin win': 'Twin Win',
-                'airbag': 'Airbag',
-                'autocallable': 'Autocallable',
-                'reverse': 'Reverse Convertible',
-                'memory': 'Memory',
-                'athena': 'Athena',
-                'corridor': 'Corridor'
-            }
-            name_lower = cert_name.lower()
-            for keyword, type_name in type_keywords.items():
-                if keyword in name_lower:
-                    cert_type = type_name
+            cert_name = None
+            # Look for h3 with certificate type
+            h3_elems = soup.find_all('h3')
+            for h3 in h3_elems:
+                text = h3.get_text(strip=True)
+                if text and len(text) > 3 and text.upper() not in ['BARRIERA DOWN', 'SCHEDA SOTTOSTANTE', 'SCHEDA EMITTENTE', 'DATE RILEVAMENTO']:
+                    cert_name = text
                     break
             
-            # Extract prices
-            bid_price = extract_value(r'bid[:\s]*([0-9]+[,.]?[0-9]*)', str(soup))
-            ask_price = extract_value(r'ask[:\s]*([0-9]+[,.]?[0-9]*)', str(soup))
-            last_price = extract_value(r'(?:ultimo|last|prezzo)[:\s]*([0-9]+[,.]?[0-9]*)', str(soup))
+            if not cert_name:
+                cert_name = f'Certificate {isin}'
             
-            reference_price = last_price or ask_price or bid_price or 100.0
+            # ---------------------------------
+            # EXTRACT FROM MAIN INFO TABLE
+            # ---------------------------------
+            main_data = {}
+            tables = soup.find_all('table')
             
-            # Extract barrier
-            barrier = extract_percentage('barriera')
+            for table in tables:
+                rows = table.find_all('tr')
+                for row in rows:
+                    cells = row.find_all('td')
+                    if len(cells) >= 2:
+                        label = cells[0].get_text(strip=True).upper()
+                        value = cells[1].get_text(strip=True)
+                        
+                        if 'ISIN' in label:
+                            main_data['isin'] = value
+                        elif 'FASE' in label:
+                            main_data['fase'] = value
+                        elif 'RIMBORSO' in label and 'DATA' not in label:
+                            try:
+                                main_data['rimborso'] = float(value.replace(',', '.'))
+                            except:
+                                pass
+                        elif 'DATA RIMBORSO' in label:
+                            main_data['data_rimborso'] = self.parse_date(value)
+                        elif 'MERCATO' in label:
+                            main_data['mercato'] = value
+                        elif 'DATA EMISSIONE' in label:
+                            main_data['issue_date'] = self.parse_date(value)
+                        elif 'DATA SCADENZA' in label:
+                            main_data['maturity_date'] = self.parse_date(value)
+                        elif 'VALUTA' in label and 'DATA' not in label:
+                            main_data['currency'] = value
+                        elif 'NOMINALE' in label:
+                            try:
+                                main_data['nominal'] = float(value.replace(',', '.'))
+                            except:
+                                pass
+                        elif 'DATA STRIKE' in label:
+                            main_data['strike_date'] = self.parse_date(value)
+                        elif 'TRIGGER' in label and value != '':
+                            try:
+                                main_data['trigger'] = float(value.replace(',', '.'))
+                            except:
+                                pass
+                        elif 'MULTIPLO' in label:
+                            try:
+                                main_data['multiplo'] = float(value.replace(',', '.'))
+                            except:
+                                pass
+            
+            # ---------------------------------
+            # EXTRACT ISSUER (Scheda Emittente)
+            # ---------------------------------
+            issuer = None
+            emittente_section = soup.find('h3', string=re.compile('Scheda Emittente', re.IGNORECASE))
+            if emittente_section:
+                parent = emittente_section.find_parent()
+                if parent:
+                    # Look for issuer name in next elements
+                    for elem in parent.find_all(['td', 'p', 'div', 'span']):
+                        text = elem.get_text(strip=True)
+                        if text and len(text) > 2 and 'Rating' not in text and '@' not in text and 'http' not in text and not text.isdigit():
+                            issuer = text
+                            break
+            
+            # ---------------------------------
+            # EXTRACT UNDERLYING (Scheda Sottostante)
+            # ---------------------------------
+            underlying_name = self.extract_underlying(soup, cert_name)
+            
+            # ---------------------------------
+            # EXTRACT BARRIER (Barriera Down)
+            # ---------------------------------
+            barrier = None
+            barrier_section = soup.find('h3', string=re.compile('Barriera Down', re.IGNORECASE))
+            if barrier_section:
+                # The barrier value is often loaded dynamically
+                parent = barrier_section.find_parent()
+                if parent:
+                    text = parent.get_text()
+                    # Look for percentage
+                    match = re.search(r'(\d+[,.]?\d*)\s*%', text)
+                    if match:
+                        try:
+                            barrier = float(match.group(1).replace(',', '.'))
+                        except:
+                            pass
+            
+            # Also try to find barrier in any table
             if not barrier:
-                barrier = extract_value(r'barriera[:\s]*([0-9]+[,.]?[0-9]*)%?')
+                for table in tables:
+                    text = table.get_text()
+                    if 'barriera' in text.lower():
+                        match = re.search(r'barriera[^\d]*(\d+[,.]?\d*)\s*%?', text, re.IGNORECASE)
+                        if match:
+                            try:
+                                barrier = float(match.group(1).replace(',', '.'))
+                            except:
+                                pass
+                            break
             
-            # Extract coupon/cedola
-            coupon = extract_percentage('cedola')
-            if not coupon:
-                coupon = extract_percentage('coupon')
-            if not coupon:
-                coupon = extract_value(r'premio[:\s]*([0-9]+[,.]?[0-9]*)%?')
+            # ---------------------------------
+            # EXTRACT COUPON/CEDOLA
+            # ---------------------------------
+            coupon = None
+            text_full = soup.get_text().lower()
             
-            # Extract dates
-            issue_date = extract_date('emissione')
-            maturity_date = extract_date('scadenza')
-            strike_date = extract_date('strike')
+            # Look for coupon patterns
+            coupon_patterns = [
+                r'cedola[:\s]*(\d+[,.]?\d*)\s*%',
+                r'coupon[:\s]*(\d+[,.]?\d*)\s*%',
+                r'premio[:\s]*(\d+[,.]?\d*)\s*%',
+                r'(\d+[,.]?\d*)\s*%\s*(?:mensile|trimestrale|semestrale|annuale)'
+            ]
             
-            # Calculate annual yield
-            annual_yield = 0
-            if coupon:
-                # Assuming monthly coupon, annualize
-                annual_yield = coupon * 12 if coupon < 5 else coupon
+            for pattern in coupon_patterns:
+                match = re.search(pattern, text_full)
+                if match:
+                    try:
+                        coupon = float(match.group(1).replace(',', '.'))
+                        break
+                    except:
+                        pass
             
-            # Get underlying name (FIXED)
-            underlying_name = get_underlying_name()
+            # ---------------------------------
+            # DETECT CERTIFICATE TYPE
+            # ---------------------------------
+            cert_type = self.detect_type(cert_name)
             
-            # Build certificate object
+            # ---------------------------------
+            # BUILD CERTIFICATE OBJECT
+            # ---------------------------------
             certificate = {
                 'isin': isin,
                 'name': cert_name,
                 'type': cert_type,
                 'issuer': issuer or 'Unknown',
-                'market': 'SeDeX',
-                'currency': 'EUR',
+                'market': main_data.get('mercato', 'SeDeX'),
+                'currency': main_data.get('currency', 'EUR'),
                 
-                'bid_price': bid_price,
-                'ask_price': ask_price,
-                'reference_price': reference_price,
+                'reference_price': main_data.get('nominal', 100),
                 
-                'issue_date': issue_date,
-                'maturity_date': maturity_date,
-                'strike_date': strike_date,
+                'issue_date': main_data.get('issue_date'),
+                'maturity_date': main_data.get('maturity_date'),
+                'strike_date': main_data.get('strike_date'),
                 
                 'barrier_down': barrier,
                 'barrier_type': 'European',
                 'coupon': coupon,
-                'annual_coupon_yield': annual_yield,
+                'annual_coupon_yield': coupon * 12 if coupon and coupon < 5 else coupon,
                 
-                # FIXED: Now correctly populated
                 'underlying_name': underlying_name,
                 
+                'fase': main_data.get('fase'),
                 'source_url': url,
                 'scraped_at': datetime.now().isoformat()
             }
             
             self.processed_isins.add(isin)
-            print(f'  ✓ {isin}: {underlying_name or "N/A"} | Barrier: {barrier}% | Coupon: {coupon}%')
+            
+            # Log result
+            status = '✓' if underlying_name else '○'
+            print(f'  {status} {isin}: {underlying_name or "N/A"} | Barrier: {barrier}% | Coupon: {coupon}%')
             
         except Exception as e:
             print(f'  ✗ Error scraping {isin}: {e}')
-            certificate = None
         finally:
             page.close()
         
         return certificate
     
+    def extract_underlying(self, soup, cert_name):
+        """
+        Extract underlying name using multiple strategies
+        """
+        # Strategy 1: Extract from certificate name
+        # Pattern: "CASH COLLECT MEMORY STEP DOWN su ALIBABA"
+        if cert_name:
+            match = re.search(r'\bsu\s+([A-Za-z][A-Za-z0-9\s,&\.\-\']+)', cert_name, re.IGNORECASE)
+            if match:
+                underlying = match.group(1).strip()
+                # Clean up
+                underlying = re.sub(r'\s+con\s+.*$', '', underlying, flags=re.IGNORECASE)
+                underlying = re.sub(r'\s+Barriera\s+.*$', '', underlying, flags=re.IGNORECASE)
+                if len(underlying) >= 2:
+                    return underlying
+        
+        # Strategy 2: Look in Scheda Sottostante section
+        section = soup.find('h3', string=re.compile('Scheda Sottostante', re.IGNORECASE))
+        if section:
+            parent = section.find_parent('div') or section.find_parent()
+            if parent:
+                # Get all text content and look for underlying patterns
+                tables = parent.find_all('table')
+                for table in tables:
+                    rows = table.find_all('tr')
+                    for row in rows:
+                        cells = row.find_all('td')
+                        for i, cell in enumerate(cells):
+                            text = cell.get_text(strip=True)
+                            # Skip labels and numbers
+                            if text and len(text) >= 2:
+                                text_lower = text.lower()
+                                # Skip if it's a label or number
+                                if text_lower in ['nome', 'sottostante', 'ticker', 'strike', 'barriera', 'trigger']:
+                                    continue
+                                if re.match(r'^[\d\.,\-\+%€$£]+$', text):
+                                    continue
+                                if re.match(r'^\d{1,2}[/\-\.]\d{1,2}[/\-\.]\d{2,4}$', text):
+                                    continue
+                                # This might be the underlying name
+                                if re.match(r'^[A-Za-z][A-Za-z0-9\s&\.\-\']+$', text) and len(text) <= 50:
+                                    return text
+        
+        # Strategy 3: Look for common underlying names in page text
+        text_full = soup.get_text()
+        known_underlyings = [
+            'Intesa Sanpaolo', 'UniCredit', 'Generali', 'ENEL', 'ENI', 'Stellantis',
+            'Tesla', 'NVIDIA', 'AMD', 'Apple', 'Amazon', 'Microsoft', 'Meta', 'Alphabet',
+            'Alibaba', 'Netflix', 'Coinbase', 'PayPal', 'Uber',
+            'FTSE MIB', 'Euro Stoxx 50', 'S&P 500', 'DAX', 'Nasdaq 100',
+            'WTI', 'Brent', 'Gold', 'Silver'
+        ]
+        
+        for underlying in known_underlyings:
+            if underlying.lower() in text_full.lower():
+                # Verify it's not just mentioned incidentally
+                pattern = rf'\b{re.escape(underlying)}\b'
+                if re.search(pattern, text_full, re.IGNORECASE):
+                    return underlying
+        
+        return None
+    
+    def detect_type(self, name):
+        """Detect certificate type from name"""
+        if not name:
+            return 'Certificate'
+        
+        name_lower = name.lower()
+        
+        type_map = {
+            'cash collect': 'Cash Collect',
+            'phoenix': 'Phoenix Memory',
+            'bonus': 'Bonus Cap',
+            'express': 'Express',
+            'twin win': 'Twin Win',
+            'airbag': 'Airbag',
+            'autocallable': 'Autocallable',
+            'reverse': 'Reverse Convertible',
+            'memory': 'Memory',
+            'athena': 'Athena',
+            'digital': 'Digital',
+            'equity protection': 'Equity Protection',
+            'credit linked': 'Credit Linked',
+            'fixed': 'Fixed Coupon'
+        }
+        
+        for keyword, cert_type in type_map.items():
+            if keyword in name_lower:
+                return cert_type
+        
+        return 'Certificate'
+    
+    def parse_date(self, date_str):
+        """Parse date string to ISO format"""
+        if not date_str:
+            return None
+        
+        # Already ISO format
+        if re.match(r'^\d{4}-\d{2}-\d{2}$', date_str):
+            return date_str
+        
+        # DD/MM/YYYY format
+        match = re.match(r'^(\d{1,2})[/\-\.](\d{1,2})[/\-\.](\d{2,4})$', date_str)
+        if match:
+            day, month, year = match.groups()
+            if len(year) == 2:
+                year = '20' + year
+            return f'{year}-{month.zfill(2)}-{day.zfill(2)}'
+        
+        return date_str
+    
     def run(self):
         """Main scraping routine"""
-        print('=' * 60)
-        print('CERTIFICATES SCRAPER - PRODUCTION v2.0 (FIXED)')
+        print('=' * 70)
+        print('CERTIFICATES SCRAPER v3.0 - CORRECTED URLS')
         print('Copyright (c) 2024-2025 Mutna S.R.L.S.')
-        print('=' * 60)
+        print('=' * 70)
         print(f'Date: {datetime.now().isoformat()}')
         print(f'Target: {CONFIG["max_certificates"]} certificates')
-        print('=' * 60)
+        print()
+        print('URLs:')
+        print(f'  Emissions: {CONFIG["emissions_url"]}')
+        print(f'  Detail: {CONFIG["detail_url"]}[ISIN]')
+        print('=' * 70)
         
         self.start_browser()
         
         try:
-            # Get ISIN list
-            isins = self.get_isin_list()
+            # Get ISIN list from emissions page
+            isins = self.get_isin_list_from_emissions()
             
             if not isins:
-                print('⚠️ No ISINs found, using fallback list')
-                # Fallback to some known ISINs
+                print('\n⚠️ No ISINs found from emissions page!')
+                print('   Using fallback ISINs from search results...')
+                # Fallback ISINs from web search
                 isins = [
-                    'DE000VH6MX98', 'XS2906636795', 'CH1327224759',
-                    'DE000BNP4XY7', 'IT0005538541', 'XS2745896321'
+                    'XS3127867375', 'XS3198884036', 'DE000VJ1EFM7',
+                    'IT0005668931', 'IT0005684482', 'XS3220582764',
+                    'DE000VJ1EFN5', 'XS3209109514', 'XS3127865676',
+                    'XS3241330383', 'DE000VJ1EFP0', 'XS3211300465',
+                    'IT0006772450', 'XS3241330540', 'IT0006772492',
+                    'IT0006772500', 'XS3063313962', 'XS3127871054',
+                    'XS3212570116', 'DE000VJ1AW03'
                 ]
             
-            # Limit to max certificates
-            isins = isins[:CONFIG['max_certificates']]
             print(f'\n🎯 Processing {len(isins)} certificates...\n')
             
             # Scrape each certificate
@@ -474,21 +489,21 @@ class CertificatesScraper:
                 if i < len(isins) - 1:
                     time.sleep(CONFIG['wait_between_pages'] / 1000)
             
-            # Calculate statistics
+            # Statistics
             with_underlying = len([c for c in self.certificates if c.get('underlying_name')])
             with_barrier = len([c for c in self.certificates if c.get('barrier_down')])
             with_coupon = len([c for c in self.certificates if c.get('coupon')])
             
-            print('\n' + '=' * 60)
+            print('\n' + '=' * 70)
             print('📊 SCRAPING SUMMARY')
-            print('=' * 60)
+            print('=' * 70)
             print(f'Total processed: {len(isins)}')
             print(f'Successfully scraped: {success_count}')
-            print(f'Success rate: {(success_count/len(isins)*100):.1f}%')
+            print(f'Success rate: {(success_count/max(1,len(isins))*100):.1f}%')
             print(f'With underlying: {with_underlying} ({with_underlying/max(1,success_count)*100:.1f}%)')
             print(f'With barrier: {with_barrier}')
             print(f'With coupon: {with_coupon}')
-            print('=' * 60)
+            print('=' * 70)
             
             # Save results
             self.save_results()
@@ -497,37 +512,34 @@ class CertificatesScraper:
             self.close_browser()
     
     def save_results(self):
-        """Save scraped data to JSON file"""
-        # Ensure output directory exists
+        """Save scraped data to JSON"""
         os.makedirs(CONFIG['output_dir'], exist_ok=True)
         
         output = {
             'metadata': {
-                'scraper_version': '2.0-fixed',
+                'scraper_version': '3.0-corrected-urls',
                 'timestamp': datetime.now().isoformat(),
                 'source': 'certificatiederivati.it',
                 'total_certificates': len(self.certificates),
-                'scrape_date': datetime.now().strftime('%Y-%m-%d'),
-                'fix_applied': 'get_underlying_name 3-strategy approach'
+                'scrape_date': datetime.now().strftime('%Y-%m-%d')
             },
             'certificates': self.certificates
         }
         
+        # Save to data directory
         output_path = os.path.join(CONFIG['output_dir'], 'certificates-data.json')
-        
         with open(output_path, 'w', encoding='utf-8') as f:
             json.dump(output, f, indent=2, ensure_ascii=False)
-        
         print(f'\n💾 Saved to: {output_path}')
-        print(f'📦 Total certificates: {len(self.certificates)}')
         
-        # Also save to root for backward compatibility
-        root_path = 'certificates-data.json'
-        with open(root_path, 'w', encoding='utf-8') as f:
+        # Also save to root
+        with open('certificates-data.json', 'w', encoding='utf-8') as f:
             json.dump(output, f, indent=2, ensure_ascii=False)
-        print(f'📦 Also saved to: {root_path}')
+        print(f'💾 Also saved to: certificates-data.json')
+        
+        print(f'📦 Total certificates: {len(self.certificates)}')
 
 
 if __name__ == '__main__':
-    scraper = CertificatesScraper()
+    scraper = CertificatesScraperV3()
     scraper.run()
