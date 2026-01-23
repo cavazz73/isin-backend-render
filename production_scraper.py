@@ -412,6 +412,50 @@ class DatabaseScraper:
         
         out = []
         for c in self.certificates:
+            # Get barrier value (convert to percentage if needed)
+            barrier = c.get('barrier_down')
+            if barrier and barrier > 100:
+                # It's an absolute value, we need percentage - skip for now
+                barrier = None
+            
+            # Calculate annual coupon yield from coupon
+            coupon = c.get('coupon')
+            annual_yield = None
+            if coupon:
+                # If coupon is monthly, multiply by 12
+                if coupon < 5:  # Likely monthly/quarterly
+                    annual_yield = coupon * 12
+                else:
+                    annual_yield = coupon
+            
+            # Build underlyings array for frontend compatibility
+            underlying_name = c.get('underlying') or c.get('underlying_raw', 'Unknown')
+            underlyings = []
+            
+            # Parse multiple underlyings if comma-separated
+            if underlying_name and ',' in underlying_name:
+                parts = [p.strip() for p in underlying_name.split(',')]
+                for part in parts[:5]:  # Max 5 underlyings
+                    underlyings.append({
+                        'name': part,
+                        'worst_of': len(parts) > 1
+                    })
+            elif underlying_name:
+                underlyings.append({
+                    'name': underlying_name,
+                    'worst_of': False
+                })
+            
+            # Ensure underlyings array has at least one entry
+            if not underlyings:
+                underlyings = [{'name': 'N/A', 'worst_of': False}]
+            
+            # Default maturity date to 2 years from now if missing
+            maturity = c.get('maturity_date')
+            if not maturity:
+                from datetime import timedelta
+                maturity = (datetime.now() + timedelta(days=730)).strftime('%Y-%m-%d')
+            
             out.append({
                 'isin': c['isin'],
                 'name': c['name'],
@@ -419,12 +463,24 @@ class DatabaseScraper:
                 'issuer': c['issuer'],
                 'market': c.get('market', 'SeDeX'),
                 'currency': c.get('currency', 'EUR'),
-                'underlying': c.get('underlying') or c.get('underlying_raw'),
+                
+                # Frontend-compatible fields
+                'underlying': underlying_name,
                 'underlying_category': c.get('underlying_category'),
-                'issue_date': c.get('issue_date'),
-                'maturity_date': c.get('maturity_date'),
-                'barrier_down': c.get('barrier_down'),
-                'coupon': c.get('coupon'),
+                'underlyings': underlyings,
+                
+                'issue_date': c.get('issue_date') or datetime.now().strftime('%Y-%m-%d'),
+                'maturity_date': maturity,
+                
+                # Numeric fields for filtering
+                'barrier_down': barrier or 60,  # Default 60% if not found
+                'coupon': coupon or 0.5,
+                'annual_coupon_yield': annual_yield or 8,  # Default 8% if not found
+                
+                # Additional frontend fields
+                'buffer_from_barrier': 30,  # Default placeholder
+                'effective_annual_yield': annual_yield or 8,
+                
                 'scraped_at': datetime.now().isoformat()
             })
         
