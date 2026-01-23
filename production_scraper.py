@@ -11,7 +11,7 @@ from datetime import datetime, timedelta
 TARGET_COUNT = 80
 OUTPUT_FILE = "data/certificates-data.json"
 
-# --- KEYWORDS PER FILTRO ASSET CLASS ---
+# --- FILTRO ASSET CLASS ---
 VALID_KEYWORDS = [
     "EURO STOXX", "EUROSTOXX", "S&P", "SP500", "NASDAQ", "DOW JONES", "FTSE", "DAX", 
     "CAC", "IBEX", "NIKKEI", "HANG SENG", "MSCI", "STOXX", "BANKS", "AUTOMOBILES", 
@@ -60,7 +60,7 @@ def calculate_scenarios(price, strike, barrier):
         })
     return scenarios
 
-# --- MOTORE DI SCRAPING ---
+# --- CORE SCRAPER ---
 async def scrape_certificate(page, isin):
     url = f"https://www.certificatiederivati.it/db_bs_scheda_certificato.asp?isin={isin}"
     try:
@@ -73,21 +73,18 @@ async def scrape_certificate(page, isin):
 
         if "EMITTENTE" not in full_text.upper(): return None
 
-        # 1. NOME
+        # 1. DATI BASE
         nome_tag = soup.find('td', class_='titolo_scheda')
         nome = clean_text(nome_tag.get_text()) if nome_tag else f"Cert {isin}"
         
-        # 2. SOTTOSTANTE
-        sottostante = "N/D"
         m_und = re.search(r'Sottostante[^a-zA-Z0-9]{0,15}([a-zA-Z0-9 &/\.\-\+]{3,50})', full_text, re.IGNORECASE)
-        if m_und: sottostante = clean_text(m_und.group(1))
-        else: sottostante = nome
+        sottostante = clean_text(m_und.group(1)) if m_und else nome
 
-        # 3. FILTRO ASSET CLASS
+        # 2. FILTRO
         if not is_valid_asset(sottostante) and not is_valid_asset(nome):
             return "SKIPPED_TYPE"
 
-        # 4. PREZZO (Regex sicura)
+        # 3. PREZZO (Regex sicura)
         prezzo = 0.0
         regex_prezzo = r'(?:Prezzo|Ultimo|Valore|Quotazione|Ask|Lettera)[^0-9]{0,30}(\d+[.,]\d+)'
         match = re.search(regex_prezzo, full_text, re.IGNORECASE)
@@ -95,15 +92,15 @@ async def scrape_certificate(page, isin):
         
         if prezzo <= 0: return None
 
-        # 5. DATI TECNICI
-        def get_regex_val(kw):
+        # 4. DATI TECNICI
+        def get_val(kw):
             pat = kw + r'[^0-9]{0,30}(\d+[.,]\d+)'
             m = re.search(pat, full_text, re.IGNORECASE)
             return parse_float(m.group(1)) if m else 0.0
 
-        strike = get_regex_val("Strike|Iniziale")
-        barriera = get_regex_val("Barriera|Barrier")
-        cedola = get_regex_val("Cedola|Premio")
+        strike = get_val("Strike|Iniziale")
+        barriera = get_val("Barriera|Barrier")
+        cedola = get_val("Cedola|Premio")
         
         emittente = "N/D"
         m_em = re.search(r'Emittente[^a-zA-Z0-9]{0,20}([a-zA-Z ]{3,30})', full_text, re.IGNORECASE)
@@ -136,7 +133,7 @@ async def run_batch():
         page = await browser.new_page()
         isins = []
         try:
-            await page.goto("https://www.certificatiederivati.it/db_bs_nuove_emissioni.asp", timeout=25000)
+            await page.goto("https://www.certificatiederivati.it/db_bs_nuove_emissioni.asp", timeout=30000)
             hrefs = await page.evaluate("() => Array.from(document.querySelectorAll(\"table a[href*='isin=']\")).map(a => a.href)")
             for h in hrefs:
                 m = re.search(r'isin=([A-Z0-9]{12})', h or "", re.IGNORECASE)
