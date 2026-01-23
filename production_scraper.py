@@ -18,8 +18,17 @@ def clean_text(text):
 
 def parse_float(text):
     if not text: return 0.0
+    # Rimuovi tutto tranne numeri, punti e virgole
     text = text.upper().replace('EUR', '').replace('€', '').replace('%', '').strip()
-    clean = re.sub(r'[^\d,-]', '', text).replace(',', '.')
+    # Caso 1.234,56 -> 1234.56
+    if ',' in text and '.' in text:
+        text = text.replace('.', '').replace(',', '.')
+    # Caso 1234,56 -> 1234.56
+    elif ',' in text:
+        text = text.replace(',', '.')
+    
+    # Pulizia finale caratteri non numerici rimasti
+    clean = re.sub(r'[^\d.]', '', text)
     try:
         return float(clean)
     except:
@@ -45,79 +54,98 @@ def calculate_scenarios(price, strike, barrier):
     return scenarios
 
 # ==========================================
-# MOTORE DI SCRAPING CON DIAGNOSTICA
+# MOTORE DI SCRAPING "RAGGI X" (REGEX)
 # ==========================================
-async def scrape_ced_diagnostic(page, isin):
+async def scrape_ced_regex(page, isin):
     url = f"https://www.certificatiederivati.it/db_bs_scheda_certificato.asp?isin={isin}"
-    
-    print(f"   🕵️  [DIAGNOSTICA] Navigo su: {url}")
     
     try:
         await page.goto(url, timeout=20000, wait_until="domcontentloaded")
         
-        # STAMPA COSA VEDE IL BOT (Titolo Pagina)
-        title = await page.title()
-        print(f"   👀 [VISTA BOT] Titolo Pagina: '{title}'")
-        
+        if "home.asp" in page.url: return None
+
+        # Parsing HTML
         content = await page.content()
         soup = BeautifulSoup(content, 'html.parser')
+        full_text = clean_text(soup.get_text())
+
+        # Check validità
+        if "EMITTENTE" not in full_text.upper() and "SOTTOSTANTE" not in full_text.upper():
+            return None
+
+        # --- ESTRAZIONE DATI ---
         
-        # STAMPA LE PRIME 100 LETTERE DI TESTO
-        text_preview = clean_text(soup.get_text())[:150]
-        print(f"   👀 [VISTA BOT] Testo Iniziale: '{text_preview}...'")
-
-        # Controlli specifici
-        if "home.asp" in page.url:
-            print(f"   ⚠️ [FAIL] Redirect rilevato verso Home Page.")
-            return None
-
-        has_emittente = soup.find(string=re.compile("Emittente", re.IGNORECASE))
-        if not has_emittente:
-            print(f"   ⚠️ [FAIL] Parola 'Emittente' NON trovata nella pagina.")
-            return None
-
-        # Prova estrazione prezzo
+        # 1. NOME
         nome_tag = soup.find('td', class_='titolo_scheda')
         nome = clean_text(nome_tag.get_text()) if nome_tag else f"Certificate {isin}"
-        
-        # Cerca prezzo
-        raw_price_labels = soup.find_all(string=re.compile("Prezzo|Ultimo|Valore"))
-        print(f"   🔎 [DEBUG PREZZO] Trovate {len(raw_price_labels)} etichette 'Prezzo'.")
-        
-        prezzo = 0.0
-        # Logica di estrazione semplice
-        for label in raw_price_labels:
-            if label.find_parent('td'):
-                nxt = label.find_parent('td').find_next_sibling('td')
-                if nxt:
-                    val = clean_text(nxt.get_text())
-                    print(f"      -> Etichetta '{label}' ha valore vicino: '{val}'")
-                    p = parse_float(val)
-                    if p > 0: 
-                        prezzo = p
-                        break
-        
-        if prezzo <= 0:
-            print(f"   ❌ [FAIL] Prezzo finale è 0.")
-            return None
-            
-        print(f"   ✅ [SUCCESS] Prezzo trovato: {prezzo}")
 
-        # Dati base (usiamo default se mancano per test)
-        strike = prezzo
-        barriera = prezzo * 0.60
+        # 2. PREZZO (Strategia Regex Potente)
+        # Cerca pattern tipo: "Prezzo 100,50" oppure "Ultimo: 98.4"
+        # Il pattern cerca: Parola chiave -> spaziatura opzionale -> Numero con virgola o punto
+        prezzo = 0.0
         
+        # Regex per trovare prezzi (es. 100,00 | 95.40)
+        price_patterns = [
+            r'Prezzo\s*[:]?\s*(\d+[.,]\d+)',
+            r'Ultimo\s*[:]?\s*(\d+[.,]\d+)',
+            r'Valore\s*[:]?\s*(\d+[.,]\d+)',
+            r'Quotazione\s*[:]?\s*(\d+[.,]\d+)',
+            r'Ask\s*[:]?\s*(\d+[.,]\d+)',
+            r'Lettera\s*[:]?\s*(\d+[.,]\d+)'
+        ]
+        
+        for pattern in price_patterns:
+            match = re.search(pattern, full_text, re.IGNORECASE)
+            if match:
+                val_str = match.group(1)
+                p = parse_float(val_str)
+                if p > 0:
+                    prezzo = p
+                    break
+        
+        # Fallback: Se Regex fallisce, cerca il primo numero con € nel testo
+        if prezzo == 0:
+            euro_match = re.search(r'(\d+[.,]\d{2})\s*€', full_text)
+            if euro_match:
+                prezzo = parse_float(euro_match.group(1))
+
+        if prezzo <= 0: return None
+
+        # 3. DATI TECNICI (Regex)
+        def extract_by_regex(keywords):
+            for kw in keywords:
+                # Cerca "Keyword: 123,45"
+                pat = kw + r'\s*[:]?\s*(\d+[.,]?\d*)'
+                m = re.search(pat, full_text, re.IGNORECASE)
+                if m: return parse_float(m.group(1))
+            return 0.0
+
+        strike = extract_by_regex(["Strike", "Iniziale", "Strike Level"])
+        barriera = extract_by_regex(["Barriera", "Barrier", "Livello Barriera"])
+        cedola = extract_by_regex(["Cedola", "Premio", "Bonus"])
+        
+        # Emittente (Cerca nella tabella standard perché è testo)
+        emittente = "N/D"
+        em_tag = soup.find(string=re.compile("Emittente", re.IGNORECASE))
+        if em_tag and em_tag.find_parent('td'):
+             nxt = em_tag.find_parent('td').find_next_sibling('td')
+             if nxt: emittente = clean_text(nxt.get_text())
+
+        # Defaults logici
+        if strike == 0: strike = prezzo
+        if barriera == 0: barriera = prezzo * 0.60
+
         return {
             "isin": isin,
             "name": nome,
             "type": "Certificate",
-            "issuer": "N/D",
+            "issuer": emittente,
             "market": "SeDeX",
             "currency": "EUR",
             "price": prezzo,
             "bid_price": prezzo,
             "ask_price": prezzo,
-            "annual_coupon_yield": 0,
+            "annual_coupon_yield": cedola,
             "barrier_down": barriera,
             "strike": strike,
             "maturity_date": (datetime.now() + timedelta(days=730)).isoformat(),
@@ -126,19 +154,15 @@ async def scrape_ced_diagnostic(page, isin):
             "source": "Certificati&Derivati"
         }
 
-    except Exception as e:
-        print(f"   🔥 [ERRORE CRITICO] {e}")
+    except Exception:
         return None
 
 # ==========================================
 # RUNNER
 # ==========================================
 async def run_batch():
-    print("--- 🚀 AVVIO SCRAPER SPIA (DIAGNOSTICA) ---")
+    print("--- 🚀 AVVIO SCRAPER REGEX (FINAL FIX) ---")
     results = []
-    
-    # Usiamo solo 3 ISIN per il test rapido, così non aspetti 20 minuti
-    isins = ['IT0006771510', 'DE000HD8SXZ1', 'XS2470031936']
     
     async with async_playwright() as p:
         browser = await p.chromium.launch(
@@ -147,32 +171,67 @@ async def run_batch():
         )
         page = await browser.new_page()
 
-        # STEP 1: Visita Home
-        print("   🌍 Visita Home Page...")
-        try: await page.goto("https://www.certificatiederivati.it", timeout=15000)
-        except: pass
+        # 1. Recupero ISIN da lista "Nuove Emissioni"
+        try:
+            await page.goto("https://www.certificatiederivati.it/db_bs_nuove_emissioni.asp", timeout=20000)
+            links = await page.locator("a[href*='isin=']").all()
+            isins = []
+            for l in links:
+                href = await l.get_attribute("href")
+                m = re.search(r'isin=([A-Z0-9]{12})', href or "", re.IGNORECASE)
+                if m: isins.append(m.group(1))
+            
+            isins = list(set(isins))
+            if not isins: raise Exception("Lista vuota")
+        except:
+            # Fallback manuale se la lista fallisce
+            isins = ['IT0006771510', 'DE000HD8SXZ1', 'XS2470031936', 'CH1390857220', 'IT0006755018', 'XS2544207512']
+
+        print(f"📋 Coda Analisi: {len(isins)} ISIN")
 
         for isin in isins:
-            print(f"\nAnalisi {isin}...")
-            data = await scrape_ced_diagnostic(page, isin)
+            if len(results) >= TARGET_COUNT: break
+            
+            print(f"Analisi {isin}...", end="\r")
+            await asyncio.sleep(random.uniform(0.5, 1.5)) # Human delay
+            
+            data = await scrape_ced_regex(page, isin)
+            
             if data:
                 results.append(data)
-                print(f"✅ SALVATO: {isin}")
+                print(f"✅ OK: {isin} | {data['price']}€            ")
             else:
-                print(f"❌ SCARTATO: {isin}")
-            await asyncio.sleep(2)
+                print(f"❌ SKIP: {isin} (Regex fallita)        ")
         
         await browser.close()
 
-    # Output
+    # Salvataggio
     output = {
         "last_update": datetime.now().isoformat(),
         "total": len(results),
         "certificates": results
     }
+    
     os.makedirs(os.path.dirname(OUTPUT_FILE), exist_ok=True)
     with open(OUTPUT_FILE, 'w', encoding='utf-8') as f:
         json.dump(output, f, indent=2)
+    
+    print(f"\n💾 Salvati {len(results)} certificati.")
+
+async def run_live(isin):
+    async with async_playwright() as p:
+        browser = await p.chromium.launch(headless=True)
+        page = await browser.new_page()
+        data = await scrape_ced_regex(page, isin)
+        await browser.close()
+        print(json.dumps(data if data else {"error": "not_found"}))
 
 if __name__ == "__main__":
-    asyncio.run(run_batch())
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--isin", help="Live search")
+    args = parser.parse_args()
+
+    if args.isin:
+        asyncio.run(run_live(args.isin))
+    else:
+        asyncio.run(run_batch())
