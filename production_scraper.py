@@ -3,15 +3,17 @@
 Copyright (c) 2024-2025 Mutna S.R.L.S. - All Rights Reserved
 P.IVA: 04219740364
 
-Production Certificates Scraper v6.0
-Extracts certificates on: INDICES, RATES, CURRENCIES, COMMODITIES
-EXCLUDES: Single stocks, basket of stocks
+Production Certificates Scraper v7.0 - ADVANCED SEARCH
+Uses the advanced search to find certificates on:
+- INDICES (FTSE MIB, Euro Stoxx 50, S&P 500, DAX, Nasdaq 100, Nikkei 225...)
+- COMMODITIES (Gold, Silver, Oil, Gas, Copper...)
+- CURRENCIES (EUR/USD, EUR/JPY, GBP/USD...)
+- RATES (Euribor, BTP, Bund...)
 
-Target underlyings:
-- Indices: FTSE MIB, Euro Stoxx 50, S&P 500, DAX, Nasdaq 100, etc.
-- Rates: Euribor, interest rates
-- Currencies: EUR/USD, USD/JPY, etc.
-- Commodities: Gold, Silver, Oil, Gas, etc.
+Strategy:
+1. Query advanced search for each target underlying
+2. Collect all matching certificates
+3. Get details from certificate pages
 """
 
 import json
@@ -19,173 +21,99 @@ import re
 import time
 import os
 from datetime import datetime
+from urllib.parse import quote
 from playwright.sync_api import sync_playwright
 from bs4 import BeautifulSoup
 
 CONFIG = {
-    'emissions_url': 'https://www.certificatiederivati.it/db_bs_nuove_emissioni.asp',
+    'search_url': 'https://www.certificatiederivati.it/db_bs_estrazione_ricerca.asp',
     'detail_url': 'https://www.certificatiederivati.it/db_bs_scheda_certificato.asp?isin=',
-    'max_certificates': 100,
-    'page_timeout': 15000,
-    'wait_for_content': 3000,
-    'wait_between_pages': 1000,
+    'page_timeout': 20000,
+    'wait_for_content': 2000,
+    'wait_between_searches': 1500,
+    'wait_between_details': 800,
     'output_dir': 'data'
 }
 
-# ============================================
-# ALLOWED UNDERLYINGS
-# ============================================
-
-INDICES = {
-    'FTSE MIB', 'FTSEMIB', 'EURO STOXX 50', 'EUROSTOXX 50', 'EUROSTOXX50', 'SX5E',
-    'STOXX 600', 'DAX', 'DAX 40', 'CAC 40', 'CAC40', 'IBEX 35', 'IBEX',
-    'S&P 500', 'S&P500', 'SPX', 'SP500', 'NASDAQ', 'NASDAQ 100', 'NASDAQ100', 'NDX',
-    'DOW JONES', 'DJIA', 'RUSSELL 2000', 'NIKKEI', 'NIKKEI 225', 'HANG SENG', 'HSI',
-    'SMI', 'AEX', 'MSCI WORLD', 'MSCI EMERGING', 'STOXX BANKS', 'EURO STOXX BANKS',
+# Target underlyings to search for
+TARGET_UNDERLYINGS = {
+    # INDICES
+    'index': [
+        'FTSE MIB',
+        'Euro Stoxx 50',
+        'Euro STOXX 50',
+        'EUROSTOXX 50',
+        'DAX',
+        'S&P 500',
+        'Nasdaq 100',
+        'Nasdaq-100',
+        'Nikkei 225',
+        'CAC 40',
+        'IBEX 35',
+        'Hang Seng',
+        'Eurostoxx Banks',
+        'Euro STOXX Banks',
+        'STOXX 600',
+        'Dow Jones',
+        'Russell 2000',
+        'SMI',
+    ],
+    
+    # COMMODITIES
+    'commodity': [
+        'Gold',
+        'Oro',
+        'Silver',
+        'Argento',
+        'WTI',
+        'Crude Oil',
+        'Brent',
+        'Natural Gas',
+        'Gas Naturale',
+        'Copper',
+        'Rame',
+        'Platinum',
+        'Platino',
+        'Palladium',
+        'Palladio',
+        'Wheat',
+        'Grano',
+        'Corn',
+        'Mais',
+        'Soybean',
+        'Coffee',
+        'Sugar',
+        'Cotton',
+    ],
+    
+    # CURRENCIES
+    'currency': [
+        'EUR/USD',
+        'EUR/JPY',
+        'EUR/GBP',
+        'EUR/CHF',
+        'USD/JPY',
+        'GBP/USD',
+        'USD/CHF',
+        'EUR/CAD',
+    ],
+    
+    # RATES
+    'rate': [
+        'Euribor',
+        'BTP',
+        'Bund',
+        'Euro Bund',
+        'T-Bond',
+        'T-Note',
+        'CMS',
+    ],
 }
 
-RATES = {
-    'EURIBOR', 'EURIBOR 3M', 'EURIBOR 6M', 'EURIBOR 12M',
-    'LIBOR', 'SOFR', 'ESTR', 'BUND', 'BTP', 'TREASURY', 'SWAP', 'IRS', 'CMS',
-}
 
-CURRENCIES = {
-    'EUR/USD', 'EURUSD', 'EUR/GBP', 'EURGBP', 'EUR/JPY', 'EURJPY',
-    'EUR/CHF', 'EURCHF', 'USD/JPY', 'USDJPY', 'GBP/USD', 'GBPUSD',
-    'USD/CHF', 'USDCHF', 'AUD/USD', 'AUDUSD', 'USD/CAD', 'USDCAD',
-}
-
-COMMODITIES = {
-    'WTI', 'WTI CRUDE', 'CRUDE OIL', 'OIL', 'PETROLIO', 'BRENT', 'BRENT CRUDE',
-    'NATURAL GAS', 'GAS NATURALE', 'NAT GAS', 'GOLD', 'ORO', 'XAU',
-    'SILVER', 'ARGENTO', 'XAG', 'PLATINUM', 'PLATINO', 'PALLADIUM', 'PALLADIO',
-    'COPPER', 'RAME', 'WHEAT', 'GRANO', 'CORN', 'MAIS', 'SOYBEAN', 'SOIA',
-}
-
-
-def normalize_underlying(name):
-    """Normalize underlying name and return category"""
-    if not name:
-        return None, None
-    
-    name_upper = name.upper().strip()
-    
-    # Indices
-    if any(x in name_upper for x in ['EURO STOXX 50', 'EUROSTOXX', 'SX5E']):
-        return 'Euro Stoxx 50', 'index'
-    if any(x in name_upper for x in ['FTSE MIB', 'FTSEMIB', 'FTSE/MIB']):
-        return 'FTSE MIB', 'index'
-    if any(x in name_upper for x in ['S&P 500', 'S&P500', 'SPX', 'SP500']):
-        return 'S&P 500', 'index'
-    if 'NASDAQ' in name_upper:
-        return 'Nasdaq 100', 'index'
-    if 'DAX' in name_upper:
-        return 'DAX', 'index'
-    if 'NIKKEI' in name_upper:
-        return 'Nikkei 225', 'index'
-    if 'HANG SENG' in name_upper or 'HSI' in name_upper:
-        return 'Hang Seng', 'index'
-    if 'CAC' in name_upper:
-        return 'CAC 40', 'index'
-    if 'IBEX' in name_upper:
-        return 'IBEX 35', 'index'
-    if 'STOXX 600' in name_upper:
-        return 'Stoxx 600', 'index'
-    if 'STOXX BANKS' in name_upper or 'SX7E' in name_upper:
-        return 'Euro Stoxx Banks', 'index'
-    if 'DOW JONES' in name_upper or 'DJIA' in name_upper:
-        return 'Dow Jones', 'index'
-    if 'RUSSELL' in name_upper:
-        return 'Russell 2000', 'index'
-    if 'SMI' in name_upper:
-        return 'SMI', 'index'
-    if 'AEX' in name_upper:
-        return 'AEX', 'index'
-    if 'MSCI' in name_upper:
-        return 'MSCI World', 'index'
-    
-    # Rates
-    if 'EURIBOR' in name_upper:
-        if '3M' in name_upper:
-            return 'Euribor 3M', 'rate'
-        if '6M' in name_upper:
-            return 'Euribor 6M', 'rate'
-        return 'Euribor', 'rate'
-    if 'CMS' in name_upper:
-        return 'CMS', 'rate'
-    if 'BTP' in name_upper:
-        return 'BTP', 'rate'
-    if 'BUND' in name_upper:
-        return 'Bund', 'rate'
-    
-    # Currencies
-    if 'EUR' in name_upper and 'USD' in name_upper:
-        return 'EUR/USD', 'currency'
-    if 'EUR' in name_upper and 'GBP' in name_upper:
-        return 'EUR/GBP', 'currency'
-    if 'USD' in name_upper and 'JPY' in name_upper:
-        return 'USD/JPY', 'currency'
-    if 'GBP' in name_upper and 'USD' in name_upper:
-        return 'GBP/USD', 'currency'
-    
-    # Commodities
-    if any(x in name_upper for x in ['GOLD', 'ORO', 'XAU']):
-        return 'Gold', 'commodity'
-    if any(x in name_upper for x in ['SILVER', 'ARGENTO', 'XAG']):
-        return 'Silver', 'commodity'
-    if any(x in name_upper for x in ['WTI', 'CRUDE', 'PETROLIO', 'OIL']):
-        return 'WTI Crude Oil', 'commodity'
-    if 'BRENT' in name_upper:
-        return 'Brent Crude', 'commodity'
-    if any(x in name_upper for x in ['NATURAL GAS', 'GAS NATURALE', 'NAT GAS']):
-        return 'Natural Gas', 'commodity'
-    if any(x in name_upper for x in ['COPPER', 'RAME']):
-        return 'Copper', 'commodity'
-    if any(x in name_upper for x in ['PLATINUM', 'PLATINO']):
-        return 'Platinum', 'commodity'
-    
-    return None, None
-
-
-def check_certificate(sottostante_raw, cert_name):
-    """Check if certificate should be included and extract underlying"""
-    
-    text = (sottostante_raw + ' ' + cert_name).upper()
-    
-    # EXCLUDE: Basket of stocks
-    if 'BASKET DI AZIONI' in text or 'AZIONI WORST OF' in text:
-        return False, None, None
-    
-    # INCLUDE: Basket of indices
-    if 'BASKET DI INDICI' in text or 'INDICI WORST OF' in text:
-        return True, 'Basket of Indices', 'index'
-    
-    # Try extract from "su UNDERLYING" pattern
-    match = re.search(r'\bsu\s+([A-Za-z0-9\s&/\-\.]+?)(?:\s+con|\s+Barriera|\s+\d|,|$)', cert_name, re.IGNORECASE)
-    if match:
-        underlying_text = match.group(1).strip()
-        normalized, category = normalize_underlying(underlying_text)
-        if normalized and category:
-            return True, normalized, category
-    
-    # Check whole name
-    normalized, category = normalize_underlying(cert_name)
-    if normalized and category:
-        return True, normalized, category
-    
-    # Check raw sottostante
-    if sottostante_raw.lower() not in ['singolo sottostante', 'basket di azioni worst of']:
-        normalized, category = normalize_underlying(sottostante_raw)
-        if normalized and category:
-            return True, normalized, category
-    
-    return False, None, None
-
-
-class IndicesRatesCommoditiesScraper:
+class AdvancedSearchScraper:
     def __init__(self):
-        self.certificates = []
-        self.excluded = 0
+        self.certificates = {}  # Use dict to dedupe by ISIN
         self.browser = None
         self.context = None
         self.playwright = None
@@ -210,9 +138,8 @@ class IndicesRatesCommoditiesScraper:
     
     def run(self):
         print('=' * 70)
-        print('CERTIFICATES SCRAPER v6.0')
-        print('Target: INDICES | RATES | CURRENCIES | COMMODITIES')
-        print('Excludes: Stocks, basket of stocks')
+        print('CERTIFICATES SCRAPER v7.0 - ADVANCED SEARCH')
+        print('Target: INDICES | COMMODITIES | CURRENCIES | RATES')
         print('Copyright (c) 2024-2025 Mutna S.R.L.S.')
         print('=' * 70)
         print(f'Date: {datetime.now().isoformat()}')
@@ -221,96 +148,107 @@ class IndicesRatesCommoditiesScraper:
         self.start_browser()
         
         try:
-            # Load emissions
-            print('\n📋 Loading latest emissions from all issuers...')
-            all_certs = self.get_emissions()
-            print(f'   Total: {len(all_certs)} investment certificates')
-            
-            # Filter
-            print('\n🔍 Filtering...\n')
-            
-            for cert in all_certs:
-                ok, underlying, category = check_certificate(
-                    cert.get('sottostante_raw', ''),
-                    cert.get('name', '')
-                )
+            # Search for each category
+            for category, underlyings in TARGET_UNDERLYINGS.items():
+                icon = {'index': '📊', 'commodity': '🛢️', 'currency': '💱', 'rate': '💹'}.get(category, '📄')
+                print(f'\n{icon} Searching {category.upper()} underlyings...')
                 
-                if ok and underlying:
-                    cert['underlying'] = underlying
-                    cert['underlying_category'] = category
-                    self.certificates.append(cert)
-                    
-                    icon = {'index': '📊', 'rate': '💹', 'currency': '💱', 'commodity': '🛢️'}.get(category, '📄')
-                    print(f'{icon} {cert["isin"]}: {underlying} | {cert["issuer"]}')
-                else:
-                    self.excluded += 1
+                for underlying in underlyings:
+                    count = self.search_underlying(underlying, category)
+                    if count > 0:
+                        print(f'   ✓ {underlying}: {count} certificates')
+                    time.sleep(CONFIG['wait_between_searches'] / 1000)
             
-            print(f'\n✅ Matched: {len(self.certificates)}')
-            print(f'❌ Excluded (stocks): {self.excluded}')
+            print(f'\n✅ Total unique certificates found: {len(self.certificates)}')
             
-            # Get details
+            # Get details for all certificates
             if self.certificates:
-                print(f'\n📋 Fetching details for {len(self.certificates)} certificates...')
-                for i, cert in enumerate(self.certificates):
-                    detail = self.get_detail(cert['isin'])
+                print(f'\n📋 Fetching details...')
+                certs_list = list(self.certificates.values())
+                for i, cert in enumerate(certs_list):
+                    detail = self.get_certificate_detail(cert['isin'])
                     if detail:
                         cert.update(detail)
-                    if (i + 1) % 10 == 0:
-                        print(f'   {i + 1}/{len(self.certificates)}')
-                    time.sleep(CONFIG['wait_between_pages'] / 1000)
+                    if (i + 1) % 20 == 0:
+                        print(f'   {i + 1}/{len(certs_list)}')
+                    time.sleep(CONFIG['wait_between_details'] / 1000)
             
+            # Summary and save
             self.print_summary()
-            self.save()
+            self.save_results()
             
         finally:
             self.close_browser()
             print('\n🔒 Browser closed')
     
-    def get_emissions(self):
+    def search_underlying(self, underlying, category):
+        """Search for certificates with specific underlying"""
         page = self.context.new_page()
-        certs = []
+        count = 0
         
         try:
-            page.goto(CONFIG['emissions_url'], timeout=CONFIG['page_timeout'], wait_until='domcontentloaded')
-            page.wait_for_timeout(2000)
+            # Build search URL
+            # db=2 = investment certificates
+            # fase=quotazione = currently trading
+            params = f'db=2&sottostanteC={quote(underlying)}&fase=quotazione&FiltroDal=2020-1-1&FiltroAl=2099-12-31'
+            url = f'{CONFIG["search_url"]}?{params}'
+            
+            page.goto(url, timeout=CONFIG['page_timeout'], wait_until='domcontentloaded')
+            page.wait_for_timeout(CONFIG['wait_for_content'])
             
             soup = BeautifulSoup(page.content(), 'html.parser')
             
-            for table in soup.find_all('table'):
-                for row in table.find_all('tr')[1:]:
+            # Find results table
+            tables = soup.find_all('table')
+            
+            for table in tables:
+                rows = table.find_all('tr')
+                for row in rows[1:]:  # Skip header
                     cells = row.find_all('td')
-                    if len(cells) >= 6:
+                    if len(cells) >= 5:
                         isin = cells[0].get_text(strip=True)
+                        
                         if not re.match(r'^[A-Z]{2}[A-Z0-9]{10}$', isin):
                             continue
                         
-                        name = cells[1].get_text(strip=True)
-                        if 'TURBO' in name.upper() or 'LEVA FISSA' in name.upper():
+                        # Skip if already found
+                        if isin in self.certificates:
                             continue
                         
-                        certs.append({
+                        name = cells[1].get_text(strip=True) if len(cells) > 1 else ''
+                        emittente = cells[2].get_text(strip=True) if len(cells) > 2 else ''
+                        
+                        # Skip leverage products
+                        name_upper = name.upper()
+                        if 'TURBO' in name_upper or 'LEVA FISSA' in name_upper or 'MINI FUTURE' in name_upper:
+                            continue
+                        
+                        self.certificates[isin] = {
                             'isin': isin,
                             'name': name,
                             'type': self.detect_type(name),
-                            'issuer': self.normalize_issuer(cells[2].get_text(strip=True)),
-                            'market': cells[4].get_text(strip=True),
-                            'sottostante_raw': cells[3].get_text(strip=True),
-                            'issue_date': self.parse_date(cells[5].get_text(strip=True)),
+                            'issuer': self.normalize_issuer(emittente),
+                            'underlying': self.normalize_underlying(underlying),
+                            'underlying_category': category,
                             'currency': 'EUR',
-                        })
+                        }
+                        count += 1
+            
         except Exception as e:
-            print(f'   ⚠️ Error: {e}')
+            pass  # Silent fail for individual searches
         finally:
             page.close()
         
-        return certs
+        return count
     
-    def get_detail(self, isin):
+    def get_certificate_detail(self, isin):
+        """Get additional details from certificate page"""
         page = self.context.new_page()
         data = {}
         
         try:
-            page.goto(f'{CONFIG["detail_url"]}{isin}', timeout=CONFIG['page_timeout'], wait_until='domcontentloaded')
+            url = f'{CONFIG["detail_url"]}{isin}'
+            page.goto(url, timeout=CONFIG['page_timeout'], wait_until='domcontentloaded')
             page.wait_for_timeout(CONFIG['wait_for_content'])
             
             soup = BeautifulSoup(page.content(), 'html.parser')
@@ -322,7 +260,7 @@ class IndicesRatesCommoditiesScraper:
                         label = cells[0].get_text(strip=True).upper()
                         value = cells[1].get_text(strip=True)
                         
-                        if 'BARRIERA' in label:
+                        if 'BARRIERA' in label and '%' not in label:
                             m = re.search(r'(\d+[,.]?\d*)', value)
                             if m:
                                 data['barrier_down'] = float(m.group(1).replace(',', '.'))
@@ -334,6 +272,15 @@ class IndicesRatesCommoditiesScraper:
                         
                         elif 'SCADENZA' in label and 'DATA' in label:
                             data['maturity_date'] = self.parse_date(value)
+                        
+                        elif 'EMISSIONE' in label and 'DATA' in label:
+                            data['issue_date'] = self.parse_date(value)
+                        
+                        elif 'MERCATO' in label:
+                            data['market'] = value
+                        
+                        elif 'FASE' in label:
+                            data['phase'] = value.lower()
         except:
             pass
         finally:
@@ -341,25 +288,91 @@ class IndicesRatesCommoditiesScraper:
         
         return data
     
+    def normalize_underlying(self, underlying):
+        """Normalize underlying name"""
+        mappings = {
+            'FTSE MIB': 'FTSE MIB',
+            'Euro Stoxx 50': 'Euro Stoxx 50',
+            'Euro STOXX 50': 'Euro Stoxx 50',
+            'EUROSTOXX 50': 'Euro Stoxx 50',
+            'Eurostoxx Banks': 'Euro Stoxx Banks',
+            'Euro STOXX Banks': 'Euro Stoxx Banks',
+            'S&P 500': 'S&P 500',
+            'Nasdaq 100': 'Nasdaq 100',
+            'Nasdaq-100': 'Nasdaq 100',
+            'Nikkei 225': 'Nikkei 225',
+            'CAC 40': 'CAC 40',
+            'Hang Seng': 'Hang Seng',
+            'Gold': 'Gold',
+            'Oro': 'Gold',
+            'Silver': 'Silver',
+            'Argento': 'Silver',
+            'WTI': 'WTI Crude Oil',
+            'Crude Oil': 'WTI Crude Oil',
+            'Brent': 'Brent Crude',
+            'Natural Gas': 'Natural Gas',
+            'Gas Naturale': 'Natural Gas',
+            'Copper': 'Copper',
+            'Rame': 'Copper',
+            'Platinum': 'Platinum',
+            'Platino': 'Platinum',
+            'Palladium': 'Palladium',
+            'Palladio': 'Palladium',
+            'Euro Bund': 'Euro Bund',
+            'BTP': 'BTP',
+            'Euribor': 'Euribor',
+        }
+        return mappings.get(underlying, underlying)
+    
     def detect_type(self, name):
         n = name.lower()
-        for kw, t in [('phoenix memory', 'Phoenix Memory'), ('cash collect', 'Cash Collect'),
-                      ('bonus cap', 'Bonus Cap'), ('top bonus', 'Top Bonus'), ('express', 'Express'),
-                      ('equity protection', 'Equity Protection'), ('credit linked', 'Credit Linked'),
-                      ('digital', 'Digital'), ('airbag', 'Airbag'), ('memory', 'Memory'),
-                      ('phoenix', 'Phoenix'), ('reverse', 'Reverse'), ('fixed', 'Fixed Coupon')]:
+        for kw, t in [
+            ('phoenix memory', 'Phoenix Memory'),
+            ('cash collect', 'Cash Collect'),
+            ('bonus cap', 'Bonus Cap'),
+            ('top bonus', 'Top Bonus'),
+            ('express', 'Express'),
+            ('equity protection', 'Equity Protection'),
+            ('credit linked', 'Credit Linked'),
+            ('digital', 'Digital'),
+            ('airbag', 'Airbag'),
+            ('autocall', 'Autocallable'),
+            ('memory', 'Memory'),
+            ('phoenix', 'Phoenix'),
+            ('reverse', 'Reverse'),
+            ('fixed', 'Fixed Coupon'),
+            ('benchmark', 'Benchmark'),
+            ('tracker', 'Tracker'),
+            ('outperformance', 'Outperformance'),
+            ('twin win', 'Twin Win'),
+        ]:
             if kw in n:
                 return t
         return 'Certificate'
     
     def normalize_issuer(self, issuer):
-        for k, v in [('bnp paribas', 'BNP Paribas'), ('societe generale', 'Société Générale'),
-                     ('unicredit', 'UniCredit'), ('credit agricole', 'Crédit Agricole'),
-                     ('goldman sachs', 'Goldman Sachs'), ('vontobel', 'Vontobel'),
-                     ('barclays', 'Barclays'), ('citigroup', 'Citigroup'),
-                     ('mediobanca', 'Mediobanca'), ('intesa sanpaolo', 'Intesa Sanpaolo'),
-                     ('natixis', 'Natixis'), ('marex', 'Marex Financial'),
-                     ('leonteq', 'Leonteq Securities'), ('morgan stanley', 'Morgan Stanley')]:
+        for k, v in [
+            ('bnp paribas', 'BNP Paribas'),
+            ('societe generale', 'Société Générale'),
+            ('unicredit', 'UniCredit'),
+            ('credit agricole', 'Crédit Agricole'),
+            ('goldman sachs', 'Goldman Sachs'),
+            ('vontobel', 'Vontobel'),
+            ('barclays', 'Barclays'),
+            ('citigroup', 'Citigroup'),
+            ('mediobanca', 'Mediobanca'),
+            ('intesa sanpaolo', 'Intesa Sanpaolo'),
+            ('natixis', 'Natixis'),
+            ('marex', 'Marex Financial'),
+            ('leonteq', 'Leonteq Securities'),
+            ('morgan stanley', 'Morgan Stanley'),
+            ('jp morgan', 'JP Morgan'),
+            ('deutsche bank', 'Deutsche Bank'),
+            ('ubs', 'UBS'),
+            ('credit suisse', 'Credit Suisse'),
+            ('hsbc', 'HSBC'),
+            ('nomura', 'Nomura'),
+        ]:
             if k in issuer.lower():
                 return v
         return issuer
@@ -374,54 +387,78 @@ class IndicesRatesCommoditiesScraper:
         return s
     
     def print_summary(self):
+        certs = list(self.certificates.values())
+        
         print('\n' + '=' * 70)
         print('📊 SUMMARY')
         print('=' * 70)
+        print(f'Total certificates: {len(certs)}')
         
-        total = len(self.certificates)
-        print(f'Certificates: {total}')
-        
+        # By category
         by_cat = {}
-        for c in self.certificates:
+        for c in certs:
             cat = c.get('underlying_category', 'unknown')
             by_cat[cat] = by_cat.get(cat, 0) + 1
         
         print('\nBy category:')
+        icons = {'index': '📊', 'commodity': '🛢️', 'currency': '💱', 'rate': '💹'}
         for cat, n in sorted(by_cat.items(), key=lambda x: -x[1]):
-            icon = {'index': '📊', 'rate': '💹', 'currency': '💱', 'commodity': '🛢️'}.get(cat, '📄')
-            print(f'   {icon} {cat}: {n}')
+            print(f'   {icons.get(cat, "📄")} {cat}: {n}')
         
+        # By underlying
         by_u = {}
-        for c in self.certificates:
+        for c in certs:
             u = c.get('underlying', '?')
             by_u[u] = by_u.get(u, 0) + 1
         
         print('\nTop underlyings:')
-        for u, n in sorted(by_u.items(), key=lambda x: -x[1])[:10]:
+        for u, n in sorted(by_u.items(), key=lambda x: -x[1])[:15]:
             print(f'   {u}: {n}')
         
+        # By issuer
         by_i = {}
-        for c in self.certificates:
+        for c in certs:
             i = c.get('issuer', '?')
             by_i[i] = by_i.get(i, 0) + 1
         
         print('\nBy issuer:')
-        for i, n in sorted(by_i.items(), key=lambda x: -x[1])[:8]:
+        for i, n in sorted(by_i.items(), key=lambda x: -x[1])[:10]:
             print(f'   {i}: {n}')
+        
+        # By type
+        by_t = {}
+        for c in certs:
+            t = c.get('type', '?')
+            by_t[t] = by_t.get(t, 0) + 1
+        
+        print('\nBy type:')
+        for t, n in sorted(by_t.items(), key=lambda x: -x[1])[:8]:
+            print(f'   {t}: {n}')
+        
+        # With data
+        with_barrier = len([c for c in certs if c.get('barrier_down')])
+        with_coupon = len([c for c in certs if c.get('coupon')])
+        print(f'\nWith barrier: {with_barrier}')
+        print(f'With coupon: {with_coupon}')
         
         print('=' * 70)
     
-    def save(self):
+    def save_results(self):
         os.makedirs(CONFIG['output_dir'], exist_ok=True)
         
+        certs = list(self.certificates.values())
+        
+        # Filter only active certificates
+        active_certs = [c for c in certs if c.get('phase', 'quotazione') == 'quotazione']
+        
         out = []
-        for c in self.certificates:
+        for c in active_certs:
             out.append({
                 'isin': c['isin'],
                 'name': c['name'],
                 'type': c['type'],
                 'issuer': c['issuer'],
-                'market': c['market'],
+                'market': c.get('market', 'SeDeX'),
                 'currency': c.get('currency', 'EUR'),
                 'underlying': c.get('underlying'),
                 'underlying_category': c.get('underlying_category'),
@@ -434,11 +471,12 @@ class IndicesRatesCommoditiesScraper:
         
         data = {
             'metadata': {
-                'version': '6.0',
+                'version': '7.0-advanced-search',
                 'timestamp': datetime.now().isoformat(),
                 'source': 'certificatiederivati.it',
                 'total': len(out),
-                'filter': 'indices, rates, currencies, commodities'
+                'categories': ['index', 'commodity', 'currency', 'rate'],
+                'method': 'advanced_search'
             },
             'certificates': out
         }
@@ -450,11 +488,11 @@ class IndicesRatesCommoditiesScraper:
         with open('certificates-data.json', 'w', encoding='utf-8') as f:
             json.dump(data, f, indent=2, ensure_ascii=False)
         
-        print(f'\n💾 Saved {len(out)} certificates')
+        print(f'\n💾 Saved {len(out)} active certificates')
         print(f'   → {p1}')
         print(f'   → certificates-data.json')
 
 
 if __name__ == '__main__':
-    scraper = IndicesRatesCommoditiesScraper()
+    scraper = AdvancedSearchScraper()
     scraper.run()
