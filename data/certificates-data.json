@@ -1,12 +1,12 @@
 {
   "metadata": {
     "version": "9.0-database-pagination",
-    "timestamp": "2026-01-23T16:45:36.567928",
+    "timestamp": "2026-01-23T17:07:31.659195",
     "source": "certificatiederivati.it",
-    "total": 33,
+    "total": 35,
     "pages_scanned": 50,
     "categories": {
-      "index": 30,
+      "index": 32,
       "commodity": 3,
       "currency": 0,
       "rate": 0
@@ -36,7 +36,7 @@
       "annual_coupon_yield": 8,
       "buffer_from_barrier": 30,
       "effective_annual_yield": 8,
-      "scraped_at": "2026-01-23T16:45:36.567738"
+      "scraped_at": "2026-01-23T17:07:31.658928"
     },
     {
       "isin": "XS1778816600",
@@ -60,7 +60,7 @@
       "annual_coupon_yield": 8,
       "buffer_from_barrier": 30,
       "effective_annual_yield": 8,
-      "scraped_at": "2026-01-23T16:45:36.567751"
+      "scraped_at": "2026-01-23T17:07:31.658944"
     },
     {
       "isin": "DE000SV6JJ23",
@@ -84,7 +84,7 @@
       "annual_coupon_yield": 8,
       "buffer_from_barrier": 30,
       "effective_annual_yield": 8,
-      "scraped_at": "2026-01-23T16:45:36.567757"
+      "scraped_at": "2026-01-23T17:07:31.658953"
     },
     {
       "isin": "XS2458823437",
@@ -108,55 +108,7 @@
       "annual_coupon_yield": 8,
       "buffer_from_barrier": 30,
       "effective_annual_yield": 8,
-      "scraped_at": "2026-01-23T16:45:36.567763"
-    },
-    {
-      "isin": "XS2451252832",
-      "name": "CASH COLLECT",
-      "type": "Cash Collect",
-      "issuer": "Mediobanca",
-      "market": "SeDeX",
-      "currency": "EUR",
-      "underlying": "Basket di indici worst of",
-      "underlying_category": "index",
-      "underlyings": [
-        {
-          "name": "Basket di indici worst of",
-          "worst_of": false
-        }
-      ],
-      "issue_date": "2026-01-23",
-      "maturity_date": "2026-03-16",
-      "barrier_down": 60,
-      "coupon": 0.5,
-      "annual_coupon_yield": 8,
-      "buffer_from_barrier": 30,
-      "effective_annual_yield": 8,
-      "scraped_at": "2026-01-23T16:45:36.567768"
-    },
-    {
-      "isin": "XS1741959602",
-      "name": "CASH COLLECT",
-      "type": "Cash Collect",
-      "issuer": "BNP Paribas",
-      "market": "SeDeX",
-      "currency": "EUR",
-      "underlying": "Basket di indici worst of",
-      "underlying_category": "index",
-      "underlyings": [
-        {
-          "name": "Basket di indici worst of",
-          "worst_of": false
-        }
-      ],
-      "issue_date": "2026-01-23",
-      "maturity_date": "2028-04-17",
-      "barrier_down": 60,
-      "coupon": 0.5,
-      "annual_coupon_yield": 8,
-      "buffer_from_barrier": 30,
-      "effective_annual_yield": 8,
-      "scraped_at": "2026-01-23T16:45:36.567774"
+      "scraped_at": "2026-01-23T17:07:31.658961"
     },
     {
       "isin": "XS2362981917",
@@ -180,31 +132,7 @@
       "annual_coupon_yield": 8,
       "buffer_from_barrier": 30,
       "effective_annual_yield": 8,
-      "scraped_at": "2026-01-23T16:45:36.567780"
-    },
-    {
-      "isin": "XS2129431859",
-      "name": "CASH COLLECT",
-      "type": "Cash Collect",
-      "issuer": "Mediobanca",
-      "market": "SeDeX",
-      "currency": "EUR",
-      "underlying": "Basket di indici worst of",
-      "underlying_category": "index",
-      "underlyings": [
-        {
-          "name": "Basket di indici worst of",
-          "worst_of": false
-        }
-      ],
-      "issue_date": "2026-01-23",
-      "maturity_date": "2026-04-30",
-      "barrier_down": 60,
-      "coupon": 0.5,
-      "annual_coupon_yield": 8,
-      "buffer_from_barrier": 30,
-      "effective_annual_yield": 8,
-      "scraped_at": "2026-01-23T16:45:36.567793"
+      "scraped_at": "2026-01-23T17:07:31.658969"
     },
     {
       "isin": "XS2324751374",
@@ -228,7 +156,31 @@
       "annual_coupon_yield": 8,
       "buffer_from_barrier": 30,
       "effective_annual_yield": 8,
-      "scraped_at": "2026-01-23T16:45:36.567799"
+      "scraped_at": "2026-01-23T17:07:31.658977"
+    },
+    {
+      "isin": "XS2129431859",
+      "name": "CASH COLLECT",
+      "type": "Cash Collect",
+      "issuer": "Mediobanca",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "underlying": "Basket di indici worst of",
+      "underlying_category": "index",
+      "underlyings": [
+        {
+          "name": "Basket di indici worst of",
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2026-01-23",
+      "maturity_date": "2026-04-30",
+      "barrier_down": 60,
+      "coupon": 0.5,
+      "annual_coupon_yield": 8,
+      "buffer_from_barrier": 30,
+      "effective_annual_yield": 8,
+      "scraped_at": "2026-01-23T17:07:31.658985"
     },
     {
       "isin": "IT0005639783",
@@ -252,11 +204,11 @@
       "annual_coupon_yield": 8,
       "buffer_from_barrier": 30,
       "effective_annual_yield": 8,
-      "scraped_at": "2026-01-23T16:45:36.567805"
+      "scraped_at": "2026-01-23T17:07:31.658999"
     },
     {
-      "isin": "NLBNPIT301D1",
-      "name": "CASH COLLECT MEMORY",
+      "isin": "XS1741959602",
+      "name": "CASH COLLECT",
       "type": "Cash Collect",
       "issuer": "BNP Paribas",
       "market": "SeDeX",
@@ -270,19 +222,19 @@
         }
       ],
       "issue_date": "2026-01-23",
-      "maturity_date": "2029-01-25",
+      "maturity_date": "2028-04-17",
       "barrier_down": 60,
       "coupon": 0.5,
       "annual_coupon_yield": 8,
       "buffer_from_barrier": 30,
       "effective_annual_yield": 8,
-      "scraped_at": "2026-01-23T16:45:36.567811"
+      "scraped_at": "2026-01-23T17:07:31.659008"
     },
     {
-      "isin": "NLBNPIT1R346",
-      "name": "CASH COLLECT MEMORY",
+      "isin": "XS2451252832",
+      "name": "CASH COLLECT",
       "type": "Cash Collect",
-      "issuer": "BNP Paribas",
+      "issuer": "Mediobanca",
       "market": "SeDeX",
       "currency": "EUR",
       "underlying": "Basket di indici worst of",
@@ -294,64 +246,16 @@
         }
       ],
       "issue_date": "2026-01-23",
-      "maturity_date": "2027-06-25",
+      "maturity_date": "2026-03-16",
       "barrier_down": 60,
       "coupon": 0.5,
       "annual_coupon_yield": 8,
       "buffer_from_barrier": 30,
       "effective_annual_yield": 8,
-      "scraped_at": "2026-01-23T16:45:36.567816"
+      "scraped_at": "2026-01-23T17:07:31.659015"
     },
     {
-      "isin": "NLBNPIT1R353",
-      "name": "CASH COLLECT MEMORY",
-      "type": "Cash Collect",
-      "issuer": "BNP Paribas",
-      "market": "SeDeX",
-      "currency": "EUR",
-      "underlying": "Basket di indici worst of",
-      "underlying_category": "index",
-      "underlyings": [
-        {
-          "name": "Basket di indici worst of",
-          "worst_of": false
-        }
-      ],
-      "issue_date": "2026-01-23",
-      "maturity_date": "2027-06-25",
-      "barrier_down": 60,
-      "coupon": 0.5,
-      "annual_coupon_yield": 8,
-      "buffer_from_barrier": 30,
-      "effective_annual_yield": 8,
-      "scraped_at": "2026-01-23T16:45:36.567822"
-    },
-    {
-      "isin": "NLBNPIT1R361",
-      "name": "CASH COLLECT MEMORY",
-      "type": "Cash Collect",
-      "issuer": "BNP Paribas",
-      "market": "SeDeX",
-      "currency": "EUR",
-      "underlying": "Basket di indici worst of",
-      "underlying_category": "index",
-      "underlyings": [
-        {
-          "name": "Basket di indici worst of",
-          "worst_of": false
-        }
-      ],
-      "issue_date": "2026-01-23",
-      "maturity_date": "2027-06-25",
-      "barrier_down": 60,
-      "coupon": 0.5,
-      "annual_coupon_yield": 8,
-      "buffer_from_barrier": 30,
-      "effective_annual_yield": 8,
-      "scraped_at": "2026-01-23T16:45:36.567827"
-    },
-    {
-      "isin": "IT0005668337",
+      "isin": "DE000UN09TS9",
       "name": "CASH COLLECT MEMORY",
       "type": "Cash Collect",
       "issuer": "UniCredit",
@@ -366,13 +270,85 @@
         }
       ],
       "issue_date": "2026-01-23",
-      "maturity_date": "2028-10-23",
+      "maturity_date": "2028-10-17",
       "barrier_down": 60,
       "coupon": 0.5,
       "annual_coupon_yield": 8,
       "buffer_from_barrier": 30,
       "effective_annual_yield": 8,
-      "scraped_at": "2026-01-23T16:45:36.567832"
+      "scraped_at": "2026-01-23T17:07:31.659023"
+    },
+    {
+      "isin": "DE000VJ12LQ0",
+      "name": "CASH COLLECT MEMORY",
+      "type": "Cash Collect",
+      "issuer": "Vontobel",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "underlying": "Basket di indici worst of",
+      "underlying_category": "index",
+      "underlyings": [
+        {
+          "name": "Basket di indici worst of",
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2026-01-23",
+      "maturity_date": "2029-01-02",
+      "barrier_down": 60,
+      "coupon": 0.5,
+      "annual_coupon_yield": 8,
+      "buffer_from_barrier": 30,
+      "effective_annual_yield": 8,
+      "scraped_at": "2026-01-23T17:07:31.659030"
+    },
+    {
+      "isin": "IT0005635773",
+      "name": "CASH COLLECT MEMORY",
+      "type": "Cash Collect",
+      "issuer": "UniCredit",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "underlying": "Basket di indici worst of",
+      "underlying_category": "index",
+      "underlyings": [
+        {
+          "name": "Basket di indici worst of",
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2026-01-23",
+      "maturity_date": "2029-07-30",
+      "barrier_down": 60,
+      "coupon": 0.5,
+      "annual_coupon_yield": 8,
+      "buffer_from_barrier": 30,
+      "effective_annual_yield": 8,
+      "scraped_at": "2026-01-23T17:07:31.659037"
+    },
+    {
+      "isin": "DE000UG9QA92",
+      "name": "CASH COLLECT MEMORY",
+      "type": "Cash Collect",
+      "issuer": "UniCredit",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "underlying": "Basket di indici worst of",
+      "underlying_category": "index",
+      "underlyings": [
+        {
+          "name": "Basket di indici worst of",
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2026-01-23",
+      "maturity_date": "2028-09-20",
+      "barrier_down": 60,
+      "coupon": 0.5,
+      "annual_coupon_yield": 8,
+      "buffer_from_barrier": 30,
+      "effective_annual_yield": 8,
+      "scraped_at": "2026-01-23T17:07:31.659044"
     },
     {
       "isin": "NLBNPIT1R312",
@@ -396,7 +372,7 @@
       "annual_coupon_yield": 8,
       "buffer_from_barrier": 30,
       "effective_annual_yield": 8,
-      "scraped_at": "2026-01-23T16:45:36.567837"
+      "scraped_at": "2026-01-23T17:07:31.659051"
     },
     {
       "isin": "NLBNPIT1R320",
@@ -420,7 +396,7 @@
       "annual_coupon_yield": 8,
       "buffer_from_barrier": 30,
       "effective_annual_yield": 8,
-      "scraped_at": "2026-01-23T16:45:36.567842"
+      "scraped_at": "2026-01-23T17:07:31.659058"
     },
     {
       "isin": "NLBNPIT1R338",
@@ -444,7 +420,79 @@
       "annual_coupon_yield": 8,
       "buffer_from_barrier": 30,
       "effective_annual_yield": 8,
-      "scraped_at": "2026-01-23T16:45:36.567847"
+      "scraped_at": "2026-01-23T17:07:31.659065"
+    },
+    {
+      "isin": "NLBNPIT1R346",
+      "name": "CASH COLLECT MEMORY",
+      "type": "Cash Collect",
+      "issuer": "BNP Paribas",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "underlying": "Basket di indici worst of",
+      "underlying_category": "index",
+      "underlyings": [
+        {
+          "name": "Basket di indici worst of",
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2026-01-23",
+      "maturity_date": "2027-06-25",
+      "barrier_down": 60,
+      "coupon": 0.5,
+      "annual_coupon_yield": 8,
+      "buffer_from_barrier": 30,
+      "effective_annual_yield": 8,
+      "scraped_at": "2026-01-23T17:07:31.659072"
+    },
+    {
+      "isin": "NLBNPIT1R353",
+      "name": "CASH COLLECT MEMORY",
+      "type": "Cash Collect",
+      "issuer": "BNP Paribas",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "underlying": "Basket di indici worst of",
+      "underlying_category": "index",
+      "underlyings": [
+        {
+          "name": "Basket di indici worst of",
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2026-01-23",
+      "maturity_date": "2027-06-25",
+      "barrier_down": 60,
+      "coupon": 0.5,
+      "annual_coupon_yield": 8,
+      "buffer_from_barrier": 30,
+      "effective_annual_yield": 8,
+      "scraped_at": "2026-01-23T17:07:31.659079"
+    },
+    {
+      "isin": "NLBNPIT1R361",
+      "name": "CASH COLLECT MEMORY",
+      "type": "Cash Collect",
+      "issuer": "BNP Paribas",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "underlying": "Basket di indici worst of",
+      "underlying_category": "index",
+      "underlyings": [
+        {
+          "name": "Basket di indici worst of",
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2026-01-23",
+      "maturity_date": "2027-06-25",
+      "barrier_down": 60,
+      "coupon": 0.5,
+      "annual_coupon_yield": 8,
+      "buffer_from_barrier": 30,
+      "effective_annual_yield": 8,
+      "scraped_at": "2026-01-23T17:07:31.659086"
     },
     {
       "isin": "NLBNPIT1R395",
@@ -468,7 +516,7 @@
       "annual_coupon_yield": 8,
       "buffer_from_barrier": 30,
       "effective_annual_yield": 8,
-      "scraped_at": "2026-01-23T16:45:36.567854"
+      "scraped_at": "2026-01-23T17:07:31.659092"
     },
     {
       "isin": "NLBNPIT1R5E3",
@@ -492,58 +540,10 @@
       "annual_coupon_yield": 8,
       "buffer_from_barrier": 30,
       "effective_annual_yield": 8,
-      "scraped_at": "2026-01-23T16:45:36.567859"
+      "scraped_at": "2026-01-23T17:07:31.659099"
     },
     {
-      "isin": "DE000UG87FQ2",
-      "name": "CASH COLLECT MEMORY",
-      "type": "Cash Collect",
-      "issuer": "UniCredit",
-      "market": "SeDeX",
-      "currency": "EUR",
-      "underlying": "Basket di indici worst of",
-      "underlying_category": "index",
-      "underlyings": [
-        {
-          "name": "Basket di indici worst of",
-          "worst_of": false
-        }
-      ],
-      "issue_date": "2026-01-23",
-      "maturity_date": "2029-08-20",
-      "barrier_down": 60,
-      "coupon": 0.5,
-      "annual_coupon_yield": 8,
-      "buffer_from_barrier": 30,
-      "effective_annual_yield": 8,
-      "scraped_at": "2026-01-23T16:45:36.567864"
-    },
-    {
-      "isin": "DE000UG9QAB2",
-      "name": "CASH COLLECT MEMORY",
-      "type": "Cash Collect",
-      "issuer": "UniCredit",
-      "market": "SeDeX",
-      "currency": "EUR",
-      "underlying": "Basket di indici worst of",
-      "underlying_category": "index",
-      "underlyings": [
-        {
-          "name": "Basket di indici worst of",
-          "worst_of": false
-        }
-      ],
-      "issue_date": "2026-01-23",
-      "maturity_date": "2028-09-20",
-      "barrier_down": 60,
-      "coupon": 0.5,
-      "annual_coupon_yield": 8,
-      "buffer_from_barrier": 30,
-      "effective_annual_yield": 8,
-      "scraped_at": "2026-01-23T16:45:36.567869"
-    },
-    {
-      "isin": "DE000UG9QAC0",
+      "isin": "DE000UG9QAA4",
       "name": "CASH COLLECT MEMORY",
       "type": "Cash Collect",
       "issuer": "UniCredit",
@@ -564,31 +564,7 @@
       "annual_coupon_yield": 8,
       "buffer_from_barrier": 30,
       "effective_annual_yield": 8,
-      "scraped_at": "2026-01-23T16:45:36.567874"
-    },
-    {
-      "isin": "XS2984356910",
-      "name": "CASH COLLECT MEMORY",
-      "type": "Cash Collect",
-      "issuer": "BNP Paribas",
-      "market": "SeDeX",
-      "currency": "EUR",
-      "underlying": "Basket di indici worst of",
-      "underlying_category": "index",
-      "underlyings": [
-        {
-          "name": "Basket di indici worst of",
-          "worst_of": false
-        }
-      ],
-      "issue_date": "2026-01-23",
-      "maturity_date": "2028-12-29",
-      "barrier_down": 60,
-      "coupon": 0.5,
-      "annual_coupon_yield": 8,
-      "buffer_from_barrier": 30,
-      "effective_annual_yield": 8,
-      "scraped_at": "2026-01-23T16:45:36.567879"
+      "scraped_at": "2026-01-23T17:07:31.659106"
     },
     {
       "isin": "XS3045935049",
@@ -612,7 +588,55 @@
       "annual_coupon_yield": 8,
       "buffer_from_barrier": 30,
       "effective_annual_yield": 8,
-      "scraped_at": "2026-01-23T16:45:36.567884"
+      "scraped_at": "2026-01-23T17:07:31.659113"
+    },
+    {
+      "isin": "NLBNPIT301D1",
+      "name": "CASH COLLECT MEMORY",
+      "type": "Cash Collect",
+      "issuer": "BNP Paribas",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "underlying": "Basket di indici worst of",
+      "underlying_category": "index",
+      "underlyings": [
+        {
+          "name": "Basket di indici worst of",
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2026-01-23",
+      "maturity_date": "2029-01-25",
+      "barrier_down": 60,
+      "coupon": 0.5,
+      "annual_coupon_yield": 8,
+      "buffer_from_barrier": 30,
+      "effective_annual_yield": 8,
+      "scraped_at": "2026-01-23T17:07:31.659120"
+    },
+    {
+      "isin": "XS2984356910",
+      "name": "CASH COLLECT MEMORY",
+      "type": "Cash Collect",
+      "issuer": "BNP Paribas",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "underlying": "Basket di indici worst of",
+      "underlying_category": "index",
+      "underlyings": [
+        {
+          "name": "Basket di indici worst of",
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2026-01-23",
+      "maturity_date": "2028-12-29",
+      "barrier_down": 60,
+      "coupon": 0.5,
+      "annual_coupon_yield": 8,
+      "buffer_from_barrier": 30,
+      "effective_annual_yield": 8,
+      "scraped_at": "2026-01-23T17:07:31.659128"
     },
     {
       "isin": "DE000VG644S5",
@@ -636,7 +660,7 @@
       "annual_coupon_yield": 8,
       "buffer_from_barrier": 30,
       "effective_annual_yield": 8,
-      "scraped_at": "2026-01-23T16:45:36.567890"
+      "scraped_at": "2026-01-23T17:07:31.659134"
     },
     {
       "isin": "DE000VJ12LU2",
@@ -660,10 +684,10 @@
       "annual_coupon_yield": 8,
       "buffer_from_barrier": 30,
       "effective_annual_yield": 8,
-      "scraped_at": "2026-01-23T16:45:36.567895"
+      "scraped_at": "2026-01-23T17:07:31.659142"
     },
     {
-      "isin": "XS3108796494",
+      "isin": "NLBNPIT2OQL3",
       "name": "CASH COLLECT MEMORY CALLABLE",
       "type": "Cash Collect",
       "issuer": "BNP Paribas",
@@ -678,16 +702,16 @@
         }
       ],
       "issue_date": "2026-01-23",
-      "maturity_date": "2028-09-27",
+      "maturity_date": "2027-07-19",
       "barrier_down": 60,
       "coupon": 0.5,
       "annual_coupon_yield": 8,
       "buffer_from_barrier": 30,
       "effective_annual_yield": 8,
-      "scraped_at": "2026-01-23T16:45:36.567900"
+      "scraped_at": "2026-01-23T17:07:31.659149"
     },
     {
-      "isin": "XS3108796734",
+      "isin": "NLBNPIT2OQM1",
       "name": "CASH COLLECT MEMORY CALLABLE",
       "type": "Cash Collect",
       "issuer": "BNP Paribas",
@@ -702,16 +726,16 @@
         }
       ],
       "issue_date": "2026-01-23",
-      "maturity_date": "2028-09-27",
+      "maturity_date": "2027-07-19",
       "barrier_down": 60,
       "coupon": 0.5,
       "annual_coupon_yield": 8,
       "buffer_from_barrier": 30,
       "effective_annual_yield": 8,
-      "scraped_at": "2026-01-23T16:45:36.567906"
+      "scraped_at": "2026-01-23T17:07:31.659156"
     },
     {
-      "isin": "XS3108797203",
+      "isin": "NLBNPIT2OPR2",
       "name": "CASH COLLECT MEMORY CALLABLE",
       "type": "Cash Collect",
       "issuer": "BNP Paribas",
@@ -726,37 +750,13 @@
         }
       ],
       "issue_date": "2026-01-23",
-      "maturity_date": "2028-09-28",
+      "maturity_date": "2028-07-19",
       "barrier_down": 60,
       "coupon": 0.5,
       "annual_coupon_yield": 8,
       "buffer_from_barrier": 30,
       "effective_annual_yield": 8,
-      "scraped_at": "2026-01-23T16:45:36.567911"
-    },
-    {
-      "isin": "XS3109961576",
-      "name": "CASH COLLECT MEMORY CALLABLE",
-      "type": "Cash Collect",
-      "issuer": "BNP Paribas",
-      "market": "SeDeX",
-      "currency": "EUR",
-      "underlying": "Basket di indici worst of",
-      "underlying_category": "index",
-      "underlyings": [
-        {
-          "name": "Basket di indici worst of",
-          "worst_of": false
-        }
-      ],
-      "issue_date": "2026-01-23",
-      "maturity_date": "2028-09-27",
-      "barrier_down": 60,
-      "coupon": 0.5,
-      "annual_coupon_yield": 8,
-      "buffer_from_barrier": 30,
-      "effective_annual_yield": 8,
-      "scraped_at": "2026-01-23T16:45:36.567916"
+      "scraped_at": "2026-01-23T17:07:31.659164"
     },
     {
       "isin": "XS3198883491",
@@ -780,7 +780,7 @@
       "annual_coupon_yield": 8,
       "buffer_from_barrier": 30,
       "effective_annual_yield": 8,
-      "scraped_at": "2026-01-23T16:45:36.567921"
+      "scraped_at": "2026-01-23T17:07:31.659170"
     },
     {
       "isin": "XS3198883574",
@@ -804,7 +804,55 @@
       "annual_coupon_yield": 8,
       "buffer_from_barrier": 30,
       "effective_annual_yield": 8,
-      "scraped_at": "2026-01-23T16:45:36.567927"
+      "scraped_at": "2026-01-23T17:07:31.659177"
+    },
+    {
+      "isin": "XS3108796494",
+      "name": "CASH COLLECT MEMORY CALLABLE",
+      "type": "Cash Collect",
+      "issuer": "BNP Paribas",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "underlying": "Basket di indici worst of",
+      "underlying_category": "index",
+      "underlyings": [
+        {
+          "name": "Basket di indici worst of",
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2026-01-23",
+      "maturity_date": "2028-09-27",
+      "barrier_down": 60,
+      "coupon": 0.5,
+      "annual_coupon_yield": 8,
+      "buffer_from_barrier": 30,
+      "effective_annual_yield": 8,
+      "scraped_at": "2026-01-23T17:07:31.659185"
+    },
+    {
+      "isin": "XS3108796734",
+      "name": "CASH COLLECT MEMORY CALLABLE",
+      "type": "Cash Collect",
+      "issuer": "BNP Paribas",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "underlying": "Basket di indici worst of",
+      "underlying_category": "index",
+      "underlyings": [
+        {
+          "name": "Basket di indici worst of",
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2026-01-23",
+      "maturity_date": "2028-09-27",
+      "barrier_down": 60,
+      "coupon": 0.5,
+      "annual_coupon_yield": 8,
+      "buffer_from_barrier": 30,
+      "effective_annual_yield": 8,
+      "scraped_at": "2026-01-23T17:07:31.659193"
     }
   ]
 }
