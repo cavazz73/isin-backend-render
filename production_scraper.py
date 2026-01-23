@@ -9,8 +9,19 @@ from bs4 import BeautifulSoup
 from datetime import datetime, timedelta
 
 # --- CONFIGURAZIONE ---
-TARGET_COUNT = 80
+TARGET_COUNT = 80  # Si ferma appena trova 80 certificati VALIDI (Indici/Commodity/ecc)
 OUTPUT_FILE = "data/certificates-data.json"
+
+# --- FILTRO ASSET CLASS ---
+# Parole chiave per accettare il sottostante. Se non ne contiene nessuna, si assume sia un'Azione e si scarta.
+VALID_KEYWORDS = [
+    # Indici
+    "EURO STOXX", "EUROSTOXX", "S&P", "SP500", "NASDAQ", "DOW JONES", "FTSE", "DAX", "CAC", "IBEX", "NIKKEI", "HANG SENG", "MSCI", "STOXX", "BANKS", "AUTOMOBILES", "INSURANCE", "UTILITIES", "ENERGY", "TECH",
+    # Commodities
+    "GOLD", "ORO", "SILVER", "ARGENTO", "OIL", "PETROLIO", "BRENT", "WTI", "GAS", "COPPER", "RAME", "PALLADIUM", "PLATINUM", "WHEAT", "CORN",
+    # Valute / Tassi
+    "EUR/", "USD/", "/EUR", "/USD", "EURIBOR", "CMS", "IRS", "SOFR", "ESTR", "LIBOR", "T-NOTE", "BUND", "BTP"
+]
 
 # --- HELPER ---
 def clean_text(text):
@@ -18,21 +29,20 @@ def clean_text(text):
 
 def parse_float(text):
     if not text: return 0.0
-    # Rimuovi tutto tranne numeri, punti e virgole
     text = text.upper().replace('EUR', '').replace('€', '').replace('%', '').strip()
-    # Caso 1.234,56 -> 1234.56
-    if ',' in text and '.' in text:
-        text = text.replace('.', '').replace(',', '.')
-    # Caso 1234,56 -> 1234.56
-    elif ',' in text:
-        text = text.replace(',', '.')
-    
-    # Pulizia finale caratteri non numerici rimasti
+    if ',' in text and '.' in text: text = text.replace('.', '').replace(',', '.')
+    elif ',' in text: text = text.replace(',', '.')
     clean = re.sub(r'[^\d.]', '', text)
-    try:
-        return float(clean)
-    except:
-        return 0.0
+    try: return float(clean)
+    except: return 0.0
+
+def is_valid_asset(underlying_name):
+    """Ritorna True solo se il sottostante è Indice, Commodity o Tasso/Valuta"""
+    u = underlying_name.upper()
+    for kw in VALID_KEYWORDS:
+        if kw in u:
+            return True
+    return False
 
 def calculate_scenarios(price, strike, barrier):
     if not price or price <= 0: return []
@@ -54,84 +64,68 @@ def calculate_scenarios(price, strike, barrier):
     return scenarios
 
 # ==========================================
-# MOTORE DI SCRAPING "RAGGI X" (REGEX)
+# MOTORE DI SCRAPING (REGEX ROBUSTO)
 # ==========================================
-async def scrape_ced_regex(page, isin):
+async def scrape_certificate(page, isin):
     url = f"https://www.certificatiederivati.it/db_bs_scheda_certificato.asp?isin={isin}"
     
     try:
         await page.goto(url, timeout=20000, wait_until="domcontentloaded")
-        
         if "home.asp" in page.url: return None
 
-        # Parsing HTML
+        # Estrazione Testo Grezzo (la tecnica che funziona!)
         content = await page.content()
         soup = BeautifulSoup(content, 'html.parser')
-        full_text = clean_text(soup.get_text())
+        full_text = clean_text(soup.get_text(separator=' | '))
 
-        # Check validità
-        if "EMITTENTE" not in full_text.upper() and "SOTTOSTANTE" not in full_text.upper():
-            return None
+        if "EMITTENTE" not in full_text.upper(): return None
 
-        # --- ESTRAZIONE DATI ---
-        
-        # 1. NOME
+        # 1. NOME & SOTTOSTANTE
         nome_tag = soup.find('td', class_='titolo_scheda')
-        nome = clean_text(nome_tag.get_text()) if nome_tag else f"Certificate {isin}"
+        nome = clean_text(nome_tag.get_text()) if nome_tag else f"Cert {isin}"
+        
+        # Cerchiamo il sottostante per filtrarlo
+        sottostante = "N/D"
+        m_und = re.search(r'Sottostante[^a-zA-Z0-9]{0,10}([a-zA-Z0-9 &/\.\-\+]{3,50})', full_text, re.IGNORECASE)
+        if m_und: 
+            sottostante = clean_text(m_und.group(1))
+        else:
+            # Fallback: usa il nome se contiene indizi
+            sottostante = nome
 
-        # 2. PREZZO (Strategia Regex Potente)
-        # Cerca pattern tipo: "Prezzo 100,50" oppure "Ultimo: 98.4"
-        # Il pattern cerca: Parola chiave -> spaziatura opzionale -> Numero con virgola o punto
+        # 2. FILTRO (Il cuore della tua richiesta)
+        if not is_valid_asset(sottostante) and not is_valid_asset(nome):
+            # print(f"      🚫 SCARTATO (Azione/Altro): {sottostante}")
+            return "SKIPPED_TYPE"
+
+        # 3. PREZZO (Regex "Raggi X")
         prezzo = 0.0
+        # Cerca "Prezzo/Ultimo/Valore" seguito da un numero
+        regex_prezzo = r'(?:Prezzo|Ultimo|Valore|Quotazione|Ask|Lettera)[^0-9]{0,20}(\d+[.,]\d+)'
+        match = re.search(regex_prezzo, full_text, re.IGNORECASE)
+        if match:
+            prezzo = parse_float(match.group(1))
         
-        # Regex per trovare prezzi (es. 100,00 | 95.40)
-        price_patterns = [
-            r'Prezzo\s*[:]?\s*(\d+[.,]\d+)',
-            r'Ultimo\s*[:]?\s*(\d+[.,]\d+)',
-            r'Valore\s*[:]?\s*(\d+[.,]\d+)',
-            r'Quotazione\s*[:]?\s*(\d+[.,]\d+)',
-            r'Ask\s*[:]?\s*(\d+[.,]\d+)',
-            r'Lettera\s*[:]?\s*(\d+[.,]\d+)'
-        ]
-        
-        for pattern in price_patterns:
-            match = re.search(pattern, full_text, re.IGNORECASE)
-            if match:
-                val_str = match.group(1)
-                p = parse_float(val_str)
-                if p > 0:
-                    prezzo = p
-                    break
-        
-        # Fallback: Se Regex fallisce, cerca il primo numero con € nel testo
-        if prezzo == 0:
-            euro_match = re.search(r'(\d+[.,]\d{2})\s*€', full_text)
-            if euro_match:
-                prezzo = parse_float(euro_match.group(1))
-
         if prezzo <= 0: return None
 
-        # 3. DATI TECNICI (Regex)
-        def extract_by_regex(keywords):
+        # 4. DATI TECNICI
+        def get_regex_val(keywords):
             for kw in keywords:
-                # Cerca "Keyword: 123,45"
-                pat = kw + r'\s*[:]?\s*(\d+[.,]?\d*)'
+                pat = kw + r'[^0-9]{0,20}(\d+[.,]\d+)'
                 m = re.search(pat, full_text, re.IGNORECASE)
                 if m: return parse_float(m.group(1))
             return 0.0
 
-        strike = extract_by_regex(["Strike", "Iniziale", "Strike Level"])
-        barriera = extract_by_regex(["Barriera", "Barrier", "Livello Barriera"])
-        cedola = extract_by_regex(["Cedola", "Premio", "Bonus"])
+        strike = get_regex_val(["Strike", "Iniziale", "Strike Level"])
+        barriera = get_regex_val(["Barriera", "Barrier", "Livello Barriera"])
+        cedola = get_regex_val(["Cedola", "Premio", "Bonus"])
         
-        # Emittente (Cerca nella tabella standard perché è testo)
+        # Emittente
         emittente = "N/D"
-        em_tag = soup.find(string=re.compile("Emittente", re.IGNORECASE))
-        if em_tag and em_tag.find_parent('td'):
-             nxt = em_tag.find_parent('td').find_next_sibling('td')
-             if nxt: emittente = clean_text(nxt.get_text())
+        m_em = re.search(r'Emittente[^a-zA-Z0-9]{0,10}([a-zA-Z ]{3,30})', full_text, re.IGNORECASE)
+        if m_em: emittente = clean_text(m_em.group(1))
 
-        # Defaults logici
+        # Defaults
         if strike == 0: strike = prezzo
         if barriera == 0: barriera = prezzo * 0.60
 
@@ -139,6 +133,7 @@ async def scrape_ced_regex(page, isin):
             "isin": isin,
             "name": nome,
             "type": "Certificate",
+            "asset_class": "Indices/Commodities", # Etichetta per frontend
             "issuer": emittente,
             "market": "SeDeX",
             "currency": "EUR",
@@ -149,7 +144,7 @@ async def scrape_ced_regex(page, isin):
             "barrier_down": barriera,
             "strike": strike,
             "maturity_date": (datetime.now() + timedelta(days=730)).isoformat(),
-            "underlyings": [{"name": nome, "strike": strike, "barrier": barriera}],
+            "underlyings": [{"name": sottostante, "strike": strike, "barrier": barriera}],
             "scenario_analysis": calculate_scenarios(prezzo, strike, barriera),
             "source": "Certificati&Derivati"
         }
@@ -158,10 +153,10 @@ async def scrape_ced_regex(page, isin):
         return None
 
 # ==========================================
-# RUNNER
+# MAIN RUNNER
 # ==========================================
 async def run_batch():
-    print("--- 🚀 AVVIO SCRAPER REGEX (FINAL FIX) ---")
+    print("--- 🚀 AVVIO SCRAPER (Filtro: Indici/Commodity/Tassi) ---")
     results = []
     
     async with async_playwright() as p:
@@ -171,67 +166,27 @@ async def run_batch():
         )
         page = await browser.new_page()
 
-        # 1. Recupero ISIN da lista "Nuove Emissioni"
+        # 1. Recupero Nuove Emissioni (Limitato ai primi 150)
+        isins = []
         try:
-            await page.goto("https://www.certificatiederivati.it/db_bs_nuove_emissioni.asp", timeout=20000)
-            links = await page.locator("a[href*='isin=']").all()
-            isins = []
+            # print("   📥 Scarico lista nuove emissioni...")
+            await page.goto("https://www.certificatiederivati.it/db_bs_nuove_emissioni.asp", timeout=25000)
+            
+            # Prende SOLO i link nella tabella principale, non tutto il sito
+            links = await page.locator("table a[href*='isin=']").all()
+            
             for l in links:
                 href = await l.get_attribute("href")
                 m = re.search(r'isin=([A-Z0-9]{12})', href or "", re.IGNORECASE)
                 if m: isins.append(m.group(1))
             
-            isins = list(set(isins))
-            if not isins: raise Exception("Lista vuota")
+            # Rimuove duplicati e LIMITA a 200 per non intasare
+            isins = list(set(isins))[:200] 
         except:
-            # Fallback manuale se la lista fallisce
+            # Fallback se la lista fallisce
             isins = ['IT0006771510', 'DE000HD8SXZ1', 'XS2470031936', 'CH1390857220', 'IT0006755018', 'XS2544207512']
 
-        print(f"📋 Coda Analisi: {len(isins)} ISIN")
+        print(f"📋 Analizzerò i {len(isins)} certificati più recenti.")
+        print(f"🎯 Obiettivo: Salvare {TARGET_COUNT} certificati (Indici/Commodities).")
 
-        for isin in isins:
-            if len(results) >= TARGET_COUNT: break
-            
-            print(f"Analisi {isin}...", end="\r")
-            await asyncio.sleep(random.uniform(0.5, 1.5)) # Human delay
-            
-            data = await scrape_ced_regex(page, isin)
-            
-            if data:
-                results.append(data)
-                print(f"✅ OK: {isin} | {data['price']}€            ")
-            else:
-                print(f"❌ SKIP: {isin} (Regex fallita)        ")
-        
-        await browser.close()
-
-    # Salvataggio
-    output = {
-        "last_update": datetime.now().isoformat(),
-        "total": len(results),
-        "certificates": results
-    }
-    
-    os.makedirs(os.path.dirname(OUTPUT_FILE), exist_ok=True)
-    with open(OUTPUT_FILE, 'w', encoding='utf-8') as f:
-        json.dump(output, f, indent=2)
-    
-    print(f"\n💾 Salvati {len(results)} certificati.")
-
-async def run_live(isin):
-    async with async_playwright() as p:
-        browser = await p.chromium.launch(headless=True)
-        page = await browser.new_page()
-        data = await scrape_ced_regex(page, isin)
-        await browser.close()
-        print(json.dumps(data if data else {"error": "not_found"}))
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--isin", help="Live search")
-    args = parser.parse_args()
-
-    if args.isin:
-        asyncio.run(run_live(args.isin))
-    else:
-        asyncio.run(run_batch())
+        for
