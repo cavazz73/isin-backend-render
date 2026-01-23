@@ -3,17 +3,11 @@
 Copyright (c) 2024-2025 Mutna S.R.L.S. - All Rights Reserved
 P.IVA: 04219740364
 
-Production Certificates Scraper v7.0 - ADVANCED SEARCH
-Uses the advanced search to find certificates on:
-- INDICES (FTSE MIB, Euro Stoxx 50, S&P 500, DAX, Nasdaq 100, Nikkei 225...)
-- COMMODITIES (Gold, Silver, Oil, Gas, Copper...)
-- CURRENCIES (EUR/USD, EUR/JPY, GBP/USD...)
-- RATES (Euribor, BTP, Bund...)
+Production Certificates Scraper v8.0 - ALL NEW EMISSIONS
+Gets ALL certificates from new emissions page (no filtering)
+Frontend can filter by underlying category as needed.
 
-Strategy:
-1. Query advanced search for each target underlying
-2. Collect all matching certificates
-3. Get details from certificate pages
+Output includes underlying_category field for filtering.
 """
 
 import json
@@ -21,99 +15,47 @@ import re
 import time
 import os
 from datetime import datetime
-from urllib.parse import quote
 from playwright.sync_api import sync_playwright
 from bs4 import BeautifulSoup
 
 CONFIG = {
-    'search_url': 'https://www.certificatiederivati.it/db_bs_estrazione_ricerca.asp',
+    'emissions_url': 'https://www.certificatiederivati.it/db_bs_nuove_emissioni.asp',
     'detail_url': 'https://www.certificatiederivati.it/db_bs_scheda_certificato.asp?isin=',
-    'page_timeout': 20000,
-    'wait_for_content': 2000,
-    'wait_between_searches': 1500,
-    'wait_between_details': 800,
-    'output_dir': 'data'
+    'page_timeout': 30000,
+    'wait_for_content': 3000,
+    'wait_between_details': 600,
+    'output_dir': 'data',
+    'max_details': 100,  # Limit detail page visits
 }
 
-# Target underlyings to search for
-TARGET_UNDERLYINGS = {
-    # INDICES
+# Keywords to categorize underlyings
+UNDERLYING_CATEGORIES = {
     'index': [
-        'FTSE MIB',
-        'Euro Stoxx 50',
-        'Euro STOXX 50',
-        'EUROSTOXX 50',
-        'DAX',
-        'S&P 500',
-        'Nasdaq 100',
-        'Nasdaq-100',
-        'Nikkei 225',
-        'CAC 40',
-        'IBEX 35',
-        'Hang Seng',
-        'Eurostoxx Banks',
-        'Euro STOXX Banks',
-        'STOXX 600',
-        'Dow Jones',
-        'Russell 2000',
-        'SMI',
+        'FTSE MIB', 'FTSEMIB', 'EURO STOXX', 'EUROSTOXX', 'S&P 500', 'S&P500',
+        'NASDAQ', 'DAX', 'CAC 40', 'CAC40', 'NIKKEI', 'HANG SENG', 'IBEX',
+        'STOXX 600', 'DOW JONES', 'RUSSELL', 'SMI', 'MSCI', 'TOPIX',
+        'INDICE', 'INDEX', 'BASKET DI INDICI', 'BASKET OF INDICES',
     ],
-    
-    # COMMODITIES
     'commodity': [
-        'Gold',
-        'Oro',
-        'Silver',
-        'Argento',
-        'WTI',
-        'Crude Oil',
-        'Brent',
-        'Natural Gas',
-        'Gas Naturale',
-        'Copper',
-        'Rame',
-        'Platinum',
-        'Platino',
-        'Palladium',
-        'Palladio',
-        'Wheat',
-        'Grano',
-        'Corn',
-        'Mais',
-        'Soybean',
-        'Coffee',
-        'Sugar',
-        'Cotton',
+        'GOLD', 'ORO', 'SILVER', 'ARGENTO', 'OIL', 'PETROLIO', 'WTI', 'BRENT',
+        'NATURAL GAS', 'GAS NATURALE', 'COPPER', 'RAME', 'PLATINUM', 'PLATINO',
+        'PALLADIUM', 'PALLADIO', 'WHEAT', 'GRANO', 'CORN', 'MAIS', 'COFFEE',
+        'SUGAR', 'COTTON', 'SOYBEAN', 'COMMODITY', 'COMMODITIES',
     ],
-    
-    # CURRENCIES
     'currency': [
-        'EUR/USD',
-        'EUR/JPY',
-        'EUR/GBP',
-        'EUR/CHF',
-        'USD/JPY',
-        'GBP/USD',
-        'USD/CHF',
-        'EUR/CAD',
+        'EUR/USD', 'EUR/JPY', 'EUR/GBP', 'EUR/CHF', 'USD/JPY', 'GBP/USD',
+        'USD/CHF', 'EUR/CAD', 'FOREX', 'CURRENCY', 'VALUTA', 'CAMBIO',
     ],
-    
-    # RATES
     'rate': [
-        'Euribor',
-        'BTP',
-        'Bund',
-        'Euro Bund',
-        'T-Bond',
-        'T-Note',
-        'CMS',
+        'EURIBOR', 'LIBOR', 'SOFR', 'BTP', 'BUND', 'T-BOND', 'CMS', 'SWAP',
+        'TASSO', 'RATE', 'OAT', 'T-NOTE', 'INTEREST',
     ],
 }
 
 
-class AdvancedSearchScraper:
+class EmissionsScraper:
     def __init__(self):
-        self.certificates = {}  # Use dict to dedupe by ISIN
+        self.certificates = []
         self.browser = None
         self.context = None
         self.playwright = None
@@ -138,8 +80,8 @@ class AdvancedSearchScraper:
     
     def run(self):
         print('=' * 70)
-        print('CERTIFICATES SCRAPER v7.0 - ADVANCED SEARCH')
-        print('Target: INDICES | COMMODITIES | CURRENCIES | RATES')
+        print('CERTIFICATES SCRAPER v8.0 - ALL NEW EMISSIONS')
+        print('Gets all certificates, categories for filtering')
         print('Copyright (c) 2024-2025 Mutna S.R.L.S.')
         print('=' * 70)
         print(f'Date: {datetime.now().isoformat()}')
@@ -148,32 +90,13 @@ class AdvancedSearchScraper:
         self.start_browser()
         
         try:
-            # Search for each category
-            for category, underlyings in TARGET_UNDERLYINGS.items():
-                icon = {'index': '📊', 'commodity': '🛢️', 'currency': '💱', 'rate': '💹'}.get(category, '📄')
-                print(f'\n{icon} Searching {category.upper()} underlyings...')
-                
-                for underlying in underlyings:
-                    count = self.search_underlying(underlying, category)
-                    if count > 0:
-                        print(f'   ✓ {underlying}: {count} certificates')
-                    time.sleep(CONFIG['wait_between_searches'] / 1000)
+            # Step 1: Get all new emissions
+            self.scrape_emissions()
             
-            print(f'\n✅ Total unique certificates found: {len(self.certificates)}')
+            # Step 2: Get details for certificates (limited)
+            self.fetch_details()
             
-            # Get details for all certificates
-            if self.certificates:
-                print(f'\n📋 Fetching details...')
-                certs_list = list(self.certificates.values())
-                for i, cert in enumerate(certs_list):
-                    detail = self.get_certificate_detail(cert['isin'])
-                    if detail:
-                        cert.update(detail)
-                    if (i + 1) % 20 == 0:
-                        print(f'   {i + 1}/{len(certs_list)}')
-                    time.sleep(CONFIG['wait_between_details'] / 1000)
-            
-            # Summary and save
+            # Step 3: Summary and save
             self.print_summary()
             self.save_results()
             
@@ -181,65 +104,137 @@ class AdvancedSearchScraper:
             self.close_browser()
             print('\n🔒 Browser closed')
     
-    def search_underlying(self, underlying, category):
-        """Search for certificates with specific underlying"""
+    def scrape_emissions(self):
+        """Scrape all certificates from new emissions page"""
         page = self.context.new_page()
-        count = 0
         
         try:
-            # Build search URL
-            # db=2 = investment certificates
-            # fase=quotazione = currently trading
-            params = f'db=2&sottostanteC={quote(underlying)}&fase=quotazione&FiltroDal=2020-1-1&FiltroAl=2099-12-31'
-            url = f'{CONFIG["search_url"]}?{params}'
-            
-            page.goto(url, timeout=CONFIG['page_timeout'], wait_until='domcontentloaded')
+            print(f'\n📋 Loading new emissions...')
+            page.goto(CONFIG['emissions_url'], timeout=CONFIG['page_timeout'], wait_until='domcontentloaded')
             page.wait_for_timeout(CONFIG['wait_for_content'])
             
             soup = BeautifulSoup(page.content(), 'html.parser')
             
-            # Find results table
+            # Find all tables
             tables = soup.find_all('table')
             
             for table in tables:
                 rows = table.find_all('tr')
+                
                 for row in rows[1:]:  # Skip header
                     cells = row.find_all('td')
-                    if len(cells) >= 5:
+                    if len(cells) >= 6:
                         isin = cells[0].get_text(strip=True)
                         
+                        # Validate ISIN
                         if not re.match(r'^[A-Z]{2}[A-Z0-9]{10}$', isin):
                             continue
                         
-                        # Skip if already found
-                        if isin in self.certificates:
-                            continue
-                        
-                        name = cells[1].get_text(strip=True) if len(cells) > 1 else ''
-                        emittente = cells[2].get_text(strip=True) if len(cells) > 2 else ''
+                        name = cells[1].get_text(strip=True)
+                        emittente = cells[2].get_text(strip=True)
+                        sottostante_raw = cells[3].get_text(strip=True)
+                        mercato = cells[4].get_text(strip=True)
+                        data_str = cells[5].get_text(strip=True)
                         
                         # Skip leverage products
                         name_upper = name.upper()
-                        if 'TURBO' in name_upper or 'LEVA FISSA' in name_upper or 'MINI FUTURE' in name_upper:
+                        if any(x in name_upper for x in ['TURBO', 'LEVA FISSA', 'MINI FUTURE', 'STAYUP', 'STAYDOWN', 'CORRIDOR']):
                             continue
                         
-                        self.certificates[isin] = {
+                        # Extract underlying from name (e.g., "su Tesla, NVIDIA")
+                        underlying, category = self.extract_underlying(name, sottostante_raw)
+                        
+                        cert = {
                             'isin': isin,
                             'name': name,
                             'type': self.detect_type(name),
                             'issuer': self.normalize_issuer(emittente),
-                            'underlying': self.normalize_underlying(underlying),
-                            'underlying_category': category,
+                            'market': mercato,
                             'currency': 'EUR',
+                            'underlying': underlying,
+                            'underlying_raw': sottostante_raw,
+                            'underlying_category': category,
+                            'issue_date': self.parse_date(data_str),
                         }
-                        count += 1
+                        
+                        self.certificates.append(cert)
             
+            print(f'   Found: {len(self.certificates)} investment certificates')
+            
+            # Show category breakdown
+            by_cat = {}
+            for c in self.certificates:
+                cat = c['underlying_category']
+                by_cat[cat] = by_cat.get(cat, 0) + 1
+            
+            icons = {'index': '📊', 'commodity': '🛢️', 'currency': '💱', 'rate': '💹', 'stock': '📈', 'unknown': '❓'}
+            for cat, n in sorted(by_cat.items(), key=lambda x: -x[1]):
+                print(f'   {icons.get(cat, "📄")} {cat}: {n}')
+                
         except Exception as e:
-            pass  # Silent fail for individual searches
+            print(f'   ⚠️ Error: {e}')
         finally:
             page.close()
+    
+    def extract_underlying(self, name, sottostante_raw):
+        """Extract underlying and categorize"""
+        # Combine name and raw sottostante for matching
+        text = f'{name} {sottostante_raw}'.upper()
         
-        return count
+        # Check each category
+        for category, keywords in UNDERLYING_CATEGORIES.items():
+            for kw in keywords:
+                if kw in text:
+                    # Extract specific underlying name
+                    underlying = self.extract_specific_underlying(name, sottostante_raw, category)
+                    return underlying, category
+        
+        # If no category match, it's probably a stock
+        underlying = self.extract_specific_underlying(name, sottostante_raw, 'stock')
+        return underlying, 'stock'
+    
+    def extract_specific_underlying(self, name, sottostante_raw, category):
+        """Extract specific underlying name from certificate name"""
+        # Try to extract from "su X, Y, Z" pattern
+        match = re.search(r'\bsu\s+([^,]+(?:,\s*[^,]+)*)', name, re.IGNORECASE)
+        if match:
+            underlying = match.group(1).strip()
+            # Clean up
+            underlying = re.sub(r'\s+', ' ', underlying)
+            return underlying
+        
+        # Use raw sottostante if available and not generic
+        if sottostante_raw and not any(x in sottostante_raw.lower() for x in ['basket', 'worst of', 'singolo']):
+            return sottostante_raw
+        
+        # Category-based defaults
+        if category == 'index' and 'BASKET DI INDICI' in sottostante_raw.upper():
+            return 'Basket of Indices'
+        
+        return sottostante_raw or 'Unknown'
+    
+    def fetch_details(self):
+        """Fetch additional details from certificate pages"""
+        # Prioritize non-stock certificates for detail fetching
+        priority = [c for c in self.certificates if c['underlying_category'] != 'stock']
+        others = [c for c in self.certificates if c['underlying_category'] == 'stock']
+        
+        to_fetch = priority + others[:max(0, CONFIG['max_details'] - len(priority))]
+        
+        if not to_fetch:
+            return
+        
+        print(f'\n📋 Fetching details for {len(to_fetch)} certificates...')
+        
+        for i, cert in enumerate(to_fetch):
+            detail = self.get_certificate_detail(cert['isin'])
+            if detail:
+                cert.update(detail)
+            
+            if (i + 1) % 20 == 0:
+                print(f'   {i + 1}/{len(to_fetch)}')
+            
+            time.sleep(CONFIG['wait_between_details'] / 1000)
     
     def get_certificate_detail(self, isin):
         """Get additional details from certificate page"""
@@ -249,7 +244,7 @@ class AdvancedSearchScraper:
         try:
             url = f'{CONFIG["detail_url"]}{isin}'
             page.goto(url, timeout=CONFIG['page_timeout'], wait_until='domcontentloaded')
-            page.wait_for_timeout(CONFIG['wait_for_content'])
+            page.wait_for_timeout(1500)
             
             soup = BeautifulSoup(page.content(), 'html.parser')
             
@@ -273,12 +268,6 @@ class AdvancedSearchScraper:
                         elif 'SCADENZA' in label and 'DATA' in label:
                             data['maturity_date'] = self.parse_date(value)
                         
-                        elif 'EMISSIONE' in label and 'DATA' in label:
-                            data['issue_date'] = self.parse_date(value)
-                        
-                        elif 'MERCATO' in label:
-                            data['market'] = value
-                        
                         elif 'FASE' in label:
                             data['phase'] = value.lower()
         except:
@@ -287,42 +276,6 @@ class AdvancedSearchScraper:
             page.close()
         
         return data
-    
-    def normalize_underlying(self, underlying):
-        """Normalize underlying name"""
-        mappings = {
-            'FTSE MIB': 'FTSE MIB',
-            'Euro Stoxx 50': 'Euro Stoxx 50',
-            'Euro STOXX 50': 'Euro Stoxx 50',
-            'EUROSTOXX 50': 'Euro Stoxx 50',
-            'Eurostoxx Banks': 'Euro Stoxx Banks',
-            'Euro STOXX Banks': 'Euro Stoxx Banks',
-            'S&P 500': 'S&P 500',
-            'Nasdaq 100': 'Nasdaq 100',
-            'Nasdaq-100': 'Nasdaq 100',
-            'Nikkei 225': 'Nikkei 225',
-            'CAC 40': 'CAC 40',
-            'Hang Seng': 'Hang Seng',
-            'Gold': 'Gold',
-            'Oro': 'Gold',
-            'Silver': 'Silver',
-            'Argento': 'Silver',
-            'WTI': 'WTI Crude Oil',
-            'Crude Oil': 'WTI Crude Oil',
-            'Brent': 'Brent Crude',
-            'Natural Gas': 'Natural Gas',
-            'Gas Naturale': 'Natural Gas',
-            'Copper': 'Copper',
-            'Rame': 'Copper',
-            'Platinum': 'Platinum',
-            'Platino': 'Platinum',
-            'Palladium': 'Palladium',
-            'Palladio': 'Palladium',
-            'Euro Bund': 'Euro Bund',
-            'BTP': 'BTP',
-            'Euribor': 'Euribor',
-        }
-        return mappings.get(underlying, underlying)
     
     def detect_type(self, name):
         n = name.lower()
@@ -372,6 +325,8 @@ class AdvancedSearchScraper:
             ('credit suisse', 'Credit Suisse'),
             ('hsbc', 'HSBC'),
             ('nomura', 'Nomura'),
+            ('smart', 'SmartETN'),
+            ('akros', 'Banco BPM'),
         ]:
             if k in issuer.lower():
                 return v
@@ -387,72 +342,53 @@ class AdvancedSearchScraper:
         return s
     
     def print_summary(self):
-        certs = list(self.certificates.values())
-        
         print('\n' + '=' * 70)
         print('📊 SUMMARY')
         print('=' * 70)
-        print(f'Total certificates: {len(certs)}')
+        print(f'Total certificates: {len(self.certificates)}')
         
         # By category
         by_cat = {}
-        for c in certs:
+        for c in self.certificates:
             cat = c.get('underlying_category', 'unknown')
             by_cat[cat] = by_cat.get(cat, 0) + 1
         
         print('\nBy category:')
-        icons = {'index': '📊', 'commodity': '🛢️', 'currency': '💱', 'rate': '💹'}
+        icons = {'index': '📊', 'commodity': '🛢️', 'currency': '💱', 'rate': '💹', 'stock': '📈', 'unknown': '❓'}
         for cat, n in sorted(by_cat.items(), key=lambda x: -x[1]):
             print(f'   {icons.get(cat, "📄")} {cat}: {n}')
         
-        # By underlying
-        by_u = {}
-        for c in certs:
-            u = c.get('underlying', '?')
-            by_u[u] = by_u.get(u, 0) + 1
-        
-        print('\nTop underlyings:')
-        for u, n in sorted(by_u.items(), key=lambda x: -x[1])[:15]:
-            print(f'   {u}: {n}')
+        # Non-stock count
+        non_stock = len([c for c in self.certificates if c['underlying_category'] != 'stock'])
+        print(f'\n✅ Non-stock (indices/commodities/rates/currencies): {non_stock}')
         
         # By issuer
         by_i = {}
-        for c in certs:
+        for c in self.certificates:
             i = c.get('issuer', '?')
             by_i[i] = by_i.get(i, 0) + 1
         
         print('\nBy issuer:')
-        for i, n in sorted(by_i.items(), key=lambda x: -x[1])[:10]:
+        for i, n in sorted(by_i.items(), key=lambda x: -x[1])[:8]:
             print(f'   {i}: {n}')
         
         # By type
         by_t = {}
-        for c in certs:
+        for c in self.certificates:
             t = c.get('type', '?')
             by_t[t] = by_t.get(t, 0) + 1
         
         print('\nBy type:')
-        for t, n in sorted(by_t.items(), key=lambda x: -x[1])[:8]:
+        for t, n in sorted(by_t.items(), key=lambda x: -x[1])[:6]:
             print(f'   {t}: {n}')
-        
-        # With data
-        with_barrier = len([c for c in certs if c.get('barrier_down')])
-        with_coupon = len([c for c in certs if c.get('coupon')])
-        print(f'\nWith barrier: {with_barrier}')
-        print(f'With coupon: {with_coupon}')
         
         print('=' * 70)
     
     def save_results(self):
         os.makedirs(CONFIG['output_dir'], exist_ok=True)
         
-        certs = list(self.certificates.values())
-        
-        # Filter only active certificates
-        active_certs = [c for c in certs if c.get('phase', 'quotazione') == 'quotazione']
-        
         out = []
-        for c in active_certs:
+        for c in self.certificates:
             out.append({
                 'isin': c['isin'],
                 'name': c['name'],
@@ -471,12 +407,19 @@ class AdvancedSearchScraper:
         
         data = {
             'metadata': {
-                'version': '7.0-advanced-search',
+                'version': '8.0-all-emissions',
                 'timestamp': datetime.now().isoformat(),
                 'source': 'certificatiederivati.it',
                 'total': len(out),
-                'categories': ['index', 'commodity', 'currency', 'rate'],
-                'method': 'advanced_search'
+                'non_stock': len([c for c in out if c['underlying_category'] != 'stock']),
+                'categories': {
+                    'index': len([c for c in out if c['underlying_category'] == 'index']),
+                    'commodity': len([c for c in out if c['underlying_category'] == 'commodity']),
+                    'currency': len([c for c in out if c['underlying_category'] == 'currency']),
+                    'rate': len([c for c in out if c['underlying_category'] == 'rate']),
+                    'stock': len([c for c in out if c['underlying_category'] == 'stock']),
+                },
+                'method': 'new_emissions_all'
             },
             'certificates': out
         }
@@ -488,11 +431,11 @@ class AdvancedSearchScraper:
         with open('certificates-data.json', 'w', encoding='utf-8') as f:
             json.dump(data, f, indent=2, ensure_ascii=False)
         
-        print(f'\n💾 Saved {len(out)} active certificates')
+        print(f'\n💾 Saved {len(out)} certificates')
         print(f'   → {p1}')
         print(f'   → certificates-data.json')
 
 
 if __name__ == '__main__':
-    scraper = AdvancedSearchScraper()
+    scraper = EmissionsScraper()
     scraper.run()
