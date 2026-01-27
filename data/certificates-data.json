@@ -1,9 +1,11 @@
 {
   "metadata": {
-    "version": "1.6-cedlab",
-    "timestamp": "2026-01-27T14:10:15.652861",
+    "version": "1.7-cedlab",
+    "timestamp": "2026-01-27T14:26:10.104214",
     "source": "cedlabpro.it",
     "total": 0,
+    "total_before_filter": 0,
+    "filtered_out": 0,
     "categories": {},
     "types": {},
     "issuers": []
