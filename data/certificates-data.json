@@ -1,14 +1,1155 @@
 {
   "metadata": {
-    "version": "1.7-cedlab",
-    "timestamp": "2026-01-27T14:26:10.104214",
+    "version": "1.8-cedlab",
+    "timestamp": "2026-01-27T14:52:46.066540",
     "source": "cedlabpro.it",
-    "total": 0,
-    "total_before_filter": 0,
-    "filtered_out": 0,
-    "categories": {},
-    "types": {},
-    "issuers": []
+    "total": 55,
+    "total_before_filter": 500,
+    "categories": {
+      "commodity": 9,
+      "currency": 1,
+      "rate": 10,
+      "index": 35
+    }
   },
-  "certificates": []
+  "certificates": [
+    {
+      "scraped": true,
+      "timestamp": "2026-01-27T14:50:58.222481",
+      "currency": "EUR",
+      "isin": "NL0012873855",
+      "name": "MINI FUTURES LONG",
+      "underlying_name": "Gold Future Generic 1st",
+      "direction": "Long",
+      "issuer": "Bnp Paribas",
+      "worst_of": false,
+      "underlyings": [
+        {
+          "name": "Gold Future Generic 1st"
+        }
+      ],
+      "bid_price": 25.27,
+      "ask_price": 25.28,
+      "price": 25.275,
+      "underlying_category": "commodity",
+      "type": "Mini Future"
+    },
+    {
+      "scraped": true,
+      "timestamp": "2026-01-27T14:50:58.222752",
+      "currency": "EUR",
+      "isin": "NL0012874028",
+      "name": "MINI FUTURES SHORT",
+      "underlying_name": "EUR/USD",
+      "direction": "Short",
+      "issuer": "Bnp Paribas",
+      "worst_of": false,
+      "underlyings": [
+        {
+          "name": "EUR/USD"
+        }
+      ],
+      "bid_price": 0.2375,
+      "ask_price": 0.2475,
+      "price": 0.2425,
+      "underlying_category": "currency",
+      "type": "Mini Future"
+    },
+    {
+      "scraped": true,
+      "timestamp": "2026-01-27T14:50:58.223020",
+      "currency": "EUR",
+      "isin": "XS2774092675",
+      "name": "FIXED COUPON CONVERTIBLE",
+      "underlying_name": "BTPS 3.85 02/01/35",
+      "direction": "Long",
+      "issuer": "Bnp Paribas",
+      "worst_of": false,
+      "underlyings": [
+        {
+          "name": "BTPS 3.85 02/01/35"
+        }
+      ],
+      "bid_price": 10206.53,
+      "ask_price": null,
+      "underlying_category": "rate",
+      "type": "Certificate"
+    },
+    {
+      "scraped": true,
+      "timestamp": "2026-01-27T14:50:58.223383",
+      "currency": "EUR",
+      "isin": "XS2418286204",
+      "name": "BONUS PLUS",
+      "underlying_name": "Dax Kurs",
+      "direction": "Long",
+      "issuer": "Intesa Sanpaolo",
+      "worst_of": false,
+      "underlyings": [
+        {
+          "name": "Dax Kurs"
+        }
+      ],
+      "bid_price": 1020.16,
+      "ask_price": 1025.2,
+      "price": 1022.6800000000001,
+      "underlying_category": "index",
+      "type": "Bonus Plus"
+    },
+    {
+      "scraped": true,
+      "timestamp": "2026-01-27T14:50:58.223865",
+      "currency": "EUR",
+      "isin": "DE000UK768M0",
+      "name": "SHARK REBATE",
+      "underlying_name": "MSCI World Health Care Select 3.5% Decrement EUR",
+      "direction": "Long",
+      "issuer": "Ubs",
+      "worst_of": false,
+      "underlyings": [
+        {
+          "name": "MSCI World Health Care Select 3.5% Decrement EUR"
+        }
+      ],
+      "bid_price": 1009.7,
+      "ask_price": 1019.7,
+      "price": 1014.7,
+      "underlying_category": "index",
+      "type": "Certificate"
+    },
+    {
+      "scraped": true,
+      "timestamp": "2026-01-27T14:50:58.224203",
+      "currency": "EUR",
+      "isin": "JE00BS6B9381",
+      "name": "OUTPERFORMANCE CAP",
+      "underlying_name": "Russell 2000",
+      "direction": "Long",
+      "issuer": "Goldman Sachs",
+      "worst_of": false,
+      "underlyings": [
+        {
+          "name": "Russell 2000"
+        }
+      ],
+      "bid_price": 120.1,
+      "ask_price": null,
+      "underlying_category": "index",
+      "type": "Certificate"
+    },
+    {
+      "scraped": true,
+      "timestamp": "2026-01-27T14:50:58.224419",
+      "currency": "EUR",
+      "isin": "CH1409712879",
+      "name": "FIXED CASH COLLECT",
+      "underlying_name": "Euribor 3M",
+      "direction": "Long",
+      "issuer": "Leonteq Securities",
+      "worst_of": false,
+      "underlyings": [
+        {
+          "name": "Euribor 3M"
+        }
+      ],
+      "bid_price": 1025.57,
+      "ask_price": 1035.57,
+      "price": 1030.57,
+      "underlying_category": "rate",
+      "type": "Cash Collect"
+    },
+    {
+      "scraped": true,
+      "timestamp": "2026-01-27T14:51:03.910788",
+      "currency": "EUR",
+      "isin": "CH1369851592",
+      "name": "OUTPERFORMANCE CAP",
+      "underlying_name": "ProShares Ultra 20+ Year Treasury",
+      "direction": "Long",
+      "issuer": "Leonteq Securities",
+      "worst_of": false,
+      "underlyings": [
+        {
+          "name": "ProShares Ultra 20+ Year Treasury"
+        }
+      ],
+      "bid_price": 821.41,
+      "ask_price": 839.99,
+      "price": 830.7,
+      "underlying_category": "rate",
+      "type": "Certificate"
+    },
+    {
+      "scraped": true,
+      "timestamp": "2026-01-27T14:51:03.911242",
+      "currency": "EUR",
+      "isin": "XS2348176806",
+      "name": "DOUBLE RELAX JUMP",
+      "underlying_name": "Eurostoxx Banks",
+      "direction": "Long",
+      "issuer": "Bnp Paribas",
+      "worst_of": false,
+      "underlyings": [
+        {
+          "name": "Eurostoxx Banks"
+        }
+      ],
+      "bid_price": 260.73,
+      "ask_price": 261.73,
+      "price": 261.23,
+      "underlying_category": "index",
+      "type": "Certificate"
+    },
+    {
+      "scraped": true,
+      "timestamp": "2026-01-27T14:51:09.572630",
+      "currency": "EUR",
+      "isin": "XS2431011159",
+      "name": "BONUS PLUS",
+      "underlying_name": "Eurostoxx Banks",
+      "direction": "Long",
+      "issuer": "Intesa Sanpaolo",
+      "worst_of": false,
+      "underlyings": [
+        {
+          "name": "Eurostoxx Banks"
+        }
+      ],
+      "bid_price": 1030.01,
+      "ask_price": 1031.6,
+      "price": 1030.8049999999998,
+      "underlying_category": "index",
+      "type": "Bonus Plus"
+    },
+    {
+      "scraped": true,
+      "timestamp": "2026-01-27T14:51:15.249038",
+      "currency": "EUR",
+      "isin": "JE00BLS3B376",
+      "name": "PROTECT OUTPERFORMANCE",
+      "underlying_name": "Euro Stoxx 50",
+      "direction": "Long",
+      "issuer": "Goldman Sachs",
+      "worst_of": false,
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50"
+        }
+      ],
+      "bid_price": 1619.15,
+      "ask_price": 1639.15,
+      "price": 1629.15,
+      "underlying_category": "index",
+      "type": "Certificate"
+    },
+    {
+      "scraped": true,
+      "timestamp": "2026-01-27T14:51:15.249952",
+      "currency": "EUR",
+      "isin": "XS2774093640",
+      "name": "FIXED COUPON CONVERTIBLE",
+      "underlying_name": "BTPS 4.45 09/01/43",
+      "direction": "Long",
+      "issuer": "Bnp Paribas",
+      "worst_of": false,
+      "underlyings": [
+        {
+          "name": "BTPS 4.45 09/01/43"
+        }
+      ],
+      "bid_price": 10420.41,
+      "ask_price": null,
+      "underlying_category": "rate",
+      "type": "Certificate"
+    },
+    {
+      "scraped": true,
+      "timestamp": "2026-01-27T14:51:15.250630",
+      "currency": "EUR",
+      "isin": "CH1409723520",
+      "name": "FIXED COUPON CONVERTIBLE",
+      "underlying_name": "2.45% BTPS Italia (09/01/50)",
+      "direction": "Long",
+      "issuer": "Leonteq Securities",
+      "worst_of": false,
+      "underlyings": [
+        {
+          "name": "2.45% BTPS Italia (09/01/50)"
+        }
+      ],
+      "bid_price": 1025.6,
+      "ask_price": 1035.6,
+      "price": 1030.6,
+      "underlying_category": "rate",
+      "type": "Certificate"
+    },
+    {
+      "scraped": true,
+      "timestamp": "2026-01-27T14:51:15.250871",
+      "currency": "EUR",
+      "isin": "XS1292843312",
+      "name": "JET",
+      "underlying_name": "Euro Stoxx 50",
+      "direction": "Long",
+      "issuer": "Bnp Paribas",
+      "worst_of": false,
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50"
+        }
+      ],
+      "bid_price": 323.05,
+      "ask_price": null,
+      "underlying_category": "index",
+      "type": "Certificate"
+    },
+    {
+      "scraped": true,
+      "timestamp": "2026-01-27T14:51:15.251207",
+      "currency": "EUR",
+      "isin": "XS2579483079",
+      "name": "FIXED CASH COLLECT",
+      "underlying_name": "Euro Stoxx 50",
+      "direction": "Long",
+      "issuer": "Intesa Sanpaolo",
+      "worst_of": false,
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50"
+        }
+      ],
+      "bid_price": 1043.22,
+      "ask_price": 1045.89,
+      "price": 1044.555,
+      "underlying_category": "index",
+      "type": "Cash Collect"
+    },
+    {
+      "scraped": true,
+      "timestamp": "2026-01-27T14:51:20.906182",
+      "currency": "EUR",
+      "isin": "XS2095484700",
+      "name": "OUTPERFORMANCE PLUS",
+      "underlying_name": "Eurostoxx Select Dividend 30",
+      "direction": "Long",
+      "issuer": "Mediobanca",
+      "worst_of": false,
+      "underlyings": [
+        {
+          "name": "Eurostoxx Select Dividend 30"
+        }
+      ],
+      "bid_price": 1280.18,
+      "ask_price": null,
+      "underlying_category": "index",
+      "type": "Certificate"
+    },
+    {
+      "scraped": true,
+      "timestamp": "2026-01-27T14:51:20.908052",
+      "currency": "EUR",
+      "isin": "CH1251796715",
+      "name": "BUTTERFLY",
+      "underlying_name": "S&P 500",
+      "direction": "Long",
+      "issuer": "Leonteq Securities",
+      "worst_of": false,
+      "underlyings": [
+        {
+          "name": "S&P 500"
+        }
+      ],
+      "bid_price": 1069.94,
+      "ask_price": 1079.94,
+      "price": 1074.94,
+      "underlying_category": "index",
+      "type": "Certificate"
+    },
+    {
+      "scraped": true,
+      "timestamp": "2026-01-27T14:51:26.570986",
+      "currency": "EUR",
+      "isin": "JE00BKYRNW91",
+      "name": "BENCHMARK",
+      "underlying_name": "Goldman Sachs Bilanciato Funds",
+      "direction": "Long",
+      "issuer": "Goldman Sachs",
+      "worst_of": false,
+      "underlyings": [
+        {
+          "name": "Goldman Sachs Bilanciato Funds"
+        }
+      ],
+      "bid_price": 1123.95,
+      "ask_price": 1133.95,
+      "price": 1128.95,
+      "underlying_category": "commodity",
+      "type": "Certificate"
+    },
+    {
+      "scraped": true,
+      "timestamp": "2026-01-27T14:51:32.236520",
+      "currency": "EUR",
+      "isin": "IT0005639783",
+      "name": "CASH COLLECT",
+      "underlying_name": "Euro Stoxx 50",
+      "direction": "Long",
+      "issuer": "Intesa Sanpaolo",
+      "worst_of": true,
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50Nikkei 225S&P 500"
+        }
+      ],
+      "bid_price": 106.19,
+      "ask_price": 107.2,
+      "price": 106.695,
+      "underlying_category": "index",
+      "type": "Cash Collect"
+    },
+    {
+      "scraped": true,
+      "timestamp": "2026-01-27T14:51:32.237398",
+      "currency": "EUR",
+      "isin": "XS2451252832",
+      "name": "CASH COLLECT",
+      "underlying_name": "Eurostoxx Select Dividend 30",
+      "direction": "Long",
+      "issuer": "Mediobanca",
+      "worst_of": true,
+      "underlyings": [
+        {
+          "name": "Eurostoxx BanksEurostoxx Select Dividend 30"
+        }
+      ],
+      "bid_price": 997.8,
+      "ask_price": null,
+      "underlying_category": "index",
+      "type": "Cash Collect"
+    },
+    {
+      "scraped": true,
+      "timestamp": "2026-01-27T14:51:37.941169",
+      "currency": "EUR",
+      "isin": "XS2395066157",
+      "name": "BUTTERFLY",
+      "underlying_name": "S&P 500",
+      "direction": "Long",
+      "issuer": "Societe Generale",
+      "worst_of": false,
+      "underlyings": [
+        {
+          "name": "S&P 500"
+        }
+      ],
+      "bid_price": 984.64,
+      "ask_price": 994.64,
+      "price": 989.64,
+      "underlying_category": "index",
+      "type": "Certificate"
+    },
+    {
+      "scraped": true,
+      "timestamp": "2026-01-27T14:51:37.941736",
+      "currency": "EUR",
+      "isin": "JE00BLS39T96",
+      "name": "PROTECT OUTPERFORMANCE",
+      "underlying_name": "Euro Stoxx 50",
+      "direction": "Long",
+      "issuer": "Goldman Sachs",
+      "worst_of": false,
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50"
+        }
+      ],
+      "bid_price": 1764.85,
+      "ask_price": 1779.85,
+      "price": 1772.35,
+      "underlying_category": "index",
+      "type": "Certificate"
+    },
+    {
+      "scraped": true,
+      "timestamp": "2026-01-27T14:51:43.604255",
+      "currency": "EUR",
+      "isin": "XS2115185295",
+      "name": "PHOENIX",
+      "underlying_name": "Eurostoxx Select Dividend 30",
+      "direction": "Long",
+      "issuer": "Intesa Sanpaolo",
+      "worst_of": true,
+      "underlyings": [
+        {
+          "name": "Eurostoxx Select Dividend 30FTSE Mib"
+        }
+      ],
+      "bid_price": 999.0,
+      "ask_price": null,
+      "underlying_category": "index",
+      "type": "Certificate"
+    },
+    {
+      "scraped": true,
+      "timestamp": "2026-01-27T14:51:43.604477",
+      "currency": "EUR",
+      "isin": "XS2445143162",
+      "name": "BONUS CAP PLUS",
+      "underlying_name": "Euro Stoxx 50",
+      "direction": "Long",
+      "issuer": "Intesa Sanpaolo",
+      "worst_of": false,
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50"
+        }
+      ],
+      "bid_price": 1024.73,
+      "ask_price": 1028.0,
+      "price": 1026.365,
+      "underlying_category": "index",
+      "type": "Certificate"
+    },
+    {
+      "scraped": true,
+      "timestamp": "2026-01-27T14:51:43.604696",
+      "currency": "EUR",
+      "isin": "XS2591006668",
+      "name": "FIXED CASH COLLECT",
+      "underlying_name": "Stoxx Europe 600 Basic Resources",
+      "direction": "Long",
+      "issuer": "Intesa Sanpaolo",
+      "worst_of": false,
+      "underlyings": [
+        {
+          "name": "Stoxx Europe 600 Basic Resources"
+        }
+      ],
+      "bid_price": 1047.25,
+      "ask_price": 1053.5,
+      "price": 1050.375,
+      "underlying_category": "index",
+      "type": "Cash Collect"
+    },
+    {
+      "scraped": true,
+      "timestamp": "2026-01-27T14:51:49.278237",
+      "currency": "EUR",
+      "isin": "DE000UH91YK6",
+      "name": "PROTECT OUTPERFORMANCE CAP",
+      "underlying_name": "S&P 500",
+      "direction": "Long",
+      "issuer": "Ubs",
+      "worst_of": false,
+      "underlyings": [
+        {
+          "name": "S&P 500"
+        }
+      ],
+      "bid_price": 1593.5,
+      "ask_price": null,
+      "underlying_category": "index",
+      "type": "Certificate"
+    },
+    {
+      "scraped": true,
+      "timestamp": "2026-01-27T14:51:54.939183",
+      "currency": "EUR",
+      "isin": "CH1423928048",
+      "name": "FIXED COUPON CONVERTIBLE",
+      "underlying_name": "0% Bundesrepublik Deutschland",
+      "direction": "Long",
+      "issuer": "Leonteq Securities",
+      "worst_of": false,
+      "underlyings": [
+        {
+          "name": "0% Bundesrepublik Deutschland"
+        }
+      ],
+      "bid_price": 872.62,
+      "ask_price": 887.62,
+      "price": 880.12,
+      "underlying_category": "rate",
+      "type": "Certificate"
+    },
+    {
+      "scraped": true,
+      "timestamp": "2026-01-27T14:52:06.266591",
+      "currency": "EUR",
+      "isin": "XS2601915783",
+      "name": "BONUS PLUS",
+      "underlying_name": "Stoxx Europe 600 Auto&Parts",
+      "direction": "Long",
+      "issuer": "Intesa Sanpaolo",
+      "worst_of": false,
+      "underlyings": [
+        {
+          "name": "Stoxx Europe 600 Auto&Parts"
+        }
+      ],
+      "bid_price": 1038.16,
+      "ask_price": 1047.39,
+      "price": 1042.775,
+      "underlying_category": "index",
+      "type": "Bonus Plus"
+    },
+    {
+      "scraped": true,
+      "timestamp": "2026-01-27T14:52:06.268359",
+      "currency": "EUR",
+      "isin": "XS2459148651",
+      "name": "BONUS PLUS",
+      "underlying_name": "Eurostoxx Select Dividend 30",
+      "direction": "Long",
+      "issuer": "Intesa Sanpaolo",
+      "worst_of": false,
+      "underlyings": [
+        {
+          "name": "Eurostoxx Select Dividend 30"
+        }
+      ],
+      "bid_price": 1023.31,
+      "ask_price": 1026.4,
+      "price": 1024.855,
+      "underlying_category": "index",
+      "type": "Bonus Plus"
+    },
+    {
+      "scraped": true,
+      "timestamp": "2026-01-27T14:52:06.268465",
+      "currency": "EUR",
+      "isin": "XS2459309337",
+      "name": "BONUS PLUS",
+      "underlying_name": "S&P 500",
+      "direction": "Long",
+      "issuer": "Intesa Sanpaolo",
+      "worst_of": false,
+      "underlyings": [
+        {
+          "name": "S&P 500"
+        }
+      ],
+      "bid_price": 1019.4,
+      "ask_price": 1022.99,
+      "price": 1021.1949999999999,
+      "underlying_category": "index",
+      "type": "Bonus Plus"
+    },
+    {
+      "scraped": true,
+      "timestamp": "2026-01-27T14:52:06.268687",
+      "currency": "EUR",
+      "isin": "XS2129431859",
+      "name": "CASH COLLECT",
+      "underlying_name": "Eurostoxx Select Dividend 30",
+      "direction": "Long",
+      "issuer": "Mediobanca",
+      "worst_of": true,
+      "underlyings": [
+        {
+          "name": "Eurostoxx Select Dividend 30FTSE Mib"
+        }
+      ],
+      "bid_price": 987.36,
+      "ask_price": null,
+      "underlying_category": "index",
+      "type": "Cash Collect"
+    },
+    {
+      "scraped": true,
+      "timestamp": "2026-01-27T14:52:11.978441",
+      "currency": "EUR",
+      "isin": "XS2740841387",
+      "name": "TWIN WIN AUTOCALLABLE",
+      "underlying_name": "Stoxx Europe 600 Auto&Parts",
+      "direction": "Long",
+      "issuer": "Bnp Paribas",
+      "worst_of": false,
+      "underlyings": [
+        {
+          "name": "Stoxx Europe 600 Auto&Parts"
+        }
+      ],
+      "bid_price": 966.77,
+      "ask_price": 976.77,
+      "price": 971.77,
+      "underlying_category": "index",
+      "type": "Certificate"
+    },
+    {
+      "scraped": true,
+      "timestamp": "2026-01-27T14:52:11.978555",
+      "currency": "EUR",
+      "isin": "CH1107638459",
+      "name": "PROTECT OUTPERFORMANCE",
+      "underlying_name": "Msci Europe ESG Leaders 5% decrement",
+      "direction": "Long",
+      "issuer": "Leonteq Securities",
+      "worst_of": false,
+      "underlyings": [
+        {
+          "name": "Msci Europe ESG Leaders 5% decrement"
+        }
+      ],
+      "bid_price": 1552.61,
+      "ask_price": 1562.61,
+      "price": 1557.61,
+      "underlying_category": "index",
+      "type": "Certificate"
+    },
+    {
+      "scraped": true,
+      "timestamp": "2026-01-27T14:52:11.980170",
+      "currency": "EUR",
+      "isin": "IT0005592917",
+      "name": "FIXED CASH COLLECT",
+      "underlying_name": "Euro Stoxx 50",
+      "direction": "Long",
+      "issuer": "Mediobanca",
+      "worst_of": true,
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50Eurostoxx Banks"
+        }
+      ],
+      "bid_price": 1035.81,
+      "ask_price": null,
+      "underlying_category": "index",
+      "type": "Cash Collect"
+    },
+    {
+      "scraped": true,
+      "timestamp": "2026-01-27T14:52:17.644577",
+      "currency": "EUR",
+      "isin": "DE000UM4M7P2",
+      "name": "PHOENIX MEMORY",
+      "underlying_name": "WTI Crude Future generic 1st",
+      "direction": "Long",
+      "issuer": "Ubs",
+      "worst_of": false,
+      "underlyings": [
+        {
+          "name": "WTI Crude Future generic 1st"
+        }
+      ],
+      "bid_price": 975.0,
+      "ask_price": 983.67,
+      "price": 979.335,
+      "underlying_category": "commodity",
+      "type": "Phoenix Memory"
+    },
+    {
+      "scraped": true,
+      "timestamp": "2026-01-27T14:52:17.645413",
+      "currency": "EUR",
+      "isin": "FREXA0010597",
+      "name": "CRESCENDO RENDIMENTO TEMPO",
+      "underlying_name": "Euro Stoxx 50",
+      "direction": "Long",
+      "issuer": "Exane Finance",
+      "worst_of": true,
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50S&P 500"
+        }
+      ],
+      "bid_price": 1005.12,
+      "ask_price": null,
+      "underlying_category": "index",
+      "type": "Certificate"
+    },
+    {
+      "scraped": true,
+      "timestamp": "2026-01-27T14:52:17.645633",
+      "currency": "EUR",
+      "isin": "XS2340854251",
+      "name": "TRACKER",
+      "underlying_name": "Cirdan Commodity Volatility",
+      "direction": "Long",
+      "issuer": "SmartETN",
+      "worst_of": true,
+      "underlyings": [
+        {
+          "name": "Cirdan Commodity Volatility"
+        }
+      ],
+      "bid_price": 988.2,
+      "ask_price": null,
+      "underlying_category": "commodity",
+      "type": "Certificate"
+    },
+    {
+      "scraped": true,
+      "timestamp": "2026-01-27T14:52:17.645995",
+      "currency": "EUR",
+      "isin": "XS2759241727",
+      "name": "CASH COLLECT MEMORY",
+      "underlying_name": "Brent Crude Generic 1st",
+      "direction": "Long",
+      "issuer": "Bnp Paribas",
+      "worst_of": false,
+      "underlyings": [
+        {
+          "name": "Brent Crude Generic 1st"
+        }
+      ],
+      "bid_price": 98.93,
+      "ask_price": 99.8,
+      "price": 99.36500000000001,
+      "underlying_category": "commodity",
+      "type": "Cash Collect"
+    },
+    {
+      "scraped": true,
+      "timestamp": "2026-01-27T14:52:17.646925",
+      "currency": "EUR",
+      "isin": "XS2757882282",
+      "name": "FIXED CASH COLLECT",
+      "underlying_name": "Euro Stoxx 50",
+      "direction": "Long",
+      "issuer": "Bnp Paribas",
+      "worst_of": true,
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50Eurostoxx Banks"
+        }
+      ],
+      "bid_price": 1029.42,
+      "ask_price": null,
+      "underlying_category": "index",
+      "type": "Cash Collect"
+    },
+    {
+      "scraped": true,
+      "timestamp": "2026-01-27T14:52:17.647033",
+      "currency": "EUR",
+      "isin": "DE000UM4RS78",
+      "name": "PHOENIX MEMORY",
+      "underlying_name": "WTI Crude Future generic 1st",
+      "direction": "Long",
+      "issuer": "Ubs",
+      "worst_of": false,
+      "underlyings": [
+        {
+          "name": "WTI Crude Future generic 1st"
+        }
+      ],
+      "bid_price": 1012.05,
+      "ask_price": 1022.05,
+      "price": 1017.05,
+      "underlying_category": "commodity",
+      "type": "Phoenix Memory"
+    },
+    {
+      "scraped": true,
+      "timestamp": "2026-01-27T14:52:23.305874",
+      "currency": "EUR",
+      "isin": "CH1349977921",
+      "name": "PHOENIX MEMORY SOFTCALLABLE",
+      "underlying_name": "WTI Crude Future generic 1st",
+      "direction": "Long",
+      "issuer": "Leonteq Securities",
+      "worst_of": true,
+      "underlyings": [
+        {
+          "name": "SPDR GOLD TRUSTWTI Crude Future generic 1st"
+        }
+      ],
+      "bid_price": 955.0,
+      "ask_price": null,
+      "underlying_category": "commodity",
+      "type": "Phoenix Memory"
+    },
+    {
+      "scraped": true,
+      "timestamp": "2026-01-27T14:52:23.306722",
+      "currency": "EUR",
+      "isin": "DE000VC88P33",
+      "name": "CASH COLLECT MEMORY STEP DOWN",
+      "underlying_name": "Strategy",
+      "direction": "Long",
+      "issuer": "Vontobel",
+      "worst_of": true,
+      "underlyings": [
+        {
+          "name": "CoinbaseStrategy"
+        }
+      ],
+      "bid_price": 35.1,
+      "ask_price": null,
+      "underlying_category": "rate",
+      "type": "Cash Collect"
+    },
+    {
+      "scraped": true,
+      "timestamp": "2026-01-27T14:52:23.308105",
+      "currency": "EUR",
+      "isin": "IT0005473761",
+      "name": "FIXED CASH COLLECT",
+      "underlying_name": "Eurostoxx Select Dividend 30",
+      "direction": "Long",
+      "issuer": "Mediobanca",
+      "worst_of": true,
+      "underlyings": [
+        {
+          "name": "Eurostoxx BanksEurostoxx Select Dividend 30"
+        }
+      ],
+      "bid_price": 1010.11,
+      "ask_price": null,
+      "underlying_category": "index",
+      "type": "Cash Collect"
+    },
+    {
+      "scraped": true,
+      "timestamp": "2026-01-27T14:52:23.308213",
+      "currency": "EUR",
+      "isin": "IT0005481509",
+      "name": "FIXED CASH COLLECT",
+      "underlying_name": "Eurostoxx Select Dividend 30",
+      "direction": "Long",
+      "issuer": "Mediobanca",
+      "worst_of": true,
+      "underlyings": [
+        {
+          "name": "Eurostoxx BanksEurostoxx Select Dividend 30"
+        }
+      ],
+      "bid_price": 1007.65,
+      "ask_price": null,
+      "underlying_category": "index",
+      "type": "Cash Collect"
+    },
+    {
+      "scraped": true,
+      "timestamp": "2026-01-27T14:52:28.976911",
+      "currency": "EUR",
+      "isin": "DE000HC6ADH4",
+      "name": "PROTECT OUTPERFORMANCE",
+      "underlying_name": "FTSE Mib",
+      "direction": "Long",
+      "issuer": "Unicredit",
+      "worst_of": false,
+      "underlyings": [
+        {
+          "name": "FTSE Mib"
+        }
+      ],
+      "bid_price": 1977.29,
+      "ask_price": 1997.16,
+      "price": 1987.225,
+      "underlying_category": "index",
+      "type": "Certificate"
+    },
+    {
+      "scraped": true,
+      "timestamp": "2026-01-27T14:52:28.977465",
+      "currency": "EUR",
+      "isin": "XS2469362938",
+      "name": "FIXED CASH COLLECT",
+      "underlying_name": "S&P 500",
+      "direction": "Long",
+      "issuer": "Intesa Sanpaolo",
+      "worst_of": false,
+      "underlyings": [
+        {
+          "name": "S&P 500"
+        }
+      ],
+      "bid_price": 1026.34,
+      "ask_price": 1036.34,
+      "price": 1031.34,
+      "underlying_category": "index",
+      "type": "Cash Collect"
+    },
+    {
+      "scraped": true,
+      "timestamp": "2026-01-27T14:52:34.643385",
+      "currency": "EUR",
+      "isin": "CH1438103900",
+      "name": "PHOENIX MEMORY SOFTCALLABLE",
+      "underlying_name": "WTI Crude Future generic 1st",
+      "direction": "Long",
+      "issuer": "Leonteq Securities",
+      "worst_of": false,
+      "underlyings": [
+        {
+          "name": "WTI Crude Future generic 1st"
+        }
+      ],
+      "bid_price": 1007.41,
+      "ask_price": 1017.41,
+      "price": 1012.41,
+      "underlying_category": "commodity",
+      "type": "Phoenix Memory"
+    },
+    {
+      "scraped": true,
+      "timestamp": "2026-01-27T14:52:34.644430",
+      "currency": "EUR",
+      "isin": "CH1453354289",
+      "name": "FIXED COUPON CONVERTIBLE",
+      "underlying_name": "0% Bundesrepublik Deutschland",
+      "direction": "Long",
+      "issuer": "Leonteq Securities",
+      "worst_of": false,
+      "underlyings": [
+        {
+          "name": "0% Bundesrepublik Deutschland"
+        }
+      ],
+      "bid_price": 888.79,
+      "ask_price": 903.79,
+      "price": 896.29,
+      "underlying_category": "rate",
+      "type": "Certificate"
+    },
+    {
+      "scraped": true,
+      "timestamp": "2026-01-27T14:52:34.644542",
+      "currency": "EUR",
+      "isin": "CH1453354305",
+      "name": "FIXED COUPON CONVERTIBLE",
+      "underlying_name": "2.15% BTPS Italia (03/01/72)",
+      "direction": "Long",
+      "issuer": "Leonteq Securities",
+      "worst_of": false,
+      "underlyings": [
+        {
+          "name": "2.15% BTPS Italia (03/01/72)"
+        }
+      ],
+      "bid_price": 989.36,
+      "ask_price": 999.36,
+      "price": 994.36,
+      "underlying_category": "rate",
+      "type": "Certificate"
+    },
+    {
+      "scraped": true,
+      "timestamp": "2026-01-27T14:52:34.644788",
+      "currency": "EUR",
+      "isin": "CH1233010292",
+      "name": "PHOENIX MEMORY SOFTCALLABLE",
+      "underlying_name": "Stoxx Europe 600 Auto&Parts",
+      "direction": "Long",
+      "issuer": "Leonteq Securities",
+      "worst_of": true,
+      "underlyings": [
+        {
+          "name": "Spdr S&P Oil & GasStoxx Europe 600 Auto&PartsStoxx Europe 600 Technology"
+        }
+      ],
+      "bid_price": 1007.55,
+      "ask_price": 1017.68,
+      "price": 1012.615,
+      "underlying_category": "index",
+      "type": "Phoenix Memory"
+    },
+    {
+      "scraped": true,
+      "timestamp": "2026-01-27T14:52:40.302954",
+      "currency": "EUR",
+      "isin": "XS2782352111",
+      "name": "PHOENIX MEMORY",
+      "underlying_name": "WTI Crude Future generic 1st",
+      "direction": "Long",
+      "issuer": "Bnp Paribas",
+      "worst_of": false,
+      "underlyings": [
+        {
+          "name": "WTI Crude Future generic 1st"
+        }
+      ],
+      "bid_price": 97.13,
+      "ask_price": 97.96,
+      "price": 97.54499999999999,
+      "underlying_category": "commodity",
+      "type": "Phoenix Memory"
+    },
+    {
+      "scraped": true,
+      "timestamp": "2026-01-27T14:52:46.017419",
+      "currency": "EUR",
+      "isin": "XS2380247499",
+      "name": "PHOENIX MEMORY",
+      "underlying_name": "FTSE Mib",
+      "direction": "Long",
+      "issuer": "Bnp Paribas",
+      "worst_of": false,
+      "underlyings": [
+        {
+          "name": "FTSE Mib"
+        }
+      ],
+      "bid_price": 103.33,
+      "ask_price": 104.33,
+      "price": 103.83,
+      "underlying_category": "index",
+      "type": "Phoenix Memory"
+    },
+    {
+      "scraped": true,
+      "timestamp": "2026-01-27T14:52:46.017529",
+      "currency": "EUR",
+      "isin": "XS2380263777",
+      "name": "PHOENIX MEMORY",
+      "underlying_name": "FTSE Mib",
+      "direction": "Long",
+      "issuer": "Bnp Paribas",
+      "worst_of": false,
+      "underlyings": [
+        {
+          "name": "FTSE Mib"
+        }
+      ],
+      "bid_price": 103.0,
+      "ask_price": 104.0,
+      "price": 103.5,
+      "underlying_category": "index",
+      "type": "Phoenix Memory"
+    },
+    {
+      "scraped": true,
+      "timestamp": "2026-01-27T14:52:46.017643",
+      "currency": "EUR",
+      "isin": "XS2472164487",
+      "name": "BONUS PLUS",
+      "underlying_name": "Nikkei 225",
+      "direction": "Long",
+      "issuer": "Intesa Sanpaolo",
+      "worst_of": false,
+      "underlyings": [
+        {
+          "name": "Nikkei 225"
+        }
+      ],
+      "bid_price": 1019.19,
+      "ask_price": 1025.2,
+      "price": 1022.195,
+      "underlying_category": "index",
+      "type": "Bonus Plus"
+    },
+    {
+      "scraped": true,
+      "timestamp": "2026-01-27T14:52:46.017888",
+      "currency": "EUR",
+      "isin": "CH1453356268",
+      "name": "FIXED COUPON CONVERTIBLE",
+      "underlying_name": "0% Bundesrepublik Deutschland",
+      "direction": "Long",
+      "issuer": "Leonteq Securities",
+      "worst_of": false,
+      "underlyings": [
+        {
+          "name": "0% Bundesrepublik Deutschland"
+        }
+      ],
+      "bid_price": 779.54,
+      "ask_price": 794.54,
+      "price": 787.04,
+      "underlying_category": "rate",
+      "type": "Certificate"
+    }
+  ]
 }
