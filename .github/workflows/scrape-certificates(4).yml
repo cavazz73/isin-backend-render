@@ -1,0 +1,55 @@
+name: Update Certificates Data
+
+on:
+  schedule:
+    - cron: '0 20 * * *'
+  workflow_dispatch:
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          pip install playwright beautifulsoup4
+          playwright install chromium
+          playwright install-deps chromium
+
+      - name: Run scraper
+        run: python scraper_ced_v5.py --output certificates-data.json
+
+      - name: Upload debug files
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: debug-files
+          path: |
+            debug_*.html
+            debug_*.png
+          retention-days: 7
+
+      - name: Show results
+        run: |
+          echo "=== certificates-data.json ==="
+          cat certificates-data.json | head -100
+          echo ""
+          echo "=== Certificate count ==="
+          python -c "import json; d=json.load(open('certificates-data.json')); print(f'Certificates: {len(d.get(\"certificates\", []))}')"
+
+      - name: Commit and push
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add certificates-data.json
+          git diff --staged --quiet || git commit -m "Update certificates data $(date +'%Y-%m-%d')"
+          git push
