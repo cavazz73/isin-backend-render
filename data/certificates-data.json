@@ -1,1155 +1,4239 @@
 {
   "metadata": {
-    "version": "1.8-cedlab",
-    "timestamp": "2026-01-27T21:16:51.715814",
-    "source": "cedlabpro.it",
-    "total": 55,
-    "total_before_filter": 500,
+    "version": "11.0",
+    "timestamp": "2026-01-28T03:54:35.282426",
+    "source": "certificatiederivati.it",
+    "method": "playwright-production-v11",
+    "total": 45,
+    "pages_scanned": 50,
+    "details_fetched": 45,
+    "with_barrier": 31,
+    "with_coupon": 27,
+    "filter": "indices, commodities, rates, currencies, credit_linked",
     "categories": {
-      "commodity": 9,
-      "currency": 1,
-      "rate": 10,
-      "index": 35
-    }
+      "index": 41,
+      "currency": 2,
+      "commodity": 2
+    },
+    "issuers": [
+      "Société Générale",
+      "Goldman Sachs",
+      "UniCredit",
+      "Barclays",
+      "Mediobanca",
+      "BNP Paribas",
+      "Intesa Sanpaolo",
+      "Vontobel"
+    ],
+    "issuers_count": 8
   },
   "certificates": [
     {
-      "scraped": true,
-      "timestamp": "2026-01-27T21:15:03.886345",
+      "isin": "XS1778815974",
+      "name": "BENCHMARK",
+      "type": "Benchmark",
+      "issuer": "Société Générale",
+      "market": "SeDeX",
       "currency": "EUR",
-      "isin": "NL0012873855",
-      "name": "MINI FUTURES LONG",
-      "underlying_name": "Gold Future Generic 1st",
-      "direction": "Long",
-      "issuer": "Bnp Paribas",
-      "worst_of": false,
+      "underlying_name": "FTSE MIB Net Total Return",
+      "underlying_category": "index",
       "underlyings": [
         {
-          "name": "Gold Future Generic 1st"
+          "name": "FTSE MIB Net Total Return",
+          "worst_of": false
         }
       ],
-      "bid_price": 25.27,
-      "ask_price": 25.28,
-      "price": 25.275,
-      "underlying_category": "commodity",
-      "type": "Mini Future"
+      "issue_date": "2026-01-28",
+      "maturity_date": "2028-01-28",
+      "barrier": null,
+      "barrier_down": null,
+      "barrier_type": null,
+      "coupon": null,
+      "coupon_monthly": null,
+      "trigger_coupon": null,
+      "trigger_autocall": null,
+      "annual_coupon_yield": null,
+      "effective_annual_yield": null,
+      "price": 100,
+      "last_price": 100,
+      "emission_price": 100,
+      "nominal": 1000,
+      "buffer_from_barrier": null,
+      "autocallable": true,
+      "memory_effect": false,
+      "scenario_analysis": null,
+      "scraped": true,
+      "timestamp": "2026-01-28T03:54:35.282426"
     },
     {
-      "scraped": true,
-      "timestamp": "2026-01-27T21:15:03.886608",
+      "isin": "DE000SV6JJ15",
+      "name": "BENCHMARK",
+      "type": "Benchmark",
+      "issuer": "Société Générale",
+      "market": "SeDeX",
       "currency": "EUR",
-      "isin": "NL0012874028",
-      "name": "MINI FUTURES SHORT",
-      "underlying_name": "EUR/USD",
-      "direction": "Short",
-      "issuer": "Bnp Paribas",
-      "worst_of": false,
-      "underlyings": [
-        {
-          "name": "EUR/USD"
-        }
-      ],
-      "bid_price": 0.2375,
-      "ask_price": 0.2475,
-      "price": 0.2425,
+      "underlying_name": "SGI European ESG Champions Net Total Return",
       "underlying_category": "currency",
-      "type": "Mini Future"
-    },
-    {
-      "scraped": true,
-      "timestamp": "2026-01-27T21:15:03.886878",
-      "currency": "EUR",
-      "isin": "XS2774092675",
-      "name": "FIXED COUPON CONVERTIBLE",
-      "underlying_name": "BTPS 3.85 02/01/35",
-      "direction": "Long",
-      "issuer": "Bnp Paribas",
-      "worst_of": false,
       "underlyings": [
         {
-          "name": "BTPS 3.85 02/01/35"
+          "name": "SGI European ESG Champions Net Total Return",
+          "worst_of": false
         }
       ],
-      "bid_price": 10206.53,
-      "ask_price": null,
-      "underlying_category": "rate",
-      "type": "Certificate"
+      "issue_date": "2026-01-28",
+      "maturity_date": "2028-01-28",
+      "barrier": null,
+      "barrier_down": null,
+      "barrier_type": null,
+      "coupon": null,
+      "coupon_monthly": null,
+      "trigger_coupon": null,
+      "trigger_autocall": null,
+      "annual_coupon_yield": null,
+      "effective_annual_yield": null,
+      "price": 100,
+      "last_price": 100,
+      "emission_price": 100,
+      "nominal": 1000,
+      "buffer_from_barrier": null,
+      "autocallable": false,
+      "memory_effect": false,
+      "scenario_analysis": null,
+      "scraped": true,
+      "timestamp": "2026-01-28T03:54:35.282426"
     },
     {
-      "scraped": true,
-      "timestamp": "2026-01-27T21:15:03.887244",
-      "currency": "EUR",
-      "isin": "XS2418286204",
-      "name": "BONUS PLUS",
-      "underlying_name": "Dax Kurs",
-      "direction": "Long",
-      "issuer": "Intesa Sanpaolo",
-      "worst_of": false,
-      "underlyings": [
-        {
-          "name": "Dax Kurs"
-        }
-      ],
-      "bid_price": 1020.14,
-      "ask_price": 1025.23,
-      "price": 1022.685,
-      "underlying_category": "index",
-      "type": "Bonus Plus"
-    },
-    {
-      "scraped": true,
-      "timestamp": "2026-01-27T21:15:03.887378",
-      "currency": "EUR",
-      "isin": "DE000UK768M0",
-      "name": "SHARK REBATE",
-      "underlying_name": "MSCI World Health Care Select 3.5% Decrement EUR",
-      "direction": "Long",
-      "issuer": "Ubs",
-      "worst_of": false,
-      "underlyings": [
-        {
-          "name": "MSCI World Health Care Select 3.5% Decrement EUR"
-        }
-      ],
-      "bid_price": 1003.01,
-      "ask_price": 1013.01,
-      "price": 1008.01,
-      "underlying_category": "index",
-      "type": "Certificate"
-    },
-    {
-      "scraped": true,
-      "timestamp": "2026-01-27T21:15:03.888096",
-      "currency": "EUR",
-      "isin": "JE00BS6B9381",
-      "name": "OUTPERFORMANCE CAP",
-      "underlying_name": "Russell 2000",
-      "direction": "Long",
-      "issuer": "Goldman Sachs",
-      "worst_of": false,
-      "underlyings": [
-        {
-          "name": "Russell 2000"
-        }
-      ],
-      "bid_price": 120.1,
-      "ask_price": null,
-      "underlying_category": "index",
-      "type": "Certificate"
-    },
-    {
-      "scraped": true,
-      "timestamp": "2026-01-27T21:15:03.888461",
-      "currency": "EUR",
-      "isin": "CH1409712879",
-      "name": "FIXED CASH COLLECT",
-      "underlying_name": "Euribor 3M",
-      "direction": "Long",
-      "issuer": "Leonteq Securities",
-      "worst_of": false,
-      "underlyings": [
-        {
-          "name": "Euribor 3M"
-        }
-      ],
-      "bid_price": 1025.57,
-      "ask_price": 1035.57,
-      "price": 1030.57,
-      "underlying_category": "rate",
-      "type": "Cash Collect"
-    },
-    {
-      "scraped": true,
-      "timestamp": "2026-01-27T21:15:09.579795",
-      "currency": "EUR",
-      "isin": "CH1369851592",
-      "name": "OUTPERFORMANCE CAP",
-      "underlying_name": "ProShares Ultra 20+ Year Treasury",
-      "direction": "Long",
-      "issuer": "Leonteq Securities",
-      "worst_of": false,
-      "underlyings": [
-        {
-          "name": "ProShares Ultra 20+ Year Treasury"
-        }
-      ],
-      "bid_price": 816.24,
-      "ask_price": 839.99,
-      "price": 828.115,
-      "underlying_category": "rate",
-      "type": "Certificate"
-    },
-    {
-      "scraped": true,
-      "timestamp": "2026-01-27T21:15:09.580133",
-      "currency": "EUR",
-      "isin": "XS2348176806",
-      "name": "DOUBLE RELAX JUMP",
-      "underlying_name": "Eurostoxx Banks",
-      "direction": "Long",
-      "issuer": "Bnp Paribas",
-      "worst_of": false,
-      "underlyings": [
-        {
-          "name": "Eurostoxx Banks"
-        }
-      ],
-      "bid_price": 261.54,
-      "ask_price": 262.54,
-      "price": 262.04,
-      "underlying_category": "index",
-      "type": "Certificate"
-    },
-    {
-      "scraped": true,
-      "timestamp": "2026-01-27T21:15:15.249696",
-      "currency": "EUR",
-      "isin": "XS2431011159",
-      "name": "BONUS PLUS",
-      "underlying_name": "Eurostoxx Banks",
-      "direction": "Long",
-      "issuer": "Intesa Sanpaolo",
-      "worst_of": false,
-      "underlyings": [
-        {
-          "name": "Eurostoxx Banks"
-        }
-      ],
-      "bid_price": 1030.16,
-      "ask_price": 1031.9,
-      "price": 1031.0300000000002,
-      "underlying_category": "index",
-      "type": "Bonus Plus"
-    },
-    {
-      "scraped": true,
-      "timestamp": "2026-01-27T21:15:20.911402",
-      "currency": "EUR",
-      "isin": "JE00BLS3B376",
-      "name": "PROTECT OUTPERFORMANCE",
-      "underlying_name": "Euro Stoxx 50",
-      "direction": "Long",
-      "issuer": "Goldman Sachs",
-      "worst_of": false,
-      "underlyings": [
-        {
-          "name": "Euro Stoxx 50"
-        }
-      ],
-      "bid_price": 1624.6,
-      "ask_price": 1644.6,
-      "price": 1634.6,
-      "underlying_category": "index",
-      "type": "Certificate"
-    },
-    {
-      "scraped": true,
-      "timestamp": "2026-01-27T21:15:20.912211",
-      "currency": "EUR",
-      "isin": "XS2774093640",
-      "name": "FIXED COUPON CONVERTIBLE",
-      "underlying_name": "BTPS 4.45 09/01/43",
-      "direction": "Long",
-      "issuer": "Bnp Paribas",
-      "worst_of": false,
-      "underlyings": [
-        {
-          "name": "BTPS 4.45 09/01/43"
-        }
-      ],
-      "bid_price": 10420.41,
-      "ask_price": null,
-      "underlying_category": "rate",
-      "type": "Certificate"
-    },
-    {
-      "scraped": true,
-      "timestamp": "2026-01-27T21:15:20.913159",
-      "currency": "EUR",
-      "isin": "CH1409723520",
-      "name": "FIXED COUPON CONVERTIBLE",
-      "underlying_name": "2.45% BTPS Italia (09/01/50)",
-      "direction": "Long",
-      "issuer": "Leonteq Securities",
-      "worst_of": false,
-      "underlyings": [
-        {
-          "name": "2.45% BTPS Italia (09/01/50)"
-        }
-      ],
-      "bid_price": 1027.83,
-      "ask_price": 1037.83,
-      "price": 1032.83,
-      "underlying_category": "rate",
-      "type": "Certificate"
-    },
-    {
-      "scraped": true,
-      "timestamp": "2026-01-27T21:15:20.913396",
-      "currency": "EUR",
-      "isin": "XS1292843312",
-      "name": "JET",
-      "underlying_name": "Euro Stoxx 50",
-      "direction": "Long",
-      "issuer": "Bnp Paribas",
-      "worst_of": false,
-      "underlyings": [
-        {
-          "name": "Euro Stoxx 50"
-        }
-      ],
-      "bid_price": 324.18,
-      "ask_price": null,
-      "underlying_category": "index",
-      "type": "Certificate"
-    },
-    {
-      "scraped": true,
-      "timestamp": "2026-01-27T21:15:20.913513",
-      "currency": "EUR",
-      "isin": "XS2579483079",
-      "name": "FIXED CASH COLLECT",
-      "underlying_name": "Euro Stoxx 50",
-      "direction": "Long",
-      "issuer": "Intesa Sanpaolo",
-      "worst_of": false,
-      "underlyings": [
-        {
-          "name": "Euro Stoxx 50"
-        }
-      ],
-      "bid_price": 1042.12,
-      "ask_price": 1045.87,
-      "price": 1043.995,
-      "underlying_category": "index",
-      "type": "Cash Collect"
-    },
-    {
-      "scraped": true,
-      "timestamp": "2026-01-27T21:15:20.913842",
-      "currency": "EUR",
-      "isin": "XS2095484700",
-      "name": "OUTPERFORMANCE PLUS",
-      "underlying_name": "Eurostoxx Select Dividend 30",
-      "direction": "Long",
-      "issuer": "Mediobanca",
-      "worst_of": false,
-      "underlyings": [
-        {
-          "name": "Eurostoxx Select Dividend 30"
-        }
-      ],
-      "bid_price": 1278.15,
-      "ask_price": null,
-      "underlying_category": "index",
-      "type": "Certificate"
-    },
-    {
-      "scraped": true,
-      "timestamp": "2026-01-27T21:15:26.587832",
-      "currency": "EUR",
-      "isin": "CH1251796715",
-      "name": "BUTTERFLY",
-      "underlying_name": "S&P 500",
-      "direction": "Long",
-      "issuer": "Leonteq Securities",
-      "worst_of": false,
-      "underlyings": [
-        {
-          "name": "S&P 500"
-        }
-      ],
-      "bid_price": 1069.94,
-      "ask_price": 1079.94,
-      "price": 1074.94,
-      "underlying_category": "index",
-      "type": "Certificate"
-    },
-    {
-      "scraped": true,
-      "timestamp": "2026-01-27T21:15:32.258987",
-      "currency": "EUR",
       "isin": "JE00BKYRNW91",
       "name": "BENCHMARK",
-      "underlying_name": "Goldman Sachs Bilanciato Funds",
-      "direction": "Long",
+      "type": "Benchmark",
       "issuer": "Goldman Sachs",
-      "worst_of": false,
-      "underlyings": [
-        {
-          "name": "Goldman Sachs Bilanciato Funds"
-        }
-      ],
-      "bid_price": 1123.95,
-      "ask_price": 1133.95,
-      "price": 1128.95,
+      "market": "SeDeX",
+      "currency": "EUR",
+      "underlying_name": "Goldman Sachs Bilanciato Funds",
       "underlying_category": "commodity",
-      "type": "Certificate"
-    },
-    {
-      "scraped": true,
-      "timestamp": "2026-01-27T21:15:37.922916",
-      "currency": "EUR",
-      "isin": "IT0005639783",
-      "name": "CASH COLLECT",
-      "underlying_name": "Euro Stoxx 50",
-      "direction": "Long",
-      "issuer": "Intesa Sanpaolo",
-      "worst_of": true,
       "underlyings": [
         {
-          "name": "Euro Stoxx 50Nikkei 225S&P 500"
+          "name": "Goldman Sachs Bilanciato Funds",
+          "worst_of": false
         }
       ],
-      "bid_price": 106.19,
-      "ask_price": 107.2,
-      "price": 106.695,
-      "underlying_category": "index",
-      "type": "Cash Collect"
+      "issue_date": "2026-01-28",
+      "maturity_date": "2026-03-09",
+      "barrier": null,
+      "barrier_down": null,
+      "barrier_type": null,
+      "coupon": null,
+      "coupon_monthly": null,
+      "trigger_coupon": null,
+      "trigger_autocall": null,
+      "annual_coupon_yield": null,
+      "effective_annual_yield": null,
+      "price": 100,
+      "last_price": 100,
+      "emission_price": 100,
+      "nominal": 1000,
+      "buffer_from_barrier": null,
+      "autocallable": false,
+      "memory_effect": false,
+      "scenario_analysis": null,
+      "scraped": true,
+      "timestamp": "2026-01-28T03:54:35.282426"
     },
     {
-      "scraped": true,
-      "timestamp": "2026-01-27T21:15:37.924134",
+      "isin": "XS2314073839",
+      "name": "BENCHMARK",
+      "type": "Benchmark",
+      "issuer": "Société Générale",
+      "market": "SeDeX",
       "currency": "EUR",
+      "underlying_name": "MSCI Emerging Markets Daily Net TR",
+      "underlying_category": "index",
+      "underlyings": [
+        {
+          "name": "MSCI Emerging Markets Daily Net TR",
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2026-01-28",
+      "maturity_date": "2099-12-30",
+      "barrier": null,
+      "barrier_down": null,
+      "barrier_type": null,
+      "coupon": null,
+      "coupon_monthly": null,
+      "trigger_coupon": null,
+      "trigger_autocall": null,
+      "annual_coupon_yield": null,
+      "effective_annual_yield": null,
+      "price": 100,
+      "last_price": 100,
+      "emission_price": 100,
+      "nominal": 1000,
+      "buffer_from_barrier": null,
+      "autocallable": false,
+      "memory_effect": false,
+      "scenario_analysis": null,
+      "scraped": true,
+      "timestamp": "2026-01-28T03:54:35.282426"
+    },
+    {
+      "isin": "XS1778816436",
+      "name": "BENCHMARK",
+      "type": "Benchmark",
+      "issuer": "Société Générale",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "underlying_name": "MSCI World Net TR USD",
+      "underlying_category": "index",
+      "underlyings": [
+        {
+          "name": "MSCI World Net TR USD",
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2026-01-28",
+      "maturity_date": "2028-01-28",
+      "barrier": null,
+      "barrier_down": null,
+      "barrier_type": null,
+      "coupon": null,
+      "coupon_monthly": null,
+      "trigger_coupon": null,
+      "trigger_autocall": null,
+      "annual_coupon_yield": null,
+      "effective_annual_yield": null,
+      "price": 100,
+      "last_price": 100,
+      "emission_price": 100,
+      "nominal": 1000,
+      "buffer_from_barrier": null,
+      "autocallable": true,
+      "memory_effect": false,
+      "scenario_analysis": null,
+      "scraped": true,
+      "timestamp": "2026-01-28T03:54:35.282426"
+    },
+    {
+      "isin": "XS1778816279",
+      "name": "BENCHMARK",
+      "type": "Benchmark",
+      "issuer": "Société Générale",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "underlying_name": "S&P 500 Net TR",
+      "underlying_category": "index",
+      "underlyings": [
+        {
+          "name": "S&P 500 Net TR",
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2026-01-28",
+      "maturity_date": "2028-01-28",
+      "barrier": null,
+      "barrier_down": null,
+      "barrier_type": null,
+      "coupon": null,
+      "coupon_monthly": null,
+      "trigger_coupon": null,
+      "trigger_autocall": null,
+      "annual_coupon_yield": null,
+      "effective_annual_yield": null,
+      "price": 100,
+      "last_price": 100,
+      "emission_price": 100,
+      "nominal": 1000,
+      "buffer_from_barrier": null,
+      "autocallable": true,
+      "memory_effect": false,
+      "scenario_analysis": null,
+      "scraped": true,
+      "timestamp": "2026-01-28T03:54:35.282426"
+    },
+    {
+      "isin": "XS1778816352",
+      "name": "BENCHMARK",
+      "type": "Benchmark",
+      "issuer": "Société Générale",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "underlying_name": "Nasdaq 100 Notional NR",
+      "underlying_category": "index",
+      "underlyings": [
+        {
+          "name": "Nasdaq 100 Notional NR",
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2026-01-28",
+      "maturity_date": "2028-01-28",
+      "barrier": null,
+      "barrier_down": null,
+      "barrier_type": null,
+      "coupon": null,
+      "coupon_monthly": null,
+      "trigger_coupon": null,
+      "trigger_autocall": null,
+      "annual_coupon_yield": null,
+      "effective_annual_yield": null,
+      "price": 100,
+      "last_price": 100,
+      "emission_price": 100,
+      "nominal": 1000,
+      "buffer_from_barrier": null,
+      "autocallable": true,
+      "memory_effect": false,
+      "scenario_analysis": null,
+      "scraped": true,
+      "timestamp": "2026-01-28T03:54:35.282426"
+    },
+    {
+      "isin": "XS1778816196",
+      "name": "BENCHMARK",
+      "type": "Benchmark",
+      "issuer": "Société Générale",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "underlying_name": "Euro Stoxx 50 Total Return",
+      "underlying_category": "index",
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50 Total Return",
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2026-01-28",
+      "maturity_date": "2028-01-28",
+      "barrier": null,
+      "barrier_down": null,
+      "barrier_type": null,
+      "coupon": null,
+      "coupon_monthly": null,
+      "trigger_coupon": null,
+      "trigger_autocall": null,
+      "annual_coupon_yield": null,
+      "effective_annual_yield": null,
+      "price": 100,
+      "last_price": 100,
+      "emission_price": 100,
+      "nominal": 1000,
+      "buffer_from_barrier": null,
+      "autocallable": true,
+      "memory_effect": false,
+      "scenario_analysis": null,
+      "scraped": true,
+      "timestamp": "2026-01-28T03:54:35.282426"
+    },
+    {
+      "isin": "XS1778816519",
+      "name": "BENCHMARK",
+      "type": "Benchmark",
+      "issuer": "Société Générale",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "underlying_name": "EURO STOXX Banks NT",
+      "underlying_category": "index",
+      "underlyings": [
+        {
+          "name": "EURO STOXX Banks NT",
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2026-01-28",
+      "maturity_date": "2028-01-28",
+      "barrier": null,
+      "barrier_down": null,
+      "barrier_type": null,
+      "coupon": null,
+      "coupon_monthly": null,
+      "trigger_coupon": null,
+      "trigger_autocall": null,
+      "annual_coupon_yield": null,
+      "effective_annual_yield": null,
+      "price": 100,
+      "last_price": 100,
+      "emission_price": 100,
+      "nominal": 1000,
+      "buffer_from_barrier": null,
+      "autocallable": true,
+      "memory_effect": false,
+      "scenario_analysis": null,
+      "scraped": true,
+      "timestamp": "2026-01-28T03:54:35.282426"
+    },
+    {
+      "isin": "XS1778816600",
+      "name": "BENCHMARK",
+      "type": "Benchmark",
+      "issuer": "Société Générale",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "underlying_name": "STOXX Europe 600 Oil & Gas NT",
+      "underlying_category": "index",
+      "underlyings": [
+        {
+          "name": "STOXX Europe 600 Oil & Gas NT",
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2026-01-28",
+      "maturity_date": "2028-01-28",
+      "barrier": null,
+      "barrier_down": null,
+      "barrier_type": null,
+      "coupon": null,
+      "coupon_monthly": null,
+      "trigger_coupon": null,
+      "trigger_autocall": null,
+      "annual_coupon_yield": null,
+      "effective_annual_yield": null,
+      "price": 100,
+      "last_price": 100,
+      "emission_price": 100,
+      "nominal": 1000,
+      "buffer_from_barrier": null,
+      "autocallable": true,
+      "memory_effect": false,
+      "scenario_analysis": null,
+      "scraped": true,
+      "timestamp": "2026-01-28T03:54:35.282426"
+    },
+    {
+      "isin": "DE000SV6JJ23",
+      "name": "BENCHMARK",
+      "type": "Benchmark",
+      "issuer": "Société Générale",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "underlying_name": "SGI European Silver Economy Net Total Return",
+      "underlying_category": "commodity",
+      "underlyings": [
+        {
+          "name": "SGI European Silver Economy Net Total Return",
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2026-01-28",
+      "maturity_date": "2028-01-28",
+      "barrier": null,
+      "barrier_down": null,
+      "barrier_type": null,
+      "coupon": null,
+      "coupon_monthly": null,
+      "trigger_coupon": null,
+      "trigger_autocall": null,
+      "annual_coupon_yield": null,
+      "effective_annual_yield": null,
+      "price": 100,
+      "last_price": 100,
+      "emission_price": 100,
+      "nominal": 1000,
+      "buffer_from_barrier": null,
+      "autocallable": false,
+      "memory_effect": false,
+      "scenario_analysis": null,
+      "scraped": true,
+      "timestamp": "2026-01-28T03:54:35.282426"
+    },
+    {
+      "isin": "DE000HB38KX9",
+      "name": "BENCHMARK",
+      "type": "Benchmark",
+      "issuer": "UniCredit",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "underlying_name": "UC European Banks",
+      "underlying_category": "currency",
+      "underlyings": [
+        {
+          "name": "UC European Banks",
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2026-01-28",
+      "maturity_date": "2028-01-28",
+      "barrier": null,
+      "barrier_down": null,
+      "barrier_type": null,
+      "coupon": null,
+      "coupon_monthly": null,
+      "trigger_coupon": null,
+      "trigger_autocall": null,
+      "annual_coupon_yield": null,
+      "effective_annual_yield": null,
+      "price": 100,
+      "last_price": 100,
+      "emission_price": 100,
+      "nominal": 1000,
+      "buffer_from_barrier": null,
+      "autocallable": true,
+      "memory_effect": false,
+      "scenario_analysis": null,
+      "scraped": true,
+      "timestamp": "2026-01-28T03:54:35.282426"
+    },
+    {
+      "isin": "XS2395007813",
+      "name": "BONUS CAP DOWNSIDE PREMIUM",
+      "type": "Bonus Cap",
+      "issuer": "Société Générale",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "underlying_name": "Euro Stoxx 50",
+      "underlying_category": "index",
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50",
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2026-01-28",
+      "maturity_date": "2026-02-23",
+      "barrier": 68.0,
+      "barrier_down": 68.0,
+      "barrier_type": "Discreta",
+      "coupon": null,
+      "coupon_monthly": null,
+      "trigger_coupon": 95.0,
+      "trigger_autocall": null,
+      "annual_coupon_yield": null,
+      "effective_annual_yield": null,
+      "price": 100,
+      "last_price": 100,
+      "emission_price": 100,
+      "nominal": 1000,
+      "buffer_from_barrier": 32.0,
+      "autocallable": true,
+      "memory_effect": true,
+      "scenario_analysis": {
+        "scenarios": [
+          {
+            "variation_pct": -50,
+            "underlying_level": 50,
+            "redemption": 50,
+            "pl": -50,
+            "pl_pct": -50.0
+          },
+          {
+            "variation_pct": -40,
+            "underlying_level": 60,
+            "redemption": 60,
+            "pl": -40,
+            "pl_pct": -40.0
+          },
+          {
+            "variation_pct": -30,
+            "underlying_level": 70,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -20,
+            "underlying_level": 80,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -10,
+            "underlying_level": 90,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 0,
+            "underlying_level": 100,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 10,
+            "underlying_level": 110,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 20,
+            "underlying_level": 120,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 30,
+            "underlying_level": 130,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 40,
+            "underlying_level": 140,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 50,
+            "underlying_level": 150,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          }
+        ],
+        "purchase_price": 100,
+        "worst_underlying": "Euro Stoxx 50"
+      },
+      "scraped": true,
+      "timestamp": "2026-01-28T03:54:35.282426"
+    },
+    {
+      "isin": "XS2458823437",
+      "name": "BONUS OUTPERFORMANCE",
+      "type": "Outperformance",
+      "issuer": "Barclays",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "underlying_name": "Basket di indici worst of",
+      "underlying_category": "index",
+      "underlyings": [
+        {
+          "name": "Basket di indici worst of",
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2026-01-28",
+      "maturity_date": "2027-02-05",
+      "barrier": 40.0,
+      "barrier_down": 40.0,
+      "barrier_type": "Discreta",
+      "coupon": null,
+      "coupon_monthly": null,
+      "trigger_coupon": null,
+      "trigger_autocall": null,
+      "annual_coupon_yield": null,
+      "effective_annual_yield": null,
+      "price": 100,
+      "last_price": 100,
+      "emission_price": 100,
+      "nominal": 1000,
+      "buffer_from_barrier": 60.0,
+      "autocallable": false,
+      "memory_effect": false,
+      "scenario_analysis": {
+        "scenarios": [
+          {
+            "variation_pct": -50,
+            "underlying_level": 50,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -40,
+            "underlying_level": 60,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -30,
+            "underlying_level": 70,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -20,
+            "underlying_level": 80,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -10,
+            "underlying_level": 90,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 0,
+            "underlying_level": 100,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 10,
+            "underlying_level": 110,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 20,
+            "underlying_level": 120,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 30,
+            "underlying_level": 130,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 40,
+            "underlying_level": 140,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 50,
+            "underlying_level": 150,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          }
+        ],
+        "purchase_price": 100,
+        "worst_underlying": "Basket di indici worst of"
+      },
+      "scraped": true,
+      "timestamp": "2026-01-28T03:54:35.282426"
+    },
+    {
+      "isin": "XS2395019669",
+      "name": "BUY ON DIPS",
+      "type": "Certificate",
+      "issuer": "Société Générale",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "underlying_name": "Euro Stoxx 50",
+      "underlying_category": "index",
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50",
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2026-01-28",
+      "maturity_date": "2026-04-14",
+      "barrier": null,
+      "barrier_down": null,
+      "barrier_type": null,
+      "coupon": null,
+      "coupon_monthly": null,
+      "trigger_coupon": null,
+      "trigger_autocall": null,
+      "annual_coupon_yield": null,
+      "effective_annual_yield": null,
+      "price": 100,
+      "last_price": 100,
+      "emission_price": 100,
+      "nominal": 1000,
+      "buffer_from_barrier": null,
+      "autocallable": false,
+      "memory_effect": false,
+      "scenario_analysis": null,
+      "scraped": true,
+      "timestamp": "2026-01-28T03:54:35.282426"
+    },
+    {
+      "isin": "XS2471548177",
+      "name": "BUY ON DIPS",
+      "type": "Certificate",
+      "issuer": "Mediobanca",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "underlying_name": "Euro Stoxx 50",
+      "underlying_category": "index",
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50",
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2026-01-28",
+      "maturity_date": "2026-06-09",
+      "barrier": null,
+      "barrier_down": null,
+      "barrier_type": null,
+      "coupon": null,
+      "coupon_monthly": null,
+      "trigger_coupon": null,
+      "trigger_autocall": null,
+      "annual_coupon_yield": null,
+      "effective_annual_yield": null,
+      "price": 100,
+      "last_price": 100,
+      "emission_price": 100,
+      "nominal": 1000,
+      "buffer_from_barrier": null,
+      "autocallable": true,
+      "memory_effect": false,
+      "scenario_analysis": null,
+      "scraped": true,
+      "timestamp": "2026-01-28T03:54:35.282426"
+    },
+    {
       "isin": "XS2451252832",
       "name": "CASH COLLECT",
-      "underlying_name": "Eurostoxx Select Dividend 30",
-      "direction": "Long",
+      "type": "Cash Collect",
       "issuer": "Mediobanca",
-      "worst_of": true,
-      "underlyings": [
-        {
-          "name": "Eurostoxx BanksEurostoxx Select Dividend 30"
-        }
-      ],
-      "bid_price": 997.8,
-      "ask_price": null,
+      "market": "SeDeX",
+      "currency": "EUR",
+      "underlying_name": "Basket di indici worst of",
       "underlying_category": "index",
-      "type": "Cash Collect"
-    },
-    {
-      "scraped": true,
-      "timestamp": "2026-01-27T21:15:43.630738",
-      "currency": "EUR",
-      "isin": "XS2395066157",
-      "name": "BUTTERFLY",
-      "underlying_name": "S&P 500",
-      "direction": "Long",
-      "issuer": "Societe Generale",
-      "worst_of": false,
       "underlyings": [
         {
-          "name": "S&P 500"
+          "name": "Basket di indici worst of",
+          "worst_of": false
         }
       ],
-      "bid_price": 984.64,
-      "ask_price": 994.64,
-      "price": 989.64,
-      "underlying_category": "index",
-      "type": "Certificate"
+      "issue_date": "2026-01-28",
+      "maturity_date": "2026-03-16",
+      "barrier": 50.0,
+      "barrier_down": 50.0,
+      "barrier_type": "Discreta",
+      "coupon": 1.28,
+      "coupon_monthly": 1.28,
+      "trigger_coupon": 75.0,
+      "trigger_autocall": null,
+      "annual_coupon_yield": 5.12,
+      "effective_annual_yield": 5.12,
+      "price": 100,
+      "last_price": 100,
+      "emission_price": 100,
+      "nominal": 1000,
+      "buffer_from_barrier": 50.0,
+      "autocallable": true,
+      "memory_effect": true,
+      "scenario_analysis": {
+        "scenarios": [
+          {
+            "variation_pct": -50,
+            "underlying_level": 50,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -40,
+            "underlying_level": 60,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -30,
+            "underlying_level": 70,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -20,
+            "underlying_level": 80,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -10,
+            "underlying_level": 90,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 0,
+            "underlying_level": 100,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 10,
+            "underlying_level": 110,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 20,
+            "underlying_level": 120,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 30,
+            "underlying_level": 130,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 40,
+            "underlying_level": 140,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 50,
+            "underlying_level": 150,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          }
+        ],
+        "purchase_price": 100,
+        "worst_underlying": "Basket di indici worst of"
+      },
+      "scraped": true,
+      "timestamp": "2026-01-28T03:54:35.282426"
     },
     {
-      "scraped": true,
-      "timestamp": "2026-01-27T21:15:43.631541",
-      "currency": "EUR",
-      "isin": "JE00BLS39T96",
-      "name": "PROTECT OUTPERFORMANCE",
-      "underlying_name": "Euro Stoxx 50",
-      "direction": "Long",
-      "issuer": "Goldman Sachs",
-      "worst_of": false,
-      "underlyings": [
-        {
-          "name": "Euro Stoxx 50"
-        }
-      ],
-      "bid_price": 1770.95,
-      "ask_price": 1785.95,
-      "price": 1778.45,
-      "underlying_category": "index",
-      "type": "Certificate"
-    },
-    {
-      "scraped": true,
-      "timestamp": "2026-01-27T21:15:49.288543",
-      "currency": "EUR",
-      "isin": "XS2115185295",
-      "name": "PHOENIX",
-      "underlying_name": "Eurostoxx Select Dividend 30",
-      "direction": "Long",
-      "issuer": "Intesa Sanpaolo",
-      "worst_of": true,
-      "underlyings": [
-        {
-          "name": "Eurostoxx Select Dividend 30FTSE Mib"
-        }
-      ],
-      "bid_price": 999.0,
-      "ask_price": null,
-      "underlying_category": "index",
-      "type": "Certificate"
-    },
-    {
-      "scraped": true,
-      "timestamp": "2026-01-27T21:15:49.288649",
-      "currency": "EUR",
-      "isin": "XS2591006668",
-      "name": "FIXED CASH COLLECT",
-      "underlying_name": "Stoxx Europe 600 Basic Resources",
-      "direction": "Long",
-      "issuer": "Intesa Sanpaolo",
-      "worst_of": false,
-      "underlyings": [
-        {
-          "name": "Stoxx Europe 600 Basic Resources"
-        }
-      ],
-      "bid_price": 1047.25,
-      "ask_price": 1053.5,
-      "price": 1050.375,
-      "underlying_category": "index",
-      "type": "Cash Collect"
-    },
-    {
-      "scraped": true,
-      "timestamp": "2026-01-27T21:15:49.288864",
-      "currency": "EUR",
-      "isin": "XS2445143162",
-      "name": "BONUS CAP PLUS",
-      "underlying_name": "Euro Stoxx 50",
-      "direction": "Long",
-      "issuer": "Intesa Sanpaolo",
-      "worst_of": false,
-      "underlyings": [
-        {
-          "name": "Euro Stoxx 50"
-        }
-      ],
-      "bid_price": 1024.73,
-      "ask_price": 1028.0,
-      "price": 1026.365,
-      "underlying_category": "index",
-      "type": "Certificate"
-    },
-    {
-      "scraped": true,
-      "timestamp": "2026-01-27T21:15:54.961300",
-      "currency": "EUR",
-      "isin": "DE000UH91YK6",
-      "name": "PROTECT OUTPERFORMANCE CAP",
-      "underlying_name": "S&P 500",
-      "direction": "Long",
-      "issuer": "Ubs",
-      "worst_of": false,
-      "underlyings": [
-        {
-          "name": "S&P 500"
-        }
-      ],
-      "bid_price": 1601.69,
-      "ask_price": null,
-      "underlying_category": "index",
-      "type": "Certificate"
-    },
-    {
-      "scraped": true,
-      "timestamp": "2026-01-27T21:16:00.631244",
-      "currency": "EUR",
-      "isin": "CH1423928048",
-      "name": "FIXED COUPON CONVERTIBLE",
-      "underlying_name": "0% Bundesrepublik Deutschland",
-      "direction": "Long",
-      "issuer": "Leonteq Securities",
-      "worst_of": false,
-      "underlyings": [
-        {
-          "name": "0% Bundesrepublik Deutschland"
-        }
-      ],
-      "bid_price": 872.62,
-      "ask_price": 887.62,
-      "price": 880.12,
-      "underlying_category": "rate",
-      "type": "Certificate"
-    },
-    {
-      "scraped": true,
-      "timestamp": "2026-01-27T21:16:11.957088",
-      "currency": "EUR",
-      "isin": "XS2601915783",
-      "name": "BONUS PLUS",
-      "underlying_name": "Stoxx Europe 600 Auto&Parts",
-      "direction": "Long",
-      "issuer": "Intesa Sanpaolo",
-      "worst_of": false,
-      "underlyings": [
-        {
-          "name": "Stoxx Europe 600 Auto&Parts"
-        }
-      ],
-      "bid_price": 1037.91,
-      "ask_price": 1046.9,
-      "price": 1042.4050000000002,
-      "underlying_category": "index",
-      "type": "Bonus Plus"
-    },
-    {
-      "scraped": true,
-      "timestamp": "2026-01-27T21:16:11.958952",
-      "currency": "EUR",
-      "isin": "XS2459148651",
-      "name": "BONUS PLUS",
-      "underlying_name": "Eurostoxx Select Dividend 30",
-      "direction": "Long",
-      "issuer": "Intesa Sanpaolo",
-      "worst_of": false,
-      "underlyings": [
-        {
-          "name": "Eurostoxx Select Dividend 30"
-        }
-      ],
-      "bid_price": 1023.31,
-      "ask_price": 1026.4,
-      "price": 1024.855,
-      "underlying_category": "index",
-      "type": "Bonus Plus"
-    },
-    {
-      "scraped": true,
-      "timestamp": "2026-01-27T21:16:11.959057",
-      "currency": "EUR",
-      "isin": "XS2459309337",
-      "name": "BONUS PLUS",
-      "underlying_name": "S&P 500",
-      "direction": "Long",
-      "issuer": "Intesa Sanpaolo",
-      "worst_of": false,
-      "underlyings": [
-        {
-          "name": "S&P 500"
-        }
-      ],
-      "bid_price": 1019.4,
-      "ask_price": 1022.99,
-      "price": 1021.1949999999999,
-      "underlying_category": "index",
-      "type": "Bonus Plus"
-    },
-    {
-      "scraped": true,
-      "timestamp": "2026-01-27T21:16:11.959275",
-      "currency": "EUR",
       "isin": "XS2129431859",
       "name": "CASH COLLECT",
-      "underlying_name": "Eurostoxx Select Dividend 30",
-      "direction": "Long",
+      "type": "Cash Collect",
       "issuer": "Mediobanca",
-      "worst_of": true,
+      "market": "SeDeX",
+      "currency": "EUR",
+      "underlying_name": "Basket di indici worst of",
+      "underlying_category": "index",
       "underlyings": [
         {
-          "name": "Eurostoxx Select Dividend 30FTSE Mib"
+          "name": "Basket di indici worst of",
+          "worst_of": false
         }
       ],
-      "bid_price": 987.36,
-      "ask_price": null,
-      "underlying_category": "index",
-      "type": "Cash Collect"
+      "issue_date": "2026-01-28",
+      "maturity_date": "2026-04-30",
+      "barrier": 50.0,
+      "barrier_down": 50.0,
+      "barrier_type": "Discreta",
+      "coupon": 0.8,
+      "coupon_monthly": 0.8,
+      "trigger_coupon": 75.0,
+      "trigger_autocall": null,
+      "annual_coupon_yield": 3.2,
+      "effective_annual_yield": 3.2,
+      "price": 100,
+      "last_price": 100,
+      "emission_price": 100,
+      "nominal": 1000,
+      "buffer_from_barrier": 50.0,
+      "autocallable": true,
+      "memory_effect": true,
+      "scenario_analysis": {
+        "scenarios": [
+          {
+            "variation_pct": -50,
+            "underlying_level": 50,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -40,
+            "underlying_level": 60,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -30,
+            "underlying_level": 70,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -20,
+            "underlying_level": 80,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -10,
+            "underlying_level": 90,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 0,
+            "underlying_level": 100,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 10,
+            "underlying_level": 110,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 20,
+            "underlying_level": 120,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 30,
+            "underlying_level": 130,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 40,
+            "underlying_level": 140,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 50,
+            "underlying_level": 150,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          }
+        ],
+        "purchase_price": 100,
+        "worst_underlying": "Basket di indici worst of"
+      },
+      "scraped": true,
+      "timestamp": "2026-01-28T03:54:35.282426"
     },
     {
-      "scraped": true,
-      "timestamp": "2026-01-27T21:16:17.662123",
-      "currency": "EUR",
-      "isin": "XS2740841387",
-      "name": "TWIN WIN AUTOCALLABLE",
-      "underlying_name": "Stoxx Europe 600 Auto&Parts",
-      "direction": "Long",
-      "issuer": "Bnp Paribas",
-      "worst_of": false,
-      "underlyings": [
-        {
-          "name": "Stoxx Europe 600 Auto&Parts"
-        }
-      ],
-      "bid_price": 955.41,
-      "ask_price": 965.41,
-      "price": 960.41,
-      "underlying_category": "index",
-      "type": "Certificate"
-    },
-    {
-      "scraped": true,
-      "timestamp": "2026-01-27T21:16:17.662240",
-      "currency": "EUR",
-      "isin": "CH1107638459",
-      "name": "PROTECT OUTPERFORMANCE",
-      "underlying_name": "Msci Europe ESG Leaders 5% decrement",
-      "direction": "Long",
-      "issuer": "Leonteq Securities",
-      "worst_of": false,
-      "underlyings": [
-        {
-          "name": "Msci Europe ESG Leaders 5% decrement"
-        }
-      ],
-      "bid_price": 1561.04,
-      "ask_price": 1571.04,
-      "price": 1566.04,
-      "underlying_category": "index",
-      "type": "Certificate"
-    },
-    {
-      "scraped": true,
-      "timestamp": "2026-01-27T21:16:17.663873",
-      "currency": "EUR",
-      "isin": "IT0005592917",
-      "name": "FIXED CASH COLLECT",
-      "underlying_name": "Euro Stoxx 50",
-      "direction": "Long",
+      "isin": "XS2324751374",
+      "name": "CASH COLLECT",
+      "type": "Cash Collect",
       "issuer": "Mediobanca",
-      "worst_of": true,
-      "underlyings": [
-        {
-          "name": "Euro Stoxx 50Eurostoxx Banks"
-        }
-      ],
-      "bid_price": 1035.84,
-      "ask_price": null,
+      "market": "SeDeX",
+      "currency": "EUR",
+      "underlying_name": "Basket di indici worst of",
       "underlying_category": "index",
-      "type": "Cash Collect"
-    },
-    {
-      "scraped": true,
-      "timestamp": "2026-01-27T21:16:23.327103",
-      "currency": "EUR",
-      "isin": "DE000UM4M7P2",
-      "name": "PHOENIX MEMORY",
-      "underlying_name": "WTI Crude Future generic 1st",
-      "direction": "Long",
-      "issuer": "Ubs",
-      "worst_of": false,
       "underlyings": [
         {
-          "name": "WTI Crude Future generic 1st"
+          "name": "Basket di indici worst of",
+          "worst_of": false
         }
       ],
-      "bid_price": 983.5,
-      "ask_price": 987.5,
-      "price": 985.5,
-      "underlying_category": "commodity",
-      "type": "Phoenix Memory"
+      "issue_date": "2026-01-28",
+      "maturity_date": "2027-04-13",
+      "barrier": 50.0,
+      "barrier_down": 50.0,
+      "barrier_type": "Discreta",
+      "coupon": 1.2,
+      "coupon_monthly": 1.2,
+      "trigger_coupon": 75.0,
+      "trigger_autocall": null,
+      "annual_coupon_yield": 4.8,
+      "effective_annual_yield": 4.8,
+      "price": 100,
+      "last_price": 100,
+      "emission_price": 100,
+      "nominal": 1000,
+      "buffer_from_barrier": 50.0,
+      "autocallable": true,
+      "memory_effect": true,
+      "scenario_analysis": {
+        "scenarios": [
+          {
+            "variation_pct": -50,
+            "underlying_level": 50,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -40,
+            "underlying_level": 60,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -30,
+            "underlying_level": 70,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -20,
+            "underlying_level": 80,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -10,
+            "underlying_level": 90,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 0,
+            "underlying_level": 100,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 10,
+            "underlying_level": 110,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 20,
+            "underlying_level": 120,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 30,
+            "underlying_level": 130,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 40,
+            "underlying_level": 140,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 50,
+            "underlying_level": 150,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          }
+        ],
+        "purchase_price": 100,
+        "worst_underlying": "Basket di indici worst of"
+      },
+      "scraped": true,
+      "timestamp": "2026-01-28T03:54:35.282426"
     },
     {
-      "scraped": true,
-      "timestamp": "2026-01-27T21:16:23.327967",
+      "isin": "XS2362981917",
+      "name": "CASH COLLECT",
+      "type": "Cash Collect",
+      "issuer": "Mediobanca",
+      "market": "SeDeX",
       "currency": "EUR",
-      "isin": "FREXA0010597",
-      "name": "CRESCENDO RENDIMENTO TEMPO",
-      "underlying_name": "Euro Stoxx 50",
-      "direction": "Long",
-      "issuer": "Exane Finance",
-      "worst_of": true,
-      "underlyings": [
-        {
-          "name": "Euro Stoxx 50S&P 500"
-        }
-      ],
-      "bid_price": 1005.12,
-      "ask_price": null,
+      "underlying_name": "Basket di indici worst of",
       "underlying_category": "index",
-      "type": "Certificate"
-    },
-    {
-      "scraped": true,
-      "timestamp": "2026-01-27T21:16:23.328193",
-      "currency": "EUR",
-      "isin": "XS2340854251",
-      "name": "TRACKER",
-      "underlying_name": "Cirdan Commodity Volatility",
-      "direction": "Long",
-      "issuer": "SmartETN",
-      "worst_of": true,
       "underlyings": [
         {
-          "name": "Cirdan Commodity Volatility"
+          "name": "Basket di indici worst of",
+          "worst_of": false
         }
       ],
-      "bid_price": 988.2,
-      "ask_price": null,
-      "underlying_category": "commodity",
-      "type": "Certificate"
+      "issue_date": "2026-01-28",
+      "maturity_date": "2027-07-30",
+      "barrier": 50.0,
+      "barrier_down": 50.0,
+      "barrier_type": "Discreta",
+      "coupon": 1.23,
+      "coupon_monthly": 1.23,
+      "trigger_coupon": 75.0,
+      "trigger_autocall": null,
+      "annual_coupon_yield": 4.92,
+      "effective_annual_yield": 4.92,
+      "price": 100,
+      "last_price": 100,
+      "emission_price": 100,
+      "nominal": 1000,
+      "buffer_from_barrier": 50.0,
+      "autocallable": true,
+      "memory_effect": true,
+      "scenario_analysis": {
+        "scenarios": [
+          {
+            "variation_pct": -50,
+            "underlying_level": 50,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -40,
+            "underlying_level": 60,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -30,
+            "underlying_level": 70,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -20,
+            "underlying_level": 80,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -10,
+            "underlying_level": 90,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 0,
+            "underlying_level": 100,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 10,
+            "underlying_level": 110,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 20,
+            "underlying_level": 120,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 30,
+            "underlying_level": 130,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 40,
+            "underlying_level": 140,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 50,
+            "underlying_level": 150,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          }
+        ],
+        "purchase_price": 100,
+        "worst_underlying": "Basket di indici worst of"
+      },
+      "scraped": true,
+      "timestamp": "2026-01-28T03:54:35.282426"
     },
     {
-      "scraped": true,
-      "timestamp": "2026-01-27T21:16:23.328553",
+      "isin": "XS1741959602",
+      "name": "CASH COLLECT",
+      "type": "Cash Collect",
+      "issuer": "BNP Paribas",
+      "market": "SeDeX",
       "currency": "EUR",
-      "isin": "XS2759241727",
+      "underlying_name": "Basket di indici worst of",
+      "underlying_category": "index",
+      "underlyings": [
+        {
+          "name": "Basket di indici worst of",
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2026-01-28",
+      "maturity_date": "2028-04-17",
+      "barrier": 50.0,
+      "barrier_down": 50.0,
+      "barrier_type": "Discreta",
+      "coupon": 1.42,
+      "coupon_monthly": 1.42,
+      "trigger_coupon": 75.0,
+      "trigger_autocall": null,
+      "annual_coupon_yield": 5.68,
+      "effective_annual_yield": 5.68,
+      "price": 100,
+      "last_price": 100,
+      "emission_price": 100,
+      "nominal": 1000,
+      "buffer_from_barrier": 50.0,
+      "autocallable": true,
+      "memory_effect": true,
+      "scenario_analysis": {
+        "scenarios": [
+          {
+            "variation_pct": -50,
+            "underlying_level": 50,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -40,
+            "underlying_level": 60,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -30,
+            "underlying_level": 70,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -20,
+            "underlying_level": 80,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -10,
+            "underlying_level": 90,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 0,
+            "underlying_level": 100,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 10,
+            "underlying_level": 110,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 20,
+            "underlying_level": 120,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 30,
+            "underlying_level": 130,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 40,
+            "underlying_level": 140,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 50,
+            "underlying_level": 150,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          }
+        ],
+        "purchase_price": 100,
+        "worst_underlying": "Basket di indici worst of"
+      },
+      "scraped": true,
+      "timestamp": "2026-01-28T03:54:35.282426"
+    },
+    {
+      "isin": "IT0005639783",
+      "name": "CASH COLLECT",
+      "type": "Cash Collect",
+      "issuer": "Intesa Sanpaolo",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "underlying_name": "Basket di indici worst of",
+      "underlying_category": "index",
+      "underlyings": [
+        {
+          "name": "Basket di indici worst of",
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2026-01-28",
+      "maturity_date": "2026-03-12",
+      "barrier": 70.0,
+      "barrier_down": 70.0,
+      "barrier_type": "Discreta",
+      "coupon": null,
+      "coupon_monthly": null,
+      "trigger_coupon": null,
+      "trigger_autocall": null,
+      "annual_coupon_yield": null,
+      "effective_annual_yield": null,
+      "price": 100,
+      "last_price": 100,
+      "emission_price": 100,
+      "nominal": 1000,
+      "buffer_from_barrier": 30.0,
+      "autocallable": false,
+      "memory_effect": false,
+      "scenario_analysis": {
+        "scenarios": [
+          {
+            "variation_pct": -50,
+            "underlying_level": 50,
+            "redemption": 50,
+            "pl": -50,
+            "pl_pct": -50.0
+          },
+          {
+            "variation_pct": -40,
+            "underlying_level": 60,
+            "redemption": 60,
+            "pl": -40,
+            "pl_pct": -40.0
+          },
+          {
+            "variation_pct": -30,
+            "underlying_level": 70,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -20,
+            "underlying_level": 80,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -10,
+            "underlying_level": 90,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 0,
+            "underlying_level": 100,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 10,
+            "underlying_level": 110,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 20,
+            "underlying_level": 120,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 30,
+            "underlying_level": 130,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 40,
+            "underlying_level": 140,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 50,
+            "underlying_level": 150,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          }
+        ],
+        "purchase_price": 100,
+        "worst_underlying": "Basket di indici worst of"
+      },
+      "scraped": true,
+      "timestamp": "2026-01-28T03:54:35.282426"
+    },
+    {
+      "isin": "IT0005635773",
       "name": "CASH COLLECT MEMORY",
-      "underlying_name": "Brent Crude Generic 1st",
-      "direction": "Long",
-      "issuer": "Bnp Paribas",
-      "worst_of": false,
-      "underlyings": [
-        {
-          "name": "Brent Crude Generic 1st"
-        }
-      ],
-      "bid_price": 99.05,
-      "ask_price": 99.8,
-      "price": 99.425,
-      "underlying_category": "commodity",
-      "type": "Cash Collect"
-    },
-    {
-      "scraped": true,
-      "timestamp": "2026-01-27T21:16:23.329482",
+      "type": "Cash Collect Memory",
+      "issuer": "UniCredit",
+      "market": "SeDeX",
       "currency": "EUR",
-      "isin": "DE000UM4RS78",
-      "name": "PHOENIX MEMORY",
-      "underlying_name": "WTI Crude Future generic 1st",
-      "direction": "Long",
-      "issuer": "Ubs",
-      "worst_of": false,
-      "underlyings": [
-        {
-          "name": "WTI Crude Future generic 1st"
-        }
-      ],
-      "bid_price": 1015.77,
-      "ask_price": 1025.77,
-      "price": 1020.77,
-      "underlying_category": "commodity",
-      "type": "Phoenix Memory"
-    },
-    {
-      "scraped": true,
-      "timestamp": "2026-01-27T21:16:23.329594",
-      "currency": "EUR",
-      "isin": "XS2757882282",
-      "name": "FIXED CASH COLLECT",
-      "underlying_name": "Euro Stoxx 50",
-      "direction": "Long",
-      "issuer": "Bnp Paribas",
-      "worst_of": true,
-      "underlyings": [
-        {
-          "name": "Euro Stoxx 50Eurostoxx Banks"
-        }
-      ],
-      "bid_price": 1029.42,
-      "ask_price": null,
+      "underlying_name": "Basket di indici worst of",
       "underlying_category": "index",
-      "type": "Cash Collect"
-    },
-    {
-      "scraped": true,
-      "timestamp": "2026-01-27T21:16:28.982177",
-      "currency": "EUR",
-      "isin": "CH1349977921",
-      "name": "PHOENIX MEMORY SOFTCALLABLE",
-      "underlying_name": "WTI Crude Future generic 1st",
-      "direction": "Long",
-      "issuer": "Leonteq Securities",
-      "worst_of": true,
       "underlyings": [
         {
-          "name": "SPDR GOLD TRUSTWTI Crude Future generic 1st"
+          "name": "Basket di indici worst of",
+          "worst_of": false
         }
       ],
-      "bid_price": 957.9,
-      "ask_price": null,
-      "underlying_category": "commodity",
-      "type": "Phoenix Memory"
+      "issue_date": "2026-01-28",
+      "maturity_date": "2029-07-30",
+      "barrier": 40.0,
+      "barrier_down": 40.0,
+      "barrier_type": "Discreta",
+      "coupon": 1.05,
+      "coupon_monthly": 1.05,
+      "trigger_coupon": 70.0,
+      "trigger_autocall": null,
+      "annual_coupon_yield": 4.2,
+      "effective_annual_yield": 4.2,
+      "price": 100,
+      "last_price": 100,
+      "emission_price": 100,
+      "nominal": 1000,
+      "buffer_from_barrier": 60.0,
+      "autocallable": true,
+      "memory_effect": true,
+      "scenario_analysis": {
+        "scenarios": [
+          {
+            "variation_pct": -50,
+            "underlying_level": 50,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -40,
+            "underlying_level": 60,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -30,
+            "underlying_level": 70,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -20,
+            "underlying_level": 80,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -10,
+            "underlying_level": 90,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 0,
+            "underlying_level": 100,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 10,
+            "underlying_level": 110,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 20,
+            "underlying_level": 120,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 30,
+            "underlying_level": 130,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 40,
+            "underlying_level": 140,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 50,
+            "underlying_level": 150,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          }
+        ],
+        "purchase_price": 100,
+        "worst_underlying": "Basket di indici worst of"
+      },
+      "scraped": true,
+      "timestamp": "2026-01-28T03:54:35.282426"
     },
     {
-      "scraped": true,
-      "timestamp": "2026-01-27T21:16:28.982920",
+      "isin": "DE000UN09TS9",
+      "name": "CASH COLLECT MEMORY",
+      "type": "Cash Collect Memory",
+      "issuer": "UniCredit",
+      "market": "SeDeX",
       "currency": "EUR",
-      "isin": "DE000VC88P33",
-      "name": "CASH COLLECT MEMORY STEP DOWN",
-      "underlying_name": "Strategy",
-      "direction": "Long",
+      "underlying_name": "Basket di indici worst of",
+      "underlying_category": "index",
+      "underlyings": [
+        {
+          "name": "Basket di indici worst of",
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2026-01-28",
+      "maturity_date": "2028-10-17",
+      "barrier": 55.0,
+      "barrier_down": 55.0,
+      "barrier_type": "Discreta",
+      "coupon": 1.45,
+      "coupon_monthly": 1.45,
+      "trigger_coupon": 55.0,
+      "trigger_autocall": null,
+      "annual_coupon_yield": 5.8,
+      "effective_annual_yield": 5.8,
+      "price": 100,
+      "last_price": 100,
+      "emission_price": 100,
+      "nominal": 1000,
+      "buffer_from_barrier": 45.0,
+      "autocallable": true,
+      "memory_effect": true,
+      "scenario_analysis": {
+        "scenarios": [
+          {
+            "variation_pct": -50,
+            "underlying_level": 50,
+            "redemption": 50,
+            "pl": -50,
+            "pl_pct": -50.0
+          },
+          {
+            "variation_pct": -40,
+            "underlying_level": 60,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -30,
+            "underlying_level": 70,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -20,
+            "underlying_level": 80,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -10,
+            "underlying_level": 90,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 0,
+            "underlying_level": 100,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 10,
+            "underlying_level": 110,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 20,
+            "underlying_level": 120,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 30,
+            "underlying_level": 130,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 40,
+            "underlying_level": 140,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 50,
+            "underlying_level": 150,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          }
+        ],
+        "purchase_price": 100,
+        "worst_underlying": "Basket di indici worst of"
+      },
+      "scraped": true,
+      "timestamp": "2026-01-28T03:54:35.282426"
+    },
+    {
+      "isin": "IT0005668337",
+      "name": "CASH COLLECT MEMORY",
+      "type": "Cash Collect Memory",
+      "issuer": "UniCredit",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "underlying_name": "Basket di indici worst of",
+      "underlying_category": "index",
+      "underlyings": [
+        {
+          "name": "Basket di indici worst of",
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2026-01-28",
+      "maturity_date": "2028-10-23",
+      "barrier": 60.0,
+      "barrier_down": 60.0,
+      "barrier_type": "Discreta",
+      "coupon": 0.69,
+      "coupon_monthly": 0.69,
+      "trigger_coupon": null,
+      "trigger_autocall": null,
+      "annual_coupon_yield": 2.76,
+      "effective_annual_yield": 2.76,
+      "price": 100,
+      "last_price": 100,
+      "emission_price": 100,
+      "nominal": 1000,
+      "buffer_from_barrier": 40.0,
+      "autocallable": true,
+      "memory_effect": true,
+      "scenario_analysis": {
+        "scenarios": [
+          {
+            "variation_pct": -50,
+            "underlying_level": 50,
+            "redemption": 50,
+            "pl": -50,
+            "pl_pct": -50.0
+          },
+          {
+            "variation_pct": -40,
+            "underlying_level": 60,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -30,
+            "underlying_level": 70,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -20,
+            "underlying_level": 80,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -10,
+            "underlying_level": 90,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 0,
+            "underlying_level": 100,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 10,
+            "underlying_level": 110,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 20,
+            "underlying_level": 120,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 30,
+            "underlying_level": 130,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 40,
+            "underlying_level": 140,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 50,
+            "underlying_level": 150,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          }
+        ],
+        "purchase_price": 100,
+        "worst_underlying": "Basket di indici worst of"
+      },
+      "scraped": true,
+      "timestamp": "2026-01-28T03:54:35.282426"
+    },
+    {
+      "isin": "DE000UG87FQ2",
+      "name": "CASH COLLECT MEMORY",
+      "type": "Cash Collect Memory",
+      "issuer": "UniCredit",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "underlying_name": "Basket di indici worst of",
+      "underlying_category": "index",
+      "underlyings": [
+        {
+          "name": "Basket di indici worst of",
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2026-01-28",
+      "maturity_date": "2029-08-20",
+      "barrier": 60.0,
+      "barrier_down": 60.0,
+      "barrier_type": "Discreta",
+      "coupon": 0.6,
+      "coupon_monthly": 0.6,
+      "trigger_coupon": 60.0,
+      "trigger_autocall": null,
+      "annual_coupon_yield": 2.4,
+      "effective_annual_yield": 2.4,
+      "price": 100,
+      "last_price": 100,
+      "emission_price": 100,
+      "nominal": 1000,
+      "buffer_from_barrier": 40.0,
+      "autocallable": true,
+      "memory_effect": true,
+      "scenario_analysis": {
+        "scenarios": [
+          {
+            "variation_pct": -50,
+            "underlying_level": 50,
+            "redemption": 50,
+            "pl": -50,
+            "pl_pct": -50.0
+          },
+          {
+            "variation_pct": -40,
+            "underlying_level": 60,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -30,
+            "underlying_level": 70,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -20,
+            "underlying_level": 80,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -10,
+            "underlying_level": 90,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 0,
+            "underlying_level": 100,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 10,
+            "underlying_level": 110,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 20,
+            "underlying_level": 120,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 30,
+            "underlying_level": 130,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 40,
+            "underlying_level": 140,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 50,
+            "underlying_level": 150,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          }
+        ],
+        "purchase_price": 100,
+        "worst_underlying": "Basket di indici worst of"
+      },
+      "scraped": true,
+      "timestamp": "2026-01-28T03:54:35.282426"
+    },
+    {
+      "isin": "NLBNPIT1R338",
+      "name": "CASH COLLECT MEMORY",
+      "type": "Cash Collect Memory",
+      "issuer": "BNP Paribas",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "underlying_name": "Basket di indici worst of",
+      "underlying_category": "index",
+      "underlyings": [
+        {
+          "name": "Basket di indici worst of",
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2026-01-28",
+      "maturity_date": "2027-06-25",
+      "barrier": 70.0,
+      "barrier_down": 70.0,
+      "barrier_type": "Discreta",
+      "coupon": 1.65,
+      "coupon_monthly": 1.65,
+      "trigger_coupon": 70.0,
+      "trigger_autocall": null,
+      "annual_coupon_yield": 6.6,
+      "effective_annual_yield": 6.6,
+      "price": 100,
+      "last_price": 100,
+      "emission_price": 100,
+      "nominal": 1000,
+      "buffer_from_barrier": 30.0,
+      "autocallable": true,
+      "memory_effect": true,
+      "scenario_analysis": {
+        "scenarios": [
+          {
+            "variation_pct": -50,
+            "underlying_level": 50,
+            "redemption": 50,
+            "pl": -50,
+            "pl_pct": -50.0
+          },
+          {
+            "variation_pct": -40,
+            "underlying_level": 60,
+            "redemption": 60,
+            "pl": -40,
+            "pl_pct": -40.0
+          },
+          {
+            "variation_pct": -30,
+            "underlying_level": 70,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -20,
+            "underlying_level": 80,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -10,
+            "underlying_level": 90,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 0,
+            "underlying_level": 100,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 10,
+            "underlying_level": 110,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 20,
+            "underlying_level": 120,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 30,
+            "underlying_level": 130,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 40,
+            "underlying_level": 140,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 50,
+            "underlying_level": 150,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          }
+        ],
+        "purchase_price": 100,
+        "worst_underlying": "Basket di indici worst of"
+      },
+      "scraped": true,
+      "timestamp": "2026-01-28T03:54:35.282426"
+    },
+    {
+      "isin": "NLBNPIT1R346",
+      "name": "CASH COLLECT MEMORY",
+      "type": "Cash Collect Memory",
+      "issuer": "BNP Paribas",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "underlying_name": "Basket di indici worst of",
+      "underlying_category": "index",
+      "underlyings": [
+        {
+          "name": "Basket di indici worst of",
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2026-01-28",
+      "maturity_date": "2027-06-25",
+      "barrier": 65.0,
+      "barrier_down": 65.0,
+      "barrier_type": "Discreta",
+      "coupon": 2.0,
+      "coupon_monthly": 2.0,
+      "trigger_coupon": 65.0,
+      "trigger_autocall": null,
+      "annual_coupon_yield": 8.0,
+      "effective_annual_yield": 8.0,
+      "price": 100,
+      "last_price": 100,
+      "emission_price": 100,
+      "nominal": 1000,
+      "buffer_from_barrier": 35.0,
+      "autocallable": true,
+      "memory_effect": true,
+      "scenario_analysis": {
+        "scenarios": [
+          {
+            "variation_pct": -50,
+            "underlying_level": 50,
+            "redemption": 50,
+            "pl": -50,
+            "pl_pct": -50.0
+          },
+          {
+            "variation_pct": -40,
+            "underlying_level": 60,
+            "redemption": 60,
+            "pl": -40,
+            "pl_pct": -40.0
+          },
+          {
+            "variation_pct": -30,
+            "underlying_level": 70,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -20,
+            "underlying_level": 80,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -10,
+            "underlying_level": 90,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 0,
+            "underlying_level": 100,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 10,
+            "underlying_level": 110,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 20,
+            "underlying_level": 120,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 30,
+            "underlying_level": 130,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 40,
+            "underlying_level": 140,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 50,
+            "underlying_level": 150,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          }
+        ],
+        "purchase_price": 100,
+        "worst_underlying": "Basket di indici worst of"
+      },
+      "scraped": true,
+      "timestamp": "2026-01-28T03:54:35.282426"
+    },
+    {
+      "isin": "NLBNPIT1R353",
+      "name": "CASH COLLECT MEMORY",
+      "type": "Cash Collect Memory",
+      "issuer": "BNP Paribas",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "underlying_name": "Basket di indici worst of",
+      "underlying_category": "index",
+      "underlyings": [
+        {
+          "name": "Basket di indici worst of",
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2026-01-28",
+      "maturity_date": "2027-06-25",
+      "barrier": 65.0,
+      "barrier_down": 65.0,
+      "barrier_type": "Discreta",
+      "coupon": 1.7,
+      "coupon_monthly": 1.7,
+      "trigger_coupon": 65.0,
+      "trigger_autocall": null,
+      "annual_coupon_yield": 6.8,
+      "effective_annual_yield": 6.8,
+      "price": 100,
+      "last_price": 100,
+      "emission_price": 100,
+      "nominal": 1000,
+      "buffer_from_barrier": 35.0,
+      "autocallable": true,
+      "memory_effect": true,
+      "scenario_analysis": {
+        "scenarios": [
+          {
+            "variation_pct": -50,
+            "underlying_level": 50,
+            "redemption": 50,
+            "pl": -50,
+            "pl_pct": -50.0
+          },
+          {
+            "variation_pct": -40,
+            "underlying_level": 60,
+            "redemption": 60,
+            "pl": -40,
+            "pl_pct": -40.0
+          },
+          {
+            "variation_pct": -30,
+            "underlying_level": 70,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -20,
+            "underlying_level": 80,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -10,
+            "underlying_level": 90,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 0,
+            "underlying_level": 100,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 10,
+            "underlying_level": 110,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 20,
+            "underlying_level": 120,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 30,
+            "underlying_level": 130,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 40,
+            "underlying_level": 140,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 50,
+            "underlying_level": 150,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          }
+        ],
+        "purchase_price": 100,
+        "worst_underlying": "Basket di indici worst of"
+      },
+      "scraped": true,
+      "timestamp": "2026-01-28T03:54:35.282426"
+    },
+    {
+      "isin": "NLBNPIT1R361",
+      "name": "CASH COLLECT MEMORY",
+      "type": "Cash Collect Memory",
+      "issuer": "BNP Paribas",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "underlying_name": "Basket di indici worst of",
+      "underlying_category": "index",
+      "underlyings": [
+        {
+          "name": "Basket di indici worst of",
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2026-01-28",
+      "maturity_date": "2027-06-25",
+      "barrier": 70.0,
+      "barrier_down": 70.0,
+      "barrier_type": "Discreta",
+      "coupon": 1.55,
+      "coupon_monthly": 1.55,
+      "trigger_coupon": 70.0,
+      "trigger_autocall": null,
+      "annual_coupon_yield": 6.2,
+      "effective_annual_yield": 6.2,
+      "price": 100,
+      "last_price": 100,
+      "emission_price": 100,
+      "nominal": 1000,
+      "buffer_from_barrier": 30.0,
+      "autocallable": true,
+      "memory_effect": true,
+      "scenario_analysis": {
+        "scenarios": [
+          {
+            "variation_pct": -50,
+            "underlying_level": 50,
+            "redemption": 50,
+            "pl": -50,
+            "pl_pct": -50.0
+          },
+          {
+            "variation_pct": -40,
+            "underlying_level": 60,
+            "redemption": 60,
+            "pl": -40,
+            "pl_pct": -40.0
+          },
+          {
+            "variation_pct": -30,
+            "underlying_level": 70,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -20,
+            "underlying_level": 80,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -10,
+            "underlying_level": 90,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 0,
+            "underlying_level": 100,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 10,
+            "underlying_level": 110,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 20,
+            "underlying_level": 120,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 30,
+            "underlying_level": 130,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 40,
+            "underlying_level": 140,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 50,
+            "underlying_level": 150,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          }
+        ],
+        "purchase_price": 100,
+        "worst_underlying": "Basket di indici worst of"
+      },
+      "scraped": true,
+      "timestamp": "2026-01-28T03:54:35.282426"
+    },
+    {
+      "isin": "NLBNPIT1R395",
+      "name": "CASH COLLECT MEMORY",
+      "type": "Cash Collect Memory",
+      "issuer": "BNP Paribas",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "underlying_name": "Basket di indici worst of",
+      "underlying_category": "index",
+      "underlyings": [
+        {
+          "name": "Basket di indici worst of",
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2026-01-28",
+      "maturity_date": "2027-06-25",
+      "barrier": 60.0,
+      "barrier_down": 60.0,
+      "barrier_type": "Discreta",
+      "coupon": 1.85,
+      "coupon_monthly": 1.85,
+      "trigger_coupon": 60.0,
+      "trigger_autocall": null,
+      "annual_coupon_yield": 7.4,
+      "effective_annual_yield": 7.4,
+      "price": 100,
+      "last_price": 100,
+      "emission_price": 100,
+      "nominal": 1000,
+      "buffer_from_barrier": 40.0,
+      "autocallable": true,
+      "memory_effect": true,
+      "scenario_analysis": {
+        "scenarios": [
+          {
+            "variation_pct": -50,
+            "underlying_level": 50,
+            "redemption": 50,
+            "pl": -50,
+            "pl_pct": -50.0
+          },
+          {
+            "variation_pct": -40,
+            "underlying_level": 60,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -30,
+            "underlying_level": 70,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -20,
+            "underlying_level": 80,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -10,
+            "underlying_level": 90,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 0,
+            "underlying_level": 100,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 10,
+            "underlying_level": 110,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 20,
+            "underlying_level": 120,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 30,
+            "underlying_level": 130,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 40,
+            "underlying_level": 140,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 50,
+            "underlying_level": 150,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          }
+        ],
+        "purchase_price": 100,
+        "worst_underlying": "Basket di indici worst of"
+      },
+      "scraped": true,
+      "timestamp": "2026-01-28T03:54:35.282426"
+    },
+    {
+      "isin": "NLBNPIT1R5E3",
+      "name": "CASH COLLECT MEMORY",
+      "type": "Cash Collect Memory",
+      "issuer": "BNP Paribas",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "underlying_name": "Basket di indici worst of",
+      "underlying_category": "index",
+      "underlyings": [
+        {
+          "name": "Basket di indici worst of",
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2026-01-28",
+      "maturity_date": "2027-06-25",
+      "barrier": 70.0,
+      "barrier_down": 70.0,
+      "barrier_type": "Discreta",
+      "coupon": 1.65,
+      "coupon_monthly": 1.65,
+      "trigger_coupon": 70.0,
+      "trigger_autocall": null,
+      "annual_coupon_yield": 6.6,
+      "effective_annual_yield": 6.6,
+      "price": 100,
+      "last_price": 100,
+      "emission_price": 100,
+      "nominal": 1000,
+      "buffer_from_barrier": 30.0,
+      "autocallable": true,
+      "memory_effect": true,
+      "scenario_analysis": {
+        "scenarios": [
+          {
+            "variation_pct": -50,
+            "underlying_level": 50,
+            "redemption": 50,
+            "pl": -50,
+            "pl_pct": -50.0
+          },
+          {
+            "variation_pct": -40,
+            "underlying_level": 60,
+            "redemption": 60,
+            "pl": -40,
+            "pl_pct": -40.0
+          },
+          {
+            "variation_pct": -30,
+            "underlying_level": 70,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -20,
+            "underlying_level": 80,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -10,
+            "underlying_level": 90,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 0,
+            "underlying_level": 100,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 10,
+            "underlying_level": 110,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 20,
+            "underlying_level": 120,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 30,
+            "underlying_level": 130,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 40,
+            "underlying_level": 140,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 50,
+            "underlying_level": 150,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          }
+        ],
+        "purchase_price": 100,
+        "worst_underlying": "Basket di indici worst of"
+      },
+      "scraped": true,
+      "timestamp": "2026-01-28T03:54:35.282426"
+    },
+    {
+      "isin": "NLBNPIT301D1",
+      "name": "CASH COLLECT MEMORY",
+      "type": "Cash Collect Memory",
+      "issuer": "BNP Paribas",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "underlying_name": "Basket di indici worst of",
+      "underlying_category": "index",
+      "underlyings": [
+        {
+          "name": "Basket di indici worst of",
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2026-01-28",
+      "maturity_date": "2029-01-25",
+      "barrier": 60.0,
+      "barrier_down": 60.0,
+      "barrier_type": "Discreta",
+      "coupon": 0.72,
+      "coupon_monthly": 0.72,
+      "trigger_coupon": 60.0,
+      "trigger_autocall": null,
+      "annual_coupon_yield": 2.88,
+      "effective_annual_yield": 2.88,
+      "price": 100,
+      "last_price": 100,
+      "emission_price": 100,
+      "nominal": 1000,
+      "buffer_from_barrier": 40.0,
+      "autocallable": true,
+      "memory_effect": true,
+      "scenario_analysis": {
+        "scenarios": [
+          {
+            "variation_pct": -50,
+            "underlying_level": 50,
+            "redemption": 50,
+            "pl": -50,
+            "pl_pct": -50.0
+          },
+          {
+            "variation_pct": -40,
+            "underlying_level": 60,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -30,
+            "underlying_level": 70,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -20,
+            "underlying_level": 80,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -10,
+            "underlying_level": 90,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 0,
+            "underlying_level": 100,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 10,
+            "underlying_level": 110,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 20,
+            "underlying_level": 120,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 30,
+            "underlying_level": 130,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 40,
+            "underlying_level": 140,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 50,
+            "underlying_level": 150,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          }
+        ],
+        "purchase_price": 100,
+        "worst_underlying": "Basket di indici worst of"
+      },
+      "scraped": true,
+      "timestamp": "2026-01-28T03:54:35.282426"
+    },
+    {
+      "isin": "DE000VG644S5",
+      "name": "CASH COLLECT MEMORY",
+      "type": "Cash Collect Memory",
       "issuer": "Vontobel",
-      "worst_of": true,
-      "underlyings": [
-        {
-          "name": "CoinbaseStrategy"
-        }
-      ],
-      "bid_price": 33.7,
-      "ask_price": null,
-      "underlying_category": "rate",
-      "type": "Cash Collect"
-    },
-    {
-      "scraped": true,
-      "timestamp": "2026-01-27T21:16:28.984489",
+      "market": "SeDeX",
       "currency": "EUR",
-      "isin": "IT0005473761",
-      "name": "FIXED CASH COLLECT",
-      "underlying_name": "Eurostoxx Select Dividend 30",
-      "direction": "Long",
-      "issuer": "Mediobanca",
-      "worst_of": true,
-      "underlyings": [
-        {
-          "name": "Eurostoxx BanksEurostoxx Select Dividend 30"
-        }
-      ],
-      "bid_price": 1010.12,
-      "ask_price": null,
+      "underlying_name": "Basket di indici worst of",
       "underlying_category": "index",
-      "type": "Cash Collect"
-    },
-    {
-      "scraped": true,
-      "timestamp": "2026-01-27T21:16:28.984598",
-      "currency": "EUR",
-      "isin": "IT0005481509",
-      "name": "FIXED CASH COLLECT",
-      "underlying_name": "Eurostoxx Select Dividend 30",
-      "direction": "Long",
-      "issuer": "Mediobanca",
-      "worst_of": true,
       "underlyings": [
         {
-          "name": "Eurostoxx BanksEurostoxx Select Dividend 30"
+          "name": "Basket di indici worst of",
+          "worst_of": false
         }
       ],
-      "bid_price": 1007.67,
-      "ask_price": null,
+      "issue_date": "2026-01-28",
+      "maturity_date": "2030-03-11",
+      "barrier": 50.0,
+      "barrier_down": 50.0,
+      "barrier_type": "Discreta",
+      "coupon": 2.1,
+      "coupon_monthly": 2.1,
+      "trigger_coupon": 50.0,
+      "trigger_autocall": null,
+      "annual_coupon_yield": 8.4,
+      "effective_annual_yield": 8.4,
+      "price": 100,
+      "last_price": 100,
+      "emission_price": 100,
+      "nominal": 1000,
+      "buffer_from_barrier": 50.0,
+      "autocallable": true,
+      "memory_effect": true,
+      "scenario_analysis": {
+        "scenarios": [
+          {
+            "variation_pct": -50,
+            "underlying_level": 50,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -40,
+            "underlying_level": 60,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -30,
+            "underlying_level": 70,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -20,
+            "underlying_level": 80,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -10,
+            "underlying_level": 90,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 0,
+            "underlying_level": 100,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 10,
+            "underlying_level": 110,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 20,
+            "underlying_level": 120,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 30,
+            "underlying_level": 130,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 40,
+            "underlying_level": 140,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 50,
+            "underlying_level": 150,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          }
+        ],
+        "purchase_price": 100,
+        "worst_underlying": "Basket di indici worst of"
+      },
+      "scraped": true,
+      "timestamp": "2026-01-28T03:54:35.282426"
+    },
+    {
+      "isin": "XS3045935049",
+      "name": "CASH COLLECT MEMORY",
+      "type": "Cash Collect Memory",
+      "issuer": "BNP Paribas",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "underlying_name": "Basket di indici worst of",
       "underlying_category": "index",
-      "type": "Cash Collect"
-    },
-    {
-      "scraped": true,
-      "timestamp": "2026-01-27T21:16:34.636557",
-      "currency": "EUR",
-      "isin": "DE000HC6ADH4",
-      "name": "PROTECT OUTPERFORMANCE",
-      "underlying_name": "FTSE Mib",
-      "direction": "Long",
-      "issuer": "Unicredit",
-      "worst_of": false,
       "underlyings": [
         {
-          "name": "FTSE Mib"
+          "name": "Basket di indici worst of",
+          "worst_of": false
         }
       ],
-      "bid_price": 1992.32,
-      "ask_price": 2012.34,
-      "price": 2002.33,
+      "issue_date": "2026-01-28",
+      "maturity_date": "2029-09-25",
+      "barrier": 40.0,
+      "barrier_down": 40.0,
+      "barrier_type": "Discreta",
+      "coupon": 1.15,
+      "coupon_monthly": 1.15,
+      "trigger_coupon": 70.0,
+      "trigger_autocall": null,
+      "annual_coupon_yield": 4.6,
+      "effective_annual_yield": 4.6,
+      "price": 100,
+      "last_price": 100,
+      "emission_price": 100,
+      "nominal": 1000,
+      "buffer_from_barrier": 60.0,
+      "autocallable": true,
+      "memory_effect": true,
+      "scenario_analysis": {
+        "scenarios": [
+          {
+            "variation_pct": -50,
+            "underlying_level": 50,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -40,
+            "underlying_level": 60,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -30,
+            "underlying_level": 70,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -20,
+            "underlying_level": 80,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -10,
+            "underlying_level": 90,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 0,
+            "underlying_level": 100,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 10,
+            "underlying_level": 110,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 20,
+            "underlying_level": 120,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 30,
+            "underlying_level": 130,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 40,
+            "underlying_level": 140,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 50,
+            "underlying_level": 150,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          }
+        ],
+        "purchase_price": 100,
+        "worst_underlying": "Basket di indici worst of"
+      },
+      "scraped": true,
+      "timestamp": "2026-01-28T03:54:35.282426"
+    },
+    {
+      "isin": "XS2984356910",
+      "name": "CASH COLLECT MEMORY",
+      "type": "Cash Collect Memory",
+      "issuer": "BNP Paribas",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "underlying_name": "Basket di indici worst of",
       "underlying_category": "index",
-      "type": "Certificate"
-    },
-    {
-      "scraped": true,
-      "timestamp": "2026-01-27T21:16:34.637008",
-      "currency": "EUR",
-      "isin": "XS2469362938",
-      "name": "FIXED CASH COLLECT",
-      "underlying_name": "S&P 500",
-      "direction": "Long",
-      "issuer": "Intesa Sanpaolo",
-      "worst_of": false,
       "underlyings": [
         {
-          "name": "S&P 500"
+          "name": "Basket di indici worst of",
+          "worst_of": false
         }
       ],
-      "bid_price": 1026.35,
-      "ask_price": 1036.35,
-      "price": 1031.35,
+      "issue_date": "2026-01-28",
+      "maturity_date": "2028-12-29",
+      "barrier": 50.0,
+      "barrier_down": 50.0,
+      "barrier_type": "Discreta",
+      "coupon": null,
+      "coupon_monthly": null,
+      "trigger_coupon": null,
+      "trigger_autocall": null,
+      "annual_coupon_yield": null,
+      "effective_annual_yield": null,
+      "price": 100,
+      "last_price": 100,
+      "emission_price": 100,
+      "nominal": 1000,
+      "buffer_from_barrier": 50.0,
+      "autocallable": true,
+      "memory_effect": true,
+      "scenario_analysis": {
+        "scenarios": [
+          {
+            "variation_pct": -50,
+            "underlying_level": 50,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -40,
+            "underlying_level": 60,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -30,
+            "underlying_level": 70,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -20,
+            "underlying_level": 80,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -10,
+            "underlying_level": 90,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 0,
+            "underlying_level": 100,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 10,
+            "underlying_level": 110,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 20,
+            "underlying_level": 120,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 30,
+            "underlying_level": 130,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 40,
+            "underlying_level": 140,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 50,
+            "underlying_level": 150,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          }
+        ],
+        "purchase_price": 100,
+        "worst_underlying": "Basket di indici worst of"
+      },
+      "scraped": true,
+      "timestamp": "2026-01-28T03:54:35.282426"
+    },
+    {
+      "isin": "DE000VJ12LU2",
+      "name": "CASH COLLECT MEMORY AIRBAG CALLABLE",
+      "type": "Cash Collect Memory",
+      "issuer": "Vontobel",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "underlying_name": "Basket di indici worst of",
       "underlying_category": "index",
-      "type": "Cash Collect"
-    },
-    {
-      "scraped": true,
-      "timestamp": "2026-01-27T21:16:40.314738",
-      "currency": "EUR",
-      "isin": "CH1438103900",
-      "name": "PHOENIX MEMORY SOFTCALLABLE",
-      "underlying_name": "WTI Crude Future generic 1st",
-      "direction": "Long",
-      "issuer": "Leonteq Securities",
-      "worst_of": false,
       "underlyings": [
         {
-          "name": "WTI Crude Future generic 1st"
+          "name": "Basket di indici worst of",
+          "worst_of": false
         }
       ],
-      "bid_price": 1008.08,
-      "ask_price": 1018.08,
-      "price": 1013.08,
-      "underlying_category": "commodity",
-      "type": "Phoenix Memory"
+      "issue_date": "2026-01-28",
+      "maturity_date": "2029-01-04",
+      "barrier": 70.0,
+      "barrier_down": 70.0,
+      "barrier_type": "Discreta",
+      "coupon": 0.6,
+      "coupon_monthly": 0.6,
+      "trigger_coupon": 70.0,
+      "trigger_autocall": null,
+      "annual_coupon_yield": 2.4,
+      "effective_annual_yield": 2.4,
+      "price": 100,
+      "last_price": 100,
+      "emission_price": 100,
+      "nominal": 1000,
+      "buffer_from_barrier": 30.0,
+      "autocallable": true,
+      "memory_effect": true,
+      "scenario_analysis": {
+        "scenarios": [
+          {
+            "variation_pct": -50,
+            "underlying_level": 50,
+            "redemption": 50,
+            "pl": -50,
+            "pl_pct": -50.0
+          },
+          {
+            "variation_pct": -40,
+            "underlying_level": 60,
+            "redemption": 60,
+            "pl": -40,
+            "pl_pct": -40.0
+          },
+          {
+            "variation_pct": -30,
+            "underlying_level": 70,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -20,
+            "underlying_level": 80,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -10,
+            "underlying_level": 90,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 0,
+            "underlying_level": 100,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 10,
+            "underlying_level": 110,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 20,
+            "underlying_level": 120,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 30,
+            "underlying_level": 130,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 40,
+            "underlying_level": 140,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 50,
+            "underlying_level": 150,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          }
+        ],
+        "purchase_price": 100,
+        "worst_underlying": "Basket di indici worst of"
+      },
+      "scraped": true,
+      "timestamp": "2026-01-28T03:54:35.282426"
     },
     {
-      "scraped": true,
-      "timestamp": "2026-01-27T21:16:40.315771",
+      "isin": "NLBNPIT2OPR2",
+      "name": "CASH COLLECT MEMORY CALLABLE",
+      "type": "Cash Collect Memory",
+      "issuer": "BNP Paribas",
+      "market": "SeDeX",
       "currency": "EUR",
-      "isin": "CH1453354289",
-      "name": "FIXED COUPON CONVERTIBLE",
-      "underlying_name": "0% Bundesrepublik Deutschland",
-      "direction": "Long",
-      "issuer": "Leonteq Securities",
-      "worst_of": false,
-      "underlyings": [
-        {
-          "name": "0% Bundesrepublik Deutschland"
-        }
-      ],
-      "bid_price": 891.61,
-      "ask_price": 906.61,
-      "price": 899.11,
-      "underlying_category": "rate",
-      "type": "Certificate"
-    },
-    {
-      "scraped": true,
-      "timestamp": "2026-01-27T21:16:40.315882",
-      "currency": "EUR",
-      "isin": "CH1453354305",
-      "name": "FIXED COUPON CONVERTIBLE",
-      "underlying_name": "2.15% BTPS Italia (03/01/72)",
-      "direction": "Long",
-      "issuer": "Leonteq Securities",
-      "worst_of": false,
-      "underlyings": [
-        {
-          "name": "2.15% BTPS Italia (03/01/72)"
-        }
-      ],
-      "bid_price": 990.25,
-      "ask_price": 1000.25,
-      "price": 995.25,
-      "underlying_category": "rate",
-      "type": "Certificate"
-    },
-    {
-      "scraped": true,
-      "timestamp": "2026-01-27T21:16:40.316110",
-      "currency": "EUR",
-      "isin": "CH1233010292",
-      "name": "PHOENIX MEMORY SOFTCALLABLE",
-      "underlying_name": "Stoxx Europe 600 Auto&Parts",
-      "direction": "Long",
-      "issuer": "Leonteq Securities",
-      "worst_of": true,
-      "underlyings": [
-        {
-          "name": "Spdr S&P Oil & GasStoxx Europe 600 Auto&PartsStoxx Europe 600 Technology"
-        }
-      ],
-      "bid_price": 1007.2,
-      "ask_price": 1017.32,
-      "price": 1012.26,
+      "underlying_name": "Basket di indici worst of",
       "underlying_category": "index",
-      "type": "Phoenix Memory"
-    },
-    {
-      "scraped": true,
-      "timestamp": "2026-01-27T21:16:45.967496",
-      "currency": "EUR",
-      "isin": "XS2782352111",
-      "name": "PHOENIX MEMORY",
-      "underlying_name": "WTI Crude Future generic 1st",
-      "direction": "Long",
-      "issuer": "Bnp Paribas",
-      "worst_of": false,
       "underlyings": [
         {
-          "name": "WTI Crude Future generic 1st"
+          "name": "Basket di indici worst of",
+          "worst_of": false
         }
       ],
-      "bid_price": 97.3,
-      "ask_price": 97.96,
-      "price": 97.63,
-      "underlying_category": "commodity",
-      "type": "Phoenix Memory"
+      "issue_date": "2026-01-28",
+      "maturity_date": "2028-07-19",
+      "barrier": 60.0,
+      "barrier_down": 60.0,
+      "barrier_type": "Discreta",
+      "coupon": 0.78,
+      "coupon_monthly": 0.78,
+      "trigger_coupon": 60.0,
+      "trigger_autocall": null,
+      "annual_coupon_yield": 3.12,
+      "effective_annual_yield": 3.12,
+      "price": 100,
+      "last_price": 100,
+      "emission_price": 100,
+      "nominal": 1000,
+      "buffer_from_barrier": 40.0,
+      "autocallable": true,
+      "memory_effect": true,
+      "scenario_analysis": {
+        "scenarios": [
+          {
+            "variation_pct": -50,
+            "underlying_level": 50,
+            "redemption": 50,
+            "pl": -50,
+            "pl_pct": -50.0
+          },
+          {
+            "variation_pct": -40,
+            "underlying_level": 60,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -30,
+            "underlying_level": 70,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -20,
+            "underlying_level": 80,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -10,
+            "underlying_level": 90,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 0,
+            "underlying_level": 100,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 10,
+            "underlying_level": 110,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 20,
+            "underlying_level": 120,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 30,
+            "underlying_level": 130,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 40,
+            "underlying_level": 140,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 50,
+            "underlying_level": 150,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          }
+        ],
+        "purchase_price": 100,
+        "worst_underlying": "Basket di indici worst of"
+      },
+      "scraped": true,
+      "timestamp": "2026-01-28T03:54:35.282426"
     },
     {
-      "scraped": true,
-      "timestamp": "2026-01-27T21:16:51.666902",
+      "isin": "NLBNPIT2OQL3",
+      "name": "CASH COLLECT MEMORY CALLABLE",
+      "type": "Cash Collect Memory",
+      "issuer": "BNP Paribas",
+      "market": "SeDeX",
       "currency": "EUR",
-      "isin": "XS2380247499",
-      "name": "PHOENIX MEMORY",
-      "underlying_name": "FTSE Mib",
-      "direction": "Long",
-      "issuer": "Bnp Paribas",
-      "worst_of": false,
-      "underlyings": [
-        {
-          "name": "FTSE Mib"
-        }
-      ],
-      "bid_price": 103.33,
-      "ask_price": 104.33,
-      "price": 103.83,
+      "underlying_name": "Basket di indici worst of",
       "underlying_category": "index",
-      "type": "Phoenix Memory"
-    },
-    {
-      "scraped": true,
-      "timestamp": "2026-01-27T21:16:51.667013",
-      "currency": "EUR",
-      "isin": "XS2380263777",
-      "name": "PHOENIX MEMORY",
-      "underlying_name": "FTSE Mib",
-      "direction": "Long",
-      "issuer": "Bnp Paribas",
-      "worst_of": false,
       "underlyings": [
         {
-          "name": "FTSE Mib"
+          "name": "Basket di indici worst of",
+          "worst_of": false
         }
       ],
-      "bid_price": 103.0,
-      "ask_price": 104.0,
-      "price": 103.5,
+      "issue_date": "2026-01-28",
+      "maturity_date": "2027-07-19",
+      "barrier": 60.0,
+      "barrier_down": 60.0,
+      "barrier_type": "Discreta",
+      "coupon": 0.56,
+      "coupon_monthly": 0.56,
+      "trigger_coupon": 60.0,
+      "trigger_autocall": null,
+      "annual_coupon_yield": 2.24,
+      "effective_annual_yield": 2.24,
+      "price": 100,
+      "last_price": 100,
+      "emission_price": 100,
+      "nominal": 1000,
+      "buffer_from_barrier": 40.0,
+      "autocallable": true,
+      "memory_effect": true,
+      "scenario_analysis": {
+        "scenarios": [
+          {
+            "variation_pct": -50,
+            "underlying_level": 50,
+            "redemption": 50,
+            "pl": -50,
+            "pl_pct": -50.0
+          },
+          {
+            "variation_pct": -40,
+            "underlying_level": 60,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -30,
+            "underlying_level": 70,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -20,
+            "underlying_level": 80,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -10,
+            "underlying_level": 90,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 0,
+            "underlying_level": 100,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 10,
+            "underlying_level": 110,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 20,
+            "underlying_level": 120,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 30,
+            "underlying_level": 130,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 40,
+            "underlying_level": 140,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 50,
+            "underlying_level": 150,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          }
+        ],
+        "purchase_price": 100,
+        "worst_underlying": "Basket di indici worst of"
+      },
+      "scraped": true,
+      "timestamp": "2026-01-28T03:54:35.282426"
+    },
+    {
+      "isin": "NLBNPIT2OQM1",
+      "name": "CASH COLLECT MEMORY CALLABLE",
+      "type": "Cash Collect Memory",
+      "issuer": "BNP Paribas",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "underlying_name": "Basket di indici worst of",
       "underlying_category": "index",
-      "type": "Phoenix Memory"
-    },
-    {
-      "scraped": true,
-      "timestamp": "2026-01-27T21:16:51.667359",
-      "currency": "EUR",
-      "isin": "XS2472164487",
-      "name": "BONUS PLUS",
-      "underlying_name": "Nikkei 225",
-      "direction": "Long",
-      "issuer": "Intesa Sanpaolo",
-      "worst_of": false,
       "underlyings": [
         {
-          "name": "Nikkei 225"
+          "name": "Basket di indici worst of",
+          "worst_of": false
         }
       ],
-      "bid_price": 1019.2,
-      "ask_price": 1025.21,
-      "price": 1022.205,
+      "issue_date": "2026-01-28",
+      "maturity_date": "2027-07-19",
+      "barrier": 60.0,
+      "barrier_down": 60.0,
+      "barrier_type": "Discreta",
+      "coupon": 0.68,
+      "coupon_monthly": 0.68,
+      "trigger_coupon": 60.0,
+      "trigger_autocall": null,
+      "annual_coupon_yield": 2.72,
+      "effective_annual_yield": 2.72,
+      "price": 100,
+      "last_price": 100,
+      "emission_price": 100,
+      "nominal": 1000,
+      "buffer_from_barrier": 40.0,
+      "autocallable": true,
+      "memory_effect": true,
+      "scenario_analysis": {
+        "scenarios": [
+          {
+            "variation_pct": -50,
+            "underlying_level": 50,
+            "redemption": 50,
+            "pl": -50,
+            "pl_pct": -50.0
+          },
+          {
+            "variation_pct": -40,
+            "underlying_level": 60,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -30,
+            "underlying_level": 70,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -20,
+            "underlying_level": 80,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -10,
+            "underlying_level": 90,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 0,
+            "underlying_level": 100,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 10,
+            "underlying_level": 110,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 20,
+            "underlying_level": 120,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 30,
+            "underlying_level": 130,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 40,
+            "underlying_level": 140,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 50,
+            "underlying_level": 150,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          }
+        ],
+        "purchase_price": 100,
+        "worst_underlying": "Basket di indici worst of"
+      },
+      "scraped": true,
+      "timestamp": "2026-01-28T03:54:35.282426"
+    },
+    {
+      "isin": "XS3198883491",
+      "name": "CASH COLLECT MEMORY CALLABLE",
+      "type": "Cash Collect Memory",
+      "issuer": "BNP Paribas",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "underlying_name": "Basket di indici worst of",
       "underlying_category": "index",
-      "type": "Bonus Plus"
-    },
-    {
-      "scraped": true,
-      "timestamp": "2026-01-27T21:16:51.667588",
-      "currency": "EUR",
-      "isin": "CH1453356268",
-      "name": "FIXED COUPON CONVERTIBLE",
-      "underlying_name": "0% Bundesrepublik Deutschland",
-      "direction": "Long",
-      "issuer": "Leonteq Securities",
-      "worst_of": false,
       "underlyings": [
         {
-          "name": "0% Bundesrepublik Deutschland"
+          "name": "Basket di indici worst of",
+          "worst_of": false
         }
       ],
-      "bid_price": 779.27,
-      "ask_price": 794.27,
-      "price": 786.77,
-      "underlying_category": "rate",
-      "type": "Certificate"
+      "issue_date": "2026-01-28",
+      "maturity_date": "2028-12-21",
+      "barrier": 60.0,
+      "barrier_down": 60.0,
+      "barrier_type": "Discreta",
+      "coupon": 0.7,
+      "coupon_monthly": 0.7,
+      "trigger_coupon": 60.0,
+      "trigger_autocall": null,
+      "annual_coupon_yield": 2.8,
+      "effective_annual_yield": 2.8,
+      "price": 100,
+      "last_price": 100,
+      "emission_price": 100,
+      "nominal": 1000,
+      "buffer_from_barrier": 40.0,
+      "autocallable": true,
+      "memory_effect": true,
+      "scenario_analysis": {
+        "scenarios": [
+          {
+            "variation_pct": -50,
+            "underlying_level": 50,
+            "redemption": 50,
+            "pl": -50,
+            "pl_pct": -50.0
+          },
+          {
+            "variation_pct": -40,
+            "underlying_level": 60,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -30,
+            "underlying_level": 70,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -20,
+            "underlying_level": 80,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -10,
+            "underlying_level": 90,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 0,
+            "underlying_level": 100,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 10,
+            "underlying_level": 110,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 20,
+            "underlying_level": 120,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 30,
+            "underlying_level": 130,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 40,
+            "underlying_level": 140,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 50,
+            "underlying_level": 150,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          }
+        ],
+        "purchase_price": 100,
+        "worst_underlying": "Basket di indici worst of"
+      },
+      "scraped": true,
+      "timestamp": "2026-01-28T03:54:35.282426"
+    },
+    {
+      "isin": "XS3198883574",
+      "name": "CASH COLLECT MEMORY CALLABLE",
+      "type": "Cash Collect Memory",
+      "issuer": "BNP Paribas",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "underlying_name": "Basket di indici worst of",
+      "underlying_category": "index",
+      "underlyings": [
+        {
+          "name": "Basket di indici worst of",
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2026-01-28",
+      "maturity_date": "2028-12-21",
+      "barrier": 60.0,
+      "barrier_down": 60.0,
+      "barrier_type": "Discreta",
+      "coupon": 0.57,
+      "coupon_monthly": 0.57,
+      "trigger_coupon": 60.0,
+      "trigger_autocall": null,
+      "annual_coupon_yield": 2.28,
+      "effective_annual_yield": 2.28,
+      "price": 100,
+      "last_price": 100,
+      "emission_price": 100,
+      "nominal": 1000,
+      "buffer_from_barrier": 40.0,
+      "autocallable": true,
+      "memory_effect": true,
+      "scenario_analysis": {
+        "scenarios": [
+          {
+            "variation_pct": -50,
+            "underlying_level": 50,
+            "redemption": 50,
+            "pl": -50,
+            "pl_pct": -50.0
+          },
+          {
+            "variation_pct": -40,
+            "underlying_level": 60,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -30,
+            "underlying_level": 70,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -20,
+            "underlying_level": 80,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -10,
+            "underlying_level": 90,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 0,
+            "underlying_level": 100,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 10,
+            "underlying_level": 110,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 20,
+            "underlying_level": 120,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 30,
+            "underlying_level": 130,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 40,
+            "underlying_level": 140,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 50,
+            "underlying_level": 150,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          }
+        ],
+        "purchase_price": 100,
+        "worst_underlying": "Basket di indici worst of"
+      },
+      "scraped": true,
+      "timestamp": "2026-01-28T03:54:35.282426"
+    },
+    {
+      "isin": "XS3108796494",
+      "name": "CASH COLLECT MEMORY CALLABLE",
+      "type": "Cash Collect Memory",
+      "issuer": "BNP Paribas",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "underlying_name": "Basket di indici worst of",
+      "underlying_category": "index",
+      "underlyings": [
+        {
+          "name": "Basket di indici worst of",
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2026-01-28",
+      "maturity_date": "2028-09-27",
+      "barrier": 60.0,
+      "barrier_down": 60.0,
+      "barrier_type": "Discreta",
+      "coupon": 0.9,
+      "coupon_monthly": 0.9,
+      "trigger_coupon": 60.0,
+      "trigger_autocall": null,
+      "annual_coupon_yield": 3.6,
+      "effective_annual_yield": 3.6,
+      "price": 100,
+      "last_price": 100,
+      "emission_price": 100,
+      "nominal": 1000,
+      "buffer_from_barrier": 40.0,
+      "autocallable": true,
+      "memory_effect": true,
+      "scenario_analysis": {
+        "scenarios": [
+          {
+            "variation_pct": -50,
+            "underlying_level": 50,
+            "redemption": 50,
+            "pl": -50,
+            "pl_pct": -50.0
+          },
+          {
+            "variation_pct": -40,
+            "underlying_level": 60,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -30,
+            "underlying_level": 70,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -20,
+            "underlying_level": 80,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -10,
+            "underlying_level": 90,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 0,
+            "underlying_level": 100,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 10,
+            "underlying_level": 110,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 20,
+            "underlying_level": 120,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 30,
+            "underlying_level": 130,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 40,
+            "underlying_level": 140,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 50,
+            "underlying_level": 150,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          }
+        ],
+        "purchase_price": 100,
+        "worst_underlying": "Basket di indici worst of"
+      },
+      "scraped": true,
+      "timestamp": "2026-01-28T03:54:35.282426"
+    },
+    {
+      "isin": "XS3108796734",
+      "name": "CASH COLLECT MEMORY CALLABLE",
+      "type": "Cash Collect Memory",
+      "issuer": "BNP Paribas",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "underlying_name": "Basket di indici worst of",
+      "underlying_category": "index",
+      "underlyings": [
+        {
+          "name": "Basket di indici worst of",
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2026-01-28",
+      "maturity_date": "2028-09-27",
+      "barrier": 60.0,
+      "barrier_down": 60.0,
+      "barrier_type": "Discreta",
+      "coupon": 0.75,
+      "coupon_monthly": 0.75,
+      "trigger_coupon": 60.0,
+      "trigger_autocall": null,
+      "annual_coupon_yield": 3.0,
+      "effective_annual_yield": 3.0,
+      "price": 100,
+      "last_price": 100,
+      "emission_price": 100,
+      "nominal": 1000,
+      "buffer_from_barrier": 40.0,
+      "autocallable": true,
+      "memory_effect": true,
+      "scenario_analysis": {
+        "scenarios": [
+          {
+            "variation_pct": -50,
+            "underlying_level": 50,
+            "redemption": 50,
+            "pl": -50,
+            "pl_pct": -50.0
+          },
+          {
+            "variation_pct": -40,
+            "underlying_level": 60,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -30,
+            "underlying_level": 70,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -20,
+            "underlying_level": 80,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -10,
+            "underlying_level": 90,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 0,
+            "underlying_level": 100,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 10,
+            "underlying_level": 110,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 20,
+            "underlying_level": 120,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 30,
+            "underlying_level": 130,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 40,
+            "underlying_level": 140,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 50,
+            "underlying_level": 150,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          }
+        ],
+        "purchase_price": 100,
+        "worst_underlying": "Basket di indici worst of"
+      },
+      "scraped": true,
+      "timestamp": "2026-01-28T03:54:35.282426"
+    },
+    {
+      "isin": "XS3108797203",
+      "name": "CASH COLLECT MEMORY CALLABLE",
+      "type": "Cash Collect Memory",
+      "issuer": "BNP Paribas",
+      "market": "SeDeX",
+      "currency": "EUR",
+      "underlying_name": "Basket di indici worst of",
+      "underlying_category": "index",
+      "underlyings": [
+        {
+          "name": "Basket di indici worst of",
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2026-01-28",
+      "maturity_date": "2028-09-28",
+      "barrier": 60.0,
+      "barrier_down": 60.0,
+      "barrier_type": "Discreta",
+      "coupon": 0.55,
+      "coupon_monthly": 0.55,
+      "trigger_coupon": 60.0,
+      "trigger_autocall": null,
+      "annual_coupon_yield": 2.2,
+      "effective_annual_yield": 2.2,
+      "price": 100,
+      "last_price": 100,
+      "emission_price": 100,
+      "nominal": 1000,
+      "buffer_from_barrier": 40.0,
+      "autocallable": true,
+      "memory_effect": true,
+      "scenario_analysis": {
+        "scenarios": [
+          {
+            "variation_pct": -50,
+            "underlying_level": 50,
+            "redemption": 50,
+            "pl": -50,
+            "pl_pct": -50.0
+          },
+          {
+            "variation_pct": -40,
+            "underlying_level": 60,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -30,
+            "underlying_level": 70,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -20,
+            "underlying_level": 80,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": -10,
+            "underlying_level": 90,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 0,
+            "underlying_level": 100,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 10,
+            "underlying_level": 110,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 20,
+            "underlying_level": 120,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 30,
+            "underlying_level": 130,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 40,
+            "underlying_level": 140,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          },
+          {
+            "variation_pct": 50,
+            "underlying_level": 150,
+            "redemption": 100,
+            "pl": 0,
+            "pl_pct": 0.0
+          }
+        ],
+        "purchase_price": 100,
+        "worst_underlying": "Basket di indici worst of"
+      },
+      "scraped": true,
+      "timestamp": "2026-01-28T03:54:35.282426"
     }
   ]
 }
