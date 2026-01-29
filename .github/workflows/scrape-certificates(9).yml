@@ -1,0 +1,60 @@
+name: Update Certificates Data
+
+on:
+  schedule:
+    - cron: '0 20 * * *'
+  workflow_dispatch:
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          pip install playwright beautifulsoup4
+          playwright install chromium
+          playwright install-deps chromium
+
+      - name: Create data directory
+        run: mkdir -p data
+
+      - name: Run scraper
+        run: python scraper_ced_v9.py --output data/certificates-data.json
+
+      - name: Validate
+        run: |
+          echo "=== Validation ==="
+          python3 << 'PYEOF'
+import json
+with open('data/certificates-data.json') as f:
+    data = json.load(f)
+total = len(data['certificates'])
+with_barrier = data['metadata'].get('with_barrier', 0)
+with_coupon = data['metadata'].get('with_coupon', 0)
+with_issuer = data['metadata'].get('with_issuer', 0)
+print(f"Total: {total}")
+print(f"With barrier: {with_barrier}")
+print(f"With coupon: {with_coupon}")
+print(f"With issuer: {with_issuer}")
+if total == 0:
+    print("ERROR: No certificates!")
+    exit(1)
+PYEOF
+
+      - name: Commit and push
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add data/certificates-data.json
+          git diff --staged --quiet || git commit -m "Update certificates data $(date +'%Y-%m-%d %H:%M')"
+          git push
