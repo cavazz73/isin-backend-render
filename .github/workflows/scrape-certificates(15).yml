@@ -1,0 +1,64 @@
+name: Scrape Certificates Daily
+
+on:
+  schedule:
+    - cron: '30 18 * * *'
+  workflow_dispatch:
+
+jobs:
+  scrape-certificates:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          pip install playwright beautifulsoup4
+          playwright install chromium
+          playwright install-deps chromium
+      
+      - name: Run scraper
+        run: python certificates-scraper-v15.py
+      
+      - name: Validate output
+        run: |
+          if [ -f certificates-data.json ]; then
+            python3 << 'PYEOF'
+import json
+data = json.load(open('certificates-data.json'))
+certs = data.get('certificates', [])
+print(f"Total certificates: {len(certs)}")
+with_barrier = sum(1 for c in certs if c.get('barrier_down'))
+with_barrier_abs = sum(1 for c in certs for u in c.get('underlyings', []) if u.get('barrier'))
+print(f"With barrier: {with_barrier}/{len(certs)}")
+print(f"Underlyings with absolute barrier: {with_barrier_abs}")
+PYEOF
+          else
+            echo 'Output file not found!'
+            exit 1
+          fi
+      
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: certificates-data
+          path: certificates-data.json
+          retention-days: 7
+      
+      - name: Commit changes
+        run: |
+          git diff --quiet certificates-data.json 2>/dev/null && exit 0
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "GitHub Actions Bot"
+          git add certificates-data.json
+          git commit -m "Update certificates - $(date +'%Y-%m-%d %H:%M')"
+          git push
