@@ -1,0 +1,106 @@
+name: Scrape Certificates Daily - CED
+
+on:
+  # Run every day at 18:30 UTC (19:30 CET / 20:30 CEST)
+  schedule:
+    - cron: '30 18 * * *'
+  
+  # Allow manual trigger
+  workflow_dispatch:
+
+jobs:
+  scrape-certificates:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          pip install playwright beautifulsoup4
+          playwright install chromium
+          playwright install-deps chromium
+          echo "✅ Dependencies installed"
+      
+      - name: Run certificates scraper
+        run: |
+          echo "🚀 Starting certificates scraper (certificatiederivati.it)..."
+          python certificates-scraper-ced-v12.py
+          echo "✅ Scraper completed"
+      
+      - name: Validate output
+        run: |
+          if [ -f certificates-data.json ]; then
+            echo "📄 Output file exists"
+            CERT_COUNT=$(python3 -c "import json; data=json.load(open('certificates-data.json')); print(len(data.get('certificates', [])))")
+            echo "📊 Certificates found: ${CERT_COUNT}"
+            
+            if [ "$CERT_COUNT" -lt 5 ]; then
+              echo "⚠️ Warning: Very few certificates extracted"
+            fi
+          else
+            echo "❌ Output file not found!"
+            exit 1
+          fi
+      
+      - name: Upload artifacts for debugging
+        uses: actions/upload-artifact@v4
+        with:
+          name: certificates-data
+          path: certificates-data.json
+          retention-days: 7
+      
+      - name: Check for changes
+        id: check_changes
+        run: |
+          if git diff --quiet certificates-data.json 2>/dev/null; then
+            echo "No changes detected"
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "Changes detected in certificates-data.json"
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Commit and push changes
+        if: steps.check_changes.outputs.has_changes == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "GitHub Actions Bot"
+          git add certificates-data.json
+          git commit -m "🔄 Auto-update certificates data (CED) - $(date +'%Y-%m-%d %H:%M')"
+          git push
+          echo "✅ Changes committed and pushed"
+      
+      - name: No changes
+        if: steps.check_changes.outputs.has_changes == 'false'
+        run: |
+          echo "ℹ️ No changes to commit"
+      
+      - name: Workflow summary
+        run: |
+          echo "## 📊 Certificates Scraper Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Date:** $(date +'%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
+          echo "- **Source:** certificatiederivati.it" >> $GITHUB_STEP_SUMMARY
+          echo "- **Status:** ✅ Completed" >> $GITHUB_STEP_SUMMARY
+          echo "- **Changes:** ${{ steps.check_changes.outputs.has_changes }}" >> $GITHUB_STEP_SUMMARY
+          
+          if [ -f certificates-data.json ]; then
+            CERT_COUNT=$(python3 -c "import json; data=json.load(open('certificates-data.json')); print(len(data.get('certificates', [])))")
+            TOTAL_SCRAPED=$(python3 -c "import json; data=json.load(open('certificates-data.json')); print(data.get('metadata', {}).get('total_scraped', 'N/A'))")
+            echo "- **Certificates (filtered):** ${CERT_COUNT}" >> $GITHUB_STEP_SUMMARY
+            echo "- **Certificates (total scraped):** ${TOTAL_SCRAPED}" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 🔗 Next Steps" >> $GITHUB_STEP_SUMMARY
+          echo "- Render will auto-deploy with new data" >> $GITHUB_STEP_SUMMARY
+          echo "- Frontend will load updated certificates" >> $GITHUB_STEP_SUMMARY
