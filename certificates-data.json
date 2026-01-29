@@ -2,19 +2,19 @@
   "metadata": {
     "version": "8.0",
     "source": "certificatiederivati.it",
-    "timestamp": "2026-01-28T20:47:47.236966",
-    "total_certificates": 143,
+    "timestamp": "2026-01-29T08:12:49.300524",
+    "total_certificates": 146,
     "stats": {
-      "found": 143,
-      "detailed": 143,
+      "found": 146,
+      "detailed": 146,
       "errors": 0,
       "by_underlying": {
         "FTSE MIB": 20,
         "Euro Stoxx 50": 19,
         "DAX": 14,
-        "S&P 500": 19,
+        "S&P 500": 18,
         "Nasdaq 100": 16,
-        "Nikkei 225": 8,
+        "Nikkei 225": 12,
         "Dow Jones": 1,
         "CAC40": 9,
         "Hang Seng": 19,
@@ -27,32 +27,6 @@
     }
   },
   "certificates": [
-    {
-      "isin": "DE000UG81LA7",
-      "name": "",
-      "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
-      "issuer": "",
-      "market": "CERT-X",
-      "currency": "EUR",
-      "underlying_category": "FTSE MIB",
-      "issue_date": "2025-07-09",
-      "maturity_date": "2026-06-19",
-      "strike_date": "2025-07-08",
-      "barrier_down": null,
-      "barrier_type": null,
-      "coupon": null,
-      "annual_coupon_yield": null,
-      "bid_price": null,
-      "ask_price": null,
-      "underlyings": [
-        {
-          "name": "FTSE Mib",
-          "strike": 40182.62,
-          "spot": null,
-          "barrier": null
-        }
-      ]
-    },
     {
       "isin": "DE000UN0YE51",
       "name": "",
@@ -74,6 +48,32 @@
         {
           "name": "FTSE Mib",
           "strike": 42209.64,
+          "spot": null,
+          "barrier": null
+        }
+      ]
+    },
+    {
+      "isin": "DE000UG81LA7",
+      "name": "",
+      "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
+      "issuer": "",
+      "market": "CERT-X",
+      "currency": "EUR",
+      "underlying_category": "FTSE MIB",
+      "issue_date": "2025-07-09",
+      "maturity_date": "2026-06-19",
+      "strike_date": "2025-07-08",
+      "barrier_down": null,
+      "barrier_type": null,
+      "coupon": null,
+      "annual_coupon_yield": null,
+      "bid_price": null,
+      "ask_price": null,
+      "underlyings": [
+        {
+          "name": "FTSE Mib",
+          "strike": 40182.62,
           "spot": null,
           "barrier": null
         }
@@ -164,6 +164,64 @@
       ]
     },
     {
+      "isin": "XS2168932551",
+      "name": "",
+      "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
+      "issuer": "",
+      "market": "SEDEX",
+      "currency": "EUR",
+      "underlying_category": "FTSE MIB",
+      "issue_date": "2021-08-13",
+      "maturity_date": "2026-08-13",
+      "strike_date": "2021-07-30",
+      "barrier_down": null,
+      "barrier_type": null,
+      "coupon": null,
+      "annual_coupon_yield": null,
+      "bid_price": null,
+      "ask_price": null,
+      "underlyings": [
+        {
+          "name": "FTSE Mib",
+          "strike": 25363.02,
+          "spot": null,
+          "barrier": null
+        }
+      ]
+    },
+    {
+      "isin": "XS2362981917",
+      "name": "",
+      "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
+      "issuer": "",
+      "market": "CERT-X",
+      "currency": "EUR",
+      "underlying_category": "FTSE MIB",
+      "issue_date": "2021-07-30",
+      "maturity_date": "2027-07-30",
+      "strike_date": "2021-07-30",
+      "barrier_down": null,
+      "barrier_type": null,
+      "coupon": null,
+      "annual_coupon_yield": null,
+      "bid_price": null,
+      "ask_price": null,
+      "underlyings": [
+        {
+          "name": "FTSE Mib",
+          "strike": 25363.02,
+          "spot": null,
+          "barrier": null
+        },
+        {
+          "name": "Eurostoxx Select Dividend 30",
+          "strike": 1881.51,
+          "spot": null,
+          "barrier": null
+        }
+      ]
+    },
+    {
       "isin": "XS2129431859",
       "name": "",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
@@ -222,64 +280,6 @@
         {
           "name": "FTSE Mib",
           "strike": 23649.04,
-          "spot": null,
-          "barrier": null
-        }
-      ]
-    },
-    {
-      "isin": "XS2362981917",
-      "name": "",
-      "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
-      "issuer": "",
-      "market": "CERT-X",
-      "currency": "EUR",
-      "underlying_category": "FTSE MIB",
-      "issue_date": "2021-07-30",
-      "maturity_date": "2027-07-30",
-      "strike_date": "2021-07-30",
-      "barrier_down": null,
-      "barrier_type": null,
-      "coupon": null,
-      "annual_coupon_yield": null,
-      "bid_price": null,
-      "ask_price": null,
-      "underlyings": [
-        {
-          "name": "FTSE Mib",
-          "strike": 25363.02,
-          "spot": null,
-          "barrier": null
-        },
-        {
-          "name": "Eurostoxx Select Dividend 30",
-          "strike": 1881.51,
-          "spot": null,
-          "barrier": null
-        }
-      ]
-    },
-    {
-      "isin": "XS2168932551",
-      "name": "",
-      "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
-      "issuer": "",
-      "market": "SEDEX",
-      "currency": "EUR",
-      "underlying_category": "FTSE MIB",
-      "issue_date": "2021-08-13",
-      "maturity_date": "2026-08-13",
-      "strike_date": "2021-07-30",
-      "barrier_down": null,
-      "barrier_type": null,
-      "coupon": null,
-      "annual_coupon_yield": null,
-      "bid_price": null,
-      "ask_price": null,
-      "underlyings": [
-        {
-          "name": "FTSE Mib",
-          "strike": 25363.02,
           "spot": null,
           "barrier": null
         }
@@ -406,16 +406,16 @@
       ]
     },
     {
-      "isin": "XS3109961576",
+      "isin": "XS3198883491",
       "name": "",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "",
       "market": "CERT-X",
       "currency": "EUR",
       "underlying_category": "FTSE MIB",
-      "issue_date": "2025-09-12",
-      "maturity_date": "2028-09-27",
-      "strike_date": "2025-09-16",
+      "issue_date": "2025-12-09",
+      "maturity_date": "2028-12-21",
+      "strike_date": "2025-12-12",
       "barrier_down": null,
       "barrier_type": null,
       "coupon": null,
@@ -425,25 +425,25 @@
       "underlyings": [
         {
           "name": "Eurostoxx Banks",
-          "strike": 231.16,
+          "strike": 251.27,
           "spot": null,
           "barrier": null
         },
         {
           "name": "FTSE Mib",
-          "strike": 42504.56,
+          "strike": 43513.95,
           "spot": null,
           "barrier": null
         },
         {
           "name": "S&P 500",
-          "strike": 6606.76,
+          "strike": 6827.41,
           "spot": null,
           "barrier": null
         },
         {
-          "name": "CAC40",
-          "strike": 7818.22,
+          "name": "Nasdaq 100",
+          "strike": 25196.73,
           "spot": null,
           "barrier": null
         }
@@ -494,50 +494,6 @@
       ]
     },
     {
-      "isin": "XS3198883491",
-      "name": "",
-      "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
-      "issuer": "",
-      "market": "CERT-X",
-      "currency": "EUR",
-      "underlying_category": "FTSE MIB",
-      "issue_date": "2025-12-09",
-      "maturity_date": "2028-12-21",
-      "strike_date": "2025-12-12",
-      "barrier_down": null,
-      "barrier_type": null,
-      "coupon": null,
-      "annual_coupon_yield": null,
-      "bid_price": null,
-      "ask_price": null,
-      "underlyings": [
-        {
-          "name": "Eurostoxx Banks",
-          "strike": 251.27,
-          "spot": null,
-          "barrier": null
-        },
-        {
-          "name": "FTSE Mib",
-          "strike": 43513.95,
-          "spot": null,
-          "barrier": null
-        },
-        {
-          "name": "S&P 500",
-          "strike": 6827.41,
-          "spot": null,
-          "barrier": null
-        },
-        {
-          "name": "Nasdaq 100",
-          "strike": 25196.73,
-          "spot": null,
-          "barrier": null
-        }
-      ]
-    },
-    {
       "isin": "XS3198883574",
       "name": "",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
@@ -576,6 +532,50 @@
         {
           "name": "Russell 2000",
           "strike": 2551.457,
+          "spot": null,
+          "barrier": null
+        }
+      ]
+    },
+    {
+      "isin": "XS3109961576",
+      "name": "",
+      "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
+      "issuer": "",
+      "market": "CERT-X",
+      "currency": "EUR",
+      "underlying_category": "FTSE MIB",
+      "issue_date": "2025-09-12",
+      "maturity_date": "2028-09-27",
+      "strike_date": "2025-09-16",
+      "barrier_down": null,
+      "barrier_type": null,
+      "coupon": null,
+      "annual_coupon_yield": null,
+      "bid_price": null,
+      "ask_price": null,
+      "underlyings": [
+        {
+          "name": "Eurostoxx Banks",
+          "strike": 231.16,
+          "spot": null,
+          "barrier": null
+        },
+        {
+          "name": "FTSE Mib",
+          "strike": 42504.56,
+          "spot": null,
+          "barrier": null
+        },
+        {
+          "name": "S&P 500",
+          "strike": 6606.76,
+          "spot": null,
+          "barrier": null
+        },
+        {
+          "name": "CAC40",
+          "strike": 7818.22,
           "spot": null,
           "barrier": null
         }
@@ -670,6 +670,50 @@
       ]
     },
     {
+      "isin": "DE000UN1CV22",
+      "name": "",
+      "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
+      "issuer": "",
+      "market": "SEDEX",
+      "currency": "EUR",
+      "underlying_category": "FTSE MIB",
+      "issue_date": "2025-11-06",
+      "maturity_date": "2028-11-16",
+      "strike_date": "2025-11-05",
+      "barrier_down": null,
+      "barrier_type": null,
+      "coupon": null,
+      "annual_coupon_yield": null,
+      "bid_price": null,
+      "ask_price": null,
+      "underlyings": [
+        {
+          "name": "Eurostoxx Banks",
+          "strike": 234.81,
+          "spot": null,
+          "barrier": null
+        },
+        {
+          "name": "FTSE Mib",
+          "strike": 43438.49,
+          "spot": null,
+          "barrier": null
+        },
+        {
+          "name": "Nikkei 225",
+          "strike": 50212.27,
+          "spot": null,
+          "barrier": null
+        },
+        {
+          "name": "Nasdaq 100",
+          "strike": 25620.03,
+          "spot": null,
+          "barrier": null
+        }
+      ]
+    },
+    {
       "isin": "DE000UG641C6",
       "name": "",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
@@ -708,50 +752,6 @@
         {
           "name": "Nasdaq 100",
           "strike": 19867.97,
-          "spot": null,
-          "barrier": null
-        }
-      ]
-    },
-    {
-      "isin": "DE000UN1CV30",
-      "name": "",
-      "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
-      "issuer": "",
-      "market": "SEDEX",
-      "currency": "EUR",
-      "underlying_category": "FTSE MIB",
-      "issue_date": "2025-11-06",
-      "maturity_date": "2028-11-16",
-      "strike_date": "2025-11-05",
-      "barrier_down": null,
-      "barrier_type": null,
-      "coupon": null,
-      "annual_coupon_yield": null,
-      "bid_price": null,
-      "ask_price": null,
-      "underlyings": [
-        {
-          "name": "FTSE Mib",
-          "strike": 43438.49,
-          "spot": null,
-          "barrier": null
-        },
-        {
-          "name": "S&P 500",
-          "strike": 6796.29,
-          "spot": null,
-          "barrier": null
-        },
-        {
-          "name": "Nikkei 225",
-          "strike": 50212.27,
-          "spot": null,
-          "barrier": null
-        },
-        {
-          "name": "Nasdaq 100",
-          "strike": 25620.03,
           "spot": null,
           "barrier": null
         }
@@ -810,32 +810,6 @@
       ]
     },
     {
-      "isin": "XS2630635899",
-      "name": "",
-      "type": "Capitale Protetto",
-      "issuer": "",
-      "market": "CERT-X",
-      "currency": "EUR",
-      "underlying_category": "Euro Stoxx 50",
-      "issue_date": "2023-10-11",
-      "maturity_date": "2026-10-16",
-      "strike_date": "2023-10-06",
-      "barrier_down": null,
-      "barrier_type": null,
-      "coupon": null,
-      "annual_coupon_yield": null,
-      "bid_price": null,
-      "ask_price": null,
-      "underlyings": [
-        {
-          "name": "Euro Stoxx 50",
-          "strike": 4144.4302,
-          "spot": null,
-          "barrier": null
-        }
-      ]
-    },
-    {
       "isin": "JE00BS6B7L26",
       "name": "",
       "type": "Capitale Protetto",
@@ -856,6 +830,32 @@
         {
           "name": "Euro Stoxx 50",
           "strike": 4871.54,
+          "spot": null,
+          "barrier": null
+        }
+      ]
+    },
+    {
+      "isin": "XS2630635899",
+      "name": "",
+      "type": "Capitale Protetto",
+      "issuer": "",
+      "market": "CERT-X",
+      "currency": "EUR",
+      "underlying_category": "Euro Stoxx 50",
+      "issue_date": "2023-10-11",
+      "maturity_date": "2026-10-16",
+      "strike_date": "2023-10-06",
+      "barrier_down": null,
+      "barrier_type": null,
+      "coupon": null,
+      "annual_coupon_yield": null,
+      "bid_price": null,
+      "ask_price": null,
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50",
+          "strike": 4144.4302,
           "spot": null,
           "barrier": null
         }
@@ -888,58 +888,6 @@
       ]
     },
     {
-      "isin": "XS2998177765",
-      "name": "",
-      "type": "CAPITALE NON PROTETTO",
-      "issuer": "",
-      "market": "CERT-X",
-      "currency": "EUR",
-      "underlying_category": "Euro Stoxx 50",
-      "issue_date": "2025-05-13",
-      "maturity_date": "2028-05-15",
-      "strike_date": "2025-05-06",
-      "barrier_down": null,
-      "barrier_type": null,
-      "coupon": null,
-      "annual_coupon_yield": null,
-      "bid_price": null,
-      "ask_price": null,
-      "underlyings": [
-        {
-          "name": "Euro Stoxx 50",
-          "strike": 5263.38,
-          "spot": null,
-          "barrier": null
-        }
-      ]
-    },
-    {
-      "isin": "XS2694327219",
-      "name": "",
-      "type": "CAPITALE NON PROTETTO",
-      "issuer": "",
-      "market": "CERT-X",
-      "currency": "EUR",
-      "underlying_category": "Euro Stoxx 50",
-      "issue_date": "2024-02-16",
-      "maturity_date": "2026-02-09",
-      "strike_date": "2024-02-02",
-      "barrier_down": null,
-      "barrier_type": null,
-      "coupon": null,
-      "annual_coupon_yield": null,
-      "bid_price": null,
-      "ask_price": null,
-      "underlyings": [
-        {
-          "name": "Euro Stoxx 50",
-          "strike": 4654.55,
-          "spot": null,
-          "barrier": null
-        }
-      ]
-    },
-    {
       "isin": "XS2964613264",
       "name": "",
       "type": "CAPITALE NON PROTETTO",
@@ -966,16 +914,16 @@
       ]
     },
     {
-      "isin": "XS2395020592",
+      "isin": "XS2998177765",
       "name": "",
       "type": "CAPITALE NON PROTETTO",
       "issuer": "",
       "market": "CERT-X",
       "currency": "EUR",
       "underlying_category": "Euro Stoxx 50",
-      "issue_date": "2023-04-18",
-      "maturity_date": "2026-04-14",
-      "strike_date": "2023-04-05",
+      "issue_date": "2025-05-13",
+      "maturity_date": "2028-05-15",
+      "strike_date": "2025-05-06",
       "barrier_down": null,
       "barrier_type": null,
       "coupon": null,
@@ -985,7 +933,7 @@
       "underlyings": [
         {
           "name": "Euro Stoxx 50",
-          "strike": 4298.36,
+          "strike": 5263.38,
           "spot": null,
           "barrier": null
         }
@@ -1018,32 +966,6 @@
       ]
     },
     {
-      "isin": "XS3080026910",
-      "name": "",
-      "type": "CAPITALE NON PROTETTO",
-      "issuer": "",
-      "market": "CERT-X",
-      "currency": "EUR",
-      "underlying_category": "Euro Stoxx 50",
-      "issue_date": "2025-08-29",
-      "maturity_date": "2028-03-02",
-      "strike_date": "2025-08-22",
-      "barrier_down": null,
-      "barrier_type": null,
-      "coupon": null,
-      "annual_coupon_yield": null,
-      "bid_price": null,
-      "ask_price": null,
-      "underlyings": [
-        {
-          "name": "Euro Stoxx 50",
-          "strike": 5488.23,
-          "spot": null,
-          "barrier": null
-        }
-      ]
-    },
-    {
       "isin": "XS2972163252",
       "name": "",
       "type": "CAPITALE NON PROTETTO",
@@ -1064,6 +986,84 @@
         {
           "name": "Euro Stoxx 50",
           "strike": 5415.79,
+          "spot": null,
+          "barrier": null
+        }
+      ]
+    },
+    {
+      "isin": "XS2694327219",
+      "name": "",
+      "type": "CAPITALE NON PROTETTO",
+      "issuer": "",
+      "market": "CERT-X",
+      "currency": "EUR",
+      "underlying_category": "Euro Stoxx 50",
+      "issue_date": "2024-02-16",
+      "maturity_date": "2026-02-09",
+      "strike_date": "2024-02-02",
+      "barrier_down": null,
+      "barrier_type": null,
+      "coupon": null,
+      "annual_coupon_yield": null,
+      "bid_price": null,
+      "ask_price": null,
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50",
+          "strike": 4654.55,
+          "spot": null,
+          "barrier": null
+        }
+      ]
+    },
+    {
+      "isin": "XS2395020592",
+      "name": "",
+      "type": "CAPITALE NON PROTETTO",
+      "issuer": "",
+      "market": "CERT-X",
+      "currency": "EUR",
+      "underlying_category": "Euro Stoxx 50",
+      "issue_date": "2023-04-18",
+      "maturity_date": "2026-04-14",
+      "strike_date": "2023-04-05",
+      "barrier_down": null,
+      "barrier_type": null,
+      "coupon": null,
+      "annual_coupon_yield": null,
+      "bid_price": null,
+      "ask_price": null,
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50",
+          "strike": 4298.36,
+          "spot": null,
+          "barrier": null
+        }
+      ]
+    },
+    {
+      "isin": "XS3080026910",
+      "name": "",
+      "type": "CAPITALE NON PROTETTO",
+      "issuer": "",
+      "market": "CERT-X",
+      "currency": "EUR",
+      "underlying_category": "Euro Stoxx 50",
+      "issue_date": "2025-08-29",
+      "maturity_date": "2028-03-02",
+      "strike_date": "2025-08-22",
+      "barrier_down": null,
+      "barrier_type": null,
+      "coupon": null,
+      "annual_coupon_yield": null,
+      "bid_price": null,
+      "ask_price": null,
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50",
+          "strike": 5488.23,
           "spot": null,
           "barrier": null
         }
@@ -1160,6 +1160,96 @@
       ]
     },
     {
+      "isin": "NLBNPIT1R346",
+      "name": "",
+      "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
+      "issuer": "",
+      "market": "SEDEX",
+      "currency": "EUR",
+      "underlying_category": "Euro Stoxx 50",
+      "issue_date": "2023-06-22",
+      "maturity_date": "2027-06-25",
+      "strike_date": "2023-06-16",
+      "barrier_down": null,
+      "barrier_type": null,
+      "coupon": null,
+      "annual_coupon_yield": null,
+      "bid_price": null,
+      "ask_price": null,
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50",
+          "strike": 4394.82,
+          "spot": null,
+          "barrier": null
+        },
+        {
+          "name": "Eurostoxx Banks",
+          "strike": 104.97,
+          "spot": null,
+          "barrier": null
+        }
+      ]
+    },
+    {
+      "isin": "XS2630636194",
+      "name": "",
+      "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
+      "issuer": "",
+      "market": "CERT-X",
+      "currency": "EUR",
+      "underlying_category": "Euro Stoxx 50",
+      "issue_date": "2023-10-05",
+      "maturity_date": "2026-10-14",
+      "strike_date": "2023-10-05",
+      "barrier_down": null,
+      "barrier_type": null,
+      "coupon": null,
+      "annual_coupon_yield": null,
+      "bid_price": null,
+      "ask_price": null,
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50",
+          "strike": 4099.81,
+          "spot": null,
+          "barrier": null
+        }
+      ]
+    },
+    {
+      "isin": "DE000UG9QAA4",
+      "name": "",
+      "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
+      "issuer": "",
+      "market": "SEDEX",
+      "currency": "EUR",
+      "underlying_category": "Euro Stoxx 50",
+      "issue_date": "2025-09-11",
+      "maturity_date": "2028-09-21",
+      "strike_date": "2025-09-10",
+      "barrier_down": null,
+      "barrier_type": null,
+      "coupon": null,
+      "annual_coupon_yield": null,
+      "bid_price": null,
+      "ask_price": null,
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50",
+          "strike": 5361.47,
+          "spot": null,
+          "barrier": null
+        },
+        {
+          "name": "Eurostoxx Banks",
+          "strike": 230.65,
+          "spot": null,
+          "barrier": null
+        }
+      ]
+    },
+    {
       "isin": "DE000UN09TS9",
       "name": "",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
@@ -1192,96 +1282,6 @@
         {
           "name": "Nikkei 225",
           "strike": 47582.15,
-          "spot": null,
-          "barrier": null
-        }
-      ]
-    },
-    {
-      "isin": "IT0005385486",
-      "name": "",
-      "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
-      "issuer": "",
-      "market": "SEDEX",
-      "currency": "EUR",
-      "underlying_category": "Euro Stoxx 50",
-      "issue_date": "2019-10-31",
-      "maturity_date": "2026-10-30",
-      "strike_date": "2019-10-31",
-      "barrier_down": null,
-      "barrier_type": null,
-      "coupon": null,
-      "annual_coupon_yield": null,
-      "bid_price": null,
-      "ask_price": null,
-      "underlyings": [
-        {
-          "name": "Euro Stoxx 50",
-          "strike": 3615.597,
-          "spot": null,
-          "barrier": null
-        }
-      ]
-    },
-    {
-      "isin": "XS3045935049",
-      "name": "",
-      "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
-      "issuer": "",
-      "market": "CERT-X",
-      "currency": "EUR",
-      "underlying_category": "Euro Stoxx 50",
-      "issue_date": "2025-06-25",
-      "maturity_date": "2029-09-25",
-      "strike_date": "2025-06-25",
-      "barrier_down": null,
-      "barrier_type": null,
-      "coupon": null,
-      "annual_coupon_yield": null,
-      "bid_price": null,
-      "ask_price": null,
-      "underlyings": [
-        {
-          "name": "Euro Stoxx 50",
-          "strike": 5252.01,
-          "spot": null,
-          "barrier": null
-        },
-        {
-          "name": "Eurostoxx Banks",
-          "strike": 198.25,
-          "spot": null,
-          "barrier": null
-        }
-      ]
-    },
-    {
-      "isin": "IT0005635773",
-      "name": "",
-      "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
-      "issuer": "",
-      "market": "CERT-X",
-      "currency": "EUR",
-      "underlying_category": "Euro Stoxx 50",
-      "issue_date": "2025-04-29",
-      "maturity_date": "2029-07-30",
-      "strike_date": "2025-04-29",
-      "barrier_down": null,
-      "barrier_type": null,
-      "coupon": null,
-      "annual_coupon_yield": null,
-      "bid_price": null,
-      "ask_price": null,
-      "underlyings": [
-        {
-          "name": "Euro Stoxx 50",
-          "strike": 5161.9,
-          "spot": null,
-          "barrier": null
-        },
-        {
-          "name": "Eurostoxx Banks",
-          "strike": 188.42,
           "spot": null,
           "barrier": null
         }
@@ -1602,32 +1602,6 @@
       ]
     },
     {
-      "isin": "DE000UG71ME8",
-      "name": "",
-      "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
-      "issuer": "",
-      "market": "CERT-X",
-      "currency": "EUR",
-      "underlying_category": "DAX",
-      "issue_date": "2025-06-04",
-      "maturity_date": "2026-12-11",
-      "strike_date": "2025-06-03",
-      "barrier_down": null,
-      "barrier_type": null,
-      "coupon": null,
-      "annual_coupon_yield": null,
-      "bid_price": null,
-      "ask_price": null,
-      "underlyings": [
-        {
-          "name": "Dax",
-          "strike": 24091.62,
-          "spot": null,
-          "barrier": null
-        }
-      ]
-    },
-    {
       "isin": "DE000UN0YK04",
       "name": "",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
@@ -1648,6 +1622,32 @@
         {
           "name": "Dax",
           "strike": 24151.13,
+          "spot": null,
+          "barrier": null
+        }
+      ]
+    },
+    {
+      "isin": "DE000UG71ME8",
+      "name": "",
+      "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
+      "issuer": "",
+      "market": "CERT-X",
+      "currency": "EUR",
+      "underlying_category": "DAX",
+      "issue_date": "2025-06-04",
+      "maturity_date": "2026-12-11",
+      "strike_date": "2025-06-03",
+      "barrier_down": null,
+      "barrier_type": null,
+      "coupon": null,
+      "annual_coupon_yield": null,
+      "bid_price": null,
+      "ask_price": null,
+      "underlyings": [
+        {
+          "name": "Dax",
+          "strike": 24091.62,
           "spot": null,
           "barrier": null
         }
@@ -1836,16 +1836,16 @@
       ]
     },
     {
-      "isin": "XS2642211960",
+      "isin": "XS2395066157",
       "name": "",
       "type": "Capitale Protetto",
       "issuer": "",
       "market": "CERT-X",
       "currency": "EUR",
       "underlying_category": "S&P 500",
-      "issue_date": "2023-11-30",
-      "maturity_date": "2027-11-29",
-      "strike_date": "2023-11-24",
+      "issue_date": "2024-03-12",
+      "maturity_date": "2026-03-23",
+      "strike_date": "2024-03-08",
       "barrier_down": null,
       "barrier_type": null,
       "coupon": null,
@@ -1855,59 +1855,7 @@
       "underlyings": [
         {
           "name": "S&P 500",
-          "strike": 4559.34,
-          "spot": null,
-          "barrier": null
-        }
-      ]
-    },
-    {
-      "isin": "JE00BLS3J551",
-      "name": "",
-      "type": "Capitale Protetto",
-      "issuer": "",
-      "market": "CERT-X",
-      "currency": "EUR",
-      "underlying_category": "S&P 500",
-      "issue_date": "2023-06-22",
-      "maturity_date": "2026-08-10",
-      "strike_date": "2023-06-08",
-      "barrier_down": null,
-      "barrier_type": null,
-      "coupon": null,
-      "annual_coupon_yield": null,
-      "bid_price": null,
-      "ask_price": null,
-      "underlyings": [
-        {
-          "name": "S&P 500",
-          "strike": 4293.93,
-          "spot": null,
-          "barrier": null
-        }
-      ]
-    },
-    {
-      "isin": "JE00BLS3K963",
-      "name": "",
-      "type": "Capitale Protetto",
-      "issuer": "",
-      "market": "CERT-X",
-      "currency": "EUR",
-      "underlying_category": "S&P 500",
-      "issue_date": "2023-07-13",
-      "maturity_date": "2026-07-06",
-      "strike_date": "2023-06-28",
-      "barrier_down": null,
-      "barrier_type": null,
-      "coupon": null,
-      "annual_coupon_yield": null,
-      "bid_price": null,
-      "ask_price": null,
-      "underlyings": [
-        {
-          "name": "S&P 500",
-          "strike": 4376.86,
+          "strike": 5123.6899,
           "spot": null,
           "barrier": null
         }
@@ -1940,16 +1888,16 @@
       ]
     },
     {
-      "isin": "XS2395066157",
+      "isin": "XS2642211960",
       "name": "",
       "type": "Capitale Protetto",
       "issuer": "",
       "market": "CERT-X",
       "currency": "EUR",
       "underlying_category": "S&P 500",
-      "issue_date": "2024-03-12",
-      "maturity_date": "2026-03-23",
-      "strike_date": "2024-03-08",
+      "issue_date": "2023-11-30",
+      "maturity_date": "2027-11-29",
+      "strike_date": "2023-11-24",
       "barrier_down": null,
       "barrier_type": null,
       "coupon": null,
@@ -1959,7 +1907,33 @@
       "underlyings": [
         {
           "name": "S&P 500",
-          "strike": 5123.6899,
+          "strike": 4559.34,
+          "spot": null,
+          "barrier": null
+        }
+      ]
+    },
+    {
+      "isin": "JE00BLS3K963",
+      "name": "",
+      "type": "Capitale Protetto",
+      "issuer": "",
+      "market": "CERT-X",
+      "currency": "EUR",
+      "underlying_category": "S&P 500",
+      "issue_date": "2023-07-13",
+      "maturity_date": "2026-07-06",
+      "strike_date": "2023-06-28",
+      "barrier_down": null,
+      "barrier_type": null,
+      "coupon": null,
+      "annual_coupon_yield": null,
+      "bid_price": null,
+      "ask_price": null,
+      "underlyings": [
+        {
+          "name": "S&P 500",
+          "strike": 4376.86,
           "spot": null,
           "barrier": null
         }
@@ -2018,6 +1992,32 @@
       ]
     },
     {
+      "isin": "JE00BLS3J551",
+      "name": "",
+      "type": "Capitale Protetto",
+      "issuer": "",
+      "market": "CERT-X",
+      "currency": "EUR",
+      "underlying_category": "S&P 500",
+      "issue_date": "2023-06-22",
+      "maturity_date": "2026-08-10",
+      "strike_date": "2023-06-08",
+      "barrier_down": null,
+      "barrier_type": null,
+      "coupon": null,
+      "annual_coupon_yield": null,
+      "bid_price": null,
+      "ask_price": null,
+      "underlyings": [
+        {
+          "name": "S&P 500",
+          "strike": 4293.93,
+          "spot": null,
+          "barrier": null
+        }
+      ]
+    },
+    {
       "isin": "XS2931449073",
       "name": "",
       "type": "CAPITALE NON PROTETTO",
@@ -2038,58 +2038,6 @@
         {
           "name": "S&P 500",
           "strike": 6083.5698,
-          "spot": null,
-          "barrier": null
-        }
-      ]
-    },
-    {
-      "isin": "XS2866953537",
-      "name": "",
-      "type": "CAPITALE NON PROTETTO",
-      "issuer": "",
-      "market": "CERT-X",
-      "currency": "EUR",
-      "underlying_category": "S&P 500",
-      "issue_date": "2024-10-31",
-      "maturity_date": "2027-11-03",
-      "strike_date": "2024-10-24",
-      "barrier_down": null,
-      "barrier_type": null,
-      "coupon": null,
-      "annual_coupon_yield": null,
-      "bid_price": null,
-      "ask_price": null,
-      "underlyings": [
-        {
-          "name": "S&P 500",
-          "strike": 5567.19,
-          "spot": null,
-          "barrier": null
-        }
-      ]
-    },
-    {
-      "isin": "XS2966727773",
-      "name": "",
-      "type": "CAPITALE NON PROTETTO",
-      "issuer": "",
-      "market": "CERT-X",
-      "currency": "EUR",
-      "underlying_category": "S&P 500",
-      "issue_date": "2025-03-14",
-      "maturity_date": "2028-03-16",
-      "strike_date": "2025-03-07",
-      "barrier_down": null,
-      "barrier_type": null,
-      "coupon": null,
-      "annual_coupon_yield": null,
-      "bid_price": null,
-      "ask_price": null,
-      "underlyings": [
-        {
-          "name": "S&P 500",
-          "strike": 5770.2,
           "spot": null,
           "barrier": null
         }
@@ -2174,16 +2122,16 @@
       ]
     },
     {
-      "isin": "IT0005668337",
+      "isin": "XS2866953537",
       "name": "",
-      "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
+      "type": "CAPITALE NON PROTETTO",
       "issuer": "",
       "market": "CERT-X",
       "currency": "EUR",
       "underlying_category": "S&P 500",
-      "issue_date": "2025-10-22",
-      "maturity_date": "2028-10-23",
-      "strike_date": "2025-10-03",
+      "issue_date": "2024-10-31",
+      "maturity_date": "2027-11-03",
+      "strike_date": "2024-10-24",
       "barrier_down": null,
       "barrier_type": null,
       "coupon": null,
@@ -2192,20 +2140,34 @@
       "ask_price": null,
       "underlyings": [
         {
-          "name": "Eurostoxx Banks",
-          "strike": 234.2,
+          "name": "S&P 500",
+          "strike": 5567.19,
           "spot": null,
           "barrier": null
-        },
+        }
+      ]
+    },
+    {
+      "isin": "XS2966727773",
+      "name": "",
+      "type": "CAPITALE NON PROTETTO",
+      "issuer": "",
+      "market": "CERT-X",
+      "currency": "EUR",
+      "underlying_category": "S&P 500",
+      "issue_date": "2025-03-14",
+      "maturity_date": "2028-03-16",
+      "strike_date": "2025-03-07",
+      "barrier_down": null,
+      "barrier_type": null,
+      "coupon": null,
+      "annual_coupon_yield": null,
+      "bid_price": null,
+      "ask_price": null,
+      "underlyings": [
         {
           "name": "S&P 500",
-          "strike": 6715.79,
-          "spot": null,
-          "barrier": null
-        },
-        {
-          "name": "Nikkei 225",
-          "strike": 45769.5,
+          "strike": 5770.2,
           "spot": null,
           "barrier": null
         }
@@ -2238,32 +2200,6 @@
       ]
     },
     {
-      "isin": "DE000UN0YE69",
-      "name": "",
-      "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
-      "issuer": "",
-      "market": "CERT-X",
-      "currency": "EUR",
-      "underlying_category": "Nasdaq 100",
-      "issue_date": "2025-10-23",
-      "maturity_date": "2026-12-11",
-      "strike_date": "2025-10-22",
-      "barrier_down": null,
-      "barrier_type": null,
-      "coupon": null,
-      "annual_coupon_yield": null,
-      "bid_price": null,
-      "ask_price": null,
-      "underlyings": [
-        {
-          "name": "Nasdaq 100",
-          "strike": 24879.01,
-          "spot": null,
-          "barrier": null
-        }
-      ]
-    },
-    {
       "isin": "DE000UG81LB5",
       "name": "",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
@@ -2290,6 +2226,32 @@
       ]
     },
     {
+      "isin": "DE000UN0YE69",
+      "name": "",
+      "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
+      "issuer": "",
+      "market": "CERT-X",
+      "currency": "EUR",
+      "underlying_category": "Nasdaq 100",
+      "issue_date": "2025-10-23",
+      "maturity_date": "2026-12-11",
+      "strike_date": "2025-10-22",
+      "barrier_down": null,
+      "barrier_type": null,
+      "coupon": null,
+      "annual_coupon_yield": null,
+      "bid_price": null,
+      "ask_price": null,
+      "underlyings": [
+        {
+          "name": "Nasdaq 100",
+          "strike": 24879.01,
+          "spot": null,
+          "barrier": null
+        }
+      ]
+    },
+    {
       "isin": "XS2751819942",
       "name": "",
       "type": "CAPITALE NON PROTETTO",
@@ -2310,6 +2272,38 @@
         {
           "name": "Nasdaq 100",
           "strike": 18161.18,
+          "spot": null,
+          "barrier": null
+        }
+      ]
+    },
+    {
+      "isin": "NLBNPIT1R312",
+      "name": "",
+      "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
+      "issuer": "",
+      "market": "SEDEX",
+      "currency": "EUR",
+      "underlying_category": "Nasdaq 100",
+      "issue_date": "2023-06-22",
+      "maturity_date": "2027-06-25",
+      "strike_date": "2023-06-16",
+      "barrier_down": null,
+      "barrier_type": null,
+      "coupon": null,
+      "annual_coupon_yield": null,
+      "bid_price": null,
+      "ask_price": null,
+      "underlyings": [
+        {
+          "name": "S&P 500",
+          "strike": 4409.59,
+          "spot": null,
+          "barrier": null
+        },
+        {
+          "name": "Nasdaq 100",
+          "strike": 15083.92,
           "spot": null,
           "barrier": null
         }
@@ -2448,38 +2442,6 @@
       ]
     },
     {
-      "isin": "NLBNPIT1R312",
-      "name": "",
-      "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
-      "issuer": "",
-      "market": "SEDEX",
-      "currency": "EUR",
-      "underlying_category": "Nasdaq 100",
-      "issue_date": "2023-06-22",
-      "maturity_date": "2027-06-25",
-      "strike_date": "2023-06-16",
-      "barrier_down": null,
-      "barrier_type": null,
-      "coupon": null,
-      "annual_coupon_yield": null,
-      "bid_price": null,
-      "ask_price": null,
-      "underlyings": [
-        {
-          "name": "S&P 500",
-          "strike": 4409.59,
-          "spot": null,
-          "barrier": null
-        },
-        {
-          "name": "Nasdaq 100",
-          "strike": 15083.92,
-          "spot": null,
-          "barrier": null
-        }
-      ]
-    },
-    {
       "isin": "NLBNPIT1R5E3",
       "name": "",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
@@ -2588,50 +2550,6 @@
       ]
     },
     {
-      "isin": "XS3108797203",
-      "name": "",
-      "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
-      "issuer": "",
-      "market": "CERT-X",
-      "currency": "EUR",
-      "underlying_category": "Nasdaq 100",
-      "issue_date": "2025-09-12",
-      "maturity_date": "2028-09-28",
-      "strike_date": "2025-09-16",
-      "barrier_down": null,
-      "barrier_type": null,
-      "coupon": null,
-      "annual_coupon_yield": null,
-      "bid_price": null,
-      "ask_price": null,
-      "underlyings": [
-        {
-          "name": "CAC40",
-          "strike": 7818.22,
-          "spot": null,
-          "barrier": null
-        },
-        {
-          "name": "Nikkei 225",
-          "strike": 44902.27,
-          "spot": null,
-          "barrier": null
-        },
-        {
-          "name": "Nasdaq 100",
-          "strike": 24274.25,
-          "spot": null,
-          "barrier": null
-        },
-        {
-          "name": "Hang Seng",
-          "strike": 26438.51,
-          "spot": null,
-          "barrier": null
-        }
-      ]
-    },
-    {
       "isin": "NLBNPIT2OQM1",
       "name": "",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
@@ -2676,16 +2594,16 @@
       ]
     },
     {
-      "isin": "DE000UN37AL5",
+      "isin": "XS3108797203",
       "name": "",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "",
       "market": "CERT-X",
       "currency": "EUR",
       "underlying_category": "Nasdaq 100",
-      "issue_date": "2026-01-13",
-      "maturity_date": "2027-01-21",
-      "strike_date": "2026-01-12",
+      "issue_date": "2025-09-12",
+      "maturity_date": "2028-09-28",
+      "strike_date": "2025-09-16",
       "barrier_down": null,
       "barrier_type": null,
       "coupon": null,
@@ -2694,42 +2612,42 @@
       "ask_price": null,
       "underlyings": [
         {
-          "name": "Eurostoxx Banks",
-          "strike": 270.81,
-          "spot": null,
-          "barrier": null
-        },
-        {
-          "name": "S&P 500",
-          "strike": 6963.74,
+          "name": "CAC40",
+          "strike": 7818.22,
           "spot": null,
           "barrier": null
         },
         {
           "name": "Nikkei 225",
-          "strike": 53549.16,
+          "strike": 44902.27,
           "spot": null,
           "barrier": null
         },
         {
           "name": "Nasdaq 100",
-          "strike": 25741.95,
+          "strike": 24274.25,
+          "spot": null,
+          "barrier": null
+        },
+        {
+          "name": "Hang Seng",
+          "strike": 26438.51,
           "spot": null,
           "barrier": null
         }
       ]
     },
     {
-      "isin": "DE000UN37AN1",
+      "isin": "DE000UN2FUN4",
       "name": "",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "",
       "market": "CERT-X",
       "currency": "EUR",
       "underlying_category": "Nasdaq 100",
-      "issue_date": "2026-01-13",
-      "maturity_date": "2027-01-21",
-      "strike_date": "2026-01-13",
+      "issue_date": "2025-12-12",
+      "maturity_date": "2028-12-14",
+      "strike_date": "2025-12-11",
       "barrier_down": null,
       "barrier_type": null,
       "coupon": null,
@@ -2738,26 +2656,70 @@
       "ask_price": null,
       "underlyings": [
         {
-          "name": "Euro Stoxx 50",
-          "strike": 6029.83,
+          "name": "Eurostoxx Banks",
+          "strike": 255.07,
           "spot": null,
           "barrier": null
         },
         {
-          "name": "Eurostoxx Banks",
-          "strike": 270.81,
+          "name": "S&P 500",
+          "strike": 6901.0,
           "spot": null,
           "barrier": null
         },
         {
           "name": "Nikkei 225",
-          "strike": 53549.16,
+          "strike": 50148.82,
           "spot": null,
           "barrier": null
         },
         {
           "name": "Nasdaq 100",
-          "strike": 25741.95,
+          "strike": 25686.69,
+          "spot": null,
+          "barrier": null
+        }
+      ]
+    },
+    {
+      "isin": "DE000UN2PK03",
+      "name": "",
+      "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
+      "issuer": "",
+      "market": "SEDEX",
+      "currency": "EUR",
+      "underlying_category": "Nasdaq 100",
+      "issue_date": "2025-12-19",
+      "maturity_date": "2028-12-14",
+      "strike_date": "2025-12-18",
+      "barrier_down": null,
+      "barrier_type": null,
+      "coupon": null,
+      "annual_coupon_yield": null,
+      "bid_price": null,
+      "ask_price": null,
+      "underlyings": [
+        {
+          "name": "Eurostoxx Banks",
+          "strike": 260.19,
+          "spot": null,
+          "barrier": null
+        },
+        {
+          "name": "S&P 500",
+          "strike": 6774.76,
+          "spot": null,
+          "barrier": null
+        },
+        {
+          "name": "Nikkei 225",
+          "strike": 49001.5,
+          "spot": null,
+          "barrier": null
+        },
+        {
+          "name": "Nasdaq 100",
+          "strike": 25019.37,
           "spot": null,
           "barrier": null
         }
@@ -2904,6 +2866,132 @@
       ]
     },
     {
+      "isin": "IT0005668337",
+      "name": "",
+      "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
+      "issuer": "",
+      "market": "CERT-X",
+      "currency": "EUR",
+      "underlying_category": "Nikkei 225",
+      "issue_date": "2025-10-22",
+      "maturity_date": "2028-10-23",
+      "strike_date": "2025-10-03",
+      "barrier_down": null,
+      "barrier_type": null,
+      "coupon": null,
+      "annual_coupon_yield": null,
+      "bid_price": null,
+      "ask_price": null,
+      "underlyings": [
+        {
+          "name": "Eurostoxx Banks",
+          "strike": 234.2,
+          "spot": null,
+          "barrier": null
+        },
+        {
+          "name": "S&P 500",
+          "strike": 6715.79,
+          "spot": null,
+          "barrier": null
+        },
+        {
+          "name": "Nikkei 225",
+          "strike": 45769.5,
+          "spot": null,
+          "barrier": null
+        }
+      ]
+    },
+    {
+      "isin": "DE000UN1CV30",
+      "name": "",
+      "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
+      "issuer": "",
+      "market": "SEDEX",
+      "currency": "EUR",
+      "underlying_category": "Nikkei 225",
+      "issue_date": "2025-11-06",
+      "maturity_date": "2028-11-16",
+      "strike_date": "2025-11-05",
+      "barrier_down": null,
+      "barrier_type": null,
+      "coupon": null,
+      "annual_coupon_yield": null,
+      "bid_price": null,
+      "ask_price": null,
+      "underlyings": [
+        {
+          "name": "FTSE Mib",
+          "strike": 43438.49,
+          "spot": null,
+          "barrier": null
+        },
+        {
+          "name": "S&P 500",
+          "strike": 6796.29,
+          "spot": null,
+          "barrier": null
+        },
+        {
+          "name": "Nikkei 225",
+          "strike": 50212.27,
+          "spot": null,
+          "barrier": null
+        },
+        {
+          "name": "Nasdaq 100",
+          "strike": 25620.03,
+          "spot": null,
+          "barrier": null
+        }
+      ]
+    },
+    {
+      "isin": "DE000UN37AN1",
+      "name": "",
+      "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
+      "issuer": "",
+      "market": "CERT-X",
+      "currency": "EUR",
+      "underlying_category": "Nikkei 225",
+      "issue_date": "2026-01-13",
+      "maturity_date": "2027-01-21",
+      "strike_date": "2026-01-13",
+      "barrier_down": null,
+      "barrier_type": null,
+      "coupon": null,
+      "annual_coupon_yield": null,
+      "bid_price": null,
+      "ask_price": null,
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50",
+          "strike": 6029.83,
+          "spot": null,
+          "barrier": null
+        },
+        {
+          "name": "Eurostoxx Banks",
+          "strike": 270.81,
+          "spot": null,
+          "barrier": null
+        },
+        {
+          "name": "Nikkei 225",
+          "strike": 53549.16,
+          "spot": null,
+          "barrier": null
+        },
+        {
+          "name": "Nasdaq 100",
+          "strike": 25741.95,
+          "spot": null,
+          "barrier": null
+        }
+      ]
+    },
+    {
       "isin": "DE000UG8QVA2",
       "name": "",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
@@ -2936,6 +3024,50 @@
         {
           "name": "Nikkei 225",
           "strike": 44768.12,
+          "spot": null,
+          "barrier": null
+        }
+      ]
+    },
+    {
+      "isin": "DE000UN37AL5",
+      "name": "",
+      "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
+      "issuer": "",
+      "market": "CERT-X",
+      "currency": "EUR",
+      "underlying_category": "Nikkei 225",
+      "issue_date": "2026-01-13",
+      "maturity_date": "2027-01-21",
+      "strike_date": "2026-01-12",
+      "barrier_down": null,
+      "barrier_type": null,
+      "coupon": null,
+      "annual_coupon_yield": null,
+      "bid_price": null,
+      "ask_price": null,
+      "underlyings": [
+        {
+          "name": "Eurostoxx Banks",
+          "strike": 270.81,
+          "spot": null,
+          "barrier": null
+        },
+        {
+          "name": "S&P 500",
+          "strike": 6963.74,
+          "spot": null,
+          "barrier": null
+        },
+        {
+          "name": "Nikkei 225",
+          "strike": 53549.16,
+          "spot": null,
+          "barrier": null
+        },
+        {
+          "name": "Nasdaq 100",
+          "strike": 25741.95,
           "spot": null,
           "barrier": null
         }
