@@ -1,14 +1,16 @@
 {
   "metadata": {
-    "version": "10.0",
+    "version": "11.0",
     "source": "certificatiederivati.it",
-    "timestamp": "2026-01-29T10:46:42.230097",
-    "total_certificates": 143,
-    "with_barrier": 95,
-    "with_issuer": 143,
+    "timestamp": "2026-01-29T11:35:05.517594",
+    "total_certificates": 145,
+    "with_barrier": 97,
+    "with_issuer": 145,
+    "with_yield": 15,
+    "with_bonus": 15,
     "stats": {
-      "found": 143,
-      "detailed": 143,
+      "found": 145,
+      "detailed": 145,
       "errors": 0,
       "by_underlying": {
         "FTSE MIB": 20,
@@ -16,7 +18,7 @@
         "DAX": 14,
         "S&P 500": 19,
         "Nasdaq 100": 15,
-        "Nikkei 225": 9,
+        "Nikkei 225": 11,
         "Dow Jones": 1,
         "CAC40": 9,
         "Hang Seng": 19,
@@ -30,34 +32,8 @@
   },
   "certificates": [
     {
-      "isin": "DE000UN0YE51",
-      "name": "",
-      "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
-      "issuer": "Unicredit",
-      "market": "CERT-X",
-      "currency": "EUR",
-      "underlying_name": "FTSE Mib",
-      "underlying_category": "FTSE MIB",
-      "underlyings": [
-        {
-          "name": "FTSE Mib",
-          "strike": 42209.64,
-          "worst_of": false
-        }
-      ],
-      "issue_date": "2025-10-23",
-      "maturity_date": "2026-12-11",
-      "barrier_down": 70.0,
-      "barrier_type": "CONTINUA",
-      "barrier_level": 29546.748,
-      "coupon": null,
-      "annual_coupon_yield": null,
-      "scraped": true,
-      "timestamp": "2026-01-29T10:34:30.461442"
-    },
-    {
       "isin": "DE000UG81LA7",
-      "name": "",
+      "name": "BONUS CAP",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Unicredit",
       "market": "CERT-X",
@@ -76,14 +52,48 @@
       "barrier_down": 70.0,
       "barrier_type": "CONTINUA",
       "barrier_level": 28127.834,
+      "bonus": 104.5,
+      "cap": 104.5,
       "coupon": null,
-      "annual_coupon_yield": null,
+      "annual_coupon_yield": 11.73,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:34:35.736954"
+      "timestamp": "2026-01-29T11:22:28.655042"
+    },
+    {
+      "isin": "DE000UN0YE51",
+      "name": "BONUS CAP",
+      "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
+      "issuer": "Unicredit",
+      "market": "CERT-X",
+      "currency": "EUR",
+      "underlying_name": "FTSE Mib",
+      "underlying_category": "FTSE MIB",
+      "underlyings": [
+        {
+          "name": "FTSE Mib",
+          "strike": 42209.64,
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2025-10-23",
+      "maturity_date": "2026-12-11",
+      "barrier_down": 70.0,
+      "barrier_type": "CONTINUA",
+      "barrier_level": 29546.748,
+      "bonus": 106.0,
+      "cap": 106.0,
+      "coupon": null,
+      "annual_coupon_yield": 6.95,
+      "price": null,
+      "emission_price": 100.0,
+      "scraped": true,
+      "timestamp": "2026-01-29T11:22:34.022021"
     },
     {
       "isin": "XS2458823437",
-      "name": "",
+      "name": "BONUS OUTPERFORMANCE",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Barclays",
       "market": "CERT-X",
@@ -107,10 +117,14 @@
       "barrier_down": 40.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 10574.3,
+      "bonus": 117.5,
+      "cap": null,
       "coupon": null,
-      "annual_coupon_yield": null,
+      "annual_coupon_yield": 17.22,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:34:40.781323"
+      "timestamp": "2026-01-29T11:22:39.158106"
     },
     {
       "isin": "XS3022818663",
@@ -133,10 +147,14 @@
       "barrier_down": null,
       "barrier_type": null,
       "barrier_level": null,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:34:45.804723"
+      "timestamp": "2026-01-29T11:22:44.295772"
     },
     {
       "isin": "XS2786445614",
@@ -159,71 +177,18 @@
       "barrier_down": null,
       "barrier_type": null,
       "barrier_level": null,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 1000.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:34:50.873323"
-    },
-    {
-      "isin": "XS1741959602",
-      "name": "",
-      "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
-      "issuer": "Bnp Paribas",
-      "market": "CERT-X",
-      "currency": "EUR",
-      "underlying_name": "Euro Stoxx 50",
-      "underlying_category": "FTSE MIB",
-      "underlyings": [
-        {
-          "name": "Euro Stoxx 50",
-          "strike": 3477.91,
-          "worst_of": false
-        },
-        {
-          "name": "FTSE Mib",
-          "strike": 23649.04,
-          "worst_of": false
-        }
-      ],
-      "issue_date": "2018-04-17",
-      "maturity_date": "2028-04-17",
-      "barrier_down": 50.0,
-      "barrier_type": "DISCRETA",
-      "barrier_level": 11824.52,
-      "coupon": null,
-      "annual_coupon_yield": null,
-      "scraped": true,
-      "timestamp": "2026-01-29T10:34:55.918721"
-    },
-    {
-      "isin": "XS2168932551",
-      "name": "",
-      "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
-      "issuer": "JP Morgan Chase N.V.",
-      "market": "SEDEX",
-      "currency": "EUR",
-      "underlying_name": "FTSE Mib",
-      "underlying_category": "FTSE MIB",
-      "underlyings": [
-        {
-          "name": "FTSE Mib",
-          "strike": 25363.02,
-          "worst_of": false
-        }
-      ],
-      "issue_date": "2021-08-13",
-      "maturity_date": "2026-08-13",
-      "barrier_down": 70.0,
-      "barrier_type": "DISCRETA",
-      "barrier_level": 17754.114,
-      "coupon": null,
-      "annual_coupon_yield": null,
-      "scraped": true,
-      "timestamp": "2026-01-29T10:35:01.019544"
+      "timestamp": "2026-01-29T11:22:49.406162"
     },
     {
       "isin": "XS2129431859",
-      "name": "",
+      "name": "CASH COLLECT",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Mediobanca",
       "market": "CERT-X",
@@ -247,14 +212,18 @@
       "barrier_down": 50.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 665.855,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 1000.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:35:06.261921"
+      "timestamp": "2026-01-29T11:22:54.507589"
     },
     {
       "isin": "XS2362981917",
-      "name": "",
+      "name": "CASH COLLECT",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Mediobanca",
       "market": "CERT-X",
@@ -278,50 +247,123 @@
       "barrier_down": 50.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 940.755,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 1000.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:35:11.311881"
+      "timestamp": "2026-01-29T11:22:59.564021"
     },
     {
-      "isin": "NLBNPIT1R361",
-      "name": "",
+      "isin": "XS2168932551",
+      "name": "CASH COLLECT",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
-      "issuer": "Bnp Paribas",
+      "issuer": "JP Morgan Chase N.V.",
       "market": "SEDEX",
       "currency": "EUR",
-      "underlying_name": "Dax",
+      "underlying_name": "FTSE Mib",
       "underlying_category": "FTSE MIB",
       "underlyings": [
         {
-          "name": "Dax",
-          "strike": 16357.63,
+          "name": "FTSE Mib",
+          "strike": 25363.02,
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2021-08-13",
+      "maturity_date": "2026-08-13",
+      "barrier_down": 70.0,
+      "barrier_type": "DISCRETA",
+      "barrier_level": 17754.114,
+      "bonus": null,
+      "cap": null,
+      "coupon": null,
+      "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 1000.0,
+      "scraped": true,
+      "timestamp": "2026-01-29T11:23:05.163782"
+    },
+    {
+      "isin": "XS1741959602",
+      "name": "CASH COLLECT",
+      "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
+      "issuer": "Bnp Paribas",
+      "market": "CERT-X",
+      "currency": "EUR",
+      "underlying_name": "Euro Stoxx 50",
+      "underlying_category": "FTSE MIB",
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50",
+          "strike": 3477.91,
           "worst_of": false
         },
         {
           "name": "FTSE Mib",
-          "strike": 27861.8,
-          "worst_of": false
-        },
-        {
-          "name": "CAC40",
-          "strike": 7388.65,
+          "strike": 23649.04,
           "worst_of": false
         }
       ],
-      "issue_date": "2023-06-22",
-      "maturity_date": "2027-06-25",
-      "barrier_down": 70.0,
+      "issue_date": "2018-04-17",
+      "maturity_date": "2028-04-17",
+      "barrier_down": 50.0,
       "barrier_type": "DISCRETA",
-      "barrier_level": 5172.055,
+      "barrier_level": 11824.52,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 1000.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:35:16.360631"
+      "timestamp": "2026-01-29T11:23:10.247034"
+    },
+    {
+      "isin": "DE000UG87FQ2",
+      "name": "CASH COLLECT MEMORY",
+      "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
+      "issuer": "Unicredit",
+      "market": "CERT-X",
+      "currency": "EUR",
+      "underlying_name": "Eurostoxx Banks",
+      "underlying_category": "FTSE MIB",
+      "underlyings": [
+        {
+          "name": "Eurostoxx Banks",
+          "strike": 228.97,
+          "worst_of": false
+        },
+        {
+          "name": "FTSE Mib",
+          "strike": 41623.86,
+          "worst_of": false
+        },
+        {
+          "name": "S&P 500",
+          "strike": 6389.45,
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2025-08-20",
+      "maturity_date": "2029-08-20",
+      "barrier_down": 60.0,
+      "barrier_type": "DISCRETA",
+      "barrier_level": 3833.67,
+      "bonus": null,
+      "cap": null,
+      "coupon": null,
+      "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
+      "scraped": true,
+      "timestamp": "2026-01-29T11:23:15.330507"
     },
     {
       "isin": "DE000UG9QAC0",
-      "name": "",
+      "name": "CASH COLLECT MEMORY",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Unicredit",
       "market": "SEDEX",
@@ -355,132 +397,58 @@
       "barrier_down": 60.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 14309.562,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:35:21.411230"
+      "timestamp": "2026-01-29T11:23:20.360492"
     },
     {
-      "isin": "DE000UG87FQ2",
-      "name": "",
-      "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
-      "issuer": "Unicredit",
-      "market": "CERT-X",
-      "currency": "EUR",
-      "underlying_name": "Eurostoxx Banks",
-      "underlying_category": "FTSE MIB",
-      "underlyings": [
-        {
-          "name": "Eurostoxx Banks",
-          "strike": 228.97,
-          "worst_of": false
-        },
-        {
-          "name": "FTSE Mib",
-          "strike": 41623.86,
-          "worst_of": false
-        },
-        {
-          "name": "S&P 500",
-          "strike": 6389.45,
-          "worst_of": false
-        }
-      ],
-      "issue_date": "2025-08-20",
-      "maturity_date": "2029-08-20",
-      "barrier_down": 60.0,
-      "barrier_type": "DISCRETA",
-      "barrier_level": 3833.67,
-      "coupon": null,
-      "annual_coupon_yield": null,
-      "scraped": true,
-      "timestamp": "2026-01-29T10:35:26.450814"
-    },
-    {
-      "isin": "XS3109961576",
-      "name": "",
+      "isin": "NLBNPIT1R361",
+      "name": "CASH COLLECT MEMORY",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Bnp Paribas",
-      "market": "CERT-X",
+      "market": "SEDEX",
       "currency": "EUR",
-      "underlying_name": "Eurostoxx Banks",
+      "underlying_name": "Dax",
       "underlying_category": "FTSE MIB",
       "underlyings": [
         {
-          "name": "Eurostoxx Banks",
-          "strike": 231.16,
+          "name": "Dax",
+          "strike": 16357.63,
           "worst_of": false
         },
         {
           "name": "FTSE Mib",
-          "strike": 42504.56,
-          "worst_of": false
-        },
-        {
-          "name": "S&P 500",
-          "strike": 6606.76,
+          "strike": 27861.8,
           "worst_of": false
         },
         {
           "name": "CAC40",
-          "strike": 7818.22,
+          "strike": 7388.65,
           "worst_of": false
         }
       ],
-      "issue_date": "2025-09-12",
-      "maturity_date": "2028-09-27",
-      "barrier_down": 60.0,
+      "issue_date": "2023-06-22",
+      "maturity_date": "2027-06-25",
+      "barrier_down": 70.0,
       "barrier_type": "DISCRETA",
-      "barrier_level": 4690.932,
+      "barrier_level": 5172.055,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:35:31.512862"
-    },
-    {
-      "isin": "XS3198883491",
-      "name": "",
-      "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
-      "issuer": "Bnp Paribas",
-      "market": "CERT-X",
-      "currency": "EUR",
-      "underlying_name": "Eurostoxx Banks",
-      "underlying_category": "FTSE MIB",
-      "underlyings": [
-        {
-          "name": "Eurostoxx Banks",
-          "strike": 251.27,
-          "worst_of": false
-        },
-        {
-          "name": "FTSE Mib",
-          "strike": 43513.95,
-          "worst_of": false
-        },
-        {
-          "name": "S&P 500",
-          "strike": 6827.41,
-          "worst_of": false
-        },
-        {
-          "name": "Nasdaq 100",
-          "strike": 25196.73,
-          "worst_of": false
-        }
-      ],
-      "issue_date": "2025-12-09",
-      "maturity_date": "2028-12-21",
-      "barrier_down": 60.0,
-      "barrier_type": "DISCRETA",
-      "barrier_level": 15118.038,
-      "coupon": null,
-      "annual_coupon_yield": null,
-      "scraped": true,
-      "timestamp": "2026-01-29T10:35:36.578516"
+      "timestamp": "2026-01-29T11:23:25.477003"
     },
     {
       "isin": "NLBNPIT2OQL3",
-      "name": "",
+      "name": "CASH COLLECT MEMORY CALLABLE",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Bnp Paribas",
       "market": "SEDEX",
@@ -514,14 +482,108 @@
       "barrier_down": 60.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 4660.026,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:35:41.646069"
+      "timestamp": "2026-01-29T11:23:30.542611"
+    },
+    {
+      "isin": "XS3109961576",
+      "name": "CASH COLLECT MEMORY CALLABLE",
+      "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
+      "issuer": "Bnp Paribas",
+      "market": "CERT-X",
+      "currency": "EUR",
+      "underlying_name": "Eurostoxx Banks",
+      "underlying_category": "FTSE MIB",
+      "underlyings": [
+        {
+          "name": "Eurostoxx Banks",
+          "strike": 231.16,
+          "worst_of": false
+        },
+        {
+          "name": "FTSE Mib",
+          "strike": 42504.56,
+          "worst_of": false
+        },
+        {
+          "name": "S&P 500",
+          "strike": 6606.76,
+          "worst_of": false
+        },
+        {
+          "name": "CAC40",
+          "strike": 7818.22,
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2025-09-12",
+      "maturity_date": "2028-09-27",
+      "barrier_down": 60.0,
+      "barrier_type": "DISCRETA",
+      "barrier_level": 4690.932,
+      "bonus": null,
+      "cap": null,
+      "coupon": null,
+      "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
+      "scraped": true,
+      "timestamp": "2026-01-29T11:23:35.624899"
+    },
+    {
+      "isin": "XS3198883491",
+      "name": "CASH COLLECT MEMORY CALLABLE",
+      "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
+      "issuer": "Bnp Paribas",
+      "market": "CERT-X",
+      "currency": "EUR",
+      "underlying_name": "Eurostoxx Banks",
+      "underlying_category": "FTSE MIB",
+      "underlyings": [
+        {
+          "name": "Eurostoxx Banks",
+          "strike": 251.27,
+          "worst_of": false
+        },
+        {
+          "name": "FTSE Mib",
+          "strike": 43513.95,
+          "worst_of": false
+        },
+        {
+          "name": "S&P 500",
+          "strike": 6827.41,
+          "worst_of": false
+        },
+        {
+          "name": "Nasdaq 100",
+          "strike": 25196.73,
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2025-12-09",
+      "maturity_date": "2028-12-21",
+      "barrier_down": 60.0,
+      "barrier_type": "DISCRETA",
+      "barrier_level": 15118.038,
+      "bonus": null,
+      "cap": null,
+      "coupon": null,
+      "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
+      "scraped": true,
+      "timestamp": "2026-01-29T11:23:40.670984"
     },
     {
       "isin": "XS3198883574",
-      "name": "",
+      "name": "CASH COLLECT MEMORY CALLABLE",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Bnp Paribas",
       "market": "CERT-X",
@@ -555,14 +617,18 @@
       "barrier_down": 60.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 1530.8742,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:35:46.736111"
+      "timestamp": "2026-01-29T11:23:45.756068"
     },
     {
       "isin": "DE000VC37UL4",
-      "name": "",
+      "name": "CASH COLLECT MEMORY MAXI COUPON",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Vontobel",
       "market": "SEDEX",
@@ -596,14 +662,18 @@
       "barrier_down": 70.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 13897.044,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:35:51.894671"
+      "timestamp": "2026-01-29T11:23:51.398025"
     },
     {
       "isin": "DE000VH7RCL7",
-      "name": "",
+      "name": "CASH COLLECT MEMORY MAXI COUPON",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Vontobel",
       "market": "SEDEX",
@@ -637,14 +707,18 @@
       "barrier_down": 70.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 357.217,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:35:57.128935"
+      "timestamp": "2026-01-29T11:23:56.457765"
     },
     {
-      "isin": "DE000UN206Z0",
-      "name": "",
+      "isin": "DE000UG641C6",
+      "name": "CASH COLLECT MEMORY STEP DOWN",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Unicredit",
       "market": "CERT-X",
@@ -654,53 +728,57 @@
       "underlyings": [
         {
           "name": "Euro Stoxx 50",
-          "strike": 5668.17,
+          "strike": 5230.19,
+          "worst_of": false
+        },
+        {
+          "name": "Eurostoxx Banks",
+          "strike": 189.51,
           "worst_of": false
         },
         {
           "name": "FTSE Mib",
-          "strike": 43357.01,
+          "strike": 38319.89,
           "worst_of": false
         },
         {
-          "name": "S&P 500",
-          "strike": 6849.09,
-          "worst_of": false
-        },
-        {
-          "name": "Nikkei 225",
-          "strike": 50253.91,
+          "name": "Nasdaq 100",
+          "strike": 19867.97,
           "worst_of": false
         }
       ],
-      "issue_date": "2025-11-25",
-      "maturity_date": "2028-11-16",
+      "issue_date": "2025-05-08",
+      "maturity_date": "2028-05-18",
       "barrier_down": 55.0,
       "barrier_type": "DISCRETA",
-      "barrier_level": 27639.6505,
+      "barrier_level": 10927.3835,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:36:02.157024"
+      "timestamp": "2026-01-29T11:24:01.574816"
     },
     {
-      "isin": "DE000UN1CV30",
-      "name": "",
+      "isin": "DE000UN1CV22",
+      "name": "CASH COLLECT MEMORY STEP DOWN",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Unicredit",
       "market": "SEDEX",
       "currency": "EUR",
-      "underlying_name": "FTSE Mib",
+      "underlying_name": "Eurostoxx Banks",
       "underlying_category": "FTSE MIB",
       "underlyings": [
         {
-          "name": "FTSE Mib",
-          "strike": 43438.49,
+          "name": "Eurostoxx Banks",
+          "strike": 234.81,
           "worst_of": false
         },
         {
-          "name": "S&P 500",
-          "strike": 6796.29,
+          "name": "FTSE Mib",
+          "strike": 43438.49,
           "worst_of": false
         },
         {
@@ -719,14 +797,18 @@
       "barrier_down": 60.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 15372.018,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:36:07.171525"
+      "timestamp": "2026-01-29T11:24:07.120351"
     },
     {
       "isin": "XS2445143162",
-      "name": "",
+      "name": "BONUS CAP PLUS",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Intesa Sanpaolo",
       "market": "SEDEX",
@@ -745,14 +827,18 @@
       "barrier_down": 65.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 2557.0506,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 1000.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:36:12.880083"
+      "timestamp": "2026-01-29T11:24:13.397959"
     },
     {
       "isin": "DE000MS8JVG0",
-      "name": "",
+      "name": "BONUS OUTPERFORMANCE",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Morgan Stanley",
       "market": "CERT-X",
@@ -771,10 +857,14 @@
       "barrier_down": 65.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 3303.1311,
+      "bonus": 118.0,
+      "cap": null,
       "coupon": null,
-      "annual_coupon_yield": null,
+      "annual_coupon_yield": 5.7,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:36:17.917676"
+      "timestamp": "2026-01-29T11:24:18.603867"
     },
     {
       "isin": "JE00BS6B7L26",
@@ -797,10 +887,14 @@
       "barrier_down": 75.0,
       "barrier_type": "CONTINUA",
       "barrier_level": 3653.655,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 1000.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:36:22.945532"
+      "timestamp": "2026-01-29T11:24:23.946209"
     },
     {
       "isin": "XS2630635899",
@@ -823,10 +917,14 @@
       "barrier_down": 75.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 3108.3226,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:36:27.989966"
+      "timestamp": "2026-01-29T11:24:29.095952"
     },
     {
       "isin": "DE000MS8JUV1",
@@ -849,114 +947,14 @@
       "barrier_down": 68.5,
       "barrier_type": "CONTINUA",
       "barrier_level": 2881.9047,
+      "bonus": null,
+      "cap": 109.5,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 1000.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:36:33.055917"
-    },
-    {
-      "isin": "XS2964613264",
-      "name": "",
-      "type": "CAPITALE NON PROTETTO",
-      "issuer": "Deutsche Bank",
-      "market": "CERT-X",
-      "currency": "EUR",
-      "underlying_name": "Euro Stoxx 50",
-      "underlying_category": "Euro Stoxx 50",
-      "underlyings": [
-        {
-          "name": "Euro Stoxx 50",
-          "strike": 5468.41,
-          "worst_of": false
-        }
-      ],
-      "issue_date": "2025-03-28",
-      "maturity_date": "2028-03-14",
-      "barrier_down": null,
-      "barrier_type": null,
-      "barrier_level": null,
-      "coupon": null,
-      "annual_coupon_yield": null,
-      "scraped": true,
-      "timestamp": "2026-01-29T10:36:38.130177"
-    },
-    {
-      "isin": "XS2694327219",
-      "name": "",
-      "type": "CAPITALE NON PROTETTO",
-      "issuer": "Barclays",
-      "market": "CERT-X",
-      "currency": "EUR",
-      "underlying_name": "Euro Stoxx 50",
-      "underlying_category": "Euro Stoxx 50",
-      "underlyings": [
-        {
-          "name": "Euro Stoxx 50",
-          "strike": 4654.55,
-          "worst_of": false
-        }
-      ],
-      "issue_date": "2024-02-16",
-      "maturity_date": "2026-02-09",
-      "barrier_down": null,
-      "barrier_type": null,
-      "barrier_level": null,
-      "coupon": null,
-      "annual_coupon_yield": null,
-      "scraped": true,
-      "timestamp": "2026-01-29T10:36:44.023002"
-    },
-    {
-      "isin": "XS2395030120",
-      "name": "",
-      "type": "CAPITALE NON PROTETTO",
-      "issuer": "Societe Generale",
-      "market": "CERT-X",
-      "currency": "EUR",
-      "underlying_name": "Euro Stoxx 50",
-      "underlying_category": "Euro Stoxx 50",
-      "underlyings": [
-        {
-          "name": "Euro Stoxx 50",
-          "strike": 4315.51,
-          "worst_of": false
-        }
-      ],
-      "issue_date": "2023-05-30",
-      "maturity_date": "2026-05-25",
-      "barrier_down": null,
-      "barrier_type": null,
-      "barrier_level": null,
-      "coupon": null,
-      "annual_coupon_yield": null,
-      "scraped": true,
-      "timestamp": "2026-01-29T10:36:49.070559"
-    },
-    {
-      "isin": "XS2972163252",
-      "name": "",
-      "type": "CAPITALE NON PROTETTO",
-      "issuer": "Barclays",
-      "market": "CERT-X",
-      "currency": "EUR",
-      "underlying_name": "Euro Stoxx 50",
-      "underlying_category": "Euro Stoxx 50",
-      "underlyings": [
-        {
-          "name": "Euro Stoxx 50",
-          "strike": 5415.79,
-          "worst_of": false
-        }
-      ],
-      "issue_date": "2025-03-31",
-      "maturity_date": "2028-03-31",
-      "barrier_down": null,
-      "barrier_type": null,
-      "barrier_level": null,
-      "coupon": null,
-      "annual_coupon_yield": null,
-      "scraped": true,
-      "timestamp": "2026-01-29T10:36:54.102347"
+      "timestamp": "2026-01-29T11:24:34.216440"
     },
     {
       "isin": "XS2998177765",
@@ -979,10 +977,134 @@
       "barrier_down": null,
       "barrier_type": null,
       "barrier_level": null,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 1000.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:36:59.146513"
+      "timestamp": "2026-01-29T11:24:39.397571"
+    },
+    {
+      "isin": "XS2964613264",
+      "name": "",
+      "type": "CAPITALE NON PROTETTO",
+      "issuer": "Deutsche Bank",
+      "market": "CERT-X",
+      "currency": "EUR",
+      "underlying_name": "Euro Stoxx 50",
+      "underlying_category": "Euro Stoxx 50",
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50",
+          "strike": 5468.41,
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2025-03-28",
+      "maturity_date": "2028-03-14",
+      "barrier_down": null,
+      "barrier_type": null,
+      "barrier_level": null,
+      "bonus": null,
+      "cap": null,
+      "coupon": null,
+      "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
+      "scraped": true,
+      "timestamp": "2026-01-29T11:24:44.597556"
+    },
+    {
+      "isin": "XS2972163252",
+      "name": "",
+      "type": "CAPITALE NON PROTETTO",
+      "issuer": "Barclays",
+      "market": "CERT-X",
+      "currency": "EUR",
+      "underlying_name": "Euro Stoxx 50",
+      "underlying_category": "Euro Stoxx 50",
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50",
+          "strike": 5415.79,
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2025-03-31",
+      "maturity_date": "2028-03-31",
+      "barrier_down": null,
+      "barrier_type": null,
+      "barrier_level": null,
+      "bonus": null,
+      "cap": null,
+      "coupon": null,
+      "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 1000.0,
+      "scraped": true,
+      "timestamp": "2026-01-29T11:24:49.659793"
+    },
+    {
+      "isin": "XS2694327219",
+      "name": "",
+      "type": "CAPITALE NON PROTETTO",
+      "issuer": "Barclays",
+      "market": "CERT-X",
+      "currency": "EUR",
+      "underlying_name": "Euro Stoxx 50",
+      "underlying_category": "Euro Stoxx 50",
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50",
+          "strike": 4654.55,
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2024-02-16",
+      "maturity_date": "2026-02-09",
+      "barrier_down": null,
+      "barrier_type": null,
+      "barrier_level": null,
+      "bonus": null,
+      "cap": null,
+      "coupon": null,
+      "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 1000.0,
+      "scraped": true,
+      "timestamp": "2026-01-29T11:24:54.772051"
+    },
+    {
+      "isin": "XS2395030120",
+      "name": "",
+      "type": "CAPITALE NON PROTETTO",
+      "issuer": "Societe Generale",
+      "market": "CERT-X",
+      "currency": "EUR",
+      "underlying_name": "Euro Stoxx 50",
+      "underlying_category": "Euro Stoxx 50",
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50",
+          "strike": 4315.51,
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2023-05-30",
+      "maturity_date": "2026-05-25",
+      "barrier_down": null,
+      "barrier_type": null,
+      "barrier_level": null,
+      "bonus": null,
+      "cap": null,
+      "coupon": null,
+      "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100000.0,
+      "scraped": true,
+      "timestamp": "2026-01-29T11:24:59.902186"
     },
     {
       "isin": "XS2395020592",
@@ -1005,10 +1127,14 @@
       "barrier_down": null,
       "barrier_type": null,
       "barrier_level": null,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 1000.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:37:04.385152"
+      "timestamp": "2026-01-29T11:25:04.960978"
     },
     {
       "isin": "XS3080026910",
@@ -1031,14 +1157,18 @@
       "barrier_down": null,
       "barrier_type": null,
       "barrier_level": null,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 1000.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:37:09.813529"
+      "timestamp": "2026-01-29T11:25:10.088788"
     },
     {
       "isin": "IT0005639783",
-      "name": "",
+      "name": "CASH COLLECT",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Intesa Sanpaolo",
       "market": "CERT-X",
@@ -1067,14 +1197,18 @@
       "barrier_down": 70.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 25773.363,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:37:14.830533"
+      "timestamp": "2026-01-29T11:25:15.238440"
     },
     {
       "isin": "XS1781178311",
-      "name": "",
+      "name": "CASH COLLECT DOPPIA CEDOLA",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Bnp Paribas",
       "market": "CERT-X",
@@ -1093,14 +1227,18 @@
       "barrier_down": 30.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 1040.871,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 1000.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:37:19.995640"
+      "timestamp": "2026-01-29T11:25:20.368092"
     },
     {
       "isin": "XS2469363829",
-      "name": "",
+      "name": "CASH COLLECT LOCK IN",
       "type": "Capitale Condizionatamente Protetto",
       "issuer": "Intesa Sanpaolo",
       "market": "SEDEX",
@@ -1119,16 +1257,20 @@
       "barrier_down": null,
       "barrier_type": null,
       "barrier_level": null,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 1000.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:37:25.366777"
+      "timestamp": "2026-01-29T11:25:25.657691"
     },
     {
-      "isin": "DE000UG9QAA4",
-      "name": "",
+      "isin": "NLBNPIT1R346",
+      "name": "CASH COLLECT MEMORY",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
-      "issuer": "Unicredit",
+      "issuer": "Bnp Paribas",
       "market": "SEDEX",
       "currency": "EUR",
       "underlying_name": "Euro Stoxx 50",
@@ -1136,30 +1278,34 @@
       "underlyings": [
         {
           "name": "Euro Stoxx 50",
-          "strike": 5361.47,
+          "strike": 4394.82,
           "worst_of": false
         },
         {
           "name": "Eurostoxx Banks",
-          "strike": 230.65,
+          "strike": 104.97,
           "worst_of": false
         }
       ],
-      "issue_date": "2025-09-11",
-      "maturity_date": "2028-09-21",
-      "barrier_down": 60.0,
+      "issue_date": "2023-06-22",
+      "maturity_date": "2027-06-25",
+      "barrier_down": 65.0,
       "barrier_type": "DISCRETA",
-      "barrier_level": 138.39,
+      "barrier_level": 68.2305,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:37:30.353326"
+      "timestamp": "2026-01-29T11:25:30.715707"
     },
     {
-      "isin": "XS2630636194",
-      "name": "",
+      "isin": "IT0005635773",
+      "name": "CASH COLLECT MEMORY",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
-      "issuer": "Bnp Paribas",
+      "issuer": "Unicredit",
       "market": "CERT-X",
       "currency": "EUR",
       "underlying_name": "Euro Stoxx 50",
@@ -1167,23 +1313,32 @@
       "underlyings": [
         {
           "name": "Euro Stoxx 50",
-          "strike": 4099.81,
+          "strike": 5161.9,
+          "worst_of": false
+        },
+        {
+          "name": "Eurostoxx Banks",
+          "strike": 188.42,
           "worst_of": false
         }
       ],
-      "issue_date": "2023-10-05",
-      "maturity_date": "2026-10-14",
-      "barrier_down": 50.0,
+      "issue_date": "2025-04-29",
+      "maturity_date": "2029-07-30",
+      "barrier_down": 40.0,
       "barrier_type": "DISCRETA",
-      "barrier_level": 2049.905,
+      "barrier_level": 75.368,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 1000.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:37:35.381434"
+      "timestamp": "2026-01-29T11:25:35.768531"
     },
     {
       "isin": "DE000UN09TS9",
-      "name": "",
+      "name": "CASH COLLECT MEMORY",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Unicredit",
       "market": "CERT-X",
@@ -1212,16 +1367,20 @@
       "barrier_down": 55.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 26170.1825,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:37:40.399433"
+      "timestamp": "2026-01-29T11:25:40.851599"
     },
     {
-      "isin": "DE000VG644S5",
-      "name": "",
+      "isin": "DE000UG9QAA4",
+      "name": "CASH COLLECT MEMORY",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
-      "issuer": "Vontobel",
+      "issuer": "Unicredit",
       "market": "SEDEX",
       "currency": "EUR",
       "underlying_name": "Euro Stoxx 50",
@@ -1229,29 +1388,28 @@
       "underlyings": [
         {
           "name": "Euro Stoxx 50",
-          "strike": 5309.9,
+          "strike": 5361.47,
           "worst_of": false
         },
         {
-          "name": "S&P 500",
-          "strike": 5572.07,
-          "worst_of": false
-        },
-        {
-          "name": "Nikkei 225",
-          "strike": 36793.11,
+          "name": "Eurostoxx Banks",
+          "strike": 230.65,
           "worst_of": false
         }
       ],
-      "issue_date": "2025-03-05",
-      "maturity_date": "2030-03-11",
-      "barrier_down": 50.0,
+      "issue_date": "2025-09-11",
+      "maturity_date": "2028-09-21",
+      "barrier_down": 60.0,
       "barrier_type": "DISCRETA",
-      "barrier_level": 18396.555,
+      "barrier_level": 138.39,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:37:45.422004"
+      "timestamp": "2026-01-29T11:25:45.916896"
     },
     {
       "isin": "XS2437067007",
@@ -1274,10 +1432,14 @@
       "barrier_down": null,
       "barrier_type": null,
       "barrier_level": null,
+      "bonus": null,
+      "cap": 140.0,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:37:50.514280"
+      "timestamp": "2026-01-29T11:25:50.988230"
     },
     {
       "isin": "XS3073720370",
@@ -1315,10 +1477,14 @@
       "barrier_down": null,
       "barrier_type": null,
       "barrier_level": null,
+      "bonus": null,
+      "cap": 140.0,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:37:55.536163"
+      "timestamp": "2026-01-29T11:25:55.984350"
     },
     {
       "isin": "XS3120769347",
@@ -1356,10 +1522,14 @@
       "barrier_down": null,
       "barrier_type": null,
       "barrier_level": null,
+      "bonus": null,
+      "cap": 130.0,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:38:00.587410"
+      "timestamp": "2026-01-29T11:26:01.165666"
     },
     {
       "isin": "CH1409712846",
@@ -1382,10 +1552,14 @@
       "barrier_down": null,
       "barrier_type": null,
       "barrier_level": null,
+      "bonus": null,
+      "cap": 130.0,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 1000.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:38:05.590630"
+      "timestamp": "2026-01-29T11:26:06.219917"
     },
     {
       "isin": "CH1283538721",
@@ -1413,14 +1587,18 @@
       "barrier_down": null,
       "barrier_type": null,
       "barrier_level": null,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 1000.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:38:10.602418"
+      "timestamp": "2026-01-29T11:26:11.397302"
     },
     {
       "isin": "DE000UN2G235",
-      "name": "",
+      "name": "FIXED CASH COLLECT",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Unicredit",
       "market": "SEDEX",
@@ -1439,14 +1617,18 @@
       "barrier_down": 65.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 15791.4965,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:38:15.664640"
+      "timestamp": "2026-01-29T11:26:17.893567"
     },
     {
       "isin": "CH1325427628",
-      "name": "",
+      "name": "PHOENIX MEMORY REVERSE",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Leonteq Securities",
       "market": "CERT-X",
@@ -1475,14 +1657,18 @@
       "barrier_down": null,
       "barrier_type": null,
       "barrier_level": null,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 1000.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:38:20.670937"
+      "timestamp": "2026-01-29T11:26:23.982568"
     },
     {
       "isin": "DE000HD5ARW4",
-      "name": "",
+      "name": "RECOVERY TOP BONUS",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Unicredit",
       "market": "CERT-X",
@@ -1501,14 +1687,18 @@
       "barrier_down": 65.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 11701.04,
+      "bonus": 100.0,
+      "cap": 100.0,
       "coupon": null,
-      "annual_coupon_yield": null,
+      "annual_coupon_yield": 15.54,
+      "price": null,
+      "emission_price": 88.21,
       "scraped": true,
-      "timestamp": "2026-01-29T10:38:25.722589"
+      "timestamp": "2026-01-29T11:26:29.138670"
     },
     {
       "isin": "DE000UG81N05",
-      "name": "",
+      "name": "REVERSE BONUS CAP",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Unicredit",
       "market": "CERT-X",
@@ -1527,66 +1717,18 @@
       "barrier_down": null,
       "barrier_type": null,
       "barrier_level": null,
+      "bonus": 105.0,
+      "cap": 105.0,
       "coupon": null,
-      "annual_coupon_yield": null,
+      "annual_coupon_yield": 13.04,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:38:30.795709"
-    },
-    {
-      "isin": "DE000UN0YK04",
-      "name": "",
-      "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
-      "issuer": "Unicredit",
-      "market": "CERT-X",
-      "currency": "EUR",
-      "underlying_name": "Dax",
-      "underlying_category": "DAX",
-      "underlyings": [
-        {
-          "name": "Dax",
-          "strike": 24151.13,
-          "worst_of": false
-        }
-      ],
-      "issue_date": "2025-10-23",
-      "maturity_date": "2026-12-11",
-      "barrier_down": null,
-      "barrier_type": null,
-      "barrier_level": null,
-      "coupon": null,
-      "annual_coupon_yield": null,
-      "scraped": true,
-      "timestamp": "2026-01-29T10:38:36.019947"
-    },
-    {
-      "isin": "DE000UG71ME8",
-      "name": "",
-      "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
-      "issuer": "Unicredit",
-      "market": "CERT-X",
-      "currency": "EUR",
-      "underlying_name": "Dax",
-      "underlying_category": "DAX",
-      "underlyings": [
-        {
-          "name": "Dax",
-          "strike": 24091.62,
-          "worst_of": false
-        }
-      ],
-      "issue_date": "2025-06-04",
-      "maturity_date": "2026-12-11",
-      "barrier_down": null,
-      "barrier_type": null,
-      "barrier_level": null,
-      "coupon": null,
-      "annual_coupon_yield": null,
-      "scraped": true,
-      "timestamp": "2026-01-29T10:38:41.154177"
+      "timestamp": "2026-01-29T11:26:34.320306"
     },
     {
       "isin": "DE000UN2S9W8",
-      "name": "",
+      "name": "REVERSE BONUS CAP",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Unicredit",
       "market": "SEDEX",
@@ -1605,14 +1747,78 @@
       "barrier_down": null,
       "barrier_type": null,
       "barrier_level": null,
+      "bonus": 126.5,
+      "cap": 126.5,
       "coupon": null,
-      "annual_coupon_yield": null,
+      "annual_coupon_yield": 14.25,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:38:46.161056"
+      "timestamp": "2026-01-29T11:26:39.431133"
+    },
+    {
+      "isin": "DE000UN0YK04",
+      "name": "REVERSE BONUS CAP",
+      "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
+      "issuer": "Unicredit",
+      "market": "CERT-X",
+      "currency": "EUR",
+      "underlying_name": "Dax",
+      "underlying_category": "DAX",
+      "underlyings": [
+        {
+          "name": "Dax",
+          "strike": 24151.13,
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2025-10-23",
+      "maturity_date": "2026-12-11",
+      "barrier_down": null,
+      "barrier_type": null,
+      "barrier_level": null,
+      "bonus": 113.5,
+      "cap": 113.5,
+      "coupon": null,
+      "annual_coupon_yield": 15.64,
+      "price": null,
+      "emission_price": 100.0,
+      "scraped": true,
+      "timestamp": "2026-01-29T11:26:44.488313"
+    },
+    {
+      "isin": "DE000UG71ME8",
+      "name": "REVERSE BONUS CAP",
+      "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
+      "issuer": "Unicredit",
+      "market": "CERT-X",
+      "currency": "EUR",
+      "underlying_name": "Dax",
+      "underlying_category": "DAX",
+      "underlyings": [
+        {
+          "name": "Dax",
+          "strike": 24091.62,
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2025-06-04",
+      "maturity_date": "2026-12-11",
+      "barrier_down": null,
+      "barrier_type": null,
+      "barrier_level": null,
+      "bonus": 115.5,
+      "cap": 115.5,
+      "coupon": null,
+      "annual_coupon_yield": 17.96,
+      "price": null,
+      "emission_price": 100.0,
+      "scraped": true,
+      "timestamp": "2026-01-29T11:26:49.547773"
     },
     {
       "isin": "DE000UG2U2C5",
-      "name": "",
+      "name": "TOP BONUS",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Unicredit",
       "market": "CERT-X",
@@ -1631,14 +1837,18 @@
       "barrier_down": 65.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 14236.573,
+      "bonus": 107.0,
+      "cap": 107.0,
       "coupon": null,
-      "annual_coupon_yield": null,
+      "annual_coupon_yield": 7.93,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:38:51.194319"
+      "timestamp": "2026-01-29T11:26:54.632760"
     },
     {
       "isin": "DE000HC7SWS1",
-      "name": "",
+      "name": "TOP BONUS",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Unicredit",
       "market": "CERT-X",
@@ -1657,14 +1867,18 @@
       "barrier_down": 50.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 7923.43,
+      "bonus": 115.0,
+      "cap": 115.0,
       "coupon": null,
-      "annual_coupon_yield": null,
+      "annual_coupon_yield": 39.11,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:38:56.292795"
+      "timestamp": "2026-01-29T11:26:59.857517"
     },
     {
       "isin": "XS2011169377",
-      "name": "",
+      "name": "BONUS",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Deutsche Bank",
       "market": "CERT-X",
@@ -1683,40 +1897,18 @@
       "barrier_down": 70.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 3015.278,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:39:01.362452"
-    },
-    {
-      "isin": "DE000UG81LC3",
-      "name": "",
-      "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
-      "issuer": "Unicredit",
-      "market": "CERT-X",
-      "currency": "EUR",
-      "underlying_name": "S&P 500",
-      "underlying_category": "S&P 500",
-      "underlyings": [
-        {
-          "name": "S&P 500",
-          "strike": 6225.52,
-          "worst_of": false
-        }
-      ],
-      "issue_date": "2025-07-09",
-      "maturity_date": "2026-06-19",
-      "barrier_down": 70.0,
-      "barrier_type": "CONTINUA",
-      "barrier_level": 4357.864,
-      "coupon": null,
-      "annual_coupon_yield": null,
-      "scraped": true,
-      "timestamp": "2026-01-29T10:39:06.408304"
+      "timestamp": "2026-01-29T11:27:04.918117"
     },
     {
       "isin": "DE000UN0YE77",
-      "name": "",
+      "name": "BONUS CAP",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Unicredit",
       "market": "CERT-X",
@@ -1735,14 +1927,48 @@
       "barrier_down": 70.0,
       "barrier_type": "CONTINUA",
       "barrier_level": 4689.58,
+      "bonus": 105.5,
+      "cap": 105.5,
       "coupon": null,
-      "annual_coupon_yield": null,
+      "annual_coupon_yield": 6.37,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:39:11.425839"
+      "timestamp": "2026-01-29T11:27:09.995304"
+    },
+    {
+      "isin": "DE000UG81LC3",
+      "name": "BONUS CAP",
+      "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
+      "issuer": "Unicredit",
+      "market": "CERT-X",
+      "currency": "EUR",
+      "underlying_name": "S&P 500",
+      "underlying_category": "S&P 500",
+      "underlyings": [
+        {
+          "name": "S&P 500",
+          "strike": 6225.52,
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2025-07-09",
+      "maturity_date": "2026-06-19",
+      "barrier_down": 70.0,
+      "barrier_type": "CONTINUA",
+      "barrier_level": 4357.864,
+      "bonus": 104.5,
+      "cap": 104.5,
+      "coupon": null,
+      "annual_coupon_yield": 11.73,
+      "price": null,
+      "emission_price": 100.0,
+      "scraped": true,
+      "timestamp": "2026-01-29T11:27:15.058774"
     },
     {
       "isin": "XS2936348825",
-      "name": "",
+      "name": "BONUS OUTPERFORMANCE",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Bnp Paribas",
       "market": "CERT-X",
@@ -1761,14 +1987,18 @@
       "barrier_down": 60.0,
       "barrier_type": "CONTINUA",
       "barrier_level": 3597.9961,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 1000.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:39:16.515211"
+      "timestamp": "2026-01-29T11:27:20.101286"
     },
     {
       "isin": "XS2459309337",
-      "name": "",
+      "name": "BONUS PLUS",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Intesa Sanpaolo",
       "market": "SEDEX",
@@ -1787,88 +2017,14 @@
       "barrier_down": 65.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 2736.5598,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 1000.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:39:21.545100"
-    },
-    {
-      "isin": "XS2395066157",
-      "name": "",
-      "type": "Capitale Protetto",
-      "issuer": "Societe Generale",
-      "market": "CERT-X",
-      "currency": "EUR",
-      "underlying_name": "S&P 500",
-      "underlying_category": "S&P 500",
-      "underlyings": [
-        {
-          "name": "S&P 500",
-          "strike": 5123.6899,
-          "worst_of": false
-        }
-      ],
-      "issue_date": "2024-03-12",
-      "maturity_date": "2026-03-23",
-      "barrier_down": 76.0,
-      "barrier_type": "CONTINUA",
-      "barrier_level": 3894.0043,
-      "coupon": null,
-      "annual_coupon_yield": null,
-      "scraped": true,
-      "timestamp": "2026-01-29T10:39:26.558690"
-    },
-    {
-      "isin": "XS2872568170",
-      "name": "",
-      "type": "Capitale Protetto",
-      "issuer": "Barclays",
-      "market": "CERT-X",
-      "currency": "EUR",
-      "underlying_name": "S&P 500",
-      "underlying_category": "S&P 500",
-      "underlyings": [
-        {
-          "name": "S&P 500",
-          "strike": 5815.2598,
-          "worst_of": false
-        }
-      ],
-      "issue_date": "2024-10-31",
-      "maturity_date": "2026-10-29",
-      "barrier_down": 75.0,
-      "barrier_type": "CONTINUA",
-      "barrier_level": 4361.4448,
-      "coupon": null,
-      "annual_coupon_yield": null,
-      "scraped": true,
-      "timestamp": "2026-01-29T10:39:31.559517"
-    },
-    {
-      "isin": "JE00BLS3J551",
-      "name": "",
-      "type": "Capitale Protetto",
-      "issuer": "Goldman Sachs",
-      "market": "CERT-X",
-      "currency": "EUR",
-      "underlying_name": "S&P 500",
-      "underlying_category": "S&P 500",
-      "underlyings": [
-        {
-          "name": "S&P 500",
-          "strike": 4293.93,
-          "worst_of": false
-        }
-      ],
-      "issue_date": "2023-06-22",
-      "maturity_date": "2026-08-10",
-      "barrier_down": 60.0,
-      "barrier_type": "CONTINUA",
-      "barrier_level": 2576.358,
-      "coupon": null,
-      "annual_coupon_yield": null,
-      "scraped": true,
-      "timestamp": "2026-01-29T10:39:36.942688"
+      "timestamp": "2026-01-29T11:27:25.763874"
     },
     {
       "isin": "XS2642211960",
@@ -1891,10 +2047,74 @@
       "barrier_down": 74.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 3373.9116,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:39:41.966724"
+      "timestamp": "2026-01-29T11:27:30.910764"
+    },
+    {
+      "isin": "JE00BLS3J551",
+      "name": "",
+      "type": "Capitale Protetto",
+      "issuer": "Goldman Sachs",
+      "market": "CERT-X",
+      "currency": "EUR",
+      "underlying_name": "S&P 500",
+      "underlying_category": "S&P 500",
+      "underlyings": [
+        {
+          "name": "S&P 500",
+          "strike": 4293.93,
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2023-06-22",
+      "maturity_date": "2026-08-10",
+      "barrier_down": 60.0,
+      "barrier_type": "CONTINUA",
+      "barrier_level": 2576.358,
+      "bonus": null,
+      "cap": null,
+      "coupon": null,
+      "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100000.0,
+      "scraped": true,
+      "timestamp": "2026-01-29T11:27:36.003477"
+    },
+    {
+      "isin": "XS2872568170",
+      "name": "",
+      "type": "Capitale Protetto",
+      "issuer": "Barclays",
+      "market": "CERT-X",
+      "currency": "EUR",
+      "underlying_name": "S&P 500",
+      "underlying_category": "S&P 500",
+      "underlyings": [
+        {
+          "name": "S&P 500",
+          "strike": 5815.2598,
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2024-10-31",
+      "maturity_date": "2026-10-29",
+      "barrier_down": 75.0,
+      "barrier_type": "CONTINUA",
+      "barrier_level": 4361.4448,
+      "bonus": null,
+      "cap": null,
+      "coupon": null,
+      "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 1000.0,
+      "scraped": true,
+      "timestamp": "2026-01-29T11:27:41.028310"
     },
     {
       "isin": "JE00BLS3K963",
@@ -1917,10 +2137,14 @@
       "barrier_down": 60.0,
       "barrier_type": "CONTINUA",
       "barrier_level": 2626.116,
+      "bonus": null,
+      "cap": 139.0,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 1000.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:39:46.956956"
+      "timestamp": "2026-01-29T11:27:46.120985"
     },
     {
       "isin": "CH1251796715",
@@ -1943,10 +2167,14 @@
       "barrier_down": 50.0,
       "barrier_type": "CONTINUA",
       "barrier_level": 1990.675,
+      "bonus": null,
+      "cap": 108.0,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 1000.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:39:51.976283"
+      "timestamp": "2026-01-29T11:27:51.261047"
     },
     {
       "isin": "JE00BS6B7V24",
@@ -1969,16 +2197,20 @@
       "barrier_down": 70.0,
       "barrier_type": "CONTINUA",
       "barrier_level": 3991.7849,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 1000.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:39:57.134403"
+      "timestamp": "2026-01-29T11:27:56.392907"
     },
     {
-      "isin": "XS2931449073",
+      "isin": "XS2395066157",
       "name": "",
-      "type": "CAPITALE NON PROTETTO",
-      "issuer": "Bnp Paribas",
+      "type": "Capitale Protetto",
+      "issuer": "Societe Generale",
       "market": "CERT-X",
       "currency": "EUR",
       "underlying_name": "S&P 500",
@@ -1986,123 +2218,23 @@
       "underlyings": [
         {
           "name": "S&P 500",
-          "strike": 6083.5698,
+          "strike": 5123.6899,
           "worst_of": false
         }
       ],
-      "issue_date": "2025-02-20",
-      "maturity_date": "2028-02-16",
-      "barrier_down": null,
-      "barrier_type": null,
-      "barrier_level": null,
+      "issue_date": "2024-03-12",
+      "maturity_date": "2026-03-23",
+      "barrier_down": 76.0,
+      "barrier_type": "CONTINUA",
+      "barrier_level": 3894.0043,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 1000.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:40:02.178992"
-    },
-    {
-      "isin": "XS2866953537",
-      "name": "",
-      "type": "CAPITALE NON PROTETTO",
-      "issuer": "Bnp Paribas",
-      "market": "CERT-X",
-      "currency": "EUR",
-      "underlying_name": "S&P 500",
-      "underlying_category": "S&P 500",
-      "underlyings": [
-        {
-          "name": "S&P 500",
-          "strike": 5567.19,
-          "worst_of": false
-        }
-      ],
-      "issue_date": "2024-10-31",
-      "maturity_date": "2027-11-03",
-      "barrier_down": null,
-      "barrier_type": null,
-      "barrier_level": null,
-      "coupon": null,
-      "annual_coupon_yield": null,
-      "scraped": true,
-      "timestamp": "2026-01-29T10:40:07.256672"
-    },
-    {
-      "isin": "XS2762000540",
-      "name": "",
-      "type": "CAPITALE NON PROTETTO",
-      "issuer": "Barclays",
-      "market": "CERT-X",
-      "currency": "EUR",
-      "underlying_name": "S&P 500",
-      "underlying_category": "S&P 500",
-      "underlyings": [
-        {
-          "name": "S&P 500",
-          "strike": 5187.7,
-          "worst_of": false
-        }
-      ],
-      "issue_date": "2024-05-17",
-      "maturity_date": "2026-05-14",
-      "barrier_down": null,
-      "barrier_type": null,
-      "barrier_level": null,
-      "coupon": null,
-      "annual_coupon_yield": null,
-      "scraped": true,
-      "timestamp": "2026-01-29T10:40:12.897449"
-    },
-    {
-      "isin": "XS2935637137",
-      "name": "",
-      "type": "CAPITALE NON PROTETTO",
-      "issuer": "Barclays",
-      "market": "CERT-X",
-      "currency": "EUR",
-      "underlying_name": "S&P 500",
-      "underlying_category": "S&P 500",
-      "underlyings": [
-        {
-          "name": "S&P 500",
-          "strike": 6025.99,
-          "worst_of": false
-        }
-      ],
-      "issue_date": "2025-02-26",
-      "maturity_date": "2028-02-15",
-      "barrier_down": null,
-      "barrier_type": null,
-      "barrier_level": null,
-      "coupon": null,
-      "annual_coupon_yield": null,
-      "scraped": true,
-      "timestamp": "2026-01-29T10:40:18.453246"
-    },
-    {
-      "isin": "XS3053732064",
-      "name": "",
-      "type": "CAPITALE NON PROTETTO",
-      "issuer": "Bnp Paribas",
-      "market": "CERT-X",
-      "currency": "EUR",
-      "underlying_name": "S&P 500",
-      "underlying_category": "S&P 500",
-      "underlyings": [
-        {
-          "name": "S&P 500",
-          "strike": 6297.36,
-          "worst_of": false
-        }
-      ],
-      "issue_date": "2025-07-18",
-      "maturity_date": "2030-07-17",
-      "barrier_down": null,
-      "barrier_type": null,
-      "barrier_level": null,
-      "coupon": null,
-      "annual_coupon_yield": null,
-      "scraped": true,
-      "timestamp": "2026-01-29T10:40:23.650827"
+      "timestamp": "2026-01-29T11:28:01.460517"
     },
     {
       "isin": "XS2966727773",
@@ -2125,29 +2257,183 @@
       "barrier_down": null,
       "barrier_type": null,
       "barrier_level": null,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 1000.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:40:28.759471"
+      "timestamp": "2026-01-29T11:28:07.522736"
     },
     {
-      "isin": "NLBNPIT1R312",
+      "isin": "XS2935637137",
       "name": "",
-      "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
-      "issuer": "Bnp Paribas",
-      "market": "SEDEX",
+      "type": "CAPITALE NON PROTETTO",
+      "issuer": "Barclays",
+      "market": "CERT-X",
       "currency": "EUR",
       "underlying_name": "S&P 500",
       "underlying_category": "S&P 500",
       "underlyings": [
         {
           "name": "S&P 500",
-          "strike": 4409.59,
+          "strike": 6025.99,
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2025-02-26",
+      "maturity_date": "2028-02-15",
+      "barrier_down": null,
+      "barrier_type": null,
+      "barrier_level": null,
+      "bonus": null,
+      "cap": null,
+      "coupon": null,
+      "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 1000.0,
+      "scraped": true,
+      "timestamp": "2026-01-29T11:28:13.249217"
+    },
+    {
+      "isin": "XS2866953537",
+      "name": "",
+      "type": "CAPITALE NON PROTETTO",
+      "issuer": "Bnp Paribas",
+      "market": "CERT-X",
+      "currency": "EUR",
+      "underlying_name": "S&P 500",
+      "underlying_category": "S&P 500",
+      "underlyings": [
+        {
+          "name": "S&P 500",
+          "strike": 5567.19,
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2024-10-31",
+      "maturity_date": "2027-11-03",
+      "barrier_down": null,
+      "barrier_type": null,
+      "barrier_level": null,
+      "bonus": null,
+      "cap": null,
+      "coupon": null,
+      "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 1000.0,
+      "scraped": true,
+      "timestamp": "2026-01-29T11:28:18.413891"
+    },
+    {
+      "isin": "XS2931449073",
+      "name": "",
+      "type": "CAPITALE NON PROTETTO",
+      "issuer": "Bnp Paribas",
+      "market": "CERT-X",
+      "currency": "EUR",
+      "underlying_name": "S&P 500",
+      "underlying_category": "S&P 500",
+      "underlyings": [
+        {
+          "name": "S&P 500",
+          "strike": 6083.5698,
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2025-02-20",
+      "maturity_date": "2028-02-16",
+      "barrier_down": null,
+      "barrier_type": null,
+      "barrier_level": null,
+      "bonus": null,
+      "cap": null,
+      "coupon": null,
+      "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 1000.0,
+      "scraped": true,
+      "timestamp": "2026-01-29T11:28:23.943166"
+    },
+    {
+      "isin": "XS2762000540",
+      "name": "",
+      "type": "CAPITALE NON PROTETTO",
+      "issuer": "Barclays",
+      "market": "CERT-X",
+      "currency": "EUR",
+      "underlying_name": "S&P 500",
+      "underlying_category": "S&P 500",
+      "underlyings": [
+        {
+          "name": "S&P 500",
+          "strike": 5187.7,
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2024-05-17",
+      "maturity_date": "2026-05-14",
+      "barrier_down": null,
+      "barrier_type": null,
+      "barrier_level": null,
+      "bonus": null,
+      "cap": null,
+      "coupon": null,
+      "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 1000.0,
+      "scraped": true,
+      "timestamp": "2026-01-29T11:28:29.124467"
+    },
+    {
+      "isin": "XS3053732064",
+      "name": "",
+      "type": "CAPITALE NON PROTETTO",
+      "issuer": "Bnp Paribas",
+      "market": "CERT-X",
+      "currency": "EUR",
+      "underlying_name": "S&P 500",
+      "underlying_category": "S&P 500",
+      "underlyings": [
+        {
+          "name": "S&P 500",
+          "strike": 6297.36,
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2025-07-18",
+      "maturity_date": "2030-07-17",
+      "barrier_down": null,
+      "barrier_type": null,
+      "barrier_level": null,
+      "bonus": null,
+      "cap": null,
+      "coupon": null,
+      "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
+      "scraped": true,
+      "timestamp": "2026-01-29T11:28:34.332412"
+    },
+    {
+      "isin": "NLBNPIT1R320",
+      "name": "CASH COLLECT MEMORY",
+      "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
+      "issuer": "Bnp Paribas",
+      "market": "SEDEX",
+      "currency": "EUR",
+      "underlying_name": "Euro Stoxx 50",
+      "underlying_category": "S&P 500",
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50",
+          "strike": 4394.82,
           "worst_of": false
         },
         {
-          "name": "Nasdaq 100",
-          "strike": 15083.92,
+          "name": "S&P 500",
+          "strike": 4409.59,
           "worst_of": false
         }
       ],
@@ -2155,15 +2441,19 @@
       "maturity_date": "2027-06-25",
       "barrier_down": 70.0,
       "barrier_type": "DISCRETA",
-      "barrier_level": 10558.744,
+      "barrier_level": 3086.713,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:40:33.791466"
+      "timestamp": "2026-01-29T11:28:40.203475"
     },
     {
       "isin": "XS2940981942",
-      "name": "",
+      "name": "AUTOCALLABLE TWIN WIN CAP",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Bnp Paribas",
       "market": "CERT-X",
@@ -2182,14 +2472,18 @@
       "barrier_down": 75.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 16586.0171,
+      "bonus": null,
+      "cap": 125.0,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 1000.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:40:38.823979"
+      "timestamp": "2026-01-29T11:28:45.236496"
     },
     {
       "isin": "DE000UN0YE69",
-      "name": "",
+      "name": "BONUS CAP",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Unicredit",
       "market": "CERT-X",
@@ -2208,14 +2502,18 @@
       "barrier_down": 65.0,
       "barrier_type": "CONTINUA",
       "barrier_level": 16171.3565,
+      "bonus": 106.0,
+      "cap": 106.0,
       "coupon": null,
-      "annual_coupon_yield": null,
+      "annual_coupon_yield": 6.95,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:40:43.862378"
+      "timestamp": "2026-01-29T11:28:50.367315"
     },
     {
       "isin": "DE000UG81LB5",
-      "name": "",
+      "name": "BONUS CAP",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Unicredit",
       "market": "CERT-X",
@@ -2234,10 +2532,14 @@
       "barrier_down": 70.0,
       "barrier_type": "CONTINUA",
       "barrier_level": 15891.575,
+      "bonus": 105.5,
+      "cap": 105.5,
       "coupon": null,
-      "annual_coupon_yield": null,
+      "annual_coupon_yield": 14.34,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:40:48.950204"
+      "timestamp": "2026-01-29T11:28:55.429073"
     },
     {
       "isin": "XS2751819942",
@@ -2260,86 +2562,18 @@
       "barrier_down": null,
       "barrier_type": null,
       "barrier_level": null,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 1000.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:40:54.272785"
-    },
-    {
-      "isin": "NLBNPIT301D1",
-      "name": "",
-      "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
-      "issuer": "Bnp Paribas",
-      "market": "SEDEX",
-      "currency": "EUR",
-      "underlying_name": "Eurostoxx Banks",
-      "underlying_category": "Nasdaq 100",
-      "underlyings": [
-        {
-          "name": "Eurostoxx Banks",
-          "strike": 271.39,
-          "worst_of": false
-        },
-        {
-          "name": "S&P 500",
-          "strike": 6940.01,
-          "worst_of": false
-        },
-        {
-          "name": "Nikkei 225",
-          "strike": 53936.17,
-          "worst_of": false
-        },
-        {
-          "name": "Nasdaq 100",
-          "strike": 25529.26,
-          "worst_of": false
-        }
-      ],
-      "issue_date": "2026-01-14",
-      "maturity_date": "2029-01-25",
-      "barrier_down": 60.0,
-      "barrier_type": "DISCRETA",
-      "barrier_level": 15317.556,
-      "coupon": null,
-      "annual_coupon_yield": null,
-      "scraped": true,
-      "timestamp": "2026-01-29T10:40:59.322667"
-    },
-    {
-      "isin": "NLBNPIT1R5E3",
-      "name": "",
-      "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
-      "issuer": "Bnp Paribas",
-      "market": "SEDEX",
-      "currency": "EUR",
-      "underlying_name": "Nikkei 225",
-      "underlying_category": "Nasdaq 100",
-      "underlyings": [
-        {
-          "name": "Nikkei 225",
-          "strike": 33706.08,
-          "worst_of": false
-        },
-        {
-          "name": "Nasdaq 100",
-          "strike": 15083.92,
-          "worst_of": false
-        }
-      ],
-      "issue_date": "2023-06-22",
-      "maturity_date": "2027-06-25",
-      "barrier_down": 70.0,
-      "barrier_type": "DISCRETA",
-      "barrier_level": 10558.744,
-      "coupon": null,
-      "annual_coupon_yield": null,
-      "scraped": true,
-      "timestamp": "2026-01-29T10:41:04.470881"
+      "timestamp": "2026-01-29T11:29:00.610106"
     },
     {
       "isin": "DE000VJ12LQ0",
-      "name": "",
+      "name": "CASH COLLECT MEMORY",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Vontobel",
       "market": "SEDEX",
@@ -2373,45 +2607,133 @@
       "barrier_down": 65.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 2898.142,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:41:09.501104"
+      "timestamp": "2026-01-29T11:29:05.769180"
     },
     {
-      "isin": "NLBNPIT1R353",
-      "name": "",
+      "isin": "NLBNPIT1R312",
+      "name": "CASH COLLECT MEMORY",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Bnp Paribas",
       "market": "SEDEX",
       "currency": "EUR",
-      "underlying_name": "Nasdaq 100",
+      "underlying_name": "S&P 500",
       "underlying_category": "Nasdaq 100",
       "underlyings": [
         {
-          "name": "Nasdaq 100",
-          "strike": 15083.92,
+          "name": "S&P 500",
+          "strike": 4409.59,
           "worst_of": false
         },
         {
-          "name": "Hang Seng Tech",
-          "strike": 4233.49,
+          "name": "Nasdaq 100",
+          "strike": 15083.92,
           "worst_of": false
         }
       ],
       "issue_date": "2023-06-22",
       "maturity_date": "2027-06-25",
-      "barrier_down": 65.0,
+      "barrier_down": 70.0,
       "barrier_type": "DISCRETA",
-      "barrier_level": 2751.7685,
+      "barrier_level": 10558.744,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:41:15.339626"
+      "timestamp": "2026-01-29T11:29:11.397070"
+    },
+    {
+      "isin": "NLBNPIT301D1",
+      "name": "CASH COLLECT MEMORY",
+      "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
+      "issuer": "Bnp Paribas",
+      "market": "SEDEX",
+      "currency": "EUR",
+      "underlying_name": "Eurostoxx Banks",
+      "underlying_category": "Nasdaq 100",
+      "underlyings": [
+        {
+          "name": "Eurostoxx Banks",
+          "strike": 271.39,
+          "worst_of": false
+        },
+        {
+          "name": "S&P 500",
+          "strike": 6940.01,
+          "worst_of": false
+        },
+        {
+          "name": "Nikkei 225",
+          "strike": 53936.17,
+          "worst_of": false
+        },
+        {
+          "name": "Nasdaq 100",
+          "strike": 25529.26,
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2026-01-14",
+      "maturity_date": "2029-01-25",
+      "barrier_down": 60.0,
+      "barrier_type": "DISCRETA",
+      "barrier_level": 15317.556,
+      "bonus": null,
+      "cap": null,
+      "coupon": null,
+      "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
+      "scraped": true,
+      "timestamp": "2026-01-29T11:29:16.681424"
+    },
+    {
+      "isin": "NLBNPIT1R5E3",
+      "name": "CASH COLLECT MEMORY",
+      "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
+      "issuer": "Bnp Paribas",
+      "market": "SEDEX",
+      "currency": "EUR",
+      "underlying_name": "Nikkei 225",
+      "underlying_category": "Nasdaq 100",
+      "underlyings": [
+        {
+          "name": "Nikkei 225",
+          "strike": 33706.08,
+          "worst_of": false
+        },
+        {
+          "name": "Nasdaq 100",
+          "strike": 15083.92,
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2023-06-22",
+      "maturity_date": "2027-06-25",
+      "barrier_down": 70.0,
+      "barrier_type": "DISCRETA",
+      "barrier_level": 10558.744,
+      "bonus": null,
+      "cap": null,
+      "coupon": null,
+      "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
+      "scraped": true,
+      "timestamp": "2026-01-29T11:29:22.460840"
     },
     {
       "isin": "DE000UG9QAB2",
-      "name": "",
+      "name": "CASH COLLECT MEMORY",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Unicredit",
       "market": "SEDEX",
@@ -2445,14 +2767,53 @@
       "barrier_down": 60.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 14309.562,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:41:20.916453"
+      "timestamp": "2026-01-29T11:29:27.611550"
+    },
+    {
+      "isin": "NLBNPIT1R353",
+      "name": "CASH COLLECT MEMORY",
+      "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
+      "issuer": "Bnp Paribas",
+      "market": "SEDEX",
+      "currency": "EUR",
+      "underlying_name": "Nasdaq 100",
+      "underlying_category": "Nasdaq 100",
+      "underlyings": [
+        {
+          "name": "Nasdaq 100",
+          "strike": 15083.92,
+          "worst_of": false
+        },
+        {
+          "name": "Hang Seng Tech",
+          "strike": 4233.49,
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2023-06-22",
+      "maturity_date": "2027-06-25",
+      "barrier_down": 65.0,
+      "barrier_type": "DISCRETA",
+      "barrier_level": 2751.7685,
+      "bonus": null,
+      "cap": null,
+      "coupon": null,
+      "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
+      "scraped": true,
+      "timestamp": "2026-01-29T11:29:32.809637"
     },
     {
       "isin": "DE000VJ12LU2",
-      "name": "",
+      "name": "CASH COLLECT MEMORY AIRBAG CALLABLE",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Vontobel",
       "market": "SEDEX",
@@ -2486,14 +2847,18 @@
       "barrier_down": 65.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 16589.209,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:41:25.947050"
+      "timestamp": "2026-01-29T11:29:38.289848"
     },
     {
       "isin": "NLBNPIT2OQM1",
-      "name": "",
+      "name": "CASH COLLECT MEMORY CALLABLE",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Bnp Paribas",
       "market": "SEDEX",
@@ -2527,14 +2892,18 @@
       "barrier_down": 60.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 13621.35,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:41:31.734138"
+      "timestamp": "2026-01-29T11:29:43.353328"
     },
     {
       "isin": "XS3108797203",
-      "name": "",
+      "name": "CASH COLLECT MEMORY CALLABLE",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Bnp Paribas",
       "market": "CERT-X",
@@ -2568,96 +2937,18 @@
       "barrier_down": 60.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 15863.106,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:41:36.803706"
-    },
-    {
-      "isin": "DE000UN2FUN4",
-      "name": "",
-      "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
-      "issuer": "Unicredit",
-      "market": "CERT-X",
-      "currency": "EUR",
-      "underlying_name": "Eurostoxx Banks",
-      "underlying_category": "Nasdaq 100",
-      "underlyings": [
-        {
-          "name": "Eurostoxx Banks",
-          "strike": 255.07,
-          "worst_of": false
-        },
-        {
-          "name": "S&P 500",
-          "strike": 6901.0,
-          "worst_of": false
-        },
-        {
-          "name": "Nikkei 225",
-          "strike": 50148.82,
-          "worst_of": false
-        },
-        {
-          "name": "Nasdaq 100",
-          "strike": 25686.69,
-          "worst_of": false
-        }
-      ],
-      "issue_date": "2025-12-12",
-      "maturity_date": "2028-12-14",
-      "barrier_down": 60.0,
-      "barrier_type": "DISCRETA",
-      "barrier_level": 15412.014,
-      "coupon": null,
-      "annual_coupon_yield": null,
-      "scraped": true,
-      "timestamp": "2026-01-29T10:41:42.604978"
-    },
-    {
-      "isin": "DE000UN37AL5",
-      "name": "",
-      "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
-      "issuer": "Unicredit",
-      "market": "CERT-X",
-      "currency": "EUR",
-      "underlying_name": "Eurostoxx Banks",
-      "underlying_category": "Nasdaq 100",
-      "underlyings": [
-        {
-          "name": "Eurostoxx Banks",
-          "strike": 270.81,
-          "worst_of": false
-        },
-        {
-          "name": "S&P 500",
-          "strike": 6963.74,
-          "worst_of": false
-        },
-        {
-          "name": "Nikkei 225",
-          "strike": 53549.16,
-          "worst_of": false
-        },
-        {
-          "name": "Nasdaq 100",
-          "strike": 25741.95,
-          "worst_of": false
-        }
-      ],
-      "issue_date": "2026-01-13",
-      "maturity_date": "2027-01-21",
-      "barrier_down": 60.0,
-      "barrier_type": "DISCRETA",
-      "barrier_level": 15445.17,
-      "coupon": null,
-      "annual_coupon_yield": null,
-      "scraped": true,
-      "timestamp": "2026-01-29T10:41:47.639140"
+      "timestamp": "2026-01-29T11:29:48.482057"
     },
     {
       "isin": "DE000UN2PK03",
-      "name": "",
+      "name": "CASH COLLECT MEMORY STEP DOWN",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Unicredit",
       "market": "SEDEX",
@@ -2691,14 +2982,63 @@
       "barrier_down": 60.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 15011.622,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:41:52.617118"
+      "timestamp": "2026-01-29T11:29:53.520403"
+    },
+    {
+      "isin": "DE000UN37AL5",
+      "name": "CASH COLLECT MEMORY STEP DOWN",
+      "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
+      "issuer": "Unicredit",
+      "market": "CERT-X",
+      "currency": "EUR",
+      "underlying_name": "Eurostoxx Banks",
+      "underlying_category": "Nasdaq 100",
+      "underlyings": [
+        {
+          "name": "Eurostoxx Banks",
+          "strike": 270.81,
+          "worst_of": false
+        },
+        {
+          "name": "S&P 500",
+          "strike": 6963.74,
+          "worst_of": false
+        },
+        {
+          "name": "Nikkei 225",
+          "strike": 53549.16,
+          "worst_of": false
+        },
+        {
+          "name": "Nasdaq 100",
+          "strike": 25741.95,
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2026-01-13",
+      "maturity_date": "2027-01-21",
+      "barrier_down": 60.0,
+      "barrier_type": "DISCRETA",
+      "barrier_level": 15445.17,
+      "bonus": null,
+      "cap": null,
+      "coupon": null,
+      "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
+      "scraped": true,
+      "timestamp": "2026-01-29T11:29:58.576585"
     },
     {
       "isin": "XS2472164487",
-      "name": "",
+      "name": "BONUS PLUS",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Intesa Sanpaolo",
       "market": "SEDEX",
@@ -2717,14 +3057,58 @@
       "barrier_down": 60.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 15734.574,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 1000.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:41:57.777491"
+      "timestamp": "2026-01-29T11:30:03.641881"
+    },
+    {
+      "isin": "DE000VG644S5",
+      "name": "CASH COLLECT MEMORY",
+      "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
+      "issuer": "Vontobel",
+      "market": "SEDEX",
+      "currency": "EUR",
+      "underlying_name": "Euro Stoxx 50",
+      "underlying_category": "Nikkei 225",
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50",
+          "strike": 5309.9,
+          "worst_of": false
+        },
+        {
+          "name": "S&P 500",
+          "strike": 5572.07,
+          "worst_of": false
+        },
+        {
+          "name": "Nikkei 225",
+          "strike": 36793.11,
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2025-03-05",
+      "maturity_date": "2030-03-11",
+      "barrier_down": 50.0,
+      "barrier_type": "DISCRETA",
+      "barrier_level": 18396.555,
+      "bonus": null,
+      "cap": null,
+      "coupon": null,
+      "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
+      "scraped": true,
+      "timestamp": "2026-01-29T11:30:08.717590"
     },
     {
       "isin": "DE000UG9QA92",
-      "name": "",
+      "name": "CASH COLLECT MEMORY",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Unicredit",
       "market": "SEDEX",
@@ -2748,14 +3132,18 @@
       "barrier_down": 60.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 26302.602,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:42:02.778141"
+      "timestamp": "2026-01-29T11:30:13.804350"
     },
     {
       "isin": "IT0005668337",
-      "name": "",
+      "name": "CASH COLLECT MEMORY",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Unicredit",
       "market": "CERT-X",
@@ -2784,14 +3172,63 @@
       "barrier_down": 60.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 27461.7,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 1000.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:42:08.244556"
+      "timestamp": "2026-01-29T11:30:18.925745"
+    },
+    {
+      "isin": "DE000UN1CV30",
+      "name": "CASH COLLECT MEMORY STEP DOWN",
+      "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
+      "issuer": "Unicredit",
+      "market": "SEDEX",
+      "currency": "EUR",
+      "underlying_name": "FTSE Mib",
+      "underlying_category": "Nikkei 225",
+      "underlyings": [
+        {
+          "name": "FTSE Mib",
+          "strike": 43438.49,
+          "worst_of": false
+        },
+        {
+          "name": "S&P 500",
+          "strike": 6796.29,
+          "worst_of": false
+        },
+        {
+          "name": "Nikkei 225",
+          "strike": 50212.27,
+          "worst_of": false
+        },
+        {
+          "name": "Nasdaq 100",
+          "strike": 25620.03,
+          "worst_of": false
+        }
+      ],
+      "issue_date": "2025-11-06",
+      "maturity_date": "2028-11-16",
+      "barrier_down": 60.0,
+      "barrier_type": "DISCRETA",
+      "barrier_level": 15372.018,
+      "bonus": null,
+      "cap": null,
+      "coupon": null,
+      "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
+      "scraped": true,
+      "timestamp": "2026-01-29T11:30:23.976445"
     },
     {
       "isin": "DE000UN37AN1",
-      "name": "",
+      "name": "CASH COLLECT MEMORY STEP DOWN",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Unicredit",
       "market": "CERT-X",
@@ -2825,14 +3262,18 @@
       "barrier_down": 60.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 15445.17,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:42:13.273017"
+      "timestamp": "2026-01-29T11:30:29.050579"
     },
     {
       "isin": "DE000UG8QVA2",
-      "name": "",
+      "name": "CASH COLLECT MEMORY STEP DOWN",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Unicredit",
       "market": "CERT-X",
@@ -2861,14 +3302,18 @@
       "barrier_down": 60.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 26860.872,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 1000.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:42:18.329053"
+      "timestamp": "2026-01-29T11:30:34.112485"
     },
     {
       "isin": "DE000UN37AM3",
-      "name": "",
+      "name": "CASH COLLECT MEMORY STEP DOWN",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Unicredit",
       "market": "CERT-X",
@@ -2902,14 +3347,18 @@
       "barrier_down": 60.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 32129.496,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:42:23.390644"
+      "timestamp": "2026-01-29T11:30:39.155104"
     },
     {
       "isin": "DE000UN2PK29",
-      "name": "",
+      "name": "CASH COLLECT MEMORY STEP DOWN",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Unicredit",
       "market": "SEDEX",
@@ -2943,14 +3392,18 @@
       "barrier_down": 60.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 15011.622,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:42:28.403726"
+      "timestamp": "2026-01-29T11:30:44.186910"
     },
     {
       "isin": "DE000UN2PK37",
-      "name": "",
+      "name": "CASH COLLECT MEMORY STEP DOWN",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Unicredit",
       "market": "SEDEX",
@@ -2984,14 +3437,18 @@
       "barrier_down": 60.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 29400.9,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:42:33.510241"
+      "timestamp": "2026-01-29T11:30:49.270027"
     },
     {
       "isin": "IT0005668402",
-      "name": "",
+      "name": "CASH COLLECT MEMORY STEP DOWN",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Unicredit",
       "market": "CERT-X",
@@ -3025,10 +3482,14 @@
       "barrier_down": 60.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 27296.196,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 1000.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:42:38.610425"
+      "timestamp": "2026-01-29T11:30:54.337753"
     },
     {
       "isin": "IT0006756370",
@@ -3056,10 +3517,14 @@
       "barrier_down": null,
       "barrier_type": null,
       "barrier_level": null,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 1000.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:42:43.679219"
+      "timestamp": "2026-01-29T11:30:59.435757"
     },
     {
       "isin": "XS3103220243",
@@ -3097,10 +3562,14 @@
       "barrier_down": null,
       "barrier_type": null,
       "barrier_level": null,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:42:48.710045"
+      "timestamp": "2026-01-29T11:31:04.489200"
     },
     {
       "isin": "JE00BS6BXL48",
@@ -3123,14 +3592,18 @@
       "barrier_down": null,
       "barrier_type": null,
       "barrier_level": null,
+      "bonus": null,
+      "cap": 146.0,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:42:53.781450"
+      "timestamp": "2026-01-29T11:31:09.550766"
     },
     {
       "isin": "XS2994474133",
-      "name": "",
+      "name": "PHOENIX MEMORY",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Mediobanca",
       "market": "CERT-X",
@@ -3159,14 +3632,18 @@
       "barrier_down": 55.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 21327.317,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:42:58.806336"
+      "timestamp": "2026-01-29T11:31:14.808698"
     },
     {
       "isin": "XS3138153740",
-      "name": "",
+      "name": "PHOENIX MEMORY",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Bnp Paribas",
       "market": "CERT-X",
@@ -3200,14 +3677,18 @@
       "barrier_down": 55.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 13321.9625,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:43:04.495305"
+      "timestamp": "2026-01-29T11:31:20.797898"
     },
     {
       "isin": "IT0006771569",
-      "name": "",
+      "name": "PHOENIX MEMORY",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Marex Financial",
       "market": "CERT-X",
@@ -3241,14 +3722,18 @@
       "barrier_down": 60.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 24.456,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 1000.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:43:09.651894"
+      "timestamp": "2026-01-29T11:31:26.395990"
     },
     {
       "isin": "XS3189027637",
-      "name": "",
+      "name": "PHOENIX MEMORY",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Barclays",
       "market": "CERT-X",
@@ -3277,14 +3762,18 @@
       "barrier_down": 80.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 6363.016,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:43:14.690174"
+      "timestamp": "2026-01-29T11:31:32.437809"
     },
     {
       "isin": "CH1438094604",
-      "name": "",
+      "name": "PHOENIX MEMORY SOFTCALLABLE",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Leonteq Securities",
       "market": "CERT-X",
@@ -3318,14 +3807,18 @@
       "barrier_down": 60.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 1515.1464,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 1000.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:43:19.688778"
+      "timestamp": "2026-01-29T11:31:37.557046"
     },
     {
       "isin": "DE000UJ01H64",
-      "name": "",
+      "name": "PHOENIX MEMORY STEP DOWN",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Ubs",
       "market": "SEDEX",
@@ -3364,14 +3857,18 @@
       "barrier_down": 60.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 1372.7634,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 1000.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:43:24.720646"
+      "timestamp": "2026-01-29T11:31:42.847751"
     },
     {
       "isin": "IT0006772542",
-      "name": "",
+      "name": "PHOENIX MEMORY STEP DOWN",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Marex Financial",
       "market": "CERT-X",
@@ -3405,10 +3902,14 @@
       "barrier_down": 55.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 4466.5885,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 1000.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:43:29.831922"
+      "timestamp": "2026-01-29T11:31:48.061444"
     },
     {
       "isin": "XS2975784641",
@@ -3436,10 +3937,14 @@
       "barrier_down": null,
       "barrier_type": null,
       "barrier_level": null,
+      "bonus": null,
+      "cap": 125.0,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:43:35.034291"
+      "timestamp": "2026-01-29T11:31:53.100646"
     },
     {
       "isin": "XS2984355789",
@@ -3462,10 +3967,14 @@
       "barrier_down": null,
       "barrier_type": null,
       "barrier_level": null,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:43:40.188143"
+      "timestamp": "2026-01-29T11:31:58.166094"
     },
     {
       "isin": "XS3145493840",
@@ -3488,10 +3997,14 @@
       "barrier_down": null,
       "barrier_type": null,
       "barrier_level": null,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 1000.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:43:45.225609"
+      "timestamp": "2026-01-29T11:32:03.812444"
     },
     {
       "isin": "XS2751881157",
@@ -3514,10 +4027,14 @@
       "barrier_down": null,
       "barrier_type": null,
       "barrier_level": null,
+      "bonus": null,
+      "cap": 134.0,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:43:50.266031"
+      "timestamp": "2026-01-29T11:32:08.862429"
     },
     {
       "isin": "XS2828123807",
@@ -3540,10 +4057,14 @@
       "barrier_down": null,
       "barrier_type": null,
       "barrier_level": null,
+      "bonus": null,
+      "cap": 140.0,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:43:55.367563"
+      "timestamp": "2026-01-29T11:32:13.897898"
     },
     {
       "isin": "XS2881370303",
@@ -3566,10 +4087,14 @@
       "barrier_down": null,
       "barrier_type": null,
       "barrier_level": null,
+      "bonus": null,
+      "cap": 140.0,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:44:00.416090"
+      "timestamp": "2026-01-29T11:32:18.985199"
     },
     {
       "isin": "XS2395113413",
@@ -3592,10 +4117,14 @@
       "barrier_down": null,
       "barrier_type": null,
       "barrier_level": null,
+      "bonus": null,
+      "cap": 140.0,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:44:05.446057"
+      "timestamp": "2026-01-29T11:32:24.089717"
     },
     {
       "isin": "XS2395071744",
@@ -3618,10 +4147,14 @@
       "barrier_down": null,
       "barrier_type": null,
       "barrier_level": null,
+      "bonus": null,
+      "cap": 120.0,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:44:10.470162"
+      "timestamp": "2026-01-29T11:32:29.256407"
     },
     {
       "isin": "XS2727997095",
@@ -3644,10 +4177,14 @@
       "barrier_down": null,
       "barrier_type": null,
       "barrier_level": null,
+      "bonus": null,
+      "cap": 135.0,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:44:16.479639"
+      "timestamp": "2026-01-29T11:32:34.337520"
     },
     {
       "isin": "XS3073764584",
@@ -3670,10 +4207,14 @@
       "barrier_down": null,
       "barrier_type": null,
       "barrier_level": null,
+      "bonus": null,
+      "cap": 150.0,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:44:21.532226"
+      "timestamp": "2026-01-29T11:32:39.546341"
     },
     {
       "isin": "XS3051831488",
@@ -3706,14 +4247,18 @@
       "barrier_down": null,
       "barrier_type": null,
       "barrier_level": null,
+      "bonus": null,
+      "cap": 120.833,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:44:26.578815"
+      "timestamp": "2026-01-29T11:32:44.848503"
     },
     {
       "isin": "XS3099069349",
-      "name": "",
+      "name": "PHOENIX MEMORY",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Deutsche Bank",
       "market": "CERT-X",
@@ -3742,14 +4287,18 @@
       "barrier_down": 60.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 14699.37,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:44:31.668106"
+      "timestamp": "2026-01-29T11:32:51.116113"
     },
     {
       "isin": "XS2998298637",
-      "name": "",
+      "name": "PHOENIX MEMORY",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Barclays",
       "market": "CERT-X",
@@ -3783,14 +4332,18 @@
       "barrier_down": 70.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 16484.622,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:44:36.768803"
+      "timestamp": "2026-01-29T11:32:56.348250"
     },
     {
       "isin": "IT0005632564",
-      "name": "",
+      "name": "PHOENIX MEMORY",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Unicredit",
       "market": "CERT-X",
@@ -3819,14 +4372,18 @@
       "barrier_down": 65.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 14912.1505,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:44:41.806079"
+      "timestamp": "2026-01-29T11:33:02.135786"
     },
     {
       "isin": "XS2912725681",
-      "name": "",
+      "name": "PHOENIX MEMORY",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Barclays",
       "market": "CERT-X",
@@ -3860,14 +4417,18 @@
       "barrier_down": 75.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 17569.95,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:44:47.235253"
+      "timestamp": "2026-01-29T11:33:07.589004"
     },
     {
       "isin": "XS3052737676",
-      "name": "",
+      "name": "PHOENIX MEMORY",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Barclays",
       "market": "CERT-X",
@@ -3901,10 +4462,14 @@
       "barrier_down": 70.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 792.568,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:44:52.775487"
+      "timestamp": "2026-01-29T11:33:13.187736"
     },
     {
       "isin": "XS2742911840",
@@ -3937,10 +4502,14 @@
       "barrier_down": 45.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 10.7145,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:44:57.995192"
+      "timestamp": "2026-01-29T11:33:18.284545"
     },
     {
       "isin": "XS2777588653",
@@ -3968,10 +4537,14 @@
       "barrier_down": 75.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 4034.2875,
+      "bonus": null,
+      "cap": 125.0,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100000.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:45:03.015783"
+      "timestamp": "2026-01-29T11:33:23.330743"
     },
     {
       "isin": "XS2392249624",
@@ -3999,10 +4572,14 @@
       "barrier_down": 58.5,
       "barrier_type": "DISCRETA",
       "barrier_level": 2071.409,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 1000.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:45:08.068265"
+      "timestamp": "2026-01-29T11:33:28.448762"
     },
     {
       "isin": "CH1409719858",
@@ -4030,10 +4607,14 @@
       "barrier_down": null,
       "barrier_type": null,
       "barrier_level": null,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 1000.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:45:13.127571"
+      "timestamp": "2026-01-29T11:33:33.530858"
     },
     {
       "isin": "CH1186551276",
@@ -4081,10 +4662,14 @@
       "barrier_down": null,
       "barrier_type": null,
       "barrier_level": null,
+      "bonus": null,
+      "cap": 140.0,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 1000.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:45:18.260531"
+      "timestamp": "2026-01-29T11:33:38.782276"
     },
     {
       "isin": "CH1163999746",
@@ -4107,10 +4692,14 @@
       "barrier_down": null,
       "barrier_type": null,
       "barrier_level": null,
+      "bonus": null,
+      "cap": 145.0,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 1000.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:45:23.389823"
+      "timestamp": "2026-01-29T11:33:43.816243"
     },
     {
       "isin": "CH1484596726",
@@ -4133,10 +4722,14 @@
       "barrier_down": null,
       "barrier_type": null,
       "barrier_level": null,
+      "bonus": null,
+      "cap": 140.0,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 1000.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:45:28.499032"
+      "timestamp": "2026-01-29T11:33:48.833291"
     },
     {
       "isin": "CH1325427586",
@@ -4159,10 +4752,14 @@
       "barrier_down": null,
       "barrier_type": null,
       "barrier_level": null,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 1000.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:45:33.648691"
+      "timestamp": "2026-01-29T11:33:53.869223"
     },
     {
       "isin": "DE000UP2RGC9",
@@ -4185,14 +4782,18 @@
       "barrier_down": null,
       "barrier_type": null,
       "barrier_level": null,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 1000.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:45:39.114261"
+      "timestamp": "2026-01-29T11:33:59.644213"
     },
     {
       "isin": "XS2759241727",
-      "name": "",
+      "name": "CASH COLLECT MEMORY",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Bnp Paribas",
       "market": "CERT-X",
@@ -4211,14 +4812,18 @@
       "barrier_down": 60.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 49.65,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:45:44.952347"
+      "timestamp": "2026-01-29T11:34:05.213870"
     },
     {
       "isin": "XS2869899422",
-      "name": "",
+      "name": "PHOENIX MEMORY",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Bnp Paribas",
       "market": "CERT-X",
@@ -4237,14 +4842,18 @@
       "barrier_down": 60.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 44.532,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:45:49.988928"
+      "timestamp": "2026-01-29T11:34:10.815622"
     },
     {
       "isin": "XS0462108241",
-      "name": "",
+      "name": "PHOENIX MEMORY",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Deutsche Bank",
       "market": "CERT-X",
@@ -4263,14 +4872,18 @@
       "barrier_down": 65.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 49.8355,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100000.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:45:55.283302"
+      "timestamp": "2026-01-29T11:34:16.595120"
     },
     {
       "isin": "XS2880924787",
-      "name": "",
+      "name": "PHOENIX MEMORY",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Bnp Paribas",
       "market": "CERT-X",
@@ -4289,14 +4902,18 @@
       "barrier_down": 60.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 43.896,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 100.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:46:00.350771"
+      "timestamp": "2026-01-29T11:34:21.846210"
     },
     {
       "isin": "CH1300970659",
-      "name": "",
+      "name": "PHOENIX MEMORY SOFTCALLABLE",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "EFG International",
       "market": "CERT-X",
@@ -4320,14 +4937,18 @@
       "barrier_down": 60.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 49.512,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 1000.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:46:05.454277"
+      "timestamp": "2026-01-29T11:34:27.031611"
     },
     {
       "isin": "CH1369854562",
-      "name": "",
+      "name": "PHOENIX MEMORY SOFTCALLABLE",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Leonteq Securities",
       "market": "CERT-X",
@@ -4351,14 +4972,18 @@
       "barrier_down": 60.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 46.548,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 1000.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:46:10.468249"
+      "timestamp": "2026-01-29T11:34:32.588338"
     },
     {
       "isin": "CH1476723254",
-      "name": "",
+      "name": "PHOENIX MEMORY SOFTCALLABLE",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Leonteq Securities",
       "market": "CERT-X",
@@ -4382,14 +5007,18 @@
       "barrier_down": 70.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 47.32,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 1000.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:46:15.502820"
+      "timestamp": "2026-01-29T11:34:37.646781"
     },
     {
       "isin": "CH1325429418",
-      "name": "",
+      "name": "PHOENIX MEMORY SOFTCALLABLE",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Leonteq Securities",
       "market": "CERT-X",
@@ -4413,14 +5042,18 @@
       "barrier_down": 60.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 49.68,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 1000.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:46:20.548536"
+      "timestamp": "2026-01-29T11:34:42.741363"
     },
     {
       "isin": "CH1325426521",
-      "name": "",
+      "name": "PHOENIX MEMORY SOFTCALLABLE",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Leonteq Securities",
       "market": "CERT-X",
@@ -4444,14 +5077,18 @@
       "barrier_down": 50.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 41.265,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 1000.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:46:25.561392"
+      "timestamp": "2026-01-29T11:34:47.787597"
     },
     {
       "isin": "CH1325431729",
-      "name": "",
+      "name": "PHOENIX MEMORY SOFTCALLABLE",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Leonteq Securities",
       "market": "CERT-X",
@@ -4475,14 +5112,18 @@
       "barrier_down": 50.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 41.105,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 1000.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:46:30.620838"
+      "timestamp": "2026-01-29T11:34:53.485289"
     },
     {
       "isin": "CH1358855174",
-      "name": "",
+      "name": "PHOENIX MEMORY SOFTCALLABLE TCM",
       "type": "CAPITALE CONDIZIONATAMENTE PROTETTO",
       "issuer": "Leonteq Securities",
       "market": "CERT-X",
@@ -4506,10 +5147,14 @@
       "barrier_down": 60.0,
       "barrier_type": "DISCRETA",
       "barrier_level": 50.796,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 1000.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:46:35.665043"
+      "timestamp": "2026-01-29T11:34:58.896502"
     },
     {
       "isin": "FREXA0001174",
@@ -4547,10 +5192,14 @@
       "barrier_down": null,
       "barrier_type": null,
       "barrier_level": null,
+      "bonus": null,
+      "cap": null,
       "coupon": null,
       "annual_coupon_yield": null,
+      "price": null,
+      "emission_price": 1000.0,
       "scraped": true,
-      "timestamp": "2026-01-29T10:46:40.677298"
+      "timestamp": "2026-01-29T11:35:03.964221"
     }
   ]
 }
