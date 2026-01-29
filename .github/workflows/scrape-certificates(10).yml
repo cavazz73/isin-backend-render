@@ -1,0 +1,49 @@
+name: Update Certificates Data
+
+on:
+  schedule:
+    - cron: '0 20 * * *'
+  workflow_dispatch:
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          pip install playwright beautifulsoup4
+          playwright install chromium
+          playwright install-deps chromium
+
+      - name: Create data directory
+        run: mkdir -p data
+
+      - name: Run scraper
+        run: python scraper_ced_v9.py --output data/certificates-data.json
+
+      - name: Validate
+        run: |
+          COUNT=$(python -c "import json; d=json.load(open('data/certificates-data.json')); print(len(d.get('certificates', [])))")
+          echo "Certificate count: $COUNT"
+          if [ "$COUNT" -eq "0" ]; then
+            echo "ERROR: No certificates found!"
+            exit 1
+          fi
+
+      - name: Commit and push
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add data/certificates-data.json
+          git diff --staged --quiet || git commit -m "Update certificates data $(date +'%Y-%m-%d')"
+          git push
