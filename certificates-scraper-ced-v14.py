@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 """
-Certificates Scraper v14 - FUNZIONANTE
-Focus: Ultime emissioni su Indici, Commodities, Valute, Tassi, Credit Linked
-Esclude singoli titoli azionari
+Certificates Scraper v18 – cerca ISIN nelle notizie di inizio negoziazione CERTX 2026
 """
 
 import json
@@ -15,26 +13,9 @@ from bs4 import BeautifulSoup
 CONFIG = {
     "timeout": 60000,
     "output_file": "certificates-data.json",
-    "max_certificates": 120
+    "max_certificates": 80,
+    "max_pages": 5   # quante pagine di avvisi visitare
 }
-
-def is_good_underlying(text):
-    """Filtro migliorato - accetta solo ciò che ci interessa"""
-    if not text:
-        return False
-    t = text.lower()
-    good_keywords = [
-        "euro stoxx", "stoxx", "ftse mib", "s&p", "nasdaq", "dax", "cac", "nikkei",
-        "brent", "wti", "gold", "silver", "platinum", "oil", "commodity",
-        "eur/usd", "usd/jpy", "gbp/usd", "usd/chf", "valuta",
-        "btp", "bund", "oat", "treasury", "tasso", "rate", "credit linked",
-        "basket", "multi", "indice", "index"
-    ]
-    bad_keywords = ["s.p.a", "spa", "srl", "nv", "ltd", "inc", "ag", "sa"]
-    
-    if any(bad in t for bad in bad_keywords) and len(t.split()) < 6:
-        return False
-    return any(good in t for good in good_keywords)
 
 def parse_number(text):
     if not text: return None
@@ -55,131 +36,148 @@ def parse_date(text):
         pass
     return text
 
-def scrape_recent_isins(page):
-    """Migliorata: cerca nelle pagine avvisi CERTX e SEDeX"""
-    isins = set()
-    urls = [
-        "https://www.borsaitaliana.it/borsa/avvisi-negoziazione/certx/archive.html",
-        "https://www.borsaitaliana.it/borsa/avvisi-negoziazione/sedex.html",
-    ]
-    
-    for base in urls:
-        for p in range(1, 8):   # prime 7 pagine
-            url = f"{base}?page={p}" if p > 1 else base
-            try:
-                page.goto(url, timeout=CONFIG["timeout"], wait_until="networkidle")
-                time.sleep(2.5)
-                soup = BeautifulSoup(page.content(), "html.parser")
-                
-                for a in soup.find_all("a", href=True):
-                    m = re.search(r"/scheda/([A-Z0-9]{12})\.html", a["href"])
-                    if m:
-                        isins.add(m.group(1))
-            except:
-                continue
-    return list(isins)[:CONFIG["max_certificates"]]
+def is_good_underlying(text):
+    if not text: return False
+    t = text.lower()
+    good = ["stoxx", "ftse", "s&p", "nasdaq", "dax", "cac", "brent", "gold", "silver", "eur/usd", "btp", "bund", "credit linked", "basket", "indice", "commodity", "valuta"]
+    bad_single = ["s.p.a", "spa", "s.r.l", "ltd", "inc", "ag"] 
+    if any(b in t for b in bad_single) and "basket" not in t and len(t.split()) < 5:
+        return False
+    return any(g in t for g in good)
 
-def get_certificate(page, isin):
-    urls = [
-        f"https://www.borsaitaliana.it/borsa/cw-e-certificates/scheda/{isin}.html",
-        f"https://www.borsaitaliana.it/borsa/cw-e-certificates/eurotlx/scheda/{isin}.html",
-    ]
+def collect_news_pages(page):
+    base = "https://www.borsaitaliana.it/borsa/avvisi-negoziazione/certx/archive.html"
+    news_urls = []
     
-    for url in urls:
+    try:
+        page.goto(base, timeout=CONFIG["timeout"], wait_until="networkidle")
+        time.sleep(3)
+        soup = BeautifulSoup(page.content(), "html.parser")
+        
+        # Cerca link alle notizie di inizio negoziazione
+        for a in soup.find_all("a", href=True):
+            href = a["href"]
+            if "/borsa/avvisi-negoziazione/certx/" in href and re.search(r'/\d{4}/\d+\.html', href):
+                full = "https://www.borsaitaliana.it" + href if href.startswith("/") else href
+                news_urls.append(full)
+    except Exception as e:
+        print(f"Errore su pagina avvisi: {e}")
+    
+    return news_urls[:CONFIG["max_pages"] * 20]  # limite approssimativo
+
+def extract_isin_from_news(page, news_url):
+    try:
+        page.goto(news_url, timeout=CONFIG["timeout"], wait_until="networkidle")
+        time.sleep(2)
+        soup = BeautifulSoup(page.content(), "html.parser")
+        
+        text = soup.get_text(" ", strip=True)
+        # Cerca ISIN 12 caratteri alfanumerici
+        isins = re.findall(r'\b([A-Z]{2}\d{10}|[A-Z]{1,2}\d{9}[A-Z]?)\b', text)
+        return list(set(isins))  # unici
+    except:
+        return []
+
+def get_certificate_data(page, isin):
+    for prefix in ["", "-SEDX", "-ETLX"]:
+        url = f"https://www.borsaitaliana.it/borsa/cw-e-certificates/scheda/{isin}{prefix}.html"
         try:
             page.goto(url, timeout=CONFIG["timeout"], wait_until="networkidle")
-            time.sleep(3)
+            time.sleep(2.5)
             soup = BeautifulSoup(page.content(), "html.parser")
+            
+            if "strumento non trovato" in soup.get_text().lower() or "404" in soup.title.string.lower():
+                continue
             
             cert = {
                 "isin": isin,
                 "name": "",
-                "type": "",
                 "issuer": "",
-                "underlyings": [],
+                "type": "",
+                "underlying_text": "",
                 "barrier_down": None,
                 "maturity_date": None,
                 "annual_coupon_yield": None,
                 "reference_price": None,
-                "bid_price": None,
-                "ask_price": None,
                 "url": url,
                 "scraped_at": datetime.now().isoformat()
             }
             
-            # Nome
             h1 = soup.find("h1")
             if h1:
-                cert["name"] = h1.get_text(strip=True).split(" - ")[0]
+                cert["name"] = h1.get_text(strip=True).split(" - ")[0].strip()
             
-            # Tabella dati
             for row in soup.find_all("tr"):
-                cells = row.find_all(["th", "td"])
+                cells = [c.get_text(strip=True) for c in row.find_all(["th","td"])]
                 if len(cells) < 2: continue
-                label = cells[0].get_text(strip=True).lower()
-                value = cells[1].get_text(strip=True)
-                
-                if "emittente" in label: cert["issuer"] = value
-                elif "tipologia" in label or "tipo" in label: cert["type"] = value
-                elif "scadenza" in label: cert["maturity_date"] = parse_date(value)
-                elif "barriera" in label: cert["barrier_down"] = parse_number(value)
-                elif "cedola" in label or "coupon" in label or "rendimento" in label:
-                    cert["annual_coupon_yield"] = parse_number(value)
-                elif "riferimento" in label or "ultimo" in label:
-                    cert["reference_price"] = parse_number(value)
-                elif "denaro" in label or "bid" in label: cert["bid_price"] = parse_number(value)
-                elif "lettera" in label or "ask" in label: cert["ask_price"] = parse_number(value)
+                lbl, val = cells[0].lower(), cells[1]
+                if "emittente" in lbl or "issuer" in lbl: cert["issuer"] = val
+                if "tipologia" in lbl or "tipo" in lbl: cert["type"] = val
+                if "scadenza" in lbl: cert["maturity_date"] = parse_date(val)
+                if "barriera" in lbl: cert["barrier_down"] = parse_number(val)
+                if "cedola" in lbl or "coupon" in lbl or "yield" in lbl or "rendimento" in lbl:
+                    cert["annual_coupon_yield"] = parse_number(val)
+                if "riferimento" in lbl or "ultimo" in lbl: cert["reference_price"] = parse_number(val)
             
-            # Sottostanti
-            underlying_text = ""
+            # Cerca testo sottostante
             for td in soup.find_all("td"):
                 txt = td.get_text(strip=True)
-                if any(x in txt.lower() for x in ["sottostante", "underlying", "basket"]):
-                    underlying_text = txt
+                if any(k in txt.lower() for k in ["sottostante","underlying","basket","indici","commodit","valut","tasso"]):
+                    cert["underlying_text"] = txt
                     break
             
-            if not is_good_underlying(underlying_text):
-                return None
-                
-            if cert["name"]:
+            if cert["name"] and is_good_underlying(cert["underlying_text"]):
                 return cert
-                
         except:
             continue
     return None
 
 def main():
-    print("=== Certificates Scraper v17 - In esecuzione ===")
+    print("=== Certificates Scraper v18 – In esecuzione ===\n")
+    
+    certificates = []
+    all_isins = set()
     
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
-        page = browser.new_context(user_agent="Mozilla/5.0").new_page()
+        context = browser.new_context(user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64)")
+        page = context.new_page()
         
-        print("Raccolta ISIN recenti...")
-        isins = scrape_recent_isins(page)
-        print(f"Trovati {len(isins)} ISIN da analizzare")
+        print("1. Raccolta pagine notizie inizio negoziazione...")
+        news_urls = collect_news_pages(page)
+        print(f"   Trovate {len(news_urls)} pagine notizia")
         
-        certificates = []
-        for i, isin in enumerate(isins, 1):
-            print(f"[{i}/{len(isins)}] {isin} → ", end="", flush=True)
-            cert = get_certificate(page, isin)
+        print("2. Estrazione ISIN dalle notizie...")
+        for i, url in enumerate(news_urls, 1):
+            isins = extract_isin_from_news(page, url)
+            for isin in isins:
+                if len(isin) == 12 and isin not in all_isins:
+                    all_isins.add(isin)
+            print(f"   {i}/{len(news_urls)} → trovati {len(isins)} ISIN (totale unici: {len(all_isins)})")
+        
+        isin_list = list(all_isins)[:CONFIG["max_certificates"]]
+        print(f"\n3. Analisi di {len(isin_list)} ISIN candidati...")
+        
+        for i, isin in enumerate(isin_list, 1):
+            print(f"   [{i}/{len(isin_list)}] {isin} → ", end="", flush=True)
+            cert = get_certificate_data(page, isin)
             if cert:
                 certificates.append(cert)
                 print("OK")
             else:
-                print("scartato")
-            time.sleep(0.8)
+                print("scartato / non trovato")
+            time.sleep(1.0)  # gentilezza verso il server
         
         browser.close()
     
     output = {
-        "success": True,
+        "success": len(certificates) > 0,
         "count": len(certificates),
         "certificates": certificates,
         "metadata": {
             "timestamp": datetime.now().isoformat(),
-            "version": "17.0",
-            "source": "borsaitaliana.it"
+            "version": "18.0",
+            "source": "borsaitaliana.it - avvisi CERTX"
         }
     }
     
@@ -187,6 +185,8 @@ def main():
         json.dump(output, f, indent=2, ensure_ascii=False)
     
     print(f"\nFINITO → {len(certificates)} certificati salvati in {CONFIG['output_file']}")
+    if len(certificates) == 0:
+        print("Suggerimento: se ancora 0, controlla se Playwright carica JS correttamente o se il sito ha cambiato struttura ulteriore.")
 
 if __name__ == "__main__":
     main()
