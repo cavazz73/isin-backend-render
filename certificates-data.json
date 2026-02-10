@@ -1,12 +1,11 @@
 {
   "metadata": {
     "version": "14.0",
-    "timestamp": "2026-02-10T15:20:34.403388",
+    "timestamp": "2026-02-10T15:37:21.359355",
     "source": "borsaitaliana.it",
     "total": 20,
-    "skipped_stocks": 0,
     "not_found": 0,
-    "filter": "Indices, Commodities, Currencies, Rates (NO single stocks)"
+    "filter": "Indices, Commodities, Currencies, Rates"
   },
   "certificates": [
     {
@@ -14,7 +13,7 @@
       "name": "IS EP CP EURO STOXX 50 3306.97 090927",
       "type": "",
       "issuer": "Intesa Sanpaolo S.p.A.",
-      "market": "SeDeX",
+      "market": "",
       "currency": "EUR",
       "underlying": "EURO STOXX 50",
       "strike": 3306.97,
@@ -25,14 +24,14 @@
       "ask_price": null,
       "source": "borsaitaliana.it",
       "url": "https://www.borsaitaliana.it/borsa/cw-e-certificates/scheda/XS2209061329.html",
-      "scraped_at": "2026-02-10T15:19:58.313136"
+      "scraped_at": "2026-02-10T15:30:41.086600"
     },
     {
       "isin": "IT0005525610",
-      "name": "Strumenti SeDeX",
+      "name": "CercaAnnulla",
       "type": "",
       "issuer": "",
-      "market": "SeDeX",
+      "market": "",
       "currency": "EUR",
       "underlying": "",
       "strike": null,
@@ -43,14 +42,14 @@
       "ask_price": null,
       "source": "borsaitaliana.it",
       "url": "https://www.borsaitaliana.it/borsa/cw-e-certificates/scheda/IT0005525610.html",
-      "scraped_at": "2026-02-10T15:20:00.281649"
+      "scraped_at": "2026-02-10T15:30:47.690890"
     },
     {
       "isin": "IT0005498297",
-      "name": "Strumenti SeDeX",
+      "name": "CercaAnnulla",
       "type": "",
       "issuer": "",
-      "market": "SeDeX",
+      "market": "",
       "currency": "EUR",
       "underlying": "",
       "strike": null,
@@ -61,14 +60,14 @@
       "ask_price": null,
       "source": "borsaitaliana.it",
       "url": "https://www.borsaitaliana.it/borsa/cw-e-certificates/scheda/IT0005498297.html",
-      "scraped_at": "2026-02-10T15:20:02.579747"
+      "scraped_at": "2026-02-10T15:30:53.011747"
     },
     {
       "isin": "CH1283542608",
-      "name": "Strumenti SeDeX",
+      "name": "CercaAnnulla",
       "type": "",
       "issuer": "",
-      "market": "SeDeX",
+      "market": "",
       "currency": "EUR",
       "underlying": "",
       "strike": null,
@@ -79,14 +78,14 @@
       "ask_price": null,
       "source": "borsaitaliana.it",
       "url": "https://www.borsaitaliana.it/borsa/cw-e-certificates/scheda/CH1283542608.html",
-      "scraped_at": "2026-02-10T15:20:04.386621"
+      "scraped_at": "2026-02-10T15:30:59.111065"
     },
     {
       "isin": "XS1385761249",
-      "name": "Strumenti SeDeX",
+      "name": "CercaAnnulla",
       "type": "",
       "issuer": "",
-      "market": "SeDeX",
+      "market": "",
       "currency": "EUR",
       "underlying": "",
       "strike": null,
@@ -97,14 +96,14 @@
       "ask_price": null,
       "source": "borsaitaliana.it",
       "url": "https://www.borsaitaliana.it/borsa/cw-e-certificates/scheda/XS1385761249.html",
-      "scraped_at": "2026-02-10T15:20:06.118300"
+      "scraped_at": "2026-02-10T15:31:05.494071"
     },
     {
       "isin": "DE000HV4K3K8",
-      "name": "Strumenti SeDeX",
+      "name": "Certificati EuroTLX",
       "type": "",
       "issuer": "",
-      "market": "SeDeX",
+      "market": "",
       "currency": "EUR",
       "underlying": "",
       "strike": null,
@@ -114,15 +113,15 @@
       "bid_price": null,
       "ask_price": null,
       "source": "borsaitaliana.it",
-      "url": "https://www.borsaitaliana.it/borsa/cw-e-certificates/scheda/DE000HV4K3K8.html",
-      "scraped_at": "2026-02-10T15:20:07.987816"
+      "url": "https://www.borsaitaliana.it/borsa/cw-e-certificates/eurotlx/scheda/DE000HV4K3K8.html",
+      "scraped_at": "2026-02-10T15:31:17.869022"
     },
     {
       "isin": "DE000HV4K3L6",
-      "name": "Strumenti SeDeX",
+      "name": "CercaAnnulla",
       "type": "",
       "issuer": "",
-      "market": "SeDeX",
+      "market": "",
       "currency": "EUR",
       "underlying": "",
       "strike": null,
@@ -133,14 +132,14 @@
       "ask_price": null,
       "source": "borsaitaliana.it",
       "url": "https://www.borsaitaliana.it/borsa/cw-e-certificates/scheda/DE000HV4K3L6.html",
-      "scraped_at": "2026-02-10T15:20:09.738996"
+      "scraped_at": "2026-02-10T15:31:24.214515"
     },
     {
       "isin": "DE000HV4K3M4",
-      "name": "Strumenti SeDeX",
+      "name": "CercaAnnulla",
       "type": "",
       "issuer": "",
-      "market": "SeDeX",
+      "market": "",
       "currency": "EUR",
       "underlying": "",
       "strike": null,
@@ -151,14 +150,14 @@
       "ask_price": null,
       "source": "borsaitaliana.it",
       "url": "https://www.borsaitaliana.it/borsa/cw-e-certificates/scheda/DE000HV4K3M4.html",
-      "scraped_at": "2026-02-10T15:20:11.544754"
+      "scraped_at": "2026-02-10T15:31:32.399525"
     },
     {
       "isin": "IT0005521411",
-      "name": "Strumenti SeDeX",
+      "name": "CercaAnnulla",
       "type": "",
       "issuer": "",
-      "market": "SeDeX",
+      "market": "",
       "currency": "EUR",
       "underlying": "",
       "strike": null,
@@ -169,14 +168,14 @@
       "ask_price": null,
       "source": "borsaitaliana.it",
       "url": "https://www.borsaitaliana.it/borsa/cw-e-certificates/scheda/IT0005521411.html",
-      "scraped_at": "2026-02-10T15:20:13.610867"
+      "scraped_at": "2026-02-10T15:31:38.623335"
     },
     {
       "isin": "XS2314073839",
-      "name": "Strumenti SeDeX",
+      "name": "CercaAnnulla",
       "type": "",
       "issuer": "",
-      "market": "SeDeX",
+      "market": "",
       "currency": "EUR",
       "underlying": "",
       "strike": null,
@@ -187,14 +186,14 @@
       "ask_price": null,
       "source": "borsaitaliana.it",
       "url": "https://www.borsaitaliana.it/borsa/cw-e-certificates/scheda/XS2314073839.html",
-      "scraped_at": "2026-02-10T15:20:15.417620"
+      "scraped_at": "2026-02-10T15:31:44.240870"
     },
     {
       "isin": "XS2314074050",
-      "name": "Strumenti SeDeX",
+      "name": "CercaAnnulla",
       "type": "",
       "issuer": "",
-      "market": "SeDeX",
+      "market": "",
       "currency": "EUR",
       "underlying": "",
       "strike": null,
@@ -205,14 +204,14 @@
       "ask_price": null,
       "source": "borsaitaliana.it",
       "url": "https://www.borsaitaliana.it/borsa/cw-e-certificates/scheda/XS2314074050.html",
-      "scraped_at": "2026-02-10T15:20:17.272579"
+      "scraped_at": "2026-02-10T15:31:49.570480"
     },
     {
       "isin": "XS2394956712",
-      "name": "Strumenti SeDeX",
+      "name": "CercaAnnulla",
       "type": "",
       "issuer": "",
-      "market": "SeDeX",
+      "market": "",
       "currency": "EUR",
       "underlying": "",
       "strike": null,
@@ -223,14 +222,14 @@
       "ask_price": null,
       "source": "borsaitaliana.it",
       "url": "https://www.borsaitaliana.it/borsa/cw-e-certificates/scheda/XS2394956712.html",
-      "scraped_at": "2026-02-10T15:20:18.899971"
+      "scraped_at": "2026-02-10T15:31:55.349191"
     },
     {
       "isin": "XS2314660502",
-      "name": "Strumenti SeDeX",
+      "name": "CercaAnnulla",
       "type": "",
       "issuer": "",
-      "market": "SeDeX",
+      "market": "",
       "currency": "EUR",
       "underlying": "",
       "strike": null,
@@ -241,14 +240,14 @@
       "ask_price": null,
       "source": "borsaitaliana.it",
       "url": "https://www.borsaitaliana.it/borsa/cw-e-certificates/scheda/XS2314660502.html",
-      "scraped_at": "2026-02-10T15:20:20.761059"
+      "scraped_at": "2026-02-10T15:32:01.943723"
     },
     {
       "isin": "NL0015436031",
-      "name": "Strumenti SeDeX",
+      "name": "CercaAnnulla",
       "type": "",
       "issuer": "",
-      "market": "SeDeX",
+      "market": "",
       "currency": "EUR",
       "underlying": "",
       "strike": null,
@@ -259,14 +258,14 @@
       "ask_price": null,
       "source": "borsaitaliana.it",
       "url": "https://www.borsaitaliana.it/borsa/cw-e-certificates/scheda/NL0015436031.html",
-      "scraped_at": "2026-02-10T15:20:22.783324"
+      "scraped_at": "2026-02-10T15:32:08.195314"
     },
     {
       "isin": "NL0015436072",
-      "name": "Strumenti SeDeX",
+      "name": "Certificati EuroTLX",
       "type": "",
       "issuer": "",
-      "market": "SeDeX",
+      "market": "",
       "currency": "EUR",
       "underlying": "",
       "strike": null,
@@ -276,15 +275,15 @@
       "bid_price": null,
       "ask_price": null,
       "source": "borsaitaliana.it",
-      "url": "https://www.borsaitaliana.it/borsa/cw-e-certificates/scheda/NL0015436072.html",
-      "scraped_at": "2026-02-10T15:20:24.820878"
+      "url": "https://www.borsaitaliana.it/borsa/cw-e-certificates/eurotlx/scheda/NL0015436072.html",
+      "scraped_at": "2026-02-10T15:33:00.397520"
     },
     {
       "isin": "DE000SF5ACX5",
-      "name": "Strumenti SeDeX",
+      "name": "Certificati EuroTLX",
       "type": "",
       "issuer": "",
-      "market": "SeDeX",
+      "market": "",
       "currency": "EUR",
       "underlying": "",
       "strike": null,
@@ -294,15 +293,15 @@
       "bid_price": null,
       "ask_price": null,
       "source": "borsaitaliana.it",
-      "url": "https://www.borsaitaliana.it/borsa/cw-e-certificates/scheda/DE000SF5ACX5.html",
-      "scraped_at": "2026-02-10T15:20:26.770407"
+      "url": "https://www.borsaitaliana.it/borsa/cw-e-certificates/eurotlx/scheda/DE000SF5ACX5.html",
+      "scraped_at": "2026-02-10T15:33:51.605070"
     },
     {
       "isin": "GB00B15KXV33",
-      "name": "Strumenti SeDeX",
+      "name": "HTTP Status 400 – Bad Request",
       "type": "",
       "issuer": "",
-      "market": "SeDeX",
+      "market": "",
       "currency": "EUR",
       "underlying": "",
       "strike": null,
@@ -312,15 +311,15 @@
       "bid_price": null,
       "ask_price": null,
       "source": "borsaitaliana.it",
-      "url": "https://www.borsaitaliana.it/borsa/cw-e-certificates/scheda/GB00B15KXV33.html",
-      "scraped_at": "2026-02-10T15:20:28.730913"
+      "url": "https://www.borsaitaliana.it/borsa/cw-e-certificates/eurotlx/scheda/GB00B15KXV33-ETLX.html",
+      "scraped_at": "2026-02-10T15:35:24.981699"
     },
     {
       "isin": "JE00B1VS3770",
-      "name": "Strumenti SeDeX",
+      "name": "HTTP Status 400 – Bad Request",
       "type": "",
       "issuer": "",
-      "market": "SeDeX",
+      "market": "",
       "currency": "EUR",
       "underlying": "",
       "strike": null,
@@ -330,15 +329,15 @@
       "bid_price": null,
       "ask_price": null,
       "source": "borsaitaliana.it",
-      "url": "https://www.borsaitaliana.it/borsa/cw-e-certificates/scheda/JE00B1VS3770.html",
-      "scraped_at": "2026-02-10T15:20:30.626450"
+      "url": "https://www.borsaitaliana.it/borsa/cw-e-certificates/eurotlx/scheda/JE00B1VS3770-ETLX.html",
+      "scraped_at": "2026-02-10T15:36:18.756477"
     },
     {
       "isin": "GB00B15KXQ89",
-      "name": "Strumenti SeDeX",
+      "name": "Certificati EuroTLX",
       "type": "",
       "issuer": "",
-      "market": "SeDeX",
+      "market": "",
       "currency": "EUR",
       "underlying": "",
       "strike": null,
@@ -348,15 +347,15 @@
       "bid_price": null,
       "ask_price": null,
       "source": "borsaitaliana.it",
-      "url": "https://www.borsaitaliana.it/borsa/cw-e-certificates/scheda/GB00B15KXQ89.html",
-      "scraped_at": "2026-02-10T15:20:32.283558"
+      "url": "https://www.borsaitaliana.it/borsa/cw-e-certificates/eurotlx/scheda/GB00B15KXQ89.html",
+      "scraped_at": "2026-02-10T15:37:13.839658"
     },
     {
       "isin": "XS1073722347",
-      "name": "Strumenti SeDeX",
+      "name": "CercaAnnulla",
       "type": "",
       "issuer": "",
-      "market": "SeDeX",
+      "market": "",
       "currency": "EUR",
       "underlying": "",
       "strike": null,
@@ -367,7 +366,7 @@
       "ask_price": null,
       "source": "borsaitaliana.it",
       "url": "https://www.borsaitaliana.it/borsa/cw-e-certificates/scheda/XS1073722347.html",
-      "scraped_at": "2026-02-10T15:20:34.024581"
+      "scraped_at": "2026-02-10T15:37:20.804102"
     }
   ]
 }
