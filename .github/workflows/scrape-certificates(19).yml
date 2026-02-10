@@ -1,0 +1,84 @@
+name: Scrape Certificates Daily
+
+on:
+  schedule:
+    - cron: '30 18 * * *'
+  workflow_dispatch:
+
+jobs:
+  scrape-certificates:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Run certificates scraper
+        run: |
+          echo "Starting certificates scraper v14..."
+          python certificates-scraper-ced-v14.py
+          echo "Scraper completed"
+      
+      - name: Validate output
+        run: |
+          if [ -f certificates-data.json ]; then
+            echo "✅ Output file exists"
+            CERT_COUNT=$(python3 -c "import json; data=json.load(open('certificates-data.json')); print(len(data.get('certificates', [])))")
+            echo "📊 Certificates found: ${CERT_COUNT}"
+            
+            if [ "$CERT_COUNT" -eq "0" ]; then
+              echo "⚠️ Warning: No certificates extracted"
+            fi
+          else
+            echo "❌ Output file not found!"
+            exit 1
+          fi
+      
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: certificates-data
+          path: certificates-data.json
+          retention-days: 7
+      
+      - name: Check for changes
+        id: check_changes
+        run: |
+          if git diff --quiet certificates-data.json 2>/dev/null; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Commit and push
+        if: steps.check_changes.outputs.has_changes == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "GitHub Actions Bot"
+          git add certificates-data.json
+          git commit -m "Auto-update certificates - $(date +'%Y-%m-%d %H:%M')"
+          git push
+      
+      - name: Summary
+        run: |
+          echo "## Certificates Scraper Results" >> $GITHUB_STEP_SUMMARY
+          echo "- **Date:** $(date +'%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
+          if [ -f certificates-data.json ]; then
+            python3 << 'EOF' >> $GITHUB_STEP_SUMMARY
+import json
+data = json.load(open('certificates-data.json'))
+meta = data.get('metadata', {})
+print(f"- **Total Certificates:** {meta.get('total', 'N/A')}")
+print(f"- **With Price:** {meta.get('with_price', 'N/A')}")
+print(f"- **Sources:** {meta.get('sources', 'N/A')}")
+print(f"- **Filter:** {meta.get('filter', 'N/A')}")
+EOF
+          fi
