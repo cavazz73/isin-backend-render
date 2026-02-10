@@ -1,19 +1,15 @@
 - name: Commit and push
         if: steps.check_changes.outputs.has_changes == 'true'
         run: |
-          # Configura utente
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "GitHub Actions Bot"
           
-          # 1. Aggiungi TUTTI i file modificati (risolve 'unstaged changes')
+          # QUESTO È IL COMANDO MAGICO:
+          # Aggiunge TUTTI i file (anche quelli non previsti) per pulire l'area di lavoro
           git add -A
           
-          # 2. Fai il Commit
           git commit -m "Auto-update certificates - $(date +'%Y-%m-%d %H:%M')"
           
-          # 3. Scarica le modifiche remote (Rebase)
-          # Se ci sono modifiche remote, le applica PRIMA del nostro commit
+          # Ora il pull funzionerà perché l'area è pulita
           git pull --rebase origin main
-          
-          # 4. Spingi sul server
           git push origin main
