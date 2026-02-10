@@ -1,43 +1,45 @@
 #!/usr/bin/env python3
 """
-Certificates Scraper v16 - ULTIME EMISSIONI
-Focus: Indici, Valute, Commodities, Tassi, Credit Linked
+Certificates Scraper v14 - FUNZIONANTE
+Focus: Ultime emissioni su Indici, Commodities, Valute, Tassi, Credit Linked
 Esclude singoli titoli azionari
 """
 
 import json
 import re
 import time
-from datetime import datetime, timedelta
+from datetime import datetime
 from playwright.sync_api import sync_playwright
 from bs4 import BeautifulSoup
 
 CONFIG = {
     "timeout": 60000,
     "output_file": "certificates-data.json",
-    "max_certificates": 150,      # limite di sicurezza
-    "days_back": 60               # ultime emissioni degli ultimi 60 giorni
+    "max_certificates": 120
 }
 
-def is_desired_underlying(text):
-    """Ritorna True se il sottostante è accettabile"""
+def is_good_underlying(text):
+    """Filtro migliorato - accetta solo ciò che ci interessa"""
     if not text:
         return False
-    text = text.lower()
-    forbidden = ['spa', 'nv', 'plc', 'ltd', 'inc', 'sa', 'ag', 's.p.a', 'n.v.', 's.a.']
-    allowed_keywords = ['euro stoxx', 'ftse', 's&p', 'nasdaq', 'dax', 'cac', 'brent', 'wti', 
-                       'gold', 'silver', 'eur/usd', 'usd/jpy', 'btp', 'bund', 'oat', 'credit', 
-                       'index', 'indice', 'commodity', 'valuta', 'tasso', 'rate', 'basket']
+    t = text.lower()
+    good_keywords = [
+        "euro stoxx", "stoxx", "ftse mib", "s&p", "nasdaq", "dax", "cac", "nikkei",
+        "brent", "wti", "gold", "silver", "platinum", "oil", "commodity",
+        "eur/usd", "usd/jpy", "gbp/usd", "usd/chf", "valuta",
+        "btp", "bund", "oat", "treasury", "tasso", "rate", "credit linked",
+        "basket", "multi", "indice", "index"
+    ]
+    bad_keywords = ["s.p.a", "spa", "srl", "nv", "ltd", "inc", "ag", "sa"]
     
-    # Escludi se sembra un singolo titolo
-    if any(word in text for word in forbidden) and len(text.split()) <= 4:
+    if any(bad in t for bad in bad_keywords) and len(t.split()) < 6:
         return False
-    return any(kw in text for kw in allowed_keywords)
+    return any(good in t for good in good_keywords)
 
 def parse_number(text):
     if not text: return None
     try:
-        cleaned = re.sub(r'[^\d,.-]', '', text)
+        cleaned = re.sub(r'[^\d,.-]', '', str(text))
         cleaned = cleaned.replace('.', '').replace(',', '.')
         return round(float(cleaned), 4)
     except:
@@ -47,54 +49,37 @@ def parse_date(text):
     if not text: return None
     try:
         if '/' in text:
-            d, m, y = text.strip().split('/')
+            d, m, y = [x.strip() for x in text.split('/')]
             return f"{y}-{m.zfill(2)}-{d.zfill(2)}"
     except:
         pass
     return text
 
 def scrape_recent_isins(page):
-    """Fase 1: Raccoglie ISIN recenti dalla ricerca avanzata / inizi negoziazione"""
-    isins = []
+    """Migliorata: cerca nelle pagine avvisi CERTX e SEDeX"""
+    isins = set()
+    urls = [
+        "https://www.borsaitaliana.it/borsa/avvisi-negoziazione/certx/archive.html",
+        "https://www.borsaitaliana.it/borsa/avvisi-negoziazione/sedex.html",
+    ]
     
-    # Prova prima la pagina principale con "Inizi negoziazione"
-    page.goto("https://www.borsaitaliana.it/cw-e-certificates/covered-warrant/certificates.htm", 
-              timeout=CONFIG["timeout"], wait_until="networkidle")
-    time.sleep(4)
-    
-    html = page.content()
-    soup = BeautifulSoup(html, 'html.parser')
-    
-    # Cerca link con ISIN nelle sezioni "Inizi negoziazione"
-    for link in soup.find_all('a', href=True):
-        href = link['href']
-        if re.search(r'/scheda/([A-Z0-9]{12})\.html', href):
-            isin = re.search(r'/scheda/([A-Z0-9]{12})\.html', href).group(1)
-            if isin not in isins:
-                isins.append(isin)
-    
-    # Se pochi risultati, vai su ricerca avanzata (più potente)
-    if len(isins) < 30:
-        page.goto("https://www.borsaitaliana.it/borsa/cw-e-certificates/ricerca-avanzata.html", 
-                  timeout=CONFIG["timeout"], wait_until="networkidle")
-        time.sleep(3)
-        
-        # Qui potresti aggiungere interazioni con i filtri (es. selezionare Cash Collect, Phoenix, etc.)
-        # Per ora estraiamo tutti i visibili
-        html = page.content()
-        soup = BeautifulSoup(html, 'html.parser')
-        
-        for link in soup.find_all('a', href=True):
-            match = re.search(r'/scheda/([A-Z0-9]{12})\.html', link['href'])
-            if match:
-                isin = match.group(1)
-                if isin not in isins:
-                    isins.append(isin)
-    
-    return isins[:CONFIG["max_certificates"]]
+    for base in urls:
+        for p in range(1, 8):   # prime 7 pagine
+            url = f"{base}?page={p}" if p > 1 else base
+            try:
+                page.goto(url, timeout=CONFIG["timeout"], wait_until="networkidle")
+                time.sleep(2.5)
+                soup = BeautifulSoup(page.content(), "html.parser")
+                
+                for a in soup.find_all("a", href=True):
+                    m = re.search(r"/scheda/([A-Z0-9]{12})\.html", a["href"])
+                    if m:
+                        isins.add(m.group(1))
+            except:
+                continue
+    return list(isins)[:CONFIG["max_certificates"]]
 
 def get_certificate(page, isin):
-    """Fase 2: Estrae dati dettagliati dalla scheda (stessa logica v15 migliorata)"""
     urls = [
         f"https://www.borsaitaliana.it/borsa/cw-e-certificates/scheda/{isin}.html",
         f"https://www.borsaitaliana.it/borsa/cw-e-certificates/eurotlx/scheda/{isin}.html",
@@ -104,10 +89,8 @@ def get_certificate(page, isin):
         try:
             page.goto(url, timeout=CONFIG["timeout"], wait_until="networkidle")
             time.sleep(3)
+            soup = BeautifulSoup(page.content(), "html.parser")
             
-            soup = BeautifulSoup(page.content(), 'html.parser')
-            
-            # Estrazione nome, emittente, tipo, prezzi...
             cert = {
                 "isin": isin,
                 "name": "",
@@ -124,37 +107,57 @@ def get_certificate(page, isin):
                 "scraped_at": datetime.now().isoformat()
             }
             
-            # ... (mantengo la stessa logica di parsing della v15, la puoi riutilizzare)
-            # Per brevità la ometto qui, dimmi se vuoi quella parte completa
-
-            # Controllo sottostante
+            # Nome
+            h1 = soup.find("h1")
+            if h1:
+                cert["name"] = h1.get_text(strip=True).split(" - ")[0]
+            
+            # Tabella dati
+            for row in soup.find_all("tr"):
+                cells = row.find_all(["th", "td"])
+                if len(cells) < 2: continue
+                label = cells[0].get_text(strip=True).lower()
+                value = cells[1].get_text(strip=True)
+                
+                if "emittente" in label: cert["issuer"] = value
+                elif "tipologia" in label or "tipo" in label: cert["type"] = value
+                elif "scadenza" in label: cert["maturity_date"] = parse_date(value)
+                elif "barriera" in label: cert["barrier_down"] = parse_number(value)
+                elif "cedola" in label or "coupon" in label or "rendimento" in label:
+                    cert["annual_coupon_yield"] = parse_number(value)
+                elif "riferimento" in label or "ultimo" in label:
+                    cert["reference_price"] = parse_number(value)
+                elif "denaro" in label or "bid" in label: cert["bid_price"] = parse_number(value)
+                elif "lettera" in label or "ask" in label: cert["ask_price"] = parse_number(value)
+            
+            # Sottostanti
             underlying_text = ""
-            for td in soup.find_all('td'):
-                if any(k in td.get_text().lower() for k in ['sottostante', 'underlying']):
-                    underlying_text = td.get_text()
+            for td in soup.find_all("td"):
+                txt = td.get_text(strip=True)
+                if any(x in txt.lower() for x in ["sottostante", "underlying", "basket"]):
+                    underlying_text = txt
                     break
             
-            if not is_desired_underlying(underlying_text):
-                return None  # scarta singolo titolo
-            
-            return cert
-            
+            if not is_good_underlying(underlying_text):
+                return None
+                
+            if cert["name"]:
+                return cert
+                
         except:
             continue
     return None
 
 def main():
-    print("=== Certificates Scraper v16 - Ultime Emissioni ===")
+    print("=== Certificates Scraper v17 - In esecuzione ===")
     
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
-        page = browser.new_context(
-            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
-        ).new_page()
+        page = browser.new_context(user_agent="Mozilla/5.0").new_page()
         
-        print("Raccolta ultime emissioni...")
+        print("Raccolta ISIN recenti...")
         isins = scrape_recent_isins(page)
-        print(f"Trovati {len(isins)} ISIN recenti")
+        print(f"Trovati {len(isins)} ISIN da analizzare")
         
         certificates = []
         for i, isin in enumerate(isins, 1):
@@ -164,8 +167,8 @@ def main():
                 certificates.append(cert)
                 print("OK")
             else:
-                print("scartato (sottostante non idoneo)")
-            time.sleep(0.7)
+                print("scartato")
+            time.sleep(0.8)
         
         browser.close()
     
@@ -175,16 +178,15 @@ def main():
         "certificates": certificates,
         "metadata": {
             "timestamp": datetime.now().isoformat(),
-            "source": "borsaitaliana.it",
-            "version": "16.0",
-            "filter": "Indici, Commodities, Valute, Tassi, Credit Linked"
+            "version": "17.0",
+            "source": "borsaitaliana.it"
         }
     }
     
-    with open(CONFIG["output_file"], 'w', encoding='utf-8') as f:
+    with open(CONFIG["output_file"], "w", encoding="utf-8") as f:
         json.dump(output, f, indent=2, ensure_ascii=False)
     
-    print(f"\n✅ Completato → {len(certificates)} certificati salvati")
+    print(f"\nFINITO → {len(certificates)} certificati salvati in {CONFIG['output_file']}")
 
 if __name__ == "__main__":
     main()
