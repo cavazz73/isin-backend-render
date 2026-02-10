@@ -1,15 +1,102 @@
-- name: Commit and push
+name: Scrape Certificates Daily
+
+on:
+  schedule:
+    - cron: '30 18 * * *' # Esegue ogni giorno alle 18:30 UTC
+  workflow_dispatch:      # Permette l'avvio manuale dal tab Actions
+
+jobs:
+  scrape-certificates:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          pip install playwright beautifulsoup4
+          playwright install chromium
+          playwright install-deps chromium
+          echo "Dependencies installed"
+      
+      - name: Run certificates scraper
+        run: |
+          echo "Starting certificates scraper..."
+          # Esegue il NUOVO script di produzione
+          python production_scraper.py
+          echo "Scraper completed"
+      
+      - name: Validate and Move output
+        run: |
+          # Il nuovo scraper salva in 'data/certificates-data.json'.
+          # Se esiste lì, lo spostiamo nella root per semplicità.
+          if [ -f data/certificates-data.json ]; then
+            echo "File found in data/ folder. Moving to root..."
+            mv data/certificates-data.json certificates-data.json
+          fi
+
+          # Verifica che il file esista (nella root)
+          if [ -f certificates-data.json ]; then
+            echo "Output file exists"
+            CERT_COUNT=$(python3 -c "import json; data=json.load(open('certificates-data.json')); print(len(data.get('certificates', [])))")
+            echo "Certificates found: ${CERT_COUNT}"
+          else
+            echo "❌ Output file not found!"
+            exit 1
+          fi
+      
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: certificates-data
+          path: certificates-data.json
+          retention-days: 7
+      
+      - name: Check for changes
+        id: check_changes
+        run: |
+          # Aggiunge TUTTI i file modificati (anche se rinominati o spostati)
+          git add -A
+          
+          # Controlla se c'è qualcosa da committare
+          if git diff --staged --quiet; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "Nessuna modifica rilevata."
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "Modifiche rilevate!"
+          fi
+      
+      - name: Commit and push
         if: steps.check_changes.outputs.has_changes == 'true'
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "GitHub Actions Bot"
           
-          # QUESTO È IL COMANDO MAGICO:
-          # Aggiunge TUTTI i file (anche quelli non previsti) per pulire l'area di lavoro
-          git add -A
-          
+          # 1. Commit
           git commit -m "Auto-update certificates - $(date +'%Y-%m-%d %H:%M')"
           
-          # Ora il pull funzionerà perché l'area è pulita
+          # 2. Scarica aggiornamenti remoti (evita errore 'rejected')
           git pull --rebase origin main
+          
+          # 3. Carica su GitHub
           git push origin main
+      
+      - name: Summary
+        run: |
+          echo "## Certificates Scraper Report" >> $GITHUB_STEP_SUMMARY
+          echo "- **Date:** $(date +'%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
+          if [ -f certificates-data.json ]; then
+            CERT_COUNT=$(python3 -c "import json; data=json.load(open('certificates-data.json')); print(len(data.get('certificates', [])))")
+            echo "- **Certificates Saved:** ${CERT_COUNT}" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- **Status:** Failed" >> $GITHUB_STEP_SUMMARY
+          fi
