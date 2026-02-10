@@ -2,8 +2,8 @@ name: Scrape Certificates Daily
 
 on:
   schedule:
-    - cron: '30 18 * * *'
-  workflow_dispatch:
+    - cron: '30 18 * * *' # Esegue ogni giorno alle 18:30 UTC
+  workflow_dispatch:      # Permette l'avvio manuale
 
 jobs:
   scrape-certificates:
@@ -30,34 +30,35 @@ jobs:
       - name: Run certificates scraper
         run: |
           echo "Starting certificates scraper..."
-          python certificates-scraper-ced-v14.py
+          # Assicurati che il nome del file qui sotto sia quello CORRETTO che hai caricato
+          # Se il tuo file si chiama 'production_scraper.py', usa quello.
+          # Se si chiama 'certificates-scraper-ced-v14.py', usa quello.
+          python production_scraper.py
           echo "Scraper completed"
       
       - name: Validate output
         run: |
-          if [ -f certificates-data.json ]; then
-            echo "Output file exists"
-            CERT_COUNT=$(python3 -c "import json; data=json.load(open('certificates-data.json')); print(len(data.get('certificates', [])))")
-            echo "Certificates found: ${CERT_COUNT}"
+          if [ -f data/certificates-data.json ]; then
+            echo "Output file exists in data/ folder"
+            # Sposta il file nella root se necessario, o adattiamo il git add
+            cp data/certificates-data.json certificates-data.json
+          elif [ -f certificates-data.json ]; then
+             echo "Output file exists in root"
           else
             echo "Output file not found!"
             exit 1
           fi
       
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: certificates-data
-          path: certificates-data.json
-          retention-days: 7
-      
       - name: Check for changes
         id: check_changes
         run: |
-          if git diff --quiet certificates-data.json 2>/dev/null; then
+          git add certificates-data.json
+          if git diff --staged --quiet; then
             echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "Nessuna modifica rilevata."
           else
             echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "Modifiche rilevate!"
           fi
       
       - name: Commit and push
@@ -65,16 +66,11 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "GitHub Actions Bot"
-          git add certificates-data.json
           git commit -m "Auto-update certificates - $(date +'%Y-%m-%d %H:%M')"
-          git push
-      
-      - name: Summary
-        run: |
-          echo "## Certificates Scraper" >> $GITHUB_STEP_SUMMARY
-          echo "- **Date:** $(date +'%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
-          echo "- **Source:** certificatiederivati.it" >> $GITHUB_STEP_SUMMARY
-          if [ -f certificates-data.json ]; then
-            CERT_COUNT=$(python3 -c "import json; data=json.load(open('certificates-data.json')); print(len(data.get('certificates', [])))")
-            echo "- **Certificates:** ${CERT_COUNT}" >> $GITHUB_STEP_SUMMARY
-          fi
+          
+          # --- IL FIX È QUI ---
+          # Scarica le ultime modifiche remote e applica le nostre sopra (Rebase)
+          git pull --rebase origin main
+          
+          # Ora spingi
+          git push origin main
