@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 # certificates-scraper-v22.py
-# Ultima versione funzionante - estrae da certificatiederivati.it e arricchisce per il frontend
+# Versione corretta con tutti gli import necessari
 
 import json
 import re
 import time
 import random
-from datetime import datetime
+from datetime import datetime, timedelta
 from playwright.sync_api import sync_playwright
 from bs4 import BeautifulSoup
 
@@ -96,11 +96,13 @@ def enrich_cert(cert):
 def main():
     print("=== Certificates Scraper v22 - Produzione JSON per frontend ===\n")
     
-    # Lista base (puoi espandere o mantenere quella del vecchio scraper)
+    # Lista base di ISIN (puoi espandere o mantenere quella del vecchio scraper)
     sample_isins = [
         "IT0006773474", "DE000UQ8A9N4", "XS3245808673", "DE000UP33YN5", "IT0006773664",
         "DE000UQ6ZLV2", "XS3256692842", "XS3256629992", "XS3256693493", "DE000UQ7H5W7",
-        # ... aggiungi altri se vuoi, altrimenti usa quelli del vecchio json
+        "DE000VJ5A160", "DE000VJ5BSZ9", "DE000VJ5D0U1", "DE000VJ5FCC3", "DE000VJ5FCD1",
+        "DE000MS0H1Y2", "DE000VJ44A77", "CH1484582098", "XS2878542187", "XS3236819028",
+        # Aggiungine altri se vuoi più varietà
     ]
     
     certificates = []
@@ -108,7 +110,7 @@ def main():
     for isin in sample_isins[:CONFIG["max_certificates"]]:
         cert = {
             "isin": isin,
-            "name": f"PHX MEMORY STEP DOWN {isin[-4:]}",  # placeholder realistico
+            "name": f"PHOENIX MEMORY STEP DOWN {isin[-4:]}",  # placeholder realistico
             "issuer": "Multi-emittente",
             "underlying_text": "Basket di indici worst of",
             "type": "Phoenix Memory Step Down",
