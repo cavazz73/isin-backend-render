@@ -2,11 +2,11 @@ name: Scrape Certificates Daily
 
 on:
   schedule:
-    - cron: '30 18 * * *'
-  workflow_dispatch:
+    - cron: '30 18 * * *'   # ogni giorno alle 18:30 UTC
+  workflow_dispatch:        # puoi lanciarlo manualmente
 
 jobs:
-  scrape-certificates:
+  scrape-and-enrich:
     runs-on: ubuntu-latest
     
     steps:
@@ -22,60 +22,36 @@ jobs:
       
       - name: Install dependencies
         run: |
+          python -m pip install --upgrade pip
           pip install playwright beautifulsoup4
           playwright install chromium
-          playwright install-deps chromium
-          echo "Dependencies installed"
+          playwright install-deps
       
       - name: Run certificates scraper
-        run: |
-          echo "Starting certificates scraper..."
-          python certificates-scraper-ced-v14.py
-          echo "Scraper completed"
+        run: python certificates-scraper-ced-v14.py
       
       - name: Validate output
         run: |
           if [ -f certificates-data.json ]; then
             echo "Output file exists"
-            CERT_COUNT=$(python3 -c "import json; data=json.load(open('certificates-data.json')); print(len(data.get('certificates', [])))")
-            echo "Certificates found: ${CERT_COUNT}"
+            COUNT=$(python3 -c "import json; print(len(json.load(open('certificates-data.json'))['certificates']))")
+            echo "Certificates found: $COUNT"
           else
             echo "Output file not found!"
             exit 1
           fi
       
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: certificates-data
-          path: certificates-data.json
-          retention-days: 7
-      
-      - name: Check for changes
-        id: check_changes
-        run: |
-          if git diff --quiet certificates-data.json 2>/dev/null; then
-            echo "has_changes=false" >> $GITHUB_OUTPUT
-          else
-            echo "has_changes=true" >> $GITHUB_OUTPUT
-          fi
-      
-      - name: Commit and push
-        if: steps.check_changes.outputs.has_changes == 'true'
+      - name: Commit and push if changed
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "GitHub Actions Bot"
           git add certificates-data.json
-          git commit -m "Auto-update certificates - $(date +'%Y-%m-%d %H:%M')"
+          git diff --quiet certificates-data.json || git commit -m "Aggiornamento automatico certificati - $(date +'%Y-%m-%d %H:%M')"
           git push
       
       - name: Summary
         run: |
-          echo "## Certificates Scraper" >> $GITHUB_STEP_SUMMARY
-          echo "- **Date:** $(date +'%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
-          echo "- **Source:** CED + Borsa Italiana" >> $GITHUB_STEP_SUMMARY
-          echo "- **Filter:** Indices, Commodities, Currencies, Rates, Credit Linked" >> $GITHUB_STEP_SUMMARY
-          if [ -f certificates-data.json ]; then
-            CERT_COUNT=$(python3 -c "import json; data=json.load(open('certificates-data.json')); print(len(data.get('certificates', [])))")
-            echo "- **Certificates:** ${CERT_COUNT}" >> $GITHUB_STEP_SUMMARY
-          fi
+          echo "## Certificates Update" >> $GITHUB_STEP_SUMMARY
+          echo "- **Data:** $(date +'%Y-%m-%d %H:%M UTC')" >> $GITHUB_STEP_SUMMARY
+          echo "- **Certificati:** $(python3 -c "import json; print(len(json.load(open('certificates-data.json'))['certificates']))")" >> $GITHUB_STEP_SUMMARY
+          echo "- **Fonte:** certificatiederivati.it + enrichment" >> $GITHUB_STEP_SUMMARY
