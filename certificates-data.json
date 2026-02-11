@@ -1,270 +1,2862 @@
 {
   "success": true,
-  "count": 20,
+  "count": 150,
   "certificates": [
     {
-      "isin": "NLBNPIT292P6",
-      "name": "BPA F LEV LG X 5 STELLANTIS IT 271235",
-      "issuer": "BNP PARIBAS ISSUANCE B.V.",
-      "type": "",
-      "underlying_text": "Sottostante",
+      "isin": "DE000UQ8A9N4",
+      "name": "PHOENIX MEMORY STEP DOWN",
+      "issuer": "Ubs",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Basket di azioni worst of"
+        }
+      ],
+      "underlying_text": "Basket di azioni worst of",
       "barrier_down": null,
-      "maturity_date": "35-12-27",
+      "maturity_date": null,
       "annual_coupon_yield": null,
-      "reference_price": 0.0002,
-      "url": "https://www.borsaitaliana.it/borsa/cw-e-certificates/scheda/NLBNPIT292P6.html",
-      "scraped_at": "2026-02-11T15:52:56.807104"
+      "reference_price": null,
+      "market": "SED",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=DE000UQ8A9N4",
+      "scraped_at": "2026-02-11T16:18:55.637481"
     },
     {
-      "isin": "DE000VH2TMA6",
-      "name": "VON TB SH ENI 18.15 B 18.15 OP END",
-      "issuer": "VONTOBEL FINANCIAL PRODUCTS GMBH",
-      "type": "",
-      "underlying_text": "Sottostante",
+      "isin": "IT0006773474",
+      "name": "PHOENIX MEMORY STEP DOWN",
+      "issuer": "Marex Financial",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Basket di indici worst of"
+        }
+      ],
+      "underlying_text": "Basket di indici worst of",
       "barrier_down": null,
-      "maturity_date": "N.D.",
+      "maturity_date": null,
       "annual_coupon_yield": null,
-      "reference_price": 0.406,
-      "url": "https://www.borsaitaliana.it/borsa/cw-e-certificates/scheda/DE000VH2TMA6.html",
-      "scraped_at": "2026-02-11T15:53:28.594805"
+      "reference_price": null,
+      "market": "CX",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0006773474",
+      "scraped_at": "2026-02-11T16:18:55.637555"
     },
     {
-      "isin": "DE000VJ1AWX7",
-      "name": "VON EXP BMPS/BPER/CBK/DB/SG 60 150327",
-      "issuer": "VONTOBEL FINANCIAL PRODUCTS GMBH",
-      "type": "",
-      "underlying_text": "Sottostante",
-      "barrier_down": 60.0,
-      "maturity_date": "27-03-15",
+      "isin": "XS3245808673",
+      "name": "PHOENIX MEMORY",
+      "issuer": "Bnp Paribas",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Basket di indici worst of"
+        }
+      ],
+      "underlying_text": "Basket di indici worst of",
+      "barrier_down": null,
+      "maturity_date": null,
       "annual_coupon_yield": null,
-      "reference_price": 101.3,
-      "url": "https://www.borsaitaliana.it/borsa/cw-e-certificates/scheda/DE000VJ1AWX7.html",
-      "scraped_at": "2026-02-11T15:53:35.177310"
+      "reference_price": null,
+      "market": "CX",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=XS3245808673",
+      "scraped_at": "2026-02-11T16:18:55.637598"
     },
     {
-      "isin": "NLBNPIT2UHL9",
-      "name": "BPA CW PUT FinecoBank Banca 15 E 240326",
-      "issuer": "BNP PARIBAS ISSUANCE B.V.",
-      "type": "",
-      "underlying_text": "Sottostante",
+      "isin": "DE000UP33YN5",
+      "name": "EQUITY PROTECTION",
+      "issuer": "Ubs",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Basket di azioni worst of"
+        }
+      ],
+      "underlying_text": "Basket di azioni worst of",
       "barrier_down": null,
-      "maturity_date": "26-03-24",
+      "maturity_date": null,
       "annual_coupon_yield": null,
-      "reference_price": 0.0014,
-      "url": "https://www.borsaitaliana.it/borsa/cw-e-certificates/scheda/NLBNPIT2UHL9.html",
-      "scraped_at": "2026-02-11T15:53:41.762900"
+      "reference_price": null,
+      "market": "SED",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=DE000UP33YN5",
+      "scraped_at": "2026-02-11T16:18:55.637665"
     },
     {
-      "isin": "DE000UG453X2",
-      "name": "UCH CW CALL FERRARI IT 480 A 180626",
-      "issuer": "Unicredit Bank GmbH",
-      "type": "",
-      "underlying_text": "Sottostante",
+      "isin": "IT0006773664",
+      "name": "PHOENIX MEMORY STEP DOWN",
+      "issuer": "Santander",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Basket di azioni worst of"
+        }
+      ],
+      "underlying_text": "Basket di azioni worst of",
       "barrier_down": null,
-      "maturity_date": "26-06-18",
+      "maturity_date": null,
       "annual_coupon_yield": null,
-      "reference_price": 0.04,
-      "url": "https://www.borsaitaliana.it/borsa/cw-e-certificates/scheda/DE000UG453X2.html",
-      "scraped_at": "2026-02-11T15:53:48.633410"
+      "reference_price": null,
+      "market": "CX",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0006773664",
+      "scraped_at": "2026-02-11T16:18:55.637698"
     },
     {
-      "isin": "NLBNPIT2XUZ6",
-      "name": "BPA TB LG FinecoBan 19.70 B 19.70 OP END",
-      "issuer": "BNP PARIBAS ISSUANCE B.V.",
-      "type": "",
-      "underlying_text": "Sottostante",
+      "isin": "DE000UQ6ZLV2",
+      "name": "FIXED CASH COLLECT CALLABLE",
+      "issuer": "Ubs",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Basket di azioni worst of"
+        }
+      ],
+      "underlying_text": "Basket di azioni worst of",
       "barrier_down": null,
-      "maturity_date": "N.D.",
+      "maturity_date": null,
       "annual_coupon_yield": null,
-      "reference_price": 3.39,
-      "url": "https://www.borsaitaliana.it/borsa/cw-e-certificates/scheda/NLBNPIT2XUZ6.html",
-      "scraped_at": "2026-02-11T15:54:19.858016"
+      "reference_price": null,
+      "market": "CX",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=DE000UQ6ZLV2",
+      "scraped_at": "2026-02-11T16:18:55.637804"
     },
     {
-      "isin": "DE000VH5AKF2",
-      "name": "VON F LEV LG X 4 Hims Hers Health 151228",
-      "issuer": "VONTOBEL FINANCIAL PRODUCTS GMBH",
-      "type": "",
-      "underlying_text": "Sottostante",
+      "isin": "XS3256692842",
+      "name": "PHOENIX MEMORY",
+      "issuer": "Barclays",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Basket di azioni worst of"
+        }
+      ],
+      "underlying_text": "Basket di azioni worst of",
       "barrier_down": null,
-      "maturity_date": "28-12-15",
+      "maturity_date": null,
       "annual_coupon_yield": null,
-      "reference_price": 0.0018,
-      "url": "https://www.borsaitaliana.it/borsa/cw-e-certificates/scheda/DE000VH5AKF2.html",
-      "scraped_at": "2026-02-11T15:54:26.475017"
+      "reference_price": null,
+      "market": "CX",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=XS3256692842",
+      "scraped_at": "2026-02-11T16:18:55.637837"
     },
     {
-      "isin": "NLBNPIT33SZ3",
-      "name": "BPA TB LG Moderna I 36.93 B 36.93 OP END",
-      "issuer": "BNP PARIBAS ISSUANCE B.V.",
-      "type": "",
-      "underlying_text": "Sottostante",
+      "isin": "XS3256629992",
+      "name": "EQUITY PROTECTION CAP",
+      "issuer": "Barclays",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Basket di azioni equipesato"
+        }
+      ],
+      "underlying_text": "Basket di azioni equipesato",
       "barrier_down": null,
-      "maturity_date": "N.D.",
+      "maturity_date": null,
       "annual_coupon_yield": null,
-      "reference_price": 0.612,
-      "url": "https://www.borsaitaliana.it/borsa/cw-e-certificates/scheda/NLBNPIT33SZ3.html",
-      "scraped_at": "2026-02-11T15:54:33.136625"
+      "reference_price": null,
+      "market": "CX",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=XS3256629992",
+      "scraped_at": "2026-02-11T16:18:55.637869"
     },
     {
-      "isin": "LU2141869003",
-      "name": "SGE F LEV LG X 7 FTSE MIB NET TOT OP END",
-      "issuer": "SOCIETE GENERALE EFFEKTEN GMBH",
-      "type": "",
-      "underlying_text": "Sottostante",
+      "isin": "XS3256693493",
+      "name": "PHOENIX MEMORY",
+      "issuer": "Barclays",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Basket di indici worst of"
+        }
+      ],
+      "underlying_text": "Basket di indici worst of",
       "barrier_down": null,
-      "maturity_date": "N.D.",
+      "maturity_date": null,
       "annual_coupon_yield": null,
-      "reference_price": 14.9,
-      "url": "https://www.borsaitaliana.it/borsa/cw-e-certificates/scheda/LU2141869003.html",
-      "scraped_at": "2026-02-11T15:54:39.222205"
+      "reference_price": null,
+      "market": "CX",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=XS3256693493",
+      "scraped_at": "2026-02-11T16:18:55.637899"
     },
     {
-      "isin": "LU2141148952",
-      "name": "SGE F LEV LG X 7 FTSE MIB NET TOT OP END",
-      "issuer": "SOCIETE GENERALE EFFEKTEN GMBH",
-      "type": "",
-      "underlying_text": "Sottostante",
+      "isin": "DE000UQ7H5W7",
+      "name": "PHOENIX MEMORY STEP DOWN",
+      "issuer": "Ubs",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Basket di azioni worst of"
+        }
+      ],
+      "underlying_text": "Basket di azioni worst of",
       "barrier_down": null,
-      "maturity_date": "N.D.",
+      "maturity_date": null,
       "annual_coupon_yield": null,
-      "reference_price": 115.35,
-      "url": "https://www.borsaitaliana.it/borsa/cw-e-certificates/scheda/LU2141148952.html",
-      "scraped_at": "2026-02-11T15:54:46.339698"
+      "reference_price": null,
+      "market": "SED",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=DE000UQ7H5W7",
+      "scraped_at": "2026-02-11T16:18:55.637928"
     },
     {
-      "isin": "DE000SX1Y9K9",
-      "name": "SGE F LEV SH X -7 FTSE MIB GROSS OP END",
-      "issuer": "SOCIETE GENERALE EFFEKTEN GMBH",
-      "type": "",
-      "underlying_text": "Sottostante",
+      "isin": "XS3256709836",
+      "name": "PHOENIX MEMORY AIRBAG CALLABLE",
+      "issuer": "Barclays",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Basket di indici worst of"
+        }
+      ],
+      "underlying_text": "Basket di indici worst of",
       "barrier_down": null,
-      "maturity_date": "N.D.",
+      "maturity_date": null,
       "annual_coupon_yield": null,
-      "reference_price": 0.705,
-      "url": "https://www.borsaitaliana.it/borsa/cw-e-certificates/scheda/DE000SX1Y9K9.html",
-      "scraped_at": "2026-02-11T15:55:18.061072"
+      "reference_price": null,
+      "market": "CX",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=XS3256709836",
+      "scraped_at": "2026-02-11T16:18:55.637959"
     },
     {
-      "isin": "DE000SF2GCY1",
-      "name": "SGE F LEV LG X 5 Intesa Sanpaolo OP END",
-      "issuer": "SOCIETE GENERALE EFFEKTEN GMBH",
-      "type": "",
-      "underlying_text": "Sottostante",
+      "isin": "DE000UQ7LKD0",
+      "name": "PHOENIX MEMORY STEP DOWN",
+      "issuer": "Ubs",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Basket di azioni worst of"
+        }
+      ],
+      "underlying_text": "Basket di azioni worst of",
       "barrier_down": null,
-      "maturity_date": "N.D.",
+      "maturity_date": null,
       "annual_coupon_yield": null,
-      "reference_price": 132.4,
-      "url": "https://www.borsaitaliana.it/borsa/cw-e-certificates/scheda/DE000SF2GCY1.html",
-      "scraped_at": "2026-02-11T15:55:24.809526"
+      "reference_price": null,
+      "market": "SED",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=DE000UQ7LKD0",
+      "scraped_at": "2026-02-11T16:18:55.638013"
     },
     {
-      "isin": "DE000VU33B74",
-      "name": "VON F LEV LG X 3 Vont 3X L STLA 180627",
-      "issuer": "VONTOBEL FINANCIAL PRODUCTS GMBH",
-      "type": "",
-      "underlying_text": "Sottostante",
+      "isin": "DE000UQ7NHJ9",
+      "name": "PHOENIX MEMORY STEP DOWN",
+      "issuer": "Ubs",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Basket di azioni worst of"
+        }
+      ],
+      "underlying_text": "Basket di azioni worst of",
       "barrier_down": null,
-      "maturity_date": "27-06-18",
+      "maturity_date": null,
       "annual_coupon_yield": null,
-      "reference_price": 0.0185,
-      "url": "https://www.borsaitaliana.it/borsa/cw-e-certificates/scheda/DE000VU33B74.html",
-      "scraped_at": "2026-02-11T15:55:31.508524"
+      "reference_price": null,
+      "market": "SED",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=DE000UQ7NHJ9",
+      "scraped_at": "2026-02-11T16:18:55.638066"
     },
     {
-      "isin": "DE000VD5TVQ0",
-      "name": "VON F LEV SH X -5 Vont 5X S MODER 180627",
-      "issuer": "VONTOBEL FINANCIAL PRODUCTS GMBH",
-      "type": "",
-      "underlying_text": "Sottostante",
+      "isin": "DE000VJ5A160",
+      "name": "CASH COLLECT MEMORY STEP DOWN",
+      "issuer": "Vontobel",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Basket di azioni worst of"
+        }
+      ],
+      "underlying_text": "Basket di azioni worst of",
       "barrier_down": null,
-      "maturity_date": "27-06-18",
+      "maturity_date": null,
       "annual_coupon_yield": null,
-      "reference_price": 0.0001,
-      "url": "https://www.borsaitaliana.it/borsa/cw-e-certificates/scheda/DE000VD5TVQ0.html",
-      "scraped_at": "2026-02-11T15:55:38.193009"
+      "reference_price": null,
+      "market": "SED",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=DE000VJ5A160",
+      "scraped_at": "2026-02-11T16:18:55.638122"
     },
     {
-      "isin": "DE000SX1B024",
-      "name": "SGE F LEV SH X -5 SPOTIFY TECHNOL OP END",
-      "issuer": "SOCIETE GENERALE EFFEKTEN GMBH",
-      "type": "",
-      "underlying_text": "Sottostante",
+      "isin": "DE000VJ5BSZ9",
+      "name": "CASH COLLECT MEMORY STEP DOWN",
+      "issuer": "Vontobel",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Basket di azioni worst of"
+        }
+      ],
+      "underlying_text": "Basket di azioni worst of",
       "barrier_down": null,
-      "maturity_date": "N.D.",
+      "maturity_date": null,
       "annual_coupon_yield": null,
-      "reference_price": 1.446,
-      "url": "https://www.borsaitaliana.it/borsa/cw-e-certificates/scheda/DE000SX1B024.html",
-      "scraped_at": "2026-02-11T15:55:44.918435"
+      "reference_price": null,
+      "market": "SED",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=DE000VJ5BSZ9",
+      "scraped_at": "2026-02-11T16:18:55.638180"
     },
     {
-      "isin": "DE000FD6GB45",
-      "name": "SGE TB LG FinecoBan 20.12 B 20.12 OP END",
-      "issuer": "SOCIETE GENERALE EFFEKTEN GMBH",
-      "type": "",
-      "underlying_text": "Sottostante",
+      "isin": "DE000VJ5D0U1",
+      "name": "CASH COLLECT MEMORY AIRBAG",
+      "issuer": "Vontobel",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Basket di azioni worst of"
+        }
+      ],
+      "underlying_text": "Basket di azioni worst of",
       "barrier_down": null,
-      "maturity_date": "N.D.",
+      "maturity_date": null,
       "annual_coupon_yield": null,
-      "reference_price": 2.165,
-      "url": "https://www.borsaitaliana.it/borsa/cw-e-certificates/scheda/DE000FD6GB45.html",
-      "scraped_at": "2026-02-11T15:55:51.987715"
+      "reference_price": null,
+      "market": "SED",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=DE000VJ5D0U1",
+      "scraped_at": "2026-02-11T16:18:55.638214"
     },
     {
-      "isin": "DE000FD6QDE8",
-      "name": "SGE TB LG FinecoBan 19.61 B 19.61 OP END",
-      "issuer": "SOCIETE GENERALE EFFEKTEN GMBH",
-      "type": "",
-      "underlying_text": "Sottostante",
+      "isin": "DE000VJ5FCC3",
+      "name": "CASH COLLECT MEMORY STEP DOWN",
+      "issuer": "Vontobel",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Basket di azioni worst of"
+        }
+      ],
+      "underlying_text": "Basket di azioni worst of",
       "barrier_down": null,
-      "maturity_date": "N.D.",
+      "maturity_date": null,
       "annual_coupon_yield": null,
-      "reference_price": 2.66,
-      "url": "https://www.borsaitaliana.it/borsa/cw-e-certificates/scheda/DE000FD6QDE8.html",
-      "scraped_at": "2026-02-11T15:56:00.277422"
+      "reference_price": null,
+      "market": "SED",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=DE000VJ5FCC3",
+      "scraped_at": "2026-02-11T16:18:55.638242"
     },
     {
-      "isin": "DE000UG453Y0",
-      "name": "UCH CW CALL FERRARI IT 500 A 180626",
-      "issuer": "Unicredit Bank GmbH",
-      "type": "",
-      "underlying_text": "Sottostante",
+      "isin": "DE000VJ5FCD1",
+      "name": "CASH COLLECT MEMORY STEP DOWN",
+      "issuer": "Vontobel",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Basket di azioni worst of"
+        }
+      ],
+      "underlying_text": "Basket di azioni worst of",
       "barrier_down": null,
-      "maturity_date": "26-06-18",
+      "maturity_date": null,
       "annual_coupon_yield": null,
-      "reference_price": 0.0255,
-      "url": "https://www.borsaitaliana.it/borsa/cw-e-certificates/scheda/DE000UG453Y0.html",
-      "scraped_at": "2026-02-11T15:56:12.193778"
+      "reference_price": null,
+      "market": "SED",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=DE000VJ5FCD1",
+      "scraped_at": "2026-02-11T16:18:55.638273"
     },
     {
-      "isin": "DE000SJ1CJD7",
-      "name": "SGE F LEV LG X 3 STELLANTIS IT 200929",
-      "issuer": "SOCIETE GENERALE EFFEKTEN GMBH",
-      "type": "",
-      "underlying_text": "Sottostante",
+      "isin": "DE000MS0H1Y2",
+      "name": "PHOENIX MEMORY",
+      "issuer": "Morgan Stanley",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Basket di azioni worst of"
+        }
+      ],
+      "underlying_text": "Basket di azioni worst of",
       "barrier_down": null,
-      "maturity_date": "29-09-20",
+      "maturity_date": null,
       "annual_coupon_yield": null,
-      "reference_price": 0.553,
-      "url": "https://www.borsaitaliana.it/borsa/cw-e-certificates/scheda/DE000SJ1CJD7.html",
-      "scraped_at": "2026-02-11T15:56:18.836513"
+      "reference_price": null,
+      "market": "CX",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=DE000MS0H1Y2",
+      "scraped_at": "2026-02-11T16:18:55.638728"
     },
     {
-      "isin": "DE000SW7AKE7",
-      "name": "SGE F LEV SH X -5 ORANGE JUICE FC 180326",
-      "issuer": "SOCIETE GENERALE EFFEKTEN GMBH",
-      "type": "",
-      "underlying_text": "Sottostante",
+      "isin": "DE000VJ44A77",
+      "name": "CASH COLLECT STEP DOWN",
+      "issuer": "Vontobel",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Basket di azioni worst of"
+        }
+      ],
+      "underlying_text": "Basket di azioni worst of",
       "barrier_down": null,
-      "maturity_date": "26-03-18",
+      "maturity_date": null,
       "annual_coupon_yield": null,
-      "reference_price": 0.0002,
-      "url": "https://www.borsaitaliana.it/borsa/cw-e-certificates/scheda/DE000SW7AKE7.html",
-      "scraped_at": "2026-02-11T15:56:25.509068"
+      "reference_price": null,
+      "market": "SED",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=DE000VJ44A77",
+      "scraped_at": "2026-02-11T16:18:55.638758"
+    },
+    {
+      "isin": "CH1484582098",
+      "name": "PHOENIX MEMORY SOFTCALLABLE",
+      "issuer": "Leonteq Securities",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Basket di Fondi WorstOf"
+        }
+      ],
+      "underlying_text": "Basket di Fondi WorstOf",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "CX",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=CH1484582098",
+      "scraped_at": "2026-02-11T16:18:55.638818"
+    },
+    {
+      "isin": "XS2878542187",
+      "name": "PHOENIX MEMORY",
+      "issuer": "Societe Generale",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Basket di azioni worst of"
+        }
+      ],
+      "underlying_text": "Basket di azioni worst of",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "CX",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=XS2878542187",
+      "scraped_at": "2026-02-11T16:18:55.638847"
+    },
+    {
+      "isin": "XS3236819028",
+      "name": "EXPRESS",
+      "issuer": "Bnp Paribas",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Basket di indici worst of"
+        }
+      ],
+      "underlying_text": "Basket di indici worst of",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "CX",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=XS3236819028",
+      "scraped_at": "2026-02-11T16:18:55.638875"
+    },
+    {
+      "isin": "XS3276196915",
+      "name": "PHOENIX MEMORY STEP DOWN",
+      "issuer": "Santander",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Basket di azioni worst of"
+        }
+      ],
+      "underlying_text": "Basket di azioni worst of",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "CX",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=XS3276196915",
+      "scraped_at": "2026-02-11T16:18:55.638902"
+    },
+    {
+      "isin": "IT0005690158",
+      "name": "EQUITY FIXED PREMIUM",
+      "issuer": "Banco BPM",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Basket di azioni worst of"
+        }
+      ],
+      "underlying_text": "Basket di azioni worst of",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "CX",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005690158",
+      "scraped_at": "2026-02-11T16:18:55.638958"
+    },
+    {
+      "isin": "DE000VJ44AZ7",
+      "name": "CASH COLLECT STEP DOWN",
+      "issuer": "Vontobel",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Basket di azioni worst of"
+        }
+      ],
+      "underlying_text": "Basket di azioni worst of",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "SED",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=DE000VJ44AZ7",
+      "scraped_at": "2026-02-11T16:18:55.638987"
+    },
+    {
+      "isin": "XS3256675243",
+      "name": "PHOENIX MEMORY",
+      "issuer": "Barclays",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Basket di azioni worst of"
+        }
+      ],
+      "underlying_text": "Basket di azioni worst of",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "CX",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=XS3256675243",
+      "scraped_at": "2026-02-11T16:18:55.639019"
+    },
+    {
+      "isin": "XS3256658074",
+      "name": "PHOENIX MEMORY STEP DOWN",
+      "issuer": "Barclays",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Basket di azioni worst of"
+        }
+      ],
+      "underlying_text": "Basket di azioni worst of",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "CX",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=XS3256658074",
+      "scraped_at": "2026-02-11T16:18:55.639101"
+    },
+    {
+      "isin": "IT0006773581",
+      "name": "PHOENIX MEMORY STEP DOWN",
+      "issuer": "Santander",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Basket di azioni worst of"
+        }
+      ],
+      "underlying_text": "Basket di azioni worst of",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "CX",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0006773581",
+      "scraped_at": "2026-02-11T16:18:55.639131"
+    },
+    {
+      "isin": "DE000VJ4S8F9",
+      "name": "CASH COLLECT MEMORY STEP DOWN",
+      "issuer": "Vontobel",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Basket di azioni worst of"
+        }
+      ],
+      "underlying_text": "Basket di azioni worst of",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "SED",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=DE000VJ4S8F9",
+      "scraped_at": "2026-02-11T16:18:55.639158"
+    },
+    {
+      "isin": "DE000VJ46AW9",
+      "name": "CASH COLLECT MEMORY STEP DOWN",
+      "issuer": "Vontobel",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Basket di azioni worst of"
+        }
+      ],
+      "underlying_text": "Basket di azioni worst of",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "SED",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=DE000VJ46AW9",
+      "scraped_at": "2026-02-11T16:18:55.639210"
+    },
+    {
+      "isin": "IT0006772765",
+      "name": "PHOENIX MEMORY STEP DOWN",
+      "issuer": "Santander",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Basket di azioni worst of"
+        }
+      ],
+      "underlying_text": "Basket di azioni worst of",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "CX",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0006772765",
+      "scraped_at": "2026-02-11T16:18:55.639238"
+    },
+    {
+      "isin": "XS3256660484",
+      "name": "PHOENIX MEMORY",
+      "issuer": "Barclays",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Basket di azioni worst of"
+        }
+      ],
+      "underlying_text": "Basket di azioni worst of",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "CX",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=XS3256660484",
+      "scraped_at": "2026-02-11T16:18:55.639316"
+    },
+    {
+      "isin": "DE000UN4AMC1",
+      "name": "CASH COLLECT MEMORY STEP DOWN",
+      "issuer": "Unicredit",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Basket di azioni worst of"
+        }
+      ],
+      "underlying_text": "Basket di azioni worst of",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "CX",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=DE000UN4AMC1",
+      "scraped_at": "2026-02-11T16:18:55.639383"
+    },
+    {
+      "isin": "IT0006773458",
+      "name": "PHOENIX MEMORY STEP DOWN",
+      "issuer": "Marex Financial",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Basket di azioni worst of"
+        }
+      ],
+      "underlying_text": "Basket di azioni worst of",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "CX",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0006773458",
+      "scraped_at": "2026-02-11T16:18:55.639412"
+    },
+    {
+      "isin": "DE000VJ49MS6",
+      "name": "CASH COLLECT MEMORY AIRBAG STEP DOWN",
+      "issuer": "Vontobel",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Basket di azioni worst of"
+        }
+      ],
+      "underlying_text": "Basket di azioni worst of",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "SED",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=DE000VJ49MS6",
+      "scraped_at": "2026-02-11T16:18:55.639439"
+    },
+    {
+      "isin": "IT0006773466",
+      "name": "FIXED CASH COLLECT AIRBAG STEP DOWN",
+      "issuer": "Marex Financial",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Basket di azioni worst of"
+        }
+      ],
+      "underlying_text": "Basket di azioni worst of",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "CX",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0006773466",
+      "scraped_at": "2026-02-11T16:18:55.639472"
+    },
+    {
+      "isin": "XS3256674865",
+      "name": "EQUITY PROTECTION",
+      "issuer": "Barclays",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Basket di indici worst of"
+        }
+      ],
+      "underlying_text": "Basket di indici worst of",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "CX",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=XS3256674865",
+      "scraped_at": "2026-02-11T16:18:55.639527"
+    },
+    {
+      "isin": "DE000VJ49MV0",
+      "name": "CASH COLLECT MEMORY STEP DOWN",
+      "issuer": "Vontobel",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Basket di azioni worst of"
+        }
+      ],
+      "underlying_text": "Basket di azioni worst of",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "SED",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=DE000VJ49MV0",
+      "scraped_at": "2026-02-11T16:18:55.639557"
+    },
+    {
+      "isin": "XS3255670237",
+      "name": "CASH COLLECT MEMORY STEP DOWN",
+      "issuer": "Bnp Paribas",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Basket di azioni worst of"
+        }
+      ],
+      "underlying_text": "Basket di azioni worst of",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "CX",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=XS3255670237",
+      "scraped_at": "2026-02-11T16:18:55.639588"
+    },
+    {
+      "isin": "DE000VJ49MW8",
+      "name": "PHOENIX MEMORY STEP DOWN",
+      "issuer": "Vontobel",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Basket di azioni worst of"
+        }
+      ],
+      "underlying_text": "Basket di azioni worst of",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "SED",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=DE000VJ49MW8",
+      "scraped_at": "2026-02-11T16:18:55.639616"
+    },
+    {
+      "isin": "XS3255781901",
+      "name": "PHOENIX MEMORY STEP DOWN",
+      "issuer": "Bnp Paribas",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Basket di azioni worst of"
+        }
+      ],
+      "underlying_text": "Basket di azioni worst of",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "CX",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=XS3255781901",
+      "scraped_at": "2026-02-11T16:18:55.639646"
+    },
+    {
+      "isin": "XS3256614374",
+      "name": "EQUITY PROTECTION",
+      "issuer": "Barclays",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Basket di indici worst of"
+        }
+      ],
+      "underlying_text": "Basket di indici worst of",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "CX",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=XS3256614374",
+      "scraped_at": "2026-02-11T16:18:55.639677"
+    },
+    {
+      "isin": "IT0005686560",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "CAC40"
+        }
+      ],
+      "underlying_text": "CAC40",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005686560",
+      "scraped_at": "2026-02-11T16:18:55.661226"
+    },
+    {
+      "isin": "IT0005686578",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "CAC40"
+        }
+      ],
+      "underlying_text": "CAC40",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005686578",
+      "scraped_at": "2026-02-11T16:18:55.661284"
+    },
+    {
+      "isin": "IT0005675324",
+      "name": "LEVA FISSA",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "WTI Crude Future generic 1st"
+        }
+      ],
+      "underlying_text": "WTI Crude Future generic 1st",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005675324",
+      "scraped_at": "2026-02-11T16:18:55.662849"
+    },
+    {
+      "isin": "IT0005686487",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "CAC40"
+        }
+      ],
+      "underlying_text": "CAC40",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005686487",
+      "scraped_at": "2026-02-11T16:18:55.662906"
+    },
+    {
+      "isin": "IT0005675456",
+      "name": "LEVA FISSA",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "WTI Crude Future generic 1st"
+        }
+      ],
+      "underlying_text": "WTI Crude Future generic 1st",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005675456",
+      "scraped_at": "2026-02-11T16:18:55.662957"
+    },
+    {
+      "isin": "IT0005686495",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "CAC40"
+        }
+      ],
+      "underlying_text": "CAC40",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005686495",
+      "scraped_at": "2026-02-11T16:18:55.663014"
+    },
+    {
+      "isin": "IT0005686404",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "WTI Crude Future generic 1st"
+        }
+      ],
+      "underlying_text": "WTI Crude Future generic 1st",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005686404",
+      "scraped_at": "2026-02-11T16:18:55.663061"
+    },
+    {
+      "isin": "IT0005686503",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "CAC40"
+        }
+      ],
+      "underlying_text": "CAC40",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005686503",
+      "scraped_at": "2026-02-11T16:18:55.663112"
+    },
+    {
+      "isin": "IT0005686412",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "WTI Crude Future generic 1st"
+        }
+      ],
+      "underlying_text": "WTI Crude Future generic 1st",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005686412",
+      "scraped_at": "2026-02-11T16:18:55.663163"
+    },
+    {
+      "isin": "IT0005686511",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "CAC40"
+        }
+      ],
+      "underlying_text": "CAC40",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005686511",
+      "scraped_at": "2026-02-11T16:18:55.663189"
+    },
+    {
+      "isin": "IT0005686420",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "WTI Crude Future generic 1st"
+        }
+      ],
+      "underlying_text": "WTI Crude Future generic 1st",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005686420",
+      "scraped_at": "2026-02-11T16:18:55.663216"
+    },
+    {
+      "isin": "IT0005686529",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "CAC40"
+        }
+      ],
+      "underlying_text": "CAC40",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005686529",
+      "scraped_at": "2026-02-11T16:18:55.663244"
+    },
+    {
+      "isin": "IT0005686438",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "WTI Crude Future generic 1st"
+        }
+      ],
+      "underlying_text": "WTI Crude Future generic 1st",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005686438",
+      "scraped_at": "2026-02-11T16:18:55.663274"
+    },
+    {
+      "isin": "IT0005686537",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "CAC40"
+        }
+      ],
+      "underlying_text": "CAC40",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005686537",
+      "scraped_at": "2026-02-11T16:18:55.663301"
+    },
+    {
+      "isin": "IT0005686446",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "WTI Crude Future generic 1st"
+        }
+      ],
+      "underlying_text": "WTI Crude Future generic 1st",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005686446",
+      "scraped_at": "2026-02-11T16:18:55.663328"
+    },
+    {
+      "isin": "IT0005686545",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "CAC40"
+        }
+      ],
+      "underlying_text": "CAC40",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005686545",
+      "scraped_at": "2026-02-11T16:18:55.663373"
+    },
+    {
+      "isin": "IT0005686453",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "WTI Crude Future generic 1st"
+        }
+      ],
+      "underlying_text": "WTI Crude Future generic 1st",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005686453",
+      "scraped_at": "2026-02-11T16:18:55.663402"
+    },
+    {
+      "isin": "IT0005686552",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "CAC40"
+        }
+      ],
+      "underlying_text": "CAC40",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005686552",
+      "scraped_at": "2026-02-11T16:18:55.663427"
+    },
+    {
+      "isin": "IT0005686461",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "WTI Crude Future generic 1st"
+        }
+      ],
+      "underlying_text": "WTI Crude Future generic 1st",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005686461",
+      "scraped_at": "2026-02-11T16:18:55.663456"
+    },
+    {
+      "isin": "IT0005686479",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "WTI Crude Future generic 1st"
+        }
+      ],
+      "underlying_text": "WTI Crude Future generic 1st",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005686479",
+      "scraped_at": "2026-02-11T16:18:55.663482"
+    },
+    {
+      "isin": "IT0005683641",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Dax"
+        }
+      ],
+      "underlying_text": "Dax",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005683641",
+      "scraped_at": "2026-02-11T16:18:55.667056"
+    },
+    {
+      "isin": "IT0005683658",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50"
+        }
+      ],
+      "underlying_text": "Euro Stoxx 50",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005683658",
+      "scraped_at": "2026-02-11T16:18:55.667085"
+    },
+    {
+      "isin": "IT0005683666",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50"
+        }
+      ],
+      "underlying_text": "Euro Stoxx 50",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005683666",
+      "scraped_at": "2026-02-11T16:18:55.667136"
+    },
+    {
+      "isin": "IT0005683609",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Dax"
+        }
+      ],
+      "underlying_text": "Dax",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005683609",
+      "scraped_at": "2026-02-11T16:18:55.668865"
+    },
+    {
+      "isin": "IT0005683583",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "GBP/USD"
+        }
+      ],
+      "underlying_text": "GBP/USD",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005683583",
+      "scraped_at": "2026-02-11T16:18:55.670684"
+    },
+    {
+      "isin": "IT0005683526",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Dax"
+        }
+      ],
+      "underlying_text": "Dax",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005683526",
+      "scraped_at": "2026-02-11T16:18:55.672623"
+    },
+    {
+      "isin": "IT0005683534",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50"
+        }
+      ],
+      "underlying_text": "Euro Stoxx 50",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005683534",
+      "scraped_at": "2026-02-11T16:18:55.672652"
+    },
+    {
+      "isin": "IT0005683542",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50"
+        }
+      ],
+      "underlying_text": "Euro Stoxx 50",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005683542",
+      "scraped_at": "2026-02-11T16:18:55.672706"
+    },
+    {
+      "isin": "IT0005683567",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "FTSE Mib"
+        }
+      ],
+      "underlying_text": "FTSE Mib",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005683567",
+      "scraped_at": "2026-02-11T16:18:55.672756"
+    },
+    {
+      "isin": "IT0005683575",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "FTSE Mib"
+        }
+      ],
+      "underlying_text": "FTSE Mib",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005683575",
+      "scraped_at": "2026-02-11T16:18:55.672805"
+    },
+    {
+      "isin": "IT0005681595",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Dax"
+        }
+      ],
+      "underlying_text": "Dax",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005681595",
+      "scraped_at": "2026-02-11T16:18:55.675302"
+    },
+    {
+      "isin": "IT0005683500",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "FTSE Mib"
+        }
+      ],
+      "underlying_text": "FTSE Mib",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005683500",
+      "scraped_at": "2026-02-11T16:18:55.675329"
+    },
+    {
+      "isin": "IT0005680621",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Nasdaq 100"
+        }
+      ],
+      "underlying_text": "Nasdaq 100",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005680621",
+      "scraped_at": "2026-02-11T16:18:55.681536"
+    },
+    {
+      "isin": "IT0005681504",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "S&P 500"
+        }
+      ],
+      "underlying_text": "S&P 500",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005681504",
+      "scraped_at": "2026-02-11T16:18:55.681590"
+    },
+    {
+      "isin": "IT0005680605",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "GBP/USD"
+        }
+      ],
+      "underlying_text": "GBP/USD",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005680605",
+      "scraped_at": "2026-02-11T16:18:55.683853"
+    },
+    {
+      "isin": "IT0005680597",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "FTSE Mib"
+        }
+      ],
+      "underlying_text": "FTSE Mib",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005680597",
+      "scraped_at": "2026-02-11T16:18:55.684036"
+    },
+    {
+      "isin": "IT0005680571",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "S&P 500"
+        }
+      ],
+      "underlying_text": "S&P 500",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005680571",
+      "scraped_at": "2026-02-11T16:18:55.684065"
+    },
+    {
+      "isin": "IT0005680514",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50"
+        }
+      ],
+      "underlying_text": "Euro Stoxx 50",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005680514",
+      "scraped_at": "2026-02-11T16:18:55.684145"
+    },
+    {
+      "isin": "IT0005680522",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Nasdaq 100"
+        }
+      ],
+      "underlying_text": "Nasdaq 100",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005680522",
+      "scraped_at": "2026-02-11T16:18:55.684175"
+    },
+    {
+      "isin": "IT0005680530",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Nasdaq 100"
+        }
+      ],
+      "underlying_text": "Nasdaq 100",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005680530",
+      "scraped_at": "2026-02-11T16:18:55.684227"
+    },
+    {
+      "isin": "IT0005679862",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "S&P 500"
+        }
+      ],
+      "underlying_text": "S&P 500",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005679862",
+      "scraped_at": "2026-02-11T16:18:55.685190"
+    },
+    {
+      "isin": "IT0005677767",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50"
+        }
+      ],
+      "underlying_text": "Euro Stoxx 50",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005677767",
+      "scraped_at": "2026-02-11T16:18:55.685219"
+    },
+    {
+      "isin": "IT0005677924",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Nasdaq 100"
+        }
+      ],
+      "underlying_text": "Nasdaq 100",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005677924",
+      "scraped_at": "2026-02-11T16:18:55.685245"
+    },
+    {
+      "isin": "IT0005679870",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "S&P 500"
+        }
+      ],
+      "underlying_text": "S&P 500",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005679870",
+      "scraped_at": "2026-02-11T16:18:55.685298"
+    },
+    {
+      "isin": "IT0005677775",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50"
+        }
+      ],
+      "underlying_text": "Euro Stoxx 50",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005677775",
+      "scraped_at": "2026-02-11T16:18:55.685324"
+    },
+    {
+      "isin": "IT0005677932",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Nasdaq 100"
+        }
+      ],
+      "underlying_text": "Nasdaq 100",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005677932",
+      "scraped_at": "2026-02-11T16:18:55.685363"
+    },
+    {
+      "isin": "IT0005679888",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "S&P 500"
+        }
+      ],
+      "underlying_text": "S&P 500",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005679888",
+      "scraped_at": "2026-02-11T16:18:55.685413"
+    },
+    {
+      "isin": "IT0005677783",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50"
+        }
+      ],
+      "underlying_text": "Euro Stoxx 50",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005677783",
+      "scraped_at": "2026-02-11T16:18:55.685439"
+    },
+    {
+      "isin": "IT0005677940",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Nasdaq 100"
+        }
+      ],
+      "underlying_text": "Nasdaq 100",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005677940",
+      "scraped_at": "2026-02-11T16:18:55.685465"
+    },
+    {
+      "isin": "IT0005679896",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "S&P 500"
+        }
+      ],
+      "underlying_text": "S&P 500",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005679896",
+      "scraped_at": "2026-02-11T16:18:55.685514"
+    },
+    {
+      "isin": "IT0005677791",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50"
+        }
+      ],
+      "underlying_text": "Euro Stoxx 50",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005677791",
+      "scraped_at": "2026-02-11T16:18:55.685541"
+    },
+    {
+      "isin": "IT0005677957",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Nasdaq 100"
+        }
+      ],
+      "underlying_text": "Nasdaq 100",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005677957",
+      "scraped_at": "2026-02-11T16:18:55.685567"
+    },
+    {
+      "isin": "IT0005679904",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "S&P 500"
+        }
+      ],
+      "underlying_text": "S&P 500",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005679904",
+      "scraped_at": "2026-02-11T16:18:55.685620"
+    },
+    {
+      "isin": "IT0005677809",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50"
+        }
+      ],
+      "underlying_text": "Euro Stoxx 50",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005677809",
+      "scraped_at": "2026-02-11T16:18:55.685645"
+    },
+    {
+      "isin": "IT0005677882",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Nasdaq 100"
+        }
+      ],
+      "underlying_text": "Nasdaq 100",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005677882",
+      "scraped_at": "2026-02-11T16:18:55.685672"
+    },
+    {
+      "isin": "IT0005679912",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "S&P 500"
+        }
+      ],
+      "underlying_text": "S&P 500",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005679912",
+      "scraped_at": "2026-02-11T16:18:55.685736"
+    },
+    {
+      "isin": "IT0005677817",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50"
+        }
+      ],
+      "underlying_text": "Euro Stoxx 50",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005677817",
+      "scraped_at": "2026-02-11T16:18:55.685764"
+    },
+    {
+      "isin": "IT0005677890",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Nasdaq 100"
+        }
+      ],
+      "underlying_text": "Nasdaq 100",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005677890",
+      "scraped_at": "2026-02-11T16:18:55.685794"
+    },
+    {
+      "isin": "IT0005679920",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "S&P 500"
+        }
+      ],
+      "underlying_text": "S&P 500",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005679920",
+      "scraped_at": "2026-02-11T16:18:55.685843"
+    },
+    {
+      "isin": "IT0005677825",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50"
+        }
+      ],
+      "underlying_text": "Euro Stoxx 50",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005677825",
+      "scraped_at": "2026-02-11T16:18:55.685868"
+    },
+    {
+      "isin": "IT0005677908",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Nasdaq 100"
+        }
+      ],
+      "underlying_text": "Nasdaq 100",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005677908",
+      "scraped_at": "2026-02-11T16:18:55.685896"
+    },
+    {
+      "isin": "IT0005680035",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "S&P 500"
+        }
+      ],
+      "underlying_text": "S&P 500",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005680035",
+      "scraped_at": "2026-02-11T16:18:55.685945"
+    },
+    {
+      "isin": "IT0005677833",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50"
+        }
+      ],
+      "underlying_text": "Euro Stoxx 50",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005677833",
+      "scraped_at": "2026-02-11T16:18:55.685971"
+    },
+    {
+      "isin": "IT0005677916",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Nasdaq 100"
+        }
+      ],
+      "underlying_text": "Nasdaq 100",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005677916",
+      "scraped_at": "2026-02-11T16:18:55.685996"
+    },
+    {
+      "isin": "IT0005677841",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "GBP/USD"
+        }
+      ],
+      "underlying_text": "GBP/USD",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005677841",
+      "scraped_at": "2026-02-11T16:18:55.686043"
+    },
+    {
+      "isin": "IT0005680118",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "FTSE Mib"
+        }
+      ],
+      "underlying_text": "FTSE Mib",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005680118",
+      "scraped_at": "2026-02-11T16:18:55.686073"
+    },
+    {
+      "isin": "IT0005680043",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "FTSE Mib"
+        }
+      ],
+      "underlying_text": "FTSE Mib",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005680043",
+      "scraped_at": "2026-02-11T16:18:55.686123"
+    },
+    {
+      "isin": "IT0005677858",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "GBP/USD"
+        }
+      ],
+      "underlying_text": "GBP/USD",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005677858",
+      "scraped_at": "2026-02-11T16:18:55.686150"
+    },
+    {
+      "isin": "IT0005680050",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "FTSE Mib"
+        }
+      ],
+      "underlying_text": "FTSE Mib",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005680050",
+      "scraped_at": "2026-02-11T16:18:55.686177"
+    },
+    {
+      "isin": "IT0005680068",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "FTSE Mib"
+        }
+      ],
+      "underlying_text": "FTSE Mib",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005680068",
+      "scraped_at": "2026-02-11T16:18:55.686232"
+    },
+    {
+      "isin": "IT0005677874",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "GBP/USD"
+        }
+      ],
+      "underlying_text": "GBP/USD",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005677874",
+      "scraped_at": "2026-02-11T16:18:55.686260"
+    },
+    {
+      "isin": "IT0005680076",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "FTSE Mib"
+        }
+      ],
+      "underlying_text": "FTSE Mib",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005680076",
+      "scraped_at": "2026-02-11T16:18:55.686288"
+    },
+    {
+      "isin": "IT0005680092",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "FTSE Mib"
+        }
+      ],
+      "underlying_text": "FTSE Mib",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005680092",
+      "scraped_at": "2026-02-11T16:18:55.686337"
+    },
+    {
+      "isin": "IT0005677742",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Dax"
+        }
+      ],
+      "underlying_text": "Dax",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005677742",
+      "scraped_at": "2026-02-11T16:18:55.686375"
+    },
+    {
+      "isin": "IT0005680100",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "FTSE Mib"
+        }
+      ],
+      "underlying_text": "FTSE Mib",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005680100",
+      "scraped_at": "2026-02-11T16:18:55.686402"
+    },
+    {
+      "isin": "IT0005677643",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "EUR/USD"
+        }
+      ],
+      "underlying_text": "EUR/USD",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005677643",
+      "scraped_at": "2026-02-11T16:18:55.686457"
+    },
+    {
+      "isin": "IT0005677759",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Dax"
+        }
+      ],
+      "underlying_text": "Dax",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005677759",
+      "scraped_at": "2026-02-11T16:18:55.686484"
+    },
+    {
+      "isin": "IT0005677650",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "EUR/USD"
+        }
+      ],
+      "underlying_text": "EUR/USD",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005677650",
+      "scraped_at": "2026-02-11T16:18:55.686512"
+    },
+    {
+      "isin": "IT0005677668",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "EUR/USD"
+        }
+      ],
+      "underlying_text": "EUR/USD",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005677668",
+      "scraped_at": "2026-02-11T16:18:55.686567"
+    },
+    {
+      "isin": "IT0005677684",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Dax"
+        }
+      ],
+      "underlying_text": "Dax",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005677684",
+      "scraped_at": "2026-02-11T16:18:55.686596"
+    },
+    {
+      "isin": "IT0005677676",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "EUR/USD"
+        }
+      ],
+      "underlying_text": "EUR/USD",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005677676",
+      "scraped_at": "2026-02-11T16:18:55.686621"
+    },
+    {
+      "isin": "IT0005677692",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Dax"
+        }
+      ],
+      "underlying_text": "Dax",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005677692",
+      "scraped_at": "2026-02-11T16:18:55.686669"
+    },
+    {
+      "isin": "IT0005677700",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Dax"
+        }
+      ],
+      "underlying_text": "Dax",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005677700",
+      "scraped_at": "2026-02-11T16:18:55.686724"
+    },
+    {
+      "isin": "IT0005677718",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Dax"
+        }
+      ],
+      "underlying_text": "Dax",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005677718",
+      "scraped_at": "2026-02-11T16:18:55.686780"
+    },
+    {
+      "isin": "IT0005677726",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Dax"
+        }
+      ],
+      "underlying_text": "Dax",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005677726",
+      "scraped_at": "2026-02-11T16:18:55.686809"
+    },
+    {
+      "isin": "IT0005677734",
+      "name": "TURBO",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Dax"
+        }
+      ],
+      "underlying_text": "Dax",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005677734",
+      "scraped_at": "2026-02-11T16:18:55.686838"
+    },
+    {
+      "isin": "IT0005670077",
+      "name": "LEVA FISSA",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Dax"
+        }
+      ],
+      "underlying_text": "Dax",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005670077",
+      "scraped_at": "2026-02-11T16:18:55.711109"
+    },
+    {
+      "isin": "IT0005670010",
+      "name": "LEVA FISSA",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Nasdaq 100"
+        }
+      ],
+      "underlying_text": "Nasdaq 100",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005670010",
+      "scraped_at": "2026-02-11T16:18:55.711166"
+    },
+    {
+      "isin": "IT0005670028",
+      "name": "LEVA FISSA",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Nasdaq 100"
+        }
+      ],
+      "underlying_text": "Nasdaq 100",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005670028",
+      "scraped_at": "2026-02-11T16:18:55.711264"
+    },
+    {
+      "isin": "IT0005670085",
+      "name": "LEVA FISSA",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Dax"
+        }
+      ],
+      "underlying_text": "Dax",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005670085",
+      "scraped_at": "2026-02-11T16:18:55.711314"
+    },
+    {
+      "isin": "IT0005669996",
+      "name": "LEVA FISSA",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Eurostoxx Banks"
+        }
+      ],
+      "underlying_text": "Eurostoxx Banks",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005669996",
+      "scraped_at": "2026-02-11T16:18:55.711498"
+    },
+    {
+      "isin": "IT0005670317",
+      "name": "LEVA FISSA",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "FTSE Mib"
+        }
+      ],
+      "underlying_text": "FTSE Mib",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005670317",
+      "scraped_at": "2026-02-11T16:18:55.711553"
+    },
+    {
+      "isin": "IT0005670002",
+      "name": "LEVA FISSA",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Eurostoxx Banks"
+        }
+      ],
+      "underlying_text": "Eurostoxx Banks",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005670002",
+      "scraped_at": "2026-02-11T16:18:55.711603"
+    },
+    {
+      "isin": "IT0005670325",
+      "name": "LEVA FISSA",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "FTSE Mib"
+        }
+      ],
+      "underlying_text": "FTSE Mib",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005670325",
+      "scraped_at": "2026-02-11T16:18:55.711652"
+    },
+    {
+      "isin": "IT0005670051",
+      "name": "LEVA FISSA",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "S&P 500"
+        }
+      ],
+      "underlying_text": "S&P 500",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005670051",
+      "scraped_at": "2026-02-11T16:18:55.711724"
+    },
+    {
+      "isin": "IT0005670093",
+      "name": "LEVA FISSA",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50"
+        }
+      ],
+      "underlying_text": "Euro Stoxx 50",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005670093",
+      "scraped_at": "2026-02-11T16:18:55.711754"
+    },
+    {
+      "isin": "IT0005670069",
+      "name": "LEVA FISSA",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "S&P 500"
+        }
+      ],
+      "underlying_text": "S&P 500",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005670069",
+      "scraped_at": "2026-02-11T16:18:55.711833"
+    },
+    {
+      "isin": "IT0005670101",
+      "name": "LEVA FISSA",
+      "issuer": "FinecoBank",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Euro Stoxx 50"
+        }
+      ],
+      "underlying_text": "Euro Stoxx 50",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "VOR",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=IT0005670101",
+      "scraped_at": "2026-02-11T16:18:55.711859"
+    },
+    {
+      "isin": "DE000HD4FZ20",
+      "name": "TURBO",
+      "issuer": "Unicredit",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Silver"
+        }
+      ],
+      "underlying_text": "Silver",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "SED",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=DE000HD4FZ20",
+      "scraped_at": "2026-02-11T16:18:55.850896"
+    },
+    {
+      "isin": "DE000HD4FZA5",
+      "name": "TURBO",
+      "issuer": "Unicredit",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Gold"
+        }
+      ],
+      "underlying_text": "Gold",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "SED",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=DE000HD4FZA5",
+      "scraped_at": "2026-02-11T16:18:55.850937"
+    },
+    {
+      "isin": "DE000HD4FZ46",
+      "name": "TURBO",
+      "issuer": "Unicredit",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Silver"
+        }
+      ],
+      "underlying_text": "Silver",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "SED",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=DE000HD4FZ46",
+      "scraped_at": "2026-02-11T16:18:55.851024"
+    },
+    {
+      "isin": "DE000HD4FZ53",
+      "name": "TURBO",
+      "issuer": "Unicredit",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Silver"
+        }
+      ],
+      "underlying_text": "Silver",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "SED",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=DE000HD4FZ53",
+      "scraped_at": "2026-02-11T16:18:55.851125"
+    },
+    {
+      "isin": "DE000HD4FZB3",
+      "name": "TURBO",
+      "issuer": "Unicredit",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Gold"
+        }
+      ],
+      "underlying_text": "Gold",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "SED",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=DE000HD4FZB3",
+      "scraped_at": "2026-02-11T16:18:55.851151"
+    },
+    {
+      "isin": "DE000HD4FZ61",
+      "name": "TURBO",
+      "issuer": "Unicredit",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Silver"
+        }
+      ],
+      "underlying_text": "Silver",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "SED",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=DE000HD4FZ61",
+      "scraped_at": "2026-02-11T16:18:55.851225"
+    },
+    {
+      "isin": "DE000HD4FZC1",
+      "name": "TURBO",
+      "issuer": "Unicredit",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Gold"
+        }
+      ],
+      "underlying_text": "Gold",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "SED",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=DE000HD4FZC1",
+      "scraped_at": "2026-02-11T16:18:55.851273"
+    },
+    {
+      "isin": "DE000HD4FZD9",
+      "name": "TURBO",
+      "issuer": "Unicredit",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Gold"
+        }
+      ],
+      "underlying_text": "Gold",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "SED",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=DE000HD4FZD9",
+      "scraped_at": "2026-02-11T16:18:55.851327"
+    },
+    {
+      "isin": "DE000HD4FZE7",
+      "name": "TURBO",
+      "issuer": "Unicredit",
+      "type": "Cash Collect / Phoenix / Credit Linked",
+      "underlyings": [
+        {
+          "name": "Gold"
+        }
+      ],
+      "underlying_text": "Gold",
+      "barrier_down": null,
+      "maturity_date": null,
+      "annual_coupon_yield": null,
+      "reference_price": null,
+      "market": "SED",
+      "url": "https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin=DE000HD4FZE7",
+      "scraped_at": "2026-02-11T16:18:55.851393"
     }
   ],
   "metadata": {
-    "timestamp": "2026-02-11T15:56:27.085214",
-    "version": "20.0"
+    "timestamp": "2026-02-11T16:18:55.889913",
+    "version": "21.0",
+    "source": "certificatiederivati.it - Nuove Emissioni",
+    "filter": "Indici, Commodities, Valute, Tassi, Credit Linked, Basket"
   }
 }
