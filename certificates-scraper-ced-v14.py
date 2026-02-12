@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
-# certificates-scraper-v24-reale-ricerca-avanzata.py
+# certificates-scraper-v24.1 - Ricerca Avanzata ROBUSTA
 
 import json
 import time
 import re
 from datetime import datetime, timedelta
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeoutError
 
 CONFIG = {
     "output_file": "certificates-data.json",
-    "max_certificates": 40,
+    "max_certificates": 30,
     "headless": True
 }
 
@@ -30,35 +30,67 @@ def parse_date(text):
     return text
 
 def main():
-    print("=== Scraper v24 - Ricerca Avanzata Reale ===\n")
+    print("=== Scraper v24.1 - Ricerca Avanzata ULTRA ROBUSTA ===\n")
 
     certificates = []
 
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=CONFIG["headless"])
-        page = browser.new_context(user_agent="Mozilla/5.0").new_page()
+        context = browser.new_context(user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36")
+        page = context.new_page()
 
-        # 1. Apri pagina ricerca avanzata
-        print("Apertura ricerca avanzata...")
-        page.goto("https://www.certificatiederivati.it/db_bs_ricerca_avanzata.asp", wait_until="networkidle")
-        time.sleep(4)
+        url = "https://www.certificatiederivati.it/db_bs_ricerca_avanzata.asp"
+        print(f"Apertura {url}")
 
-        # 2. Seleziona "investment" (db=2)
-        page.select_option("#tipodb", "2")
-        time.sleep(1)
+        try:
+            page.goto(url, wait_until="domcontentloaded", timeout=60000)
+            page.wait_for_load_state("networkidle", timeout=40000)
+            time.sleep(6)
+        except Exception as e:
+            print(f"Errore caricamento pagina ricerca: {e}")
+            browser.close()
+            return
 
-        # 3. Imposta data scadenza ultimi 90 giorni
+        # Debug: screenshot iniziale
+        page.screenshot(path="ricerca-avanzata.png")
+
+        # Aspetta e seleziona tipodb
+        try:
+            print("Aspetto select #tipodb...")
+            page.wait_for_selector("#tipodb", timeout=30000)
+            page.select_option("#tipodb", "2")
+            print("Select #tipodb impostato su 2 (investment)")
+        except PlaywrightTimeoutError:
+            print("Timeout su #tipodb → fallback JS")
+            try:
+                page.evaluate('document.querySelector("#tipodb").value = "2";')
+                print("Fallback JS: valore impostato")
+            except:
+                print("Fallito anche JS → salto selezione")
+        except Exception as e:
+            print(f"Errore select: {e}")
+            page.screenshot(path="error-select.png")
+
+        time.sleep(2)
+
+        # Imposta data recente
         from_date = (datetime.now() - timedelta(days=90)).strftime("%d/%m/%Y")
         page.fill("#FiltroDal", from_date)
         time.sleep(1)
 
-        # 4. Submit form
-        print("Invio ricerca...")
-        page.click("input[value='Avvia Ricerca']")
-        page.wait_for_load_state("networkidle")
-        time.sleep(6)
+        # Submit
+        try:
+            print("Invio ricerca...")
+            page.click("input[value='Avvia Ricerca']", timeout=15000)
+            page.wait_for_load_state("networkidle", timeout=60000)
+            time.sleep(8)
+        except Exception as e:
+            print(f"Errore submit: {e}")
+            page.screenshot(path="error-submit.png")
+            browser.close()
+            return
 
-        # 5. Parse risultati
+        # Estrazione ISIN dai risultati
         soup = BeautifulSoup(page.content(), "html.parser")
         rows = soup.find_all("tr")
 
@@ -70,15 +102,14 @@ def main():
                 if re.match(r'^[A-Z0-9]{12}$', isin):
                     isins.append(isin)
 
-        print(f"Trovati {len(isins)} ISIN recenti")
+        print(f"Trovati {len(isins)} ISIN")
 
-        # 6. Dettaglio per ogni ISIN (limitato)
+        # Dettaglio (limitato)
         for i, isin in enumerate(isins[:CONFIG["max_certificates"]], 1):
-            print(f"[{i}/{len(isins)}] {isin} → ", end="", flush=True)
-            
+            print(f"[{i}] {isin} → ", end="")
             detail_url = f"https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin={isin}"
             page.goto(detail_url, wait_until="networkidle")
-            time.sleep(5)
+            time.sleep(6)
 
             detail_soup = BeautifulSoup(page.content(), "html.parser")
 
@@ -86,43 +117,26 @@ def main():
                 "isin": isin,
                 "name": "",
                 "issuer": "",
-                "type": "Cash Collect / Phoenix / Credit Linked",
-                "underlyings": [],
+                "type": "",
+                "annual_coupon_yield": None,
                 "barrier_down": None,
                 "maturity_date": None,
-                "annual_coupon_yield": None,
-                "reference_price": None,
                 "url": detail_url,
                 "scraped_at": datetime.now().isoformat()
             }
 
-            # Nome
             h1 = detail_soup.find("h1")
             if h1:
                 cert["name"] = h1.get_text(strip=True).split("ISIN")[0].strip()
 
-            # Emittente, scadenza, barriera, rendimento
             for row in detail_soup.find_all("tr"):
                 cells = [c.get_text(strip=True) for c in row.find_all(["th", "td"])]
                 if len(cells) >= 2:
                     label, value = cells[0].lower(), cells[1]
-                    if "emittente" in label:
-                        cert["issuer"] = value
-                    elif "scadenza" in label:
-                        cert["maturity_date"] = parse_date(value)
-                    elif "barriera" in label:
-                        cert["barrier_down"] = clean_number(value)
-                    elif any(k in label for k in ["cedola", "coupon", "rendimento", "yield"]):
-                        cert["annual_coupon_yield"] = clean_number(value)
-
-            # Sottostanti (tabella)
-            table = detail_soup.find("table")
-            if table:
-                for tr in table.find_all("tr")[1:]:
-                    tds = [td.get_text(strip=True) for td in tr.find_all("td")]
-                    if len(tds) >= 1:
-                        name = tds[0]
-                        cert["underlyings"].append({"name": name})
+                    if "emittente" in label: cert["issuer"] = value
+                    if "scadenza" in label: cert["maturity_date"] = parse_date(value)
+                    if "barriera" in label: cert["barrier_down"] = clean_number(value)
+                    if any(k in label for k in ["cedola", "coupon", "rendimento"]): cert["annual_coupon_yield"] = clean_number(value)
 
             if cert["name"]:
                 certificates.append(cert)
@@ -130,26 +144,25 @@ def main():
             else:
                 print("fallito")
 
-            time.sleep(3)
+            time.sleep(4)
 
         browser.close()
 
-    # Salva
     output = {
-        "success": True,
+        "success": len(certificates) > 0,
         "count": len(certificates),
         "certificates": certificates,
         "metadata": {
             "timestamp": datetime.now().isoformat(),
-            "version": "24.0",
-            "source": "certificatiederivati.it - ricerca avanzata"
+            "version": "24.1",
+            "source": "certificatiederivati.it ricerca avanzata"
         }
     }
 
     with open(CONFIG["output_file"], "w", encoding="utf-8") as f:
         json.dump(output, f, indent=2, ensure_ascii=False)
 
-    print(f"\nFINITO → {len(certificates)} certificati reali salvati")
+    print(f"\nFINITO → {len(certificates)} certificati")
 
 if __name__ == "__main__":
     main()
