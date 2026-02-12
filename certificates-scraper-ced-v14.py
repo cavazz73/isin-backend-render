@@ -1,91 +1,178 @@
 #!/usr/bin/env python3
-# certificates-scraper-ced-v14.py → v22 corretta e stabile
+# certificates-scraper-v23-reale.py
+# Estrae dati reali dalle schede di dettaglio su certificatiederivati.it
 
 import json
-import random
-from datetime import datetime, timedelta
+import time
+import re
+from datetime import datetime
+from playwright.sync_api import sync_playwright
+from bs4 import BeautifulSoup, Tag
 
 CONFIG = {
+    "timeout": 90000,
     "output_file": "certificates-data.json",
-    "max_certificates": 30
+    "max_certificates": 40,           # limite per non essere bloccati
+    "headless": True,
+    "base_url": "https://www.certificatiederivati.it"
 }
 
-def enrich_cert(isin):
-    cert = {
-        "isin": isin,
-        "name": f"PHOENIX MEMORY STEP DOWN {isin[-6:]}",
-        "issuer": random.choice(["UBS", "BNP Paribas", "Vontobel", "Barclays", "Leonteq", "UniCredit", "Marex", "Santander"]),
-        "type": "Phoenix Memory Step Down",
-        "currency": "EUR",
-        "market": "SeDeX / CX",
-        "underlying_text": "Basket di indici / azioni worst of",
-        "annual_coupon_yield": round(random.uniform(7.8, 13.9), 2),
-        "barrier_down": round(random.uniform(58, 72), 1),
-        "maturity_date": (datetime.now() + timedelta(days=365 * random.randint(2, 4))).strftime("%Y-%m-%d"),
-        "reference_price": round(random.uniform(98.5, 101.5), 2),
-        "bid_price": round(random.uniform(97.8, 100.2), 2),
-        "ask_price": round(random.uniform(99.5, 102.8), 2),
-        "underlyings": [
-            {
-                "name": "Basket di indici worst of",
-                "strike": 100.0,
-                "spot": round(random.uniform(96, 104), 2),
-                "barrier": round(random.uniform(58, 72), 1),
-                "variation_pct": round(random.uniform(-12, 18), 2),
-                "variation_abs": round(random.uniform(-9, 11), 2),
-                "trigger_coupon": 100.0,
-                "trigger_autocall": 100.0,
-                "worst_of": "W"
-            }
-        ],
-        "scenario_analysis": {
-            "worst_underlying": "Basket",
-            "purchase_price": 100.0,
-            "scenarios": [
-                {"variation_pct": -50, "underlying_price": 50, "redemption": 60, "pl_pct": -40},
-                {"variation_pct": -30, "underlying_price": 70, "redemption": 70, "pl_pct": -30},
-                {"variation_pct": -10, "underlying_price": 90, "redemption": 100, "pl_pct": 0},
-                {"variation_pct": 0,   "underlying_price": 100, "redemption": 100, "pl_pct": 0},
-                {"variation_pct": 20,  "underlying_price": 120, "redemption": 120, "pl_pct": 20}
-            ]
-        },
-        "scraped_at": datetime.now().isoformat()
-    }
-    return cert
+def clean_number(text):
+    if not text:
+        return None
+    text = re.sub(r'[^\d,\.-]', '', text.strip())
+    text = text.replace('.', '').replace(',', '.')
+    try:
+        return round(float(text), 4)
+    except:
+        return None
+
+def parse_date(text):
+    if not text:
+        return None
+    try:
+        if '/' in text:
+            d, m, y = [x.strip() for x in text.split('/')]
+            return f"{y}-{m.zfill(2)}-{d.zfill(2)}"
+    except:
+        pass
+    return text
+
+def extract_detail(page, isin):
+    url = f"{CONFIG['base_url']}/bs_promo_ugc.asp?t=ccollect&isin={isin}"
+    try:
+        page.goto(url, timeout=CONFIG["timeout"], wait_until="networkidle")
+        time.sleep(4)  # tempo per caricamento JS + tabelle
+
+        html = page.content()
+        soup = BeautifulSoup(html, "html.parser")
+
+        cert = {
+            "isin": isin,
+            "name": "",
+            "issuer": "",
+            "type": "",
+            "currency": "EUR",
+            "market": "",
+            "annual_coupon_yield": None,
+            "barrier_down": None,
+            "maturity_date": None,
+            "reference_price": None,
+            "bid_price": None,
+            "ask_price": None,
+            "underlyings": [],
+            "scenario_analysis": None,
+            "url": url,
+            "scraped_at": datetime.now().isoformat()
+        }
+
+        # Nome e tipo
+        title = soup.find("h1") or soup.find("title")
+        if title:
+            cert["name"] = title.get_text(strip=True).split("ISIN")[0].strip()
+
+        # Emittente, scadenza, barriera, rendimento (cerca label + valore)
+        for row in soup.find_all("tr"):
+            cells = [td.get_text(strip=True) for td in row.find_all(["th", "td"])]
+            if len(cells) >= 2:
+                label, value = cells[0].lower(), cells[1]
+                if any(k in label for k in ["emittente", "issuer"]):
+                    cert["issuer"] = value
+                elif any(k in label for k in ["scadenza", "maturity"]):
+                    cert["maturity_date"] = parse_date(value)
+                elif any(k in label for k in ["barriera", "barrier"]):
+                    cert["barrier_down"] = clean_number(value)
+                elif any(k in label for k in ["cedola", "coupon", "rendimento", "yield"]):
+                    cert["annual_coupon_yield"] = clean_number(value)
+                elif any(k in label for k in ["riferimento", "ultimo", "reference"]):
+                    cert["reference_price"] = clean_number(value)
+                elif "denaro" in label or "bid" in label:
+                    cert["bid_price"] = clean_number(value)
+                elif "lettera" in label or "ask" in label:
+                    cert["ask_price"] = clean_number(value)
+
+        # Tabella Sottostanti (cerca tabella con classi o id contenenti "sottostante")
+        table = soup.find("table", string=re.compile(r"(Sottostante|Underlying|Basket)", re.I))
+        if table:
+            for tr in table.find_all("tr")[1:]:  # salta header
+                tds = [td.get_text(strip=True) for td in tr.find_all("td")]
+                if len(tds) >= 3:
+                    name = tds[0]
+                    strike = clean_number(tds[1]) if len(tds) > 1 else None
+                    spot = clean_number(tds[2]) if len(tds) > 2 else None
+                    barrier = clean_number(tds[3]) if len(tds) > 3 else cert["barrier_down"]
+                    cert["underlyings"].append({
+                        "name": name,
+                        "strike": strike,
+                        "spot": spot,
+                        "barrier": barrier,
+                        "worst_of": "W" if "worst" in name.lower() else ""
+                    })
+
+        if not cert["name"] or not cert["underlyings"]:
+            return None
+
+        return cert
+
+    except Exception as e:
+        print(f"Errore su {isin}: {str(e)}")
+        return None
 
 def main():
-    print("=== Certificates Scraper v22 - Versione stabile per frontend ===\n")
+    print("=== Certificates Scraper v23 - DATI REALI ===\n")
     
-    sample_isins = [
-        "IT0006773474", "DE000UQ8A9N4", "XS3245808673", "DE000UP33YN5", "IT0006773664",
-        "DE000UQ6ZLV2", "XS3256692842", "XS3256629992", "XS3256693493", "DE000UQ7H5W7",
-        "DE000VJ5A160", "DE000VJ5BSZ9", "DE000VJ5D0U1", "DE000VJ5FCC3", "DE000VJ5FCD1",
-        "DE000MS0H1Y2", "DE000VJ44A77", "CH1484582098", "XS2878542187", "XS3236819028",
-        "DE000UN4AMC1", "IT0006773458", "DE000VJ49MS6", "XS3256675243", "DE000VJ49MV0",
-        "XS3255781901", "IT0006772765", "DE000HD4FZ20", "DE000HD4FZA5"
-    ]
-
     certificates = []
-    for isin in sample_isins[:CONFIG["max_certificates"]]:
-        cert = enrich_cert(isin)
-        certificates.append(cert)
-        print(f"✓ {isin} → arricchito")
+    
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=CONFIG["headless"])
+        page = browser.new_context(
+            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+        ).new_page()
 
+        # 1. Vai su nuove emissioni e raccogli ISIN
+        page.goto(f"{CONFIG['base_url']}/db_bs_nuove_emissioni.asp", timeout=CONFIG["timeout"])
+        time.sleep(4)
+        soup = BeautifulSoup(page.content(), "html.parser")
+
+        isins = []
+        for tr in soup.find_all("tr")[1:]:
+            tds = tr.find_all("td")
+            if len(tds) >= 1:
+                isin = tds[0].get_text(strip=True)
+                if re.match(r'^[A-Z0-9]{12}$', isin):
+                    isins.append(isin)
+
+        print(f"Trovati {len(isins)} ISIN candidati")
+
+        # 2. Visita dettaglio per i primi N
+        for i, isin in enumerate(isins[:CONFIG["max_certificates"]], 1):
+            print(f"[{i}/{len(isins)}] {isin} ... ", end="", flush=True)
+            cert = extract_detail(page, isin)
+            if cert:
+                certificates.append(cert)
+                print("OK")
+            else:
+                print("fallito")
+            time.sleep(2.5)  # anti-ban
+
+        browser.close()
+
+    # Salva
     output = {
-        "success": True,
+        "success": len(certificates) > 0,
         "count": len(certificates),
         "certificates": certificates,
         "metadata": {
             "timestamp": datetime.now().isoformat(),
-            "version": "22.0",
-            "source": "certificatiederivati.it + enrichment per frontend"
+            "version": "23.0-reale",
+            "source": "certificatiederivati.it - schede dettaglio"
         }
     }
 
     with open(CONFIG["output_file"], "w", encoding="utf-8") as f:
         json.dump(output, f, indent=2, ensure_ascii=False)
 
-    print(f"\nFINITO → {len(certificates)} certificati salvati in {CONFIG['output_file']}")
+    print(f"\nFINITO → {len(certificates)} certificati reali salvati")
 
 if __name__ == "__main__":
     main()
