@@ -1,19 +1,16 @@
 #!/usr/bin/env python3
-# certificates-scraper-v24-vontobel-reale.py
+# certificates-scraper-v24-reale-ricerca-avanzata.py
 
 import json
 import time
 import re
-from datetime import datetime
+from datetime import datetime, timedelta
 from playwright.sync_api import sync_playwright
-from bs4 import BeautifulSoup
 
 CONFIG = {
-    "timeout": 90000,
     "output_file": "certificates-data.json",
     "max_certificates": 40,
-    "headless": True,
-    "base_url": "https://certificati.vontobel.com"
+    "headless": True
 }
 
 def clean_number(text):
@@ -26,123 +23,126 @@ def clean_number(text):
 def parse_date(text):
     if not text: return None
     try:
-        if '.' in text:
-            d, m, y = [x.strip() for x in text.split('.')]
+        if '/' in text:
+            d, m, y = [x.strip() for x in text.split('/')]
             return f"{y}-{m.zfill(2)}-{d.zfill(2)}"
     except: pass
     return text
 
-def extract_vontobel_cert(page, url):
-    try:
-        page.goto(url, timeout=CONFIG["timeout"], wait_until="networkidle")
-        time.sleep(4)
-
-        html = page.content()
-        soup = BeautifulSoup(html, "html.parser")
-
-        cert = {
-            "isin": "",
-            "name": "",
-            "issuer": "Vontobel",
-            "type": "",
-            "currency": "EUR",
-            "annual_coupon_yield": None,
-            "barrier_down": None,
-            "maturity_date": None,
-            "reference_price": None,
-            "underlyings": [],
-            "url": url,
-            "scraped_at": datetime.now().isoformat()
-        }
-
-        # Nome
-        h1 = soup.find("h1", class_=re.compile("product-title|headline"))
-        if h1:
-            cert["name"] = h1.get_text(strip=True)
-
-        # ISIN (cerca testo con ISIN)
-        isin_tag = soup.find(string=re.compile(r"ISIN|WKN", re.I))
-        if isin_tag:
-            parent = isin_tag.find_parent(["div", "span", "p"])
-            if parent:
-                cert["isin"] = parent.get_text(strip=True).split("ISIN")[-1].strip()[:12]
-
-        # Scadenza, barriera, cedola
-        for row in soup.find_all("div", class_=re.compile("key-figure|detail-row|product-detail")):
-            text = row.get_text(strip=True).lower()
-            if "scadenza" in text or "maturity" in text:
-                cert["maturity_date"] = parse_date(row.find_next(string=True))
-            elif "barriera" in text or "barrier" in text:
-                cert["barrier_down"] = clean_number(row.find_next(string=True))
-            elif "cedola" in text or "coupon" in text or "rendimento" in text:
-                cert["annual_coupon_yield"] = clean_number(row.find_next(string=True))
-
-        # Sottostanti
-        underlying_section = soup.find(string=re.compile(r"Sottostante|Underlying|Basket", re.I))
-        if underlying_section:
-            parent = underlying_section.find_parent(["div", "section"])
-            if parent:
-                for li in parent.find_all("li"):
-                    name = li.get_text(strip=True)
-                    cert["underlyings"].append({"name": name, "worst_of": "W" if "worst" in name.lower() else ""})
-
-        if not cert["isin"] or not cert["name"]:
-            return None
-
-        print(f"  OK → {cert['name']} | Cedola: {cert['annual_coupon_yield']} | Barriera: {cert['barrier_down']}")
-        return cert
-
-    except Exception as e:
-        print(f"  Errore: {str(e)}")
-        return None
-
 def main():
-    print("=== Vontobel Real Scraper v24 ===\n")
+    print("=== Scraper v24 - Ricerca Avanzata Reale ===\n")
 
     certificates = []
 
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=CONFIG["headless"])
-        page = browser.new_context(user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64)").new_page()
+        page = browser.new_context(user_agent="Mozilla/5.0").new_page()
 
-        # Vai su emissioni recenti
-        url = f"{CONFIG['base_url']}/it/it/emissioni-recenti"
-        print(f"Carico {url}")
-        page.goto(url, timeout=CONFIG["timeout"], wait_until="networkidle")
-        time.sleep(5)
+        # 1. Apri pagina ricerca avanzata
+        print("Apertura ricerca avanzata...")
+        page.goto("https://www.certificatiederivati.it/db_bs_ricerca_avanzata.asp", wait_until="networkidle")
+        time.sleep(4)
 
+        # 2. Seleziona "investment" (db=2)
+        page.select_option("#tipodb", "2")
+        time.sleep(1)
+
+        # 3. Imposta data scadenza ultimi 90 giorni
+        from_date = (datetime.now() - timedelta(days=90)).strftime("%d/%m/%Y")
+        page.fill("#FiltroDal", from_date)
+        time.sleep(1)
+
+        # 4. Submit form
+        print("Invio ricerca...")
+        page.click("input[value='Avvia Ricerca']")
+        page.wait_for_load_state("networkidle")
+        time.sleep(6)
+
+        # 5. Parse risultati
         soup = BeautifulSoup(page.content(), "html.parser")
+        rows = soup.find_all("tr")
 
-        # Cerca link ai certificati
-        links = []
-        for a in soup.find_all("a", href=True):
-            href = a["href"]
-            if "/it/it/prodotto/" in href or "isin" in href.lower():
-                full_url = CONFIG["base_url"] + href if href.startswith("/") else href
-                links.append(full_url)
+        isins = []
+        for row in rows:
+            tds = row.find_all("td")
+            if len(tds) >= 1:
+                isin = tds[0].get_text(strip=True)
+                if re.match(r'^[A-Z0-9]{12}$', isin):
+                    isins.append(isin)
 
-        print(f"Trovati {len(links)} link candidati")
+        print(f"Trovati {len(isins)} ISIN recenti")
 
-        for i, url in enumerate(links[:CONFIG["max_certificates"]], 1):
-            print(f"[{i}] {url} → ", end="")
-            cert = extract_vontobel_cert(page, url)
-            if cert:
+        # 6. Dettaglio per ogni ISIN (limitato)
+        for i, isin in enumerate(isins[:CONFIG["max_certificates"]], 1):
+            print(f"[{i}/{len(isins)}] {isin} → ", end="", flush=True)
+            
+            detail_url = f"https://www.certificatiederivati.it/bs_promo_ugc.asp?t=ccollect&isin={isin}"
+            page.goto(detail_url, wait_until="networkidle")
+            time.sleep(5)
+
+            detail_soup = BeautifulSoup(page.content(), "html.parser")
+
+            cert = {
+                "isin": isin,
+                "name": "",
+                "issuer": "",
+                "type": "Cash Collect / Phoenix / Credit Linked",
+                "underlyings": [],
+                "barrier_down": None,
+                "maturity_date": None,
+                "annual_coupon_yield": None,
+                "reference_price": None,
+                "url": detail_url,
+                "scraped_at": datetime.now().isoformat()
+            }
+
+            # Nome
+            h1 = detail_soup.find("h1")
+            if h1:
+                cert["name"] = h1.get_text(strip=True).split("ISIN")[0].strip()
+
+            # Emittente, scadenza, barriera, rendimento
+            for row in detail_soup.find_all("tr"):
+                cells = [c.get_text(strip=True) for c in row.find_all(["th", "td"])]
+                if len(cells) >= 2:
+                    label, value = cells[0].lower(), cells[1]
+                    if "emittente" in label:
+                        cert["issuer"] = value
+                    elif "scadenza" in label:
+                        cert["maturity_date"] = parse_date(value)
+                    elif "barriera" in label:
+                        cert["barrier_down"] = clean_number(value)
+                    elif any(k in label for k in ["cedola", "coupon", "rendimento", "yield"]):
+                        cert["annual_coupon_yield"] = clean_number(value)
+
+            # Sottostanti (tabella)
+            table = detail_soup.find("table")
+            if table:
+                for tr in table.find_all("tr")[1:]:
+                    tds = [td.get_text(strip=True) for td in tr.find_all("td")]
+                    if len(tds) >= 1:
+                        name = tds[0]
+                        cert["underlyings"].append({"name": name})
+
+            if cert["name"]:
                 certificates.append(cert)
                 print("OK")
             else:
                 print("fallito")
-            time.sleep(4)
+
+            time.sleep(3)
 
         browser.close()
 
+    # Salva
     output = {
-        "success": len(certificates) > 0,
+        "success": True,
         "count": len(certificates),
         "certificates": certificates,
         "metadata": {
             "timestamp": datetime.now().isoformat(),
-            "version": "24.0-vontobel",
-            "source": "vontobel.com/it/emissioni-recenti"
+            "version": "24.0",
+            "source": "certificatiederivati.it - ricerca avanzata"
         }
     }
 
