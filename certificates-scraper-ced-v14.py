@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# certificates-scraper-v23.1-reale-debug.py
+# certificates-scraper-v23.2 - DATI REALI con anti-timeout
 
 import json
 import time
@@ -11,8 +11,8 @@ from bs4 import BeautifulSoup
 CONFIG = {
     "timeout": 120000,
     "output_file": "certificates-data.json",
-    "max_certificates": 10,  # per test veloce – aumenta dopo
-    "headless": True,        # metti False per debug locale
+    "max_certificates": 10,          # aumenta dopo i test
+    "headless": True,
     "base_url": "https://www.certificatiederivati.it"
 }
 
@@ -32,108 +32,129 @@ def parse_date(text):
     except: pass
     return text
 
+def goto_with_retry(page, url, retries=3):
+    for attempt in range(1, retries + 1):
+        try:
+            print(f"  Tentativo {attempt}/{retries} → goto {url}")
+            page.goto(url, timeout=CONFIG["timeout"], wait_until="domcontentloaded")
+            page.wait_for_load_state("networkidle", timeout=30000)
+            time.sleep(5)  # tempo extra per JS
+            return True
+        except PlaywrightTimeoutError as e:
+            print(f"  Timeout al tentativo {attempt}: {str(e)}")
+            time.sleep(5)
+    print("  Tutti i tentativi falliti")
+    return False
+
 def extract_detail(page, isin):
     url = f"{CONFIG['base_url']}/bs_promo_ugc.asp?t=ccollect&isin={isin}"
-    print(f"Visito: {url}")
-    try:
-        page.goto(url, timeout=CONFIG["timeout"], wait_until="domcontentloaded")
-        time.sleep(6)  # più tempo per JS
+    print(f"Visito scheda: {url}")
 
-        # Aspetta che appaia almeno un elemento chiave (es. titolo o tabella)
-        try:
-            page.wait_for_selector("h1, .title, table", timeout=15000)
-        except PlaywrightTimeoutError:
-            print("Timeout attesa caricamento pagina")
-            return None
-
-        html = page.content()
-        soup = BeautifulSoup(html, "html.parser")
-
-        cert = {
-            "isin": isin,
-            "name": "",
-            "issuer": "",
-            "type": "",
-            "currency": "EUR",
-            "market": "",
-            "annual_coupon_yield": None,
-            "barrier_down": None,
-            "maturity_date": None,
-            "reference_price": None,
-            "bid_price": None,
-            "ask_price": None,
-            "underlyings": [],
-            "url": url,
-            "scraped_at": datetime.now().isoformat()
-        }
-
-        # Nome
-        h1 = soup.find("h1") or soup.find("title")
-        if h1:
-            cert["name"] = h1.get_text(strip=True).split("ISIN")[0].strip()
-            print(f"  Nome: {cert['name']}")
-
-        # Cerca sezioni con label + valore
-        for div in soup.find_all(["div", "p", "span", "td"]):
-            text = div.get_text(strip=True).lower()
-            if "emittente" in text or "issuer" in text:
-                cert["issuer"] = div.find_next(["span", "td", "p"]).get_text(strip=True) if div.find_next() else ""
-            elif "scadenza" in text or "maturity" in text:
-                cert["maturity_date"] = parse_date(div.find_next(["span", "td"]).get_text(strip=True))
-            elif "barriera" in text or "barrier" in text:
-                cert["barrier_down"] = clean_number(div.find_next(["span", "td"]).get_text(strip=True))
-            elif "cedola" in text or "coupon" in text or "rendimento" in text:
-                cert["annual_coupon_yield"] = clean_number(div.find_next(["span", "td"]).get_text(strip=True))
-
-        # Tabella sottostanti (cerca classi comuni)
-        table = soup.find("table", class_=re.compile(r"(sottostante|underlying|basket|table-striped|table-responsive)", re.I))
-        if not table:
-            table = soup.find("table")  # fallback
-
-        if table:
-            rows = table.find_all("tr")
-            for row in rows[1:]:
-                cells = row.find_all("td")
-                if len(cells) >= 3:
-                    name = cells[0].get_text(strip=True)
-                    strike = clean_number(cells[1].get_text(strip=True))
-                    spot = clean_number(cells[2].get_text(strip=True))
-                    barrier = clean_number(cells[3].get_text(strip=True)) if len(cells) > 3 else cert["barrier_down"]
-                    cert["underlyings"].append({
-                        "name": name,
-                        "strike": strike,
-                        "spot": spot,
-                        "barrier": barrier,
-                        "worst_of": "W" if "worst" in name.lower() else ""
-                    })
-
-        # Log debug
-        print(f"  Estratti: {len(cert['underlyings'])} sottostanti | Barriera: {cert['barrier_down']} | Cedola: {cert['annual_coupon_yield']}")
-
-        if not cert["name"] or not cert["underlyings"]:
-            return None
-
-        return cert
-
-    except Exception as e:
-        print(f"  ERRORE: {str(e)}")
+    if not goto_with_retry(page, url):
         return None
 
+    try:
+        # Aspetta elemento visibile (es. titolo o contenitore dati)
+        page.wait_for_selector("h1, .title, .card, table", timeout=20000)
+    except PlaywrightTimeoutError:
+        print("  Timeout attesa caricamento contenuti")
+        return None
+
+    html = page.content()
+    soup = BeautifulSoup(html, "html.parser")
+
+    cert = {
+        "isin": isin,
+        "name": "",
+        "issuer": "",
+        "type": "",
+        "currency": "EUR",
+        "market": "",
+        "annual_coupon_yield": None,
+        "barrier_down": None,
+        "maturity_date": None,
+        "reference_price": None,
+        "bid_price": None,
+        "ask_price": None,
+        "underlyings": [],
+        "url": url,
+        "scraped_at": datetime.now().isoformat()
+    }
+
+    # Nome dal titolo
+    title_tag = soup.find("h1") or soup.find("title")
+    if title_tag:
+        cert["name"] = title_tag.get_text(strip=True).split("ISIN")[0].strip()
+        print(f"  Nome estratto: {cert['name'][:60]}...")
+
+    # Cerca label + valore in tabelle o div
+    for elem in soup.find_all(["td", "div", "span", "p", "th"]):
+        text = elem.get_text(strip=True).lower()
+        next_text = elem.find_next(["td", "span", "div"]).get_text(strip=True) if elem.find_next() else ""
+
+        if "emittente" in text or "issuer" in text:
+            cert["issuer"] = next_text
+        elif "scadenza" in text or "maturity" in text:
+            cert["maturity_date"] = parse_date(next_text)
+        elif "barriera" in text or "barrier" in text:
+            cert["barrier_down"] = clean_number(next_text)
+        elif any(k in text for k in ["cedola", "coupon", "rendimento", "yield"]):
+            cert["annual_coupon_yield"] = clean_number(next_text)
+        elif "riferimento" in text or "ultimo" in text:
+            cert["reference_price"] = clean_number(next_text)
+
+    # Tabella sottostanti - cerca classi comuni o testo
+    table = soup.find("table", class_=re.compile(r"(sottostante|underlying|basket|table|responsive)", re.I))
+    if not table:
+        table = soup.find("table")
+
+    if table:
+        rows = table.find_all("tr")
+        print(f"  Trovata tabella con {len(rows)} righe")
+        for row in rows[1:]:
+            cells = row.find_all("td")
+            if len(cells) >= 3:
+                name = cells[0].get_text(strip=True)
+                strike = clean_number(cells[1].get_text(strip=True))
+                spot = clean_number(cells[2].get_text(strip=True))
+                barrier = clean_number(cells[3].get_text(strip=True)) if len(cells) > 3 else cert["barrier_down"]
+                cert["underlyings"].append({
+                    "name": name,
+                    "strike": strike,
+                    "spot": spot,
+                    "barrier": barrier,
+                    "worst_of": "W" if "worst" in name.lower() else ""
+                })
+
+    # Debug finale
+    print(f"  Risultato: {len(cert['underlyings'])} sottostanti | Cedola: {cert['annual_coupon_yield']} | Barriera: {cert['barrier_down']}")
+
+    if not cert["name"] or len(cert["underlyings"]) == 0:
+        return None
+
+    return cert
+
 def main():
-    print("=== Certificates Scraper v23.1 - DATI REALI DEBUG ===\n")
+    print("=== Certificates Scraper v23.2 - DATI REALI con anti-timeout ===\n")
 
     certificates = []
 
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=CONFIG["headless"])
-        context = browser.new_context(user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36")
+        context = browser.new_context(
+            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
+        )
         page = context.new_page()
 
         # Raccolta ISIN
-        page.goto(f"{CONFIG['base_url']}/db_bs_nuove_emissioni.asp")
-        time.sleep(5)
-        soup = BeautifulSoup(page.content(), "html.parser")
+        url_list = f"{CONFIG['base_url']}/db_bs_nuove_emissioni.asp"
+        print(f"Raccolta ISIN da {url_list}")
+        if not goto_with_retry(page, url_list):
+            print("Impossibile caricare pagina elenco")
+            browser.close()
+            return
 
+        soup = BeautifulSoup(page.content(), "html.parser")
         isins = []
         for tr in soup.find_all("tr")[1:]:
             tds = tr.find_all("td")
@@ -144,16 +165,16 @@ def main():
 
         print(f"Trovati {len(isins)} ISIN candidati")
 
-        # Dettaglio
+        # Processa dettaglio
         for i, isin in enumerate(isins[:CONFIG["max_certificates"]], 1):
-            print(f"[{i}] {isin} → ", end="")
+            print(f"[{i}/{len(isins)}] {isin} → ", end="")
             cert = extract_detail(page, isin)
             if cert:
                 certificates.append(cert)
                 print("OK")
             else:
                 print("fallito")
-            time.sleep(3.5)  # anti-ban + caricamento
+            time.sleep(4)  # pausa più lunga anti-ban
 
         browser.close()
 
@@ -163,7 +184,7 @@ def main():
         "certificates": certificates,
         "metadata": {
             "timestamp": datetime.now().isoformat(),
-            "version": "23.1-debug",
+            "version": "23.2",
             "source": "certificatiederivati.it - schede dettaglio"
         }
     }
@@ -171,7 +192,7 @@ def main():
     with open(CONFIG["output_file"], "w", encoding="utf-8") as f:
         json.dump(output, f, indent=2, ensure_ascii=False)
 
-    print(f"\nFINITO → {len(certificates)} certificati salvati")
+    print(f"\nFINITO → {len(certificates)} certificati salvati in {CONFIG['output_file']}")
 
 if __name__ == "__main__":
     main()
