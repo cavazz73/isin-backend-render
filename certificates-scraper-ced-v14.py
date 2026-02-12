@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-# certificates-scraper-v24.1 - Ricerca Avanzata ROBUSTA
+# certificates-scraper-v24.1 - Ricerca Avanzata ULTRA ROBUSTA
 
 import json
 import time
 import re
 from datetime import datetime, timedelta
 from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeoutError
+from bs4 import BeautifulSoup
 
 CONFIG = {
     "output_file": "certificates-data.json",
@@ -51,9 +52,6 @@ def main():
             browser.close()
             return
 
-        # Debug: screenshot iniziale
-        page.screenshot(path="ricerca-avanzata.png")
-
         # Aspetta e seleziona tipodb
         try:
             print("Aspetto select #tipodb...")
@@ -69,7 +67,6 @@ def main():
                 print("Fallito anche JS → salto selezione")
         except Exception as e:
             print(f"Errore select: {e}")
-            page.screenshot(path="error-select.png")
 
         time.sleep(2)
 
@@ -86,7 +83,6 @@ def main():
             time.sleep(8)
         except Exception as e:
             print(f"Errore submit: {e}")
-            page.screenshot(path="error-submit.png")
             browser.close()
             return
 
