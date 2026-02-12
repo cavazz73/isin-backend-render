@@ -1,50 +1,50 @@
-name: Scrape Certificates Daily
+name: Update Certificates JSON Real Data
 
 on:
   schedule:
-    - cron: '30 18 * * *'
+    - cron: '0 19 * * *'          # ogni giorno alle 19 UTC
   workflow_dispatch:
 
 jobs:
-  scrape-certificates:
+  scrape-real:
     runs-on: ubuntu-latest
-    
+
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-      
-      - name: Setup Python
+
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      
+
       - name: Install dependencies
         run: |
-          pip install playwright
-          playwright install chromium
-          playwright install-deps
-      
-      - name: Run scraper
+          python -m pip install --upgrade pip
+          pip install playwright beautifulsoup4
+          playwright install --with-deps chromium
+
+      - name: Run real scraper
         run: python certificates-scraper-ced-v14.py
-      
-      - name: Commit and push if changed
+
+      - name: Check output file
         run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "GitHub Actions Bot"
-          git add certificates-data.json
-          if git diff --staged --quiet; then
-            echo "No changes to commit"
+          if [ -f certificates-data.json ] && [ -s certificates-data.json ]; then
+            COUNT=$(python -c "import json; print(len(json.load(open('certificates-data.json'))['certificates']))" || echo "0")
+            echo "File OK - Certificati trovati: $COUNT"
           else
-            git commit -m "Auto-update certificates-data.json - $(date +'%Y-%m-%d %H:%M')"
-            git push
-            echo "Changes committed and pushed"
+            echo "File certificates-data.json non esiste o vuoto!"
+            exit 1
           fi
-      
-      - name: Summary
+
+      - name: Commit and push changes
         run: |
-          echo "## Certificates Update" >> $GITHUB_STEP_SUMMARY
-          echo "- **Data:** $(date +'%Y-%m-%d %H:%M UTC')" >> $GITHUB_STEP_SUMMARY
-          echo "- **Certificati generati:** 30" >> $GITHUB_STEP_SUMMARY
-          echo "- **Stato:** JSON arricchito per frontend" >> $GITHUB_STEP_SUMMARY
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+          git add certificates-data.json
+          git diff --staged --quiet || git commit -m "Aggiornamento reale certificati - $(date +'%Y-%m-%d %H:%M UTC')"
+          git push || echo "No push needed or already up-to-date"
+
+      - name: Summary
+        run: echo "Esecuzione completata"
