@@ -1,112 +1,118 @@
 #!/usr/bin/env python3
 """
-Scraper CED v15 FIX - Skip header + validazione colonne
+Scraper CED v16 - DEBUG COMPLETO + Fallback multi-sorgente
 """
 
 import asyncio
 import pandas as pd
 from playwright.async_api import async_playwright
 from bs4 import BeautifulSoup
-from datetime import datetime, timedelta
 import json
 import os
 import time
 import re
+from datetime import datetime, timedelta
 
-# Config
 RECENT_DAYS = int(os.getenv('RECENT_DAYS', '30'))
-URL_NUOVE = 'https://www.certificatiederivati.it/db_bs_nuove_emissioni.asp'
 cutoff_date = datetime.now() - timedelta(days=RECENT_DAYS)
 DATE_FORMAT = '%d/%m/%Y'
 
 async def classify_sottostante(sott_str):
-    """Categorizza sottostante."""
-    if not sott_str or len(sott_str) < 3:
+    if not sott_str or len(sott_str) < 2:
         return 'Altro'
     sott_str = sott_str.lower()
     keywords = {
         'Indici': ['indice', 'ftse', 'dax', 'spx', 'euro stoxx', 's&p', 'nasdaq'],
-        'Valute': ['eur', 'usd', 'gbp', 'chf', 'jpy', 'valuta', 'fx', 'cross'],
-        'Tassi': ['euribor', 'tasso', 'eonia', 'sonia', 'libor', 'sofr'],
-        'Credit Link': ['credit', 'cln', 'linked']
+        'Valute': ['eur', 'usd', 'gbp', 'chf', 'jpy', 'valuta', 'fx'],
+        'Tassi': ['euribor', 'tasso', 'eonia', 'sonia'],
+        'Credit Link': ['credit', 'cln']
     }
     for cat, kws in keywords.items():
         if any(kw in sott_str for kw in kws):
             return cat
-    return 'Singolo'  # Azioni/commodity
+    return 'Singolo'
 
-async def is_valid_date(date_str):
-    """Valida se stringa è data reale (non header)."""
-    if not date_str or len(date_str) < 5:
-        return False
-    if not re.match(r'^\d{1,2}[/-]\d{1,2}[/-]\d{4}$', date_str):
-        return False
-    try:
-        datetime.strptime(date_str, DATE_FORMAT)
-        return True
-    except ValueError:
-        return False
+async def scrape_ced_nuove(page):
+    """Metodo 1: Tabella nuove emissioni."""
+    print("🔍 METODO 1: db_bs_nuove_emissioni.asp")
+    await page.goto('https://www.certificatiederivati.it/db_bs_nuove_emissioni.asp', wait_until='networkidle')
+    await page.wait_for_timeout(3000)
+    
+    # DEBUG: Salva HTML per analisi
+    html = await page.content()
+    with open('debug_ced.html', 'w', encoding='utf-8') as f:
+        f.write(html)
+    print("💾 HTML salvato in debug_ced.html")
+    
+    soup = BeautifulSoup(html, 'lxml')
+    
+    # Cerca TUTTI i possibili selettori tabella
+    selectors = [
+        'table tr',
+        '.table tr', 
+        '#table tr',
+        'table.table tr'
+    ]
+    
+    for selector in selectors:
+        rows = soup.select(selector)
+        print(f"   Selettore '{selector}': {len(rows)} righe trovate")
+        if len(rows) > 10:  # Probabile tabella dati
+            print(f"   🎯 PROVA selettore: {selector}")
+            certificati = await parse_rows_smart(rows)
+            if certificati:
+                print(f"   ✅ {len(certificati)} certificati trovati!")
+                return certificati
+    
+    return []
 
-async def scrape_ced(page):
-    """Scraping CED con validazione robusta."""
-    print(f"📡 Scraping {URL_NUOVE} (recenti da {cutoff_date.strftime(DATE_FORMAT)})")
-    await page.goto(URL_NUOVE, wait_until='networkidle')
-    await page.wait_for_selector('table', timeout=30000)
-    
-    content = await page.content()
-    soup = BeautifulSoup(content, 'lxml')
-    tables = soup.find_all('table')
-    print(f"🔍 Trovate {len(tables)} tabelle")
-    
+async def parse_rows_smart(rows):
+    """Parse intelligente righe - rileva struttura automaticamente."""
     certificati = []
-    for table_idx, table in enumerate(tables):
-        rows = table.find_all('tr')
-        print(f"📋 Tabella {table_idx}: {len(rows)} righe")
+    
+    for i, row in enumerate(rows[:50]):  # Solo prime 50 per test
+        cols = [col.get_text(strip=True) for col in row.find_all(['td', 'th'])]
         
-        for row_idx, row in enumerate(rows):
-            cols = [col.get_text(strip=True) for col in row.find_all(['td', 'th'])]
+        # Skip righe vuote/corte
+        if len(cols) < 4 or all(len(c) < 2 for c in cols):
+            continue
+        
+        print(f"   Riga {i}: {cols[:4]}...")  # DEBUG
+        
+        # Cerca ISIN (12 caratteri alfanumerici)
+        isin_candidate = next((c for c in cols if re.match(r'^[A-Z]{2}[0-9A-Z]{9}[0-9]$', c)), None)
+        if not isin_candidate:
+            continue
             
-            # Skip righe troppo corte o header
-            if len(cols) < 6:
-                continue
+        # Cerca data valida
+        date_candidate = next((c for c in cols if re.match(r'\d{1,2}[/-]\d{1,2}[/-]\d{4}', c)), None)
+        if not date_candidate:
+            continue
             
-            # Salta header (controlla prima colonna data)
-            data_str = cols[-1] if len(cols) > 5 else ''  # Data ultima colonna tipicamente
-            if not await is_valid_date(data_str):
-                print(f"⚠️ Skip riga {row_idx} (header): '{data_str}'")
-                continue
-            
-            try:
-                # Adatta colonne: ISIN tipicamente prima, data ultima
-                isin = cols[0] if len(cols[0]) == 12 else ''
-                if not isin or not isin.isalnum():
-                    continue
-                    
-                emittente = cols[1] if cols[1] else 'N/D'
-                tipo = cols[2] if len(cols) > 2 else 'Certificato'
-                sottostante = cols[3] if len(cols) > 3 else 'N/D'
-                mercato = cols[-2] if len(cols) > 4 else 'SeDeX'
-                
-                data_em = datetime.strptime(data_str, DATE_FORMAT)
-                if data_em >= cutoff_date:
-                    cert = {
-                        'ISIN': isin,
-                        'Emittente': emittente,
-                        'Tipo': tipo,
-                        'Sottostante': sottostante,
-                        'Categoria_Sottostante': await classify_sottostante(sottostante),
-                        'Data_Emissione': data_str,
-                        'Mercato': mercato,
-                        'Recente': 'Sì'
-                    }
-                    certificati.append(cert)
-                    print(f"✅ {len(certificati)}: {isin} - {cert['Categoria_Sottostante']} - {data_str}")
-                
-            except (ValueError, IndexError) as e:
-                print(f"⚠️ Skip riga {row_idx}: {e}")
-                continue
+        try:
+            data_em = datetime.strptime(date_candidate, DATE_FORMAT)
+            if data_em >= cutoff_date:
+                certificati.append({
+                    'ISIN': isin_candidate,
+                    'Emittente': cols[0] if cols[0] != isin_candidate else 'N/D',
+                    'Tipo': cols[1] if len(cols) > 1 else 'Certificato',
+                    'Sottostante': cols[2] if len(cols) > 2 else 'N/D',
+                    'Categoria_Sottostante': await classify_sottostante(cols[2] if len(cols) > 2 else ''),
+                    'Data_Emissione': date_candidate,
+                    'Mercato': 'SeDeX'
+                })
+                print(f"   ✅ CERTIFICATO: {isin_candidate}")
+        except:
+            continue
     
     return certificati
+
+async def scrape_ced_homepage(page):
+    """Fallback: Homepage CED."""
+    print("🔍 METODO 2: Homepage come fallback")
+    await page.goto('https://www.certificatiederivati.it/', wait_until='networkidle')
+    # TODO: cerca link "Nuove Emissioni" e clicca
+    return []
 
 async def main():
     async with async_playwright() as p:
@@ -116,25 +122,27 @@ async def main():
         )
         page = await context.new_page()
         
-        certificati_recenti = await scrape_ced(page)
+        # Prova metodo principale
+        certificati = await scrape_ced_nuove(page)
+        
+        # Fallback se zero risultati
+        if not certificati:
+            certificati = await scrape_ced_homepage(page)
+        
         await browser.close()
         
-        # Output
-        df = pd.DataFrame(certificati_recenti)
-        df.to_json('certificates-recenti.json', orient='records', date_format='iso', indent=2)
+        # Output SEMPRE (anche vuoto)
+        df = pd.DataFrame(certificati)
+        df.to_json('certificates-recenti.json', orient='records', indent=2)
         df.to_csv('certificates-recenti.csv', index=False)
         
-        # Compatibilità sito
+        print(f"\n🎯 RISULTATO FINALE: {len(certificati)} certificati recenti")
+        if certificati:
+            print("📊 Prime 3:", [c['ISIN'] for c in certificati[:3]])
+        
+        # COMPATIBILITÀ SITO
         with open('certificates-data.json', 'w') as f:
-            json.dump(certificati_recenti, f, indent=2, ensure_ascii=False)
-        
-        print(f"\n🏆 COMPLETATO: {len(certificati_recenti)} certificati recenti salvati!")
-        print(f"📁 certificates-recenti.json/csv + certificates-data.json")
-        
-        if certificati_recenti:
-            print("📊 Breakdown per categoria:")
-            cats = pd.DataFrame(certificati_recenti)['Categoria_Sottostante'].value_counts()
-            print(cats)
+            json.dump(certificati, f, indent=2)
 
 if __name__ == '__main__':
     asyncio.run(main())
