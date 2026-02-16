@@ -1,47 +1,59 @@
-name: Scrape Certificati Recenti CED
+name: Scrape Certificati Recenti CED v15
 
 on:
   schedule:
     - cron: '0 6 * * *'  # Daily 6AM UTC (8AM CET)
-  workflow_dispatch:  # Manuale
+  workflow_dispatch:
     inputs:
       recent_days:
-        description: 'Giorni recenti'
+        description: 'Giorni recenti (default 30)'
         required: false
         default: '30'
-        type: int
+        type: choice
+        options:
+        - 7
+        - 15
+        - 30
+        - 60
 
 jobs:
   scrape:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 20
     
     steps:
-    - uses: actions/checkout@v4
+    - name: 📥 Checkout repo
+      uses: actions/checkout@v4
     
-    - name: Setup Python
+    - name: 🐍 Setup Python 3.11
       uses: actions/setup-python@v5
       with:
         python-version: '3.11'
     
-    - name: Install dependencies
+    - name: 📦 Install Python dependencies
       run: |
         python -m pip install --upgrade pip
         pip install playwright pandas beautifulsoup4 lxml
-        playwright install --with-deps chromium
     
-    - name: Run scraper recenti
+    - name: 🖥️ Install Playwright browsers
+      run: playwright install --with-deps chromium
+    
+    - name: 🔍 Run scraper CED v15
       env:
         RECENT_DAYS: ${{ inputs.recent_days || 30 }}
-      run: python certificates-scraper-ced-v15.py
-    
-    - name: Verify output
       run: |
-        test -f certificates-recenti.json
-        test -s certificates-recenti.json  # Non vuoto
-        jq '. | length' certificates-recenti.json  # Conta JSON
+        ls -la *.py  # Debug: mostra file Python
+        pwd
+        python certificates-scraper-ced-v15.py
     
-    - name: Upload artifacts
+    - name: ✅ Verify output files
+      run: |
+        ls -la certificates-*.*
+        test -f certificates-recenti.json
+        test -s certificates-recenti.json
+        python -c "import json; data=json.load(open('certificates-recenti.json')); print(f'{len(data)} certificati OK')"
+    
+    - name: 📤 Upload artifacts
       uses: actions/upload-artifact@v4
       with:
         name: certificati-recenti-${{ github.run_number }}
@@ -50,14 +62,11 @@ jobs:
           certificates-data.json
         retention-days: 7
     
-    - name: Notify Discord/Slack (opzionale)
+    - name: 📱 Notify Discord (opzionale)
       if: always()
-      uses: Ilshidur/action-discord@master
+      uses: 8398a7/action-slack@v3
       with:
-        args: 'Scraper CED completato: ${{ job.status }} - ${{ github.run_number }} certificati recenti'
+        status: ${{ job.status }}
+        fields: repo,message,commit,author,action,eventName,ref,workflow
       env:
-        DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-
-    # Deploy opzionale su Render/Redis [cite:1]
-    # - name: Deploy to isin-research.com
-    #   run: curl -X POST https://api.render.com/... ${{ secrets.RENDER_KEY }}
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
