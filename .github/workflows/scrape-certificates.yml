@@ -1,9 +1,9 @@
-name: Scrape Certificati Recenti CED → Deploy isin-research.com
+name: Scrape Certificati → Deploy Render.com AUTOMATICO
 
 on:
   schedule:
-    - cron: '0 6 * * *'  # Daily 6AM UTC = 8AM CET
-  workflow_dispatch:     # Manual trigger
+    - cron: '0 6 * * *'  # Daily 8AM CET
+  workflow_dispatch:
     inputs:
       recent_days:
         description: 'Giorni recenti'
@@ -15,69 +15,56 @@ on:
         - 15
         - 30
         - 60
-        - 90
 
 jobs:
-  scrape-and-deploy:
+  scrape-deploy-render:
     runs-on: ubuntu-latest
     timeout-minutes: 25
     
     steps:
-    - name: 📥 Checkout repository
+    - name: 📥 Checkout repo
       uses: actions/checkout@v4
       
-    - name: 🐍 Setup Python 3.11
+    - name: 🐍 Setup Python
       uses: actions/setup-python@v5
       with:
         python-version: '3.11'
-        
-    - name: 📦 Install Python dependencies
+    
+    - name: 📦 Install deps
       run: |
-        python -m pip install --upgrade pip
         pip install playwright pandas beautifulsoup4 lxml
-        
-    - name: 🖥️ Install Playwright Chromium
-      run: |
         playwright install --with-deps chromium
-        
-    - name: 🔍 Run scraper CED (1739+ certificati)
+    
+    - name: 🔍 Scrape CED (1739+ certificati)
       env:
         RECENT_DAYS: ${{ inputs.recent_days || 30 }}
+      run: python certificates-scraper-ced-v15.py
+    
+    - name: ✅ Verifica JSON
       run: |
-        echo "📊 Avvio scraper con RECENT_DAYS=${RECENT_DAYS}"
-        ls -la *.py | grep certificates-scraper-ced-v
-        python certificates-scraper-ced-v15.py
-        
-    - name: ✅ Verify JSON output
-      run: |
-        echo "📁 File generati:"
-        ls -la certificates-* certificates-data.*
-        test -f certificates-data.json
-        test -s certificates-data.json
         COUNT=$(python -c "import json;print(len(json.load(open('certificates-data.json'))))")
-        echo "✅ $COUNT certificati recenti OK"
-        test $COUNT -gt 0
-        
-    - name: 📤 Commit e push JSON al repository (per CDN)
+        echo "✅ $COUNT certificati OK"
+        test $COUNT -gt 1000
+    
+    - name: 📤 COMMIT JSON al repo (Render lo legge da qui!)
       run: |
-        git config user.name "GitHub Actions"
+        git config user.name "Auto-deploy"
         git config user.email "actions@github.com"
         git add certificates-data.json certificates-recenti.*
-        git diff --staged --quiet || git commit -m "Update: $COUNT certificati recenti da CED [skip ci]"
+        git diff --staged --quiet || git commit -m "Update: $COUNT certificati recenti da CED"
         git push
-        
-    - name: 📤 Upload Artifacts (backup)
+    
+    - name: 🚀 TRIGGER Render.com Redeploy
+      run: |
+        echo "🔄 Trigger Render redeploy..."
+        curl -X POST https://api.render.com/v1/services/srv-XXXXXXXXXXXX/deploy \
+          -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}" \
+          -d '{"clearCache": true}'
+        echo "✅ Render redeploy avviato!"
+    
+    - name: 📤 Artifacts backup
       uses: actions/upload-artifact@v4
       with:
-        name: certificati-recenti-${{ github.run_number }}
-        path: |
-          certificates-data.json
-          certificates-recenti.*
+        name: certificati-${{ github.run_number }}
+        path: certificates-data.*
         retention-days: 14
-        
-    - name: 🚀 Notify Deploy completato
-      run: |
-        echo "✅ Workflow completato!"
-        echo "📊 $COUNT certificati recenti caricati"
-        echo "🔗 Repo aggiornato: https://github.com/cavazz73/isin-backend-render"
-        echo "🌐 Frontend: https://isin-research.com/certificati (ricarica Ctrl+F5)"
