@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Scraper CED v17 - SCAN COMPLETO 12k+ righe + Tutti emittenti
+Scraper CED v17 - FIX DATE COLONNA 5 + Pandas Safe
 """
 
 import asyncio
@@ -16,7 +16,7 @@ RECENT_DAYS = int(os.getenv('RECENT_DAYS', '30'))
 cutoff_date = datetime.now() - timedelta(days=RECENT_DAYS)
 DATE_FORMAT = '%d/%m/%Y'
 
-async def classify_sottostante(sott_str):
+def classify_sottostante(sott_str):  # Non più async
     if not sott_str or len(sott_str) < 2:
         return 'Altro'
     sott_str = sott_str.lower()
@@ -32,7 +32,6 @@ async def classify_sottostante(sott_str):
     return 'Singolo'
 
 async def scrape_ced_completo(page):
-    """Scansione COMPLETA 12k+ righe."""
     print("🔍 SCAN COMPLETO: https://www.certificatiederivati.it/db_bs_nuove_emissioni.asp")
     await page.goto('https://www.certificatiederivati.it/db_bs_nuove_emissioni.asp', wait_until='networkidle')
     await page.wait_for_timeout(5000)
@@ -48,44 +47,41 @@ async def scrape_ced_completo(page):
     for i, row in enumerate(rows):
         cols = [col.get_text(strip=True) for col in row.find_all(['td', 'th'])]
         
-        # Skip header e righe vuote
-        if len(cols) < 6 or cols[0] in ['ISIN', 'NOME', 'EMITTENTE', 'SOTTOSTANTE']:
+        # Skip header (esatti testi header)
+        if len(cols) < 7 or cols[0] in ['ISIN', 'NOME', 'EMITTENTE', 'SOTTOSTANTE']:
             continue
         
-        # Estrai ISIN (prima colonna)
+        # Validazione ISIN (12 char)
         isin = cols[0].strip()
         if not re.match(r'^[A-Z0-9]{12}$', isin):
             continue
-            
+        
         try:
-            # Colonne fisse dalla struttura vista: [ISIN, NOME, EMITTENTE, SOTT., ?, DATA]
-            nome = cols[1]
-            emittente = cols[2]
-            sottostante = cols[3]
-            data_str = cols[-1]  # Data sempre ultima colonna
-            
+            # ✅ STRUTTURA REALE: cols[5] = DATA (indice 5!)
+            data_str = cols[5].strip()
             data_em = datetime.strptime(data_str, DATE_FORMAT)
+            
             if data_em >= cutoff_date:
-                emittenti_unici.add(emittente)
+                emittenti_unici.add(cols[2])
                 
                 cert = {
                     'ISIN': isin,
-                    'Nome': nome,
-                    'Emittente': emittente,
-                    'Sottostante': sottostante,
-                    'Categoria_Sottostante': classify_sottostante(sottostante),
+                    'Nome': cols[1],
+                    'Emittente': cols[2],
+                    'Sottostante': cols[3],
+                    'Categoria_Sottostante': classify_sottostante(cols[3]),
                     'Data_Emissione': data_str,
                     'Mercato': 'SeDeX'
                 }
                 certificati.append(cert)
                 
                 if len(certificati) % 50 == 0:
-                    print(f"⏳ Processate {i}/{len(rows)} righe | {len(certificati)} recenti")
+                    print(f"⏳ {len(certificati)} recenti | Riga {i}")
                     
         except (ValueError, IndexError):
             continue
     
-    print(f"\n🎯 EMITTENTI TROVATI ({len(emittenti_unici)}): {sorted(list(emittenti_unici))}")
+    print(f"🎯 EMITTENTI ({len(emittenti_unici)}): {sorted(emittenti_unici)}")
     return certificati
 
 async def main():
@@ -97,25 +93,25 @@ async def main():
         certificati_recenti = await scrape_ced_completo(page)
         await browser.close()
         
-        # Output per isin-research.com
+        # Output SAFE (no crash su df vuoto)
         df = pd.DataFrame(certificati_recenti)
         df.to_json('certificates-recenti.json', orient='records', indent=2, date_format='iso')
         df.to_csv('certificates-recenti.csv', index=False)
         
-        # Compatibilità certificates-data.json
         with open('certificates-data.json', 'w', encoding='utf-8') as f:
             json.dump(certificati_recenti, f, indent=2, ensure_ascii=False)
         
-        print(f"\n🏆 SUCCESS: {len(certificati_recenti)} certificati recenti (da {cutoff_date.strftime(DATE_FORMAT)})")
-        print("📊 Breakdown per categoria:")
-        print(df['Categoria_Sottostante'].value_counts())
-        print("📊 Per emittente:")
-        print(df['Emittente'].value_counts().head(10))
+        print(f"\n🏆 SUCCESS: {len(certificati_recenti)} certificati recenti")
+        print(f"📅 Da: {cutoff_date.strftime(DATE_FORMAT)}")
         
-        print("\n📁 File pronti per isin-research.com:")
-        print("- certificates-recenti.json")
-        print("- certificates-recenti.csv") 
-        print("- certificates-data.json")
+        if len(certificati_recenti) > 0:
+            print("\n📊 Emittenti TOP 5:")
+            print(df['Emittente'].value_counts().head())
+            print("\n📊 Categorie:")
+            print(df['Categoria_Sottostante'].value_counts())
+            print(f"\n📋 Prime 3: {list(df['ISIN'])[:3]}")
+        else:
+            print("❌ Nessun certificato recente trovato")
 
 if __name__ == '__main__':
     asyncio.run(main())
