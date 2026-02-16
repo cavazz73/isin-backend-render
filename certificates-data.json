@@ -3,15 +3,11 @@
   "count": 0,
   "certificates": [],
   "metadata": {
-    "timestamp": "2026-02-16T15:41:59.049307",
-    "version": "26.0",
+    "timestamp": "2026-02-16T16:08:40.211110",
+    "version": "27.0",
     "sources": [
       "Vontobel",
-      "Leonteq",
-      "BNP Paribas",
-      "UniCredit",
-      "Mediobanca",
-      "Marex"
+      "Leonteq"
     ]
   }
 }
