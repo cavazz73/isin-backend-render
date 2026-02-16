@@ -1,117 +1,98 @@
 #!/usr/bin/env python3
-# Scraper per Borsa Italiana - Ricerca Avanzata (tutti emittenti, ultimi 90 giorni)
-# Filtra per indici, valute, commodities, tassi, credit linked, basket
+"""
+Scraper CED per isin-research.com/certificati - Solo RECENTI (30gg) con sottostanti categorizzati.
+Playwright + BS4. Output: certificates-recenti.json/csv
+"""
 
-import json
-import time
-import re
+import asyncio
+import pandas as pd
+from playwright.async_api import async_playwright
+from bs4 import BeautifulSoup
 from datetime import datetime, timedelta
-from playwright.sync_api import sync_playwright
+import json
+import sys
+import os
+import time
 
-CONFIG = {
-    "output_file": "certificates-data.json",
-    "max_certificates": 50,
-    "headless": True,
-    "filter_keywords": ["indice", "index", "basket", "worst of", "commodity", "valuta", "currency", "tasso", "rate", "credit linked"]
-}
+# Config
+RECENT_DAYS = int(os.getenv('RECENT_DAYS', '30'))
+URL_NUOVE = 'https://www.certificatiederivati.it/db_bs_nuove_emissioni.asp'
+cutoff_date = datetime.now() - timedelta(days=RECENT_DAYS)
+DATE_FORMAT = '%d/%m/%Y'
 
-def clean_number(text):
-    if not text: return None
-    text = re.sub(r'[^\d,\.-]', '', text.strip())
-    text = text.replace('.', '').replace(',', '.')
-    try: return round(float(text), 4)
-    except: return None
+async def classify_sottostante(sott_str):
+    """Categorizza sottostante."""
+    if not sott_str:
+        return 'Altro'
+    sott_str = sott_str.lower()
+    if any(kw in sott_str for kw in ['indice', 'ftse', 'dax', 'spx', 'euro stoxx', 's&p']):
+        return 'Indici'
+    elif any(kw in sott_str for kw in ['eur', 'usd', 'gbp', 'valuta', 'fx', 'cross']):
+        return 'Valute'
+    elif any(kw in sott_str for kw in ['euribor', 'tasso', 'eonia', 'sonia', 'libor']):
+        return 'Tassi'
+    elif any(kw in sott_str for kw in ['credit', 'cln', 'linked']):
+        return 'Credit Link'
+    return 'Singolo'  # Azioni/commodity
 
-def parse_date(text):
-    if not text: return None
-    try:
-        if '/' in text:
-            d, m, y = [x.strip() for x in text.split('/')]
-            return f"{y}-{m.zfill(2)}-{d.zfill(2)}"
-    except: pass
-    return text
+async def scrape_ced(page):
+    """Scraping principali tabella nuove emissioni."""
+    await page.goto(URL_NUOVE, wait_until='networkidle')
+    await page.wait_for_selector('table', timeout=30000)
+    
+    content = await page.content()
+    soup = BeautifulSoup(content, 'lxml')
+    rows = soup.select('table tr')[1:]  # Skip header
+    
+    certificati = []
+    for row in rows:
+        cols = [col.get_text(strip=True) for col in row.find_all(['td', 'th'])]
+        if len(cols) < 6:
+            continue
+        try:
+            isin, emittente, tipo, sottostante, data_str, mercato = cols[:6]
+            data_em = datetime.strptime(data_str, DATE_FORMAT)
+            if data_em >= cutoff_date:
+                cert = {
+                    'ISIN': isin,
+                    'Emittente': emittente,
+                    'Tipo': tipo,
+                    'Sottostante': sottostante,
+                    'Categoria_Sottostante': await classify_sottostante(sottostante),
+                    'Data_Emissione': data_str,
+                    'Mercato': mercato,
+                    'Recente': 'Sì'
+                }
+                certificati.append(cert)
+                print(f"Aggiunto: {isin} - {cert['Categoria_Sottostante']}")
+        except ValueError:
+            continue  # Data invalida
+        time.sleep(0.5)  # Delay gentile
+    
+    return certificati
 
-def is_desired_underlying(text):
-    t = text.lower()
-    for kw in CONFIG["filter_keywords"]:
-        if kw in t:
-            return True
-    return False
+async def main():
+    async with async_playwright() as p:
+        browser = await p.chromium.launch(headless=True)
+        context = await browser.new_context(
+            user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+        )
+        page = await context.new_page()
+        
+        certificati_recenti = await scrape_ced(page)
+        await browser.close()
+        
+        # Output
+        df = pd.DataFrame(certificati_recenti)
+        df.to_json('certificates-recenti.json', orient='records', date_format='iso', indent=2)
+        df.to_csv('certificates-recenti.csv', index=False)
+        
+        print(f"🏆 Scraping completato: {len(certificati_recenti)} certificati recenti salvati.")
+        print(f"Cutoff: {cutoff_date.strftime(DATE_FORMAT)}")
+        
+        # Compatibilità vecchio: salva anche all-json per sito
+        with open('certificates-data.json', 'w') as f:
+            json.dump(certificati_recenti, f, indent=2, ensure_ascii=False)
 
-def main():
-    print("=== Scraper Borsa Italiana - Ricerca Avanzata ===\n")
-
-    certificates = []
-
-    with sync_playwright() as p:
-        browser = p.chromium.launch(headless=CONFIG["headless"])
-        page = browser.new_context(user_agent="Mozilla/5.0").new_page()
-
-        url = "https://www.borsaitaliana.it/borsa/cw-e-certificates/ricerca-avanzata.html"
-        print(f"Apertura {url}")
-        page.goto(url, wait_until="networkidle")
-        time.sleep(5)
-
-        # Imposta data inizio (ultimi 90 giorni)
-        from_date = (datetime.now() - timedelta(days=90)).strftime("%d/%m/%Y")
-        page.fill("input[name='dataInizio']", from_date)
-
-        # Seleziona mercato SeDeX / CERT-X
-        page.select_option("select[name='mercato']", "SEDX")
-
-        # Submit form
-        page.click("button[type='submit']", timeout=15000)
-        page.wait_for_load_state("networkidle", timeout=60000)
-        time.sleep(8)
-
-        # Estrazione ISIN, nome, emittente, sottostante
-        soup = BeautifulSoup(page.content(), "html.parser")
-        table = soup.find("table", class_="t-table")
-        if table:
-            rows = table.find_all("tr")[1:]  # salta header
-            for row in rows:
-                cells = [td.get_text(strip=True) for td in row.find_all("td")]
-                if len(cells) >= 5:
-                    isin = cells[0]
-                    name = cells[1]
-                    issuer = cells[2]
-                    underlying = cells[3]
-                    type = cells[4]
-
-                    if is_desired_underlying(underlying):
-                        cert = {
-                            "isin": isin,
-                            "name": name,
-                            "issuer": issuer,
-                            "underlying_text": underlying,
-                            "type": type,
-                            "annual_coupon_yield": None,
-                            "barrier_down": None,
-                            "maturity_date": None,
-                            "reference_price": None,
-                            "url": f"https://www.borsaitaliana.it/borsa/cw-e-certificates/scheda/{isin}.html",
-                            "scraped_at": datetime.now().isoformat()
-                        }
-                        certificates.append(cert)
-                        print(f"✓ {isin} - {issuer} - {underlying[:60]}...")
-
-        browser.close()
-
-    output = {
-        "success": True,
-        "count": len(certificates),
-        "certificates": certificates,
-        "metadata": {
-            "timestamp": datetime.now().isoformat(),
-            "version": "28.0",
-            "source": "borsaitaliana.it - ricerca avanzata"
-        }
-    }
-
-    with open(CONFIG["output_file"], "w", encoding="utf-8") as f:
-        json.dump(output, f, indent=2, ensure_ascii=False)
-
-    print(f"\nFINITO → {len(certificates)} certificati salvati")
-
-if __name__ == "__main__":
-    main()
+if __name__ == '__main__':
+    asyncio.run(main())
