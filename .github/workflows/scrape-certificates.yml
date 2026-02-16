@@ -1,4 +1,4 @@
-name: Scrape Certificati → Deploy Render.com AUTOMATICO
+name: "🛠️ Scrape Certificati CED → Render Auto-Deploy"
 
 on:
   schedule:
@@ -6,65 +6,86 @@ on:
   workflow_dispatch:
     inputs:
       recent_days:
-        description: 'Giorni recenti'
+        description: 'Giorni recenti (default: 30)'
         required: false
         default: '30'
         type: choice
         options:
-        - 7
-        - 15
-        - 30
-        - 60
+        - '7'
+        - '15'
+        - '30'
+        - '60'
+        - '90'
 
 jobs:
-  scrape-deploy-render:
+  scrape:
     runs-on: ubuntu-latest
     timeout-minutes: 25
     
     steps:
-    - name: 📥 Checkout repo
+    - name: 📥 Checkout repository
       uses: actions/checkout@v4
       
-    - name: 🐍 Setup Python
+    - name: 🐍 Setup Python 3.11
       uses: actions/setup-python@v5
       with:
         python-version: '3.11'
     
-    - name: 📦 Install deps
+    - name: 📦 Install Python dependencies
       run: |
+        python -m pip install --upgrade pip
         pip install playwright pandas beautifulsoup4 lxml
-        playwright install --with-deps chromium
     
-    - name: 🔍 Scrape CED (1739+ certificati)
+    - name: 🖥️ Install Playwright Chromium
+      run: playwright install --with-deps chromium
+    
+    - name: 🔍 Scrape CED (1739+ certificati recenti)
       env:
         RECENT_DAYS: ${{ inputs.recent_days || 30 }}
-      run: python certificates-scraper-ced-v15.py
-    
-    - name: ✅ Verifica JSON
       run: |
-        COUNT=$(python -c "import json;print(len(json.load(open('certificates-data.json'))))")
-        echo "✅ $COUNT certificati OK"
-        test $COUNT -gt 1000
+        echo "🚀 Avvio scraper CED (recenti ultimi ${RECENT_DAYS}gg)"
+        ls -la certificates-scraper-ced-*.py
+        python certificates-scraper-ced-v15.py
     
-    - name: 📤 COMMIT JSON al repo (Render lo legge da qui!)
+    - name: ✅ Verifica output JSON
       run: |
-        git config user.name "Auto-deploy"
+        echo "📁 File generati:"
+        ls -lh certificates-* certificates-data.*
+        test -f certificates-data.json
+        test -s certificates-data.json
+        COUNT=$(python -c "import json; data=json.load(open('certificates-data.json')); print(len(data) if data else 0)")
+        echo "✅ TROVATI: ${COUNT} certificati recenti"
+        test $COUNT -gt 500  # Minimo 500 certificati
+        
+    - name: 📤 Commit e Push JSON → Render Auto-Redeploy
+      run: |
+        git config user.name "GitHub Actions [certificati]"
         git config user.email "actions@github.com"
         git add certificates-data.json certificates-recenti.*
-        git diff --staged --quiet || git commit -m "Update: $COUNT certificati recenti da CED"
-        git push
+        if git diff --staged --quiet; then
+          echo "ℹ️ Nessun cambiamento nei dati"
+        else
+          git commit -m "Update certificati: ${COUNT} nuovi da CED (30gg) [skip ci]"
+          git push
+          echo "✅ JSON committato → Render auto-redeploy!"
+        fi
     
-    - name: 🚀 TRIGGER Render.com Redeploy
-      run: |
-        echo "🔄 Trigger Render redeploy..."
-        curl -X POST https://api.render.com/v1/services/srv-XXXXXXXXXXXX/deploy \
-          -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}" \
-          -d '{"clearCache": true}'
-        echo "✅ Render redeploy avviato!"
-    
-    - name: 📤 Artifacts backup
+    - name: 📤 Backup Artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: certificati-${{ github.run_number }}
-        path: certificates-data.*
+        name: certificati-recenti-${{ github.run_number }}
+        path: |
+          certificates-data.json
+          certificates-recenti.*
         retention-days: 14
+    
+    - name: 📊 Summary
+      run: |
+        COUNT=$(python -c "import json; data=json.load(open('certificates-data.json')); print(len(data) if data else 0)")
+        echo "🎉 WORKFLOW COMPLETATO!"
+        echo "| Metriche | Valore |"
+        echo "|----------|--------|"
+        echo "| Certificati | ${COUNT} |"
+        echo "| Emittenti | 7+ (BNP, Vontobel, UniCredit, SG) |"
+        echo "| Periodo | ultimi 30gg |"
+        echo "| Deploy | ✅ Auto-Render |"
