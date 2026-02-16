@@ -1,12 +1,12 @@
-name: Scrape Certificati Recenti CED v15
+name: Scrape Certificati Recenti CED → Deploy isin-research.com
 
 on:
   schedule:
-    - cron: '0 6 * * *'  # Daily 6AM UTC (8AM CET)
-  workflow_dispatch:
+    - cron: '0 6 * * *'  # Daily 6AM UTC = 8AM CET
+  workflow_dispatch:     # Manual trigger
     inputs:
       recent_days:
-        description: 'Giorni recenti (default 30)'
+        description: 'Giorni recenti'
         required: false
         default: '30'
         type: choice
@@ -15,49 +15,69 @@ on:
         - 15
         - 30
         - 60
+        - 90
 
 jobs:
-  scrape:
+  scrape-and-deploy:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     
     steps:
-    - name: 📥 Checkout repo
+    - name: 📥 Checkout repository
       uses: actions/checkout@v4
-    
+      
     - name: 🐍 Setup Python 3.11
       uses: actions/setup-python@v5
       with:
         python-version: '3.11'
-    
+        
     - name: 📦 Install Python dependencies
       run: |
         python -m pip install --upgrade pip
         pip install playwright pandas beautifulsoup4 lxml
-    
-    - name: 🖥️ Install Playwright browsers
-      run: playwright install --with-deps chromium
-    
-    - name: 🔍 Run scraper CED v15
+        
+    - name: 🖥️ Install Playwright Chromium
+      run: |
+        playwright install --with-deps chromium
+        
+    - name: 🔍 Run scraper CED (1739+ certificati)
       env:
         RECENT_DAYS: ${{ inputs.recent_days || 30 }}
       run: |
-        ls -la *.py
-        pwd
+        echo "📊 Avvio scraper con RECENT_DAYS=${RECENT_DAYS}"
+        ls -la *.py | grep certificates-scraper-ced-v
         python certificates-scraper-ced-v15.py
-    
-    - name: ✅ Verify output files
+        
+    - name: ✅ Verify JSON output
       run: |
-        ls -la certificates-* 
-        test -f certificates-recenti.json
-        test -s certificates-recenti.json
-        python -c "import json; data=json.load(open('certificates-recenti.json')); print(f'✅ {len(data)} certificati recenti OK')"
-    
-    - name: 📤 Upload artifacts
+        echo "📁 File generati:"
+        ls -la certificates-* certificates-data.*
+        test -f certificates-data.json
+        test -s certificates-data.json
+        COUNT=$(python -c "import json;print(len(json.load(open('certificates-data.json'))))")
+        echo "✅ $COUNT certificati recenti OK"
+        test $COUNT -gt 0
+        
+    - name: 📤 Commit e push JSON al repository (per CDN)
+      run: |
+        git config user.name "GitHub Actions"
+        git config user.email "actions@github.com"
+        git add certificates-data.json certificates-recenti.*
+        git diff --staged --quiet || git commit -m "Update: $COUNT certificati recenti da CED [skip ci]"
+        git push
+        
+    - name: 📤 Upload Artifacts (backup)
       uses: actions/upload-artifact@v4
       with:
         name: certificati-recenti-${{ github.run_number }}
         path: |
-          certificates-recenti.*
           certificates-data.json
-        retention-days: 7
+          certificates-recenti.*
+        retention-days: 14
+        
+    - name: 🚀 Notify Deploy completato
+      run: |
+        echo "✅ Workflow completato!"
+        echo "📊 $COUNT certificati recenti caricati"
+        echo "🔗 Repo aggiornato: https://github.com/cavazz73/isin-backend-render"
+        echo "🌐 Frontend: https://isin-research.com/certificati (ricarica Ctrl+F5)"
