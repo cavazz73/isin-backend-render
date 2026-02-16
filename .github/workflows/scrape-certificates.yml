@@ -1,50 +1,63 @@
-name: Update Certificates JSON Real Data
+name: Scrape Certificati Recenti CED
 
 on:
   schedule:
-    - cron: '0 19 * * *'          # ogni giorno alle 19 UTC
-  workflow_dispatch:
+    - cron: '0 6 * * *'  # Daily 6AM UTC (8AM CET)
+  workflow_dispatch:  # Manuale
+    inputs:
+      recent_days:
+        description: 'Giorni recenti'
+        required: false
+        default: '30'
+        type: int
 
 jobs:
-  scrape-real:
+  scrape:
     runs-on: ubuntu-latest
-
+    timeout-minutes: 30
+    
     steps:
-      - uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+    - uses: actions/checkout@v4
+    
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install playwright pandas beautifulsoup4 lxml
+        playwright install --with-deps chromium
+    
+    - name: Run scraper recenti
+      env:
+        RECENT_DAYS: ${{ inputs.recent_days || 30 }}
+      run: python certificates-scraper-ced-v15.py
+    
+    - name: Verify output
+      run: |
+        test -f certificates-recenti.json
+        test -s certificates-recenti.json  # Non vuoto
+        jq '. | length' certificates-recenti.json  # Conta JSON
+    
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: certificati-recenti-${{ github.run_number }}
+        path: |
+          certificates-recenti.*
+          certificates-data.json
+        retention-days: 7
+    
+    - name: Notify Discord/Slack (opzionale)
+      if: always()
+      uses: Ilshidur/action-discord@master
+      with:
+        args: 'Scraper CED completato: ${{ job.status }} - ${{ github.run_number }} certificati recenti'
+      env:
+        DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install playwright beautifulsoup4
-          playwright install --with-deps chromium
-
-      - name: Run real scraper
-        run: python certificates-scraper-ced-v14.py
-
-      - name: Check output file
-        run: |
-          if [ -f certificates-data.json ] && [ -s certificates-data.json ]; then
-            COUNT=$(python -c "import json; print(len(json.load(open('certificates-data.json'))['certificates']))" || echo "0")
-            echo "File OK - Certificati trovati: $COUNT"
-          else
-            echo "File certificates-data.json non esiste o vuoto!"
-            exit 1
-          fi
-
-      - name: Commit and push changes
-        run: |
-          git config user.name "GitHub Actions Bot"
-          git config user.email "actions@github.com"
-          git add certificates-data.json
-          git diff --staged --quiet || git commit -m "Aggiornamento reale certificati - $(date +'%Y-%m-%d %H:%M UTC')"
-          git push || echo "No push needed or already up-to-date"
-
-      - name: Summary
-        run: echo "Esecuzione completata"
+    # Deploy opzionale su Render/Redis [cite:1]
+    # - name: Deploy to isin-research.com
+    #   run: curl -X POST https://api.render.com/... ${{ secrets.RENDER_KEY }}
