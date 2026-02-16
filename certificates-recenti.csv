@@ -1,13 +1,13 @@
 ISIN,Nome,Emittente,Sottostante,Categoria_Sottostante,Data_Emissione,Mercato
 DE000UP3Y5X0,TRACKER,Ubs,Singolo Sottostante,Singolo,16/02/2026,SeDeX
 IT0006773722,PHOENIX MEMORY AIRBAG STEP DOWN,Marex Financial,Basket di azioni worst of,Singolo,16/02/2026,SeDeX
+DE000FD9YX69,LEVA FISSA,Societe Generale,Singolo Sottostante,Singolo,12/02/2026,SeDeX
+DE000FD9YX77,LEVA FISSA,Societe Generale,Singolo Sottostante,Singolo,12/02/2026,SeDeX
+DE000FD9YX85,LEVA FISSA,Societe Generale,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 DE000FD9YYA0,LEVA FISSA,Societe Generale,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 DE000FD9YYB8,LEVA FISSA,Societe Generale,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 DE000FD9YYC6,LEVA FISSA,Societe Generale,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 DE000FD9YYD4,LEVA FISSA,Societe Generale,Singolo Sottostante,Singolo,12/02/2026,SeDeX
-DE000FD9YX69,LEVA FISSA,Societe Generale,Singolo Sottostante,Singolo,12/02/2026,SeDeX
-DE000FD9YX77,LEVA FISSA,Societe Generale,Singolo Sottostante,Singolo,12/02/2026,SeDeX
-DE000FD9YX85,LEVA FISSA,Societe Generale,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 DE000FD94D04,TURBO,Societe Generale,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 DE000FD94D12,TURBO,Societe Generale,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 DE000FD94D20,TURBO,Societe Generale,Singolo Sottostante,Singolo,12/02/2026,SeDeX
@@ -75,21 +75,18 @@ DE000FD94EX5,TURBO,Societe Generale,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 DE000FD94EY3,TURBO,Societe Generale,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 DE000FD94EZ0,TURBO,Societe Generale,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 DE000FD94F02,TURBO,Societe Generale,Singolo Sottostante,Singolo,12/02/2026,SeDeX
-DE000FD94F10,TURBO,Societe Generale,Singolo Sottostante,Singolo,12/02/2026,SeDeX
-DE000FD94F28,TURBO,Societe Generale,Singolo Sottostante,Singolo,12/02/2026,SeDeX
-DE000FD94F36,TURBO,Societe Generale,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 DE000FD94F44,TURBO,Societe Generale,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 DE000FD94F51,TURBO,Societe Generale,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 DE000FD94F69,TURBO,Societe Generale,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 DE000FD94F77,TURBO,Societe Generale,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 DE000FD94F85,TURBO,Societe Generale,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 DE000FD94FA0,TURBO,Societe Generale,Singolo Sottostante,Singolo,12/02/2026,SeDeX
+DE000FD94F10,TURBO,Societe Generale,Singolo Sottostante,Singolo,12/02/2026,SeDeX
+DE000FD94F28,TURBO,Societe Generale,Singolo Sottostante,Singolo,12/02/2026,SeDeX
+DE000FD94F36,TURBO,Societe Generale,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 DE000FD94FB8,TURBO,Societe Generale,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 DE000FD94FC6,TURBO,Societe Generale,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 DE000FD94FD4,TURBO,Societe Generale,Singolo Sottostante,Singolo,12/02/2026,SeDeX
-DE000FD94FE2,TURBO,Societe Generale,Singolo Sottostante,Singolo,12/02/2026,SeDeX
-DE000FD94FF9,TURBO,Societe Generale,Singolo Sottostante,Singolo,12/02/2026,SeDeX
-DE000FD94FG7,TURBO,Societe Generale,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 DE000FD94FH5,TURBO,Societe Generale,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 DE000FD94FJ1,TURBO,Societe Generale,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 DE000FD94FK9,TURBO,Societe Generale,Singolo Sottostante,Singolo,12/02/2026,SeDeX
@@ -99,6 +96,9 @@ DE000FD94FN3,TURBO,Societe Generale,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 DE000FD94FP8,TURBO,Societe Generale,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 DE000FD94FQ6,TURBO,Societe Generale,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 DE000FD94FR4,TURBO,Societe Generale,Singolo Sottostante,Singolo,12/02/2026,SeDeX
+DE000FD94FE2,TURBO,Societe Generale,Singolo Sottostante,Singolo,12/02/2026,SeDeX
+DE000FD94FF9,TURBO,Societe Generale,Singolo Sottostante,Singolo,12/02/2026,SeDeX
+DE000FD94FG7,TURBO,Societe Generale,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 DE000FD94FS2,TURBO,Societe Generale,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 DE000FD94FT0,TURBO,Societe Generale,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 DE000FD94FU8,TURBO,Societe Generale,Singolo Sottostante,Singolo,12/02/2026,SeDeX
@@ -107,6 +107,7 @@ DE000FD94FW4,TURBO,Societe Generale,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 DE000FD94FX2,TURBO,Societe Generale,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 DE000FD94FY0,TURBO,Societe Generale,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 DE000FD94FZ7,TURBO,Societe Generale,Singolo Sottostante,Singolo,12/02/2026,SeDeX
+NLBNPIT36K26,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 NLBNPIT36K34,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 NLBNPIT36K42,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 NLBNPIT36K59,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,12/02/2026,SeDeX
@@ -116,25 +117,24 @@ NLBNPIT36K83,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 NLBNPIT36K91,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 NLBNPIT36KA6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 NLBNPIT36KB4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,12/02/2026,SeDeX
-NLBNPIT36LZ1,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,12/02/2026,SeDeX
-NLBNPIT36M16,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,12/02/2026,SeDeX
-NLBNPIT36M32,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 NLBNPIT36LT4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 NLBNPIT36LV0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 NLBNPIT36LY4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,12/02/2026,SeDeX
-NLBNPIT36K26,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,12/02/2026,SeDeX
+NLBNPIT36LZ1,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,12/02/2026,SeDeX
+NLBNPIT36M16,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,12/02/2026,SeDeX
+NLBNPIT36M32,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 NLBNPIT36M40,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 NLBNPIT36M57,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 NLBNPIT36M65,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 NLBNPIT36M73,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 NLBNPIT36M81,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 NLBNPIT36M99,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,12/02/2026,SeDeX
-NLBNPIT36MH7,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,12/02/2026,SeDeX
-NLBNPIT36MJ3,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,12/02/2026,SeDeX
-NLBNPIT36MK1,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 NLBNPIT36MD6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 NLBNPIT36ME4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 NLBNPIT36MF1,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,12/02/2026,SeDeX
+NLBNPIT36MH7,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,12/02/2026,SeDeX
+NLBNPIT36MJ3,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,12/02/2026,SeDeX
+NLBNPIT36MK1,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 NLBNPIT36ML9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 NLBNPIT36MN5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 NLBNPIT36MP0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,12/02/2026,SeDeX
@@ -177,15 +177,15 @@ DE000UN4HXR1,TURBO,Unicredit,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 DE000UN4HXS9,TURBO,Unicredit,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 DE000UN4HXT7,TURBO,Unicredit,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 DE000UN4HXU5,TURBO,Unicredit,Singolo Sottostante,Singolo,12/02/2026,SeDeX
+DE000UN4HXV3,TURBO,Unicredit,Singolo Sottostante,Singolo,12/02/2026,SeDeX
+DE000UN4HXW1,TURBO,Unicredit,Singolo Sottostante,Singolo,12/02/2026,SeDeX
+DE000UN4HXX9,TURBO,Unicredit,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 DE000UN4HXY7,TURBO,Unicredit,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 DE000UN4HXZ4,TURBO,Unicredit,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 DE000UN4HY05,TURBO,Unicredit,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 DE000UN4HY13,TURBO,Unicredit,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 DE000UN4HY21,TURBO,Unicredit,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 DE000UN4HY39,TURBO,Unicredit,Singolo Sottostante,Singolo,12/02/2026,SeDeX
-DE000UN4HXV3,TURBO,Unicredit,Singolo Sottostante,Singolo,12/02/2026,SeDeX
-DE000UN4HXW1,TURBO,Unicredit,Singolo Sottostante,Singolo,12/02/2026,SeDeX
-DE000UN4HXX9,TURBO,Unicredit,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 DE000UN4HY54,TURBO,Unicredit,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 DE000UN4HY62,TURBO,Unicredit,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 DE000UN4HY88,TURBO,Unicredit,Singolo Sottostante,Singolo,12/02/2026,SeDeX
@@ -222,92 +222,10 @@ DE000VJ5RWH5,TURBO,Vontobel,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 DE000VJ5RWJ1,TURBO,Vontobel,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 DE000VJ5RWT0,TURBO,Vontobel,Singolo Sottostante,Singolo,12/02/2026,SeDeX
 DE000VJ5RZG0,TURBO,Vontobel,Singolo Sottostante,Singolo,12/02/2026,SeDeX
-DE000VJ5L001,TURBO,Vontobel,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-DE000VJ5L027,TURBO,Vontobel,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-DE000VJ5L043,TURBO,Vontobel,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-DE000VJ5L050,TURBO,Vontobel,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-DE000VJ5L076,TURBO,Vontobel,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-DE000VJ5L092,TURBO,Vontobel,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-DE000VJ5L0Y3,TURBO,Vontobel,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-DE000VJ5L0Z0,TURBO,Vontobel,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-DE000VJ5L100,TURBO,Vontobel,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-DE000VJ5L118,TURBO,Vontobel,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-DE000VJ5L142,TURBO,Vontobel,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-DE000VJ5L1B9,TURBO,Vontobel,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-DE000VJ5L1C7,TURBO,Vontobel,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-DE000VJ5L1F0,TURBO,Vontobel,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-DE000VJ5L1G8,TURBO,Vontobel,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-DE000VJ5L1L8,TURBO,Vontobel,Singolo Sottostante,Singolo,11/02/2026,SeDeX
 DE000VJ5L1S3,TURBO,Vontobel,Singolo Sottostante,Singolo,11/02/2026,SeDeX
 DE000VJ5L1Z8,TURBO,Vontobel,Singolo Sottostante,Singolo,11/02/2026,SeDeX
 DE000UN4GSN2,TURBO,Unicredit,Singolo Sottostante,Singolo,11/02/2026,SeDeX
 DE000UN4GSP7,TURBO,Unicredit,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36IX2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36J03,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36IN3,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36IS2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36IU8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36FY6,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36FZ3,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36G06,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36G14,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36G22,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36G30,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36G48,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36G55,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36G63,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36G71,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36G89,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36G97,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36GA4,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36GB2,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36GC0,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36GE6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36GG1,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36GP2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36GQ0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36GR8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36GS6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36GT4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36GU2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36HO3,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36HQ8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36HR6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36HS4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36HT2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36HU0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36HV8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36HW6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36HX4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36HZ9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36I04,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36I12,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36I20,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36I38,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36I46,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36I79,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36FV2,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36FW0,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36FX8,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36IF9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36IH5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36II3,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36IC6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36ID4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36IE2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36IJ1,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36IK9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36IM5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36F15,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36F23,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36F31,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36F49,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36F56,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36F64,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36F72,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36F80,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36F98,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-NLBNPIT36FA6,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
 NLBNPIT36FB4,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
 NLBNPIT36FC2,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
 NLBNPIT36FD0,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
@@ -326,11 +244,86 @@ NLBNPIT36FR0,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
 NLBNPIT36FS8,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
 NLBNPIT36FT6,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
 NLBNPIT36FU4,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36FV2,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36FW0,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36FX8,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36G14,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36G22,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36G30,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36G48,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36G55,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36G63,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36FY6,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36FZ3,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36G06,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36G71,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36G89,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36G97,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36GE6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36GG1,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36GP2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36GQ0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36GR8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36GS6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36F15,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36F23,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36F31,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36F49,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36F56,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36F64,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36F72,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36F80,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36F98,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36FA6,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36GA4,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36GB2,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36GC0,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36GT4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36GU2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36HO3,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36HQ8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36HR6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36HS4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36HT2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36HU0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36HV8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36HW6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36HX4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36HZ9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36I04,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36I12,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36I20,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36I38,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36I46,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36I79,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36IC6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36ID4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36IE2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36IF9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36IH5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36II3,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36IJ1,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36IK9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36IM5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36IN3,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36IS2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36IU8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36IX2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+NLBNPIT36J03,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,11/02/2026,SeDeX
 DE000FD91Z84,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
 DE000FD91Z92,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+DE000FD91Z27,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+DE000FD91Z35,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+DE000FD91Z43,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
 DE000FD91Z50,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
 DE000FD91Z68,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
 DE000FD91Z76,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+DE000FD912E9,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+DE000FD91Z01,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+DE000FD91Z19,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+DE000FD911S1,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+DE000FD911T9,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+DE000FD911U7,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
 DE000FD911V5,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
 DE000FD911W3,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
 DE000FD911X1,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
@@ -340,29 +333,6 @@ DE000FD912A7,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
 DE000FD912B5,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
 DE000FD912C3,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
 DE000FD912D1,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-DE000FD912E9,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-DE000FD91Z01,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-DE000FD91Z19,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-DE000FD91Z27,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-DE000FD91Z35,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-DE000FD91Z43,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-DE000FD911D3,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-DE000FD911E1,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-DE000FD911F8,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-DE000FD911G6,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-DE000FD911H4,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-DE000FD911K8,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-DE000FD911L6,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-DE000FD911M4,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-DE000FD911N2,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-DE000FD911P7,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-DE000FD911Q5,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-DE000FD911R3,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-DE000FD911S1,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-DE000FD911T9,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-DE000FD911U7,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-DE000FD910S3,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
-DE000FD910T1,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
 DE000FD910U9,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
 DE000FD910V7,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
 DE000FD910W5,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
@@ -381,6 +351,20 @@ DE000FD91199,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
 DE000FD911A9,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
 DE000FD911B7,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
 DE000FD911C5,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+DE000FD911D3,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+DE000FD911E1,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+DE000FD911F8,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+DE000FD911G6,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+DE000FD911H4,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+DE000FD911K8,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+DE000FD911L6,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+DE000FD911M4,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+DE000FD911N2,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+DE000FD911P7,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+DE000FD911Q5,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+DE000FD911R3,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+DE000FD910S3,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+DE000FD910T1,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
 DE000FD910Q7,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
 DE000FD910R5,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
 DE000FD91009,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
@@ -406,6 +390,86 @@ DE000FD910L8,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
 DE000FD910M6,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
 DE000FD910N4,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
 DE000FD910P9,TURBO,Societe Generale,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+DE000VJ5L001,TURBO,Vontobel,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+DE000VJ5L027,TURBO,Vontobel,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+DE000VJ5L043,TURBO,Vontobel,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+DE000VJ5L050,TURBO,Vontobel,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+DE000VJ5L076,TURBO,Vontobel,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+DE000VJ5L092,TURBO,Vontobel,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+DE000VJ5L0Y3,TURBO,Vontobel,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+DE000VJ5L0Z0,TURBO,Vontobel,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+DE000VJ5L100,TURBO,Vontobel,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+DE000VJ5L118,TURBO,Vontobel,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+DE000VJ5L142,TURBO,Vontobel,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+DE000VJ5L1B9,TURBO,Vontobel,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+DE000VJ5L1C7,TURBO,Vontobel,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+DE000VJ5L1F0,TURBO,Vontobel,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+DE000VJ5L1G8,TURBO,Vontobel,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+DE000VJ5L1L8,TURBO,Vontobel,Singolo Sottostante,Singolo,11/02/2026,SeDeX
+DE000VJ5F300,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F326,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F342,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F375,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F391,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F847,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F8F3,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F8M9,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F8N7,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F8Q0,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F8R8,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5FUX1,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5GCW9,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F5K9,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F5M5,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F5N3,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F6V4,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F6W2,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F6Y8,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F6Z5,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F714,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F748,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F789,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F7A6,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F7B4,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F7C2,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F7D0,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F7G3,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F7T6,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F7V2,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F7W0,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F7X8,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F7Z3,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F839,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F417,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F433,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F441,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F5Q6,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F5S2,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F5T0,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F5U8,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F5W4,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F5X2,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F5Y0,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F607,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F615,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F623,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F649,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F656,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F458,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F4A3,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F4E5,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F4V9,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F4W7,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F4Y3,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F4Z0,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F508,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F516,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F532,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F573,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F581,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F5F9,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F5H5,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F5J1,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
 DE000FD90B59,LEVA FISSA,Societe Generale,Singolo Sottostante,Singolo,10/02/2026,SeDeX
 DE000FD90B67,LEVA FISSA,Societe Generale,Singolo Sottostante,Singolo,10/02/2026,SeDeX
 DE000FD90B75,LEVA FISSA,Societe Generale,Singolo Sottostante,Singolo,10/02/2026,SeDeX
@@ -416,42 +480,14 @@ DE000FD9YX28,TURBO,Societe Generale,Singolo Sottostante,Singolo,10/02/2026,SeDeX
 DE000FD9YX36,TURBO,Societe Generale,Singolo Sottostante,Singolo,10/02/2026,SeDeX
 DE000FD9YX44,TURBO,Societe Generale,Singolo Sottostante,Singolo,10/02/2026,SeDeX
 DE000FD9YX51,TURBO,Societe Generale,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-NLBNPIT36983,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-NLBNPIT369A4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-NLBNPIT369B2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-NLBNPIT36959,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-NLBNPIT36967,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-NLBNPIT36975,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-NLBNPIT369C0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-NLBNPIT369E6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-NLBNPIT369F3,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-NLBNPIT369G1,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-NLBNPIT369I7,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-NLBNPIT369J5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-NLBNPIT369K3,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-NLBNPIT369L1,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-NLBNPIT369M9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-NLBNPIT36C91,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-NLBNPIT36CA3,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-NLBNPIT36CB1,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-NLBNPIT36CG0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-NLBNPIT36CI6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-NLBNPIT36CL0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-NLBNPIT36BU3,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-NLBNPIT36BV1,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-NLBNPIT36BW9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-NLBNPIT36BX7,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-NLBNPIT36BY5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-NLBNPIT36BZ2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-NLBNPIT36C00,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-NLBNPIT36C26,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-NLBNPIT36C34,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-NLBNPIT36C42,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-NLBNPIT36C59,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-NLBNPIT36C83,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-NLBNPIT36CQ9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-NLBNPIT36CR7,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-NLBNPIT36CS5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+NLBNPIT36DO2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+NLBNPIT36DP9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+NLBNPIT36DQ7,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+NLBNPIT36DR5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+NLBNPIT36DS3,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+NLBNPIT36DU9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+NLBNPIT36DV7,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+NLBNPIT36DW5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
 NLBNPIT36CT3,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
 NLBNPIT36CU1,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
 NLBNPIT36CX5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
@@ -470,29 +506,6 @@ NLBNPIT36DD5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
 NLBNPIT36DE3,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
 NLBNPIT36DM6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
 NLBNPIT36DN4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-NLBNPIT36DO2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-NLBNPIT36DP9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-NLBNPIT36DQ7,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-NLBNPIT36DR5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-NLBNPIT36DS3,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-NLBNPIT36DU9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-NLBNPIT36DV7,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-NLBNPIT36DW5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-NLBNPIT369N7,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-NLBNPIT369O5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-NLBNPIT369P2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-NLBNPIT369Q0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-NLBNPIT369R8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-NLBNPIT369S6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-NLBNPIT369T4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-NLBNPIT369U2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-NLBNPIT369V0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-NLBNPIT369W8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-NLBNPIT369X6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-NLBNPIT369Y4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-NLBNPIT36A02,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-NLBNPIT36A10,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-NLBNPIT36A28,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
 NLBNPIT36A36,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
 NLBNPIT36A44,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
 NLBNPIT36A51,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
@@ -511,35 +524,61 @@ NLBNPIT36BP3,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
 NLBNPIT36BR9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
 NLBNPIT36BS7,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
 NLBNPIT36BT5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+NLBNPIT36BU3,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+NLBNPIT36BV1,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+NLBNPIT36BW9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+NLBNPIT36BX7,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+NLBNPIT36BY5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+NLBNPIT36BZ2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+NLBNPIT36C00,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+NLBNPIT36C26,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+NLBNPIT36C34,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+NLBNPIT36C42,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+NLBNPIT36C59,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+NLBNPIT36C83,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+NLBNPIT36C91,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+NLBNPIT36CA3,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+NLBNPIT36CB1,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+NLBNPIT36CG0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+NLBNPIT36CI6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+NLBNPIT36CL0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
 NLBNPIT36CM8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
 NLBNPIT36CO4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
 NLBNPIT36CP1,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000UN4FAC5,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000UN4FAF8,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000UN4FAL6,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000UN4FAM4,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000UN4FAN2,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000UN4FAG6,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000UN4FAH4,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000UN4FAJ0,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000UN4FAP7,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000UN4FAQ5,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000UN4FAR3,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000UN4FAS1,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000UN4FAT9,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000UN4FAU7,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000UN4FAV5,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000UN4FAW3,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000UN4FAX1,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000UN4FAY9,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000UN4FAZ6,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000UN4FB20,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000UN4FB79,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000UN4FB87,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000UN4FB95,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000UN4FB38,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000UN4FB46,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000UN4FB61,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+NLBNPIT36CQ9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+NLBNPIT36CR7,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+NLBNPIT36CS5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+NLBNPIT36959,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+NLBNPIT36967,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+NLBNPIT36975,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+NLBNPIT36983,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+NLBNPIT369A4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+NLBNPIT369B2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+NLBNPIT369C0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+NLBNPIT369E6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+NLBNPIT369F3,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+NLBNPIT369G1,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+NLBNPIT369I7,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+NLBNPIT369J5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+NLBNPIT369K3,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+NLBNPIT369L1,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+NLBNPIT369M9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+NLBNPIT369N7,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+NLBNPIT369O5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+NLBNPIT369P2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+NLBNPIT369Q0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+NLBNPIT369R8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+NLBNPIT369S6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+NLBNPIT369T4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+NLBNPIT369U2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+NLBNPIT369V0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+NLBNPIT369W8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+NLBNPIT369X6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+NLBNPIT369Y4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+NLBNPIT36A02,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+NLBNPIT36A10,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+NLBNPIT36A28,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000UN4FBU5,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
 DE000UN4FBV3,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
 DE000UN4FBW1,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
 DE000UN4FBA7,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
@@ -554,168 +593,49 @@ DE000UN4FBP5,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
 DE000UN4FBQ3,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
 DE000UN4FBS9,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
 DE000UN4FBT7,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000UN4FBU5,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5GCW9,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F8F3,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F8M9,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F8N7,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F8Q0,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F8R8,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5FUX1,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000UN4FAC5,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000UN4FAF8,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000UN4FAG6,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000UN4FAH4,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000UN4FAJ0,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000UN4FAL6,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000UN4FAM4,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000UN4FAN2,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000UN4FAP7,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000UN4FAQ5,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000UN4FAR3,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000UN4FAS1,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000UN4FAT9,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000UN4FAX1,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000UN4FAY9,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000UN4FAZ6,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000UN4FB20,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000UN4FB38,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000UN4FB46,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000UN4FB61,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000UN4FB79,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000UN4FB87,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000UN4FAU7,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000UN4FAV5,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000UN4FAW3,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000UN4FB95,TURBO,Unicredit,Singolo Sottostante,Singolo,10/02/2026,SeDeX
+DE000VJ5F664,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
 DE000VJ5F6S0,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
 DE000VJ5F6U6,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F6V4,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F6W2,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F6Y8,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F6Z5,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F714,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F748,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F789,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F7A6,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F7B4,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F7C2,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F7V2,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F7W0,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F7X8,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F7D0,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F7G3,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F7T6,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F7Z3,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F839,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F847,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F300,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F326,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F342,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F375,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F391,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F417,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F4A3,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F4E5,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F4V9,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F4W7,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F4Y3,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F4Z0,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F508,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F516,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F532,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F433,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F441,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F458,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F573,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F581,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F5F9,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F5H5,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F5J1,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F5K9,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F5M5,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F5N3,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F5Q6,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F5S2,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F5T0,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F5U8,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F5W4,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F5X2,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F5Y0,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F607,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F615,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F623,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F649,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F656,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
-DE000VJ5F664,TURBO,Vontobel,Singolo Sottostante,Singolo,10/02/2026,SeDeX
 DE000VJ498J2,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
 DE000VJ498K0,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AHK6,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AHM2,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AHQ3,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AHD1,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AHE9,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AHF6,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AJ06,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AJ14,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AJ22,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AJ89,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AJJ4,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AJL0,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AJ30,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AJ48,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AJ55,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AJM8,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AJP1,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AJS5,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AJT3,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AJX5,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AJY3,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AJZ0,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AKE3,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AKG8,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AKJ2,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AKK0,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AKL8,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AKR5,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AKS3,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5ALA9,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AGN2,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AGP7,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AGQ5,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AGR3,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AGS1,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AGT9,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AGK8,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AGL6,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AGM4,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AGU7,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AGV5,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AGX1,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AGY9,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AH08,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AH40,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AH57,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AH73,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AH99,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AGB7,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AGC5,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AGD3,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AGE1,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AGF8,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AGH4,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AG41,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AG58,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AG66,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AG74,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AG82,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AG90,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AFF0,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AFG8,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AFH6,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AFT1,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AFW5,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AFY1,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AG09,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AG17,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AG33,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AFN4,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AFQ7,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AFS3,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AE43,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AE50,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AE76,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AE84,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AE92,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AFB9,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AFD5,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AHA7,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AHB5,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000VJ5AHC3,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000UN4CMR5,TURBO,Unicredit,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000UN4CMU9,TURBO,Unicredit,Singolo Sottostante,Singolo,09/02/2026,SeDeX
 DE000UN4CMV7,TURBO,Unicredit,Singolo Sottostante,Singolo,09/02/2026,SeDeX
 DE000UN4CMW5,TURBO,Unicredit,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000UN4CMH6,TURBO,Unicredit,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000UN4CMJ2,TURBO,Unicredit,Singolo Sottostante,Singolo,09/02/2026,SeDeX
 DE000UN4CMM6,TURBO,Unicredit,Singolo Sottostante,Singolo,09/02/2026,SeDeX
 DE000UN4CMN4,TURBO,Unicredit,Singolo Sottostante,Singolo,09/02/2026,SeDeX
 DE000UN4CMP9,TURBO,Unicredit,Singolo Sottostante,Singolo,09/02/2026,SeDeX
 DE000UN4CMQ7,TURBO,Unicredit,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000UN4CMR5,TURBO,Unicredit,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000UN4CMU9,TURBO,Unicredit,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000UN4C768,TURBO,Unicredit,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000UN4C776,TURBO,Unicredit,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000UN4C792,TURBO,Unicredit,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000UN4C7A4,TURBO,Unicredit,Singolo Sottostante,Singolo,09/02/2026,SeDeX
 DE000UN4C7B2,TURBO,Unicredit,Singolo Sottostante,Singolo,09/02/2026,SeDeX
 DE000UN4C7C0,TURBO,Unicredit,Singolo Sottostante,Singolo,09/02/2026,SeDeX
 DE000UN4CM61,TURBO,Unicredit,Singolo Sottostante,Singolo,09/02/2026,SeDeX
@@ -725,18 +645,8 @@ DE000UN4CMB9,TURBO,Unicredit,Singolo Sottostante,Singolo,09/02/2026,SeDeX
 DE000UN4CMC7,TURBO,Unicredit,Singolo Sottostante,Singolo,09/02/2026,SeDeX
 DE000UN4CMF0,TURBO,Unicredit,Singolo Sottostante,Singolo,09/02/2026,SeDeX
 DE000UN4CMG8,TURBO,Unicredit,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000UN4BVK3,TURBO,Unicredit,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000UN4C6T6,TURBO,Unicredit,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000UN4C6U4,TURBO,Unicredit,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000UN4C6V2,TURBO,Unicredit,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000UN4C6W0,TURBO,Unicredit,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000UN4C6Z3,TURBO,Unicredit,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000UN4C735,TURBO,Unicredit,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000UN4C750,TURBO,Unicredit,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000UN4C768,TURBO,Unicredit,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000UN4C776,TURBO,Unicredit,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000UN4C792,TURBO,Unicredit,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-DE000UN4C7A4,TURBO,Unicredit,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000UN4CMH6,TURBO,Unicredit,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000UN4CMJ2,TURBO,Unicredit,Singolo Sottostante,Singolo,09/02/2026,SeDeX
 DE000UN4BBX8,TURBO,Unicredit,Singolo Sottostante,Singolo,09/02/2026,SeDeX
 DE000UN4BKV3,TURBO,Unicredit,Singolo Sottostante,Singolo,09/02/2026,SeDeX
 DE000UN4BKY7,TURBO,Unicredit,Singolo Sottostante,Singolo,09/02/2026,SeDeX
@@ -748,15 +658,29 @@ DE000UN4BVE6,TURBO,Unicredit,Singolo Sottostante,Singolo,09/02/2026,SeDeX
 DE000UN4BVG1,TURBO,Unicredit,Singolo Sottostante,Singolo,09/02/2026,SeDeX
 DE000UN4BVH9,TURBO,Unicredit,Singolo Sottostante,Singolo,09/02/2026,SeDeX
 DE000UN4BVJ5,TURBO,Unicredit,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-NLBNPIT368Y6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-NLBNPIT36900,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-NLBNPIT36934,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000UN4BVK3,TURBO,Unicredit,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000UN4C6T6,TURBO,Unicredit,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000UN4C6U4,TURBO,Unicredit,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000UN4C6V2,TURBO,Unicredit,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000UN4C6W0,TURBO,Unicredit,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000UN4C6Z3,TURBO,Unicredit,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000UN4C735,TURBO,Unicredit,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000UN4C750,TURBO,Unicredit,Singolo Sottostante,Singolo,09/02/2026,SeDeX
 NLBNPIT368U4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,09/02/2026,SeDeX
 NLBNPIT368V2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,09/02/2026,SeDeX
 NLBNPIT368W0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-NLBNPIT368Q2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-NLBNPIT368S8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-NLBNPIT368T6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+NLBNPIT368Y6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+NLBNPIT36900,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+NLBNPIT36934,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+NLBNPIT367L5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+NLBNPIT367M3,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+NLBNPIT367N1,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+NLBNPIT367P6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+NLBNPIT367Q4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+NLBNPIT367S0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+NLBNPIT367T8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+NLBNPIT367U6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+NLBNPIT367W2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,09/02/2026,SeDeX
 NLBNPIT367X0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,09/02/2026,SeDeX
 NLBNPIT367Z5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,09/02/2026,SeDeX
 NLBNPIT36801,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,09/02/2026,SeDeX
@@ -775,6 +699,9 @@ NLBNPIT368J7,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,09/02/2026,SeDeX
 NLBNPIT368K5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,09/02/2026,SeDeX
 NLBNPIT368M1,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,09/02/2026,SeDeX
 NLBNPIT368P4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+NLBNPIT368Q2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+NLBNPIT368S8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+NLBNPIT368T6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,09/02/2026,SeDeX
 NLBNPIT365D6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,09/02/2026,SeDeX
 NLBNPIT365E4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,09/02/2026,SeDeX
 NLBNPIT365T2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,09/02/2026,SeDeX
@@ -799,35 +726,135 @@ NLBNPIT36710,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,09/02/2026,SeDeX
 NLBNPIT36728,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,09/02/2026,SeDeX
 NLBNPIT36736,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,09/02/2026,SeDeX
 NLBNPIT36769,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-NLBNPIT367C4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-NLBNPIT367D2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-NLBNPIT367E0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,09/02/2026,SeDeX
 NLBNPIT36785,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,09/02/2026,SeDeX
 NLBNPIT36793,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,09/02/2026,SeDeX
 NLBNPIT367B6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+NLBNPIT367C4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+NLBNPIT367D2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+NLBNPIT367E0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,09/02/2026,SeDeX
 NLBNPIT367G5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,09/02/2026,SeDeX
 NLBNPIT367J9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,09/02/2026,SeDeX
 NLBNPIT367K7,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-NLBNPIT367L5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-NLBNPIT367M3,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-NLBNPIT367N1,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-NLBNPIT367P6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-NLBNPIT367Q4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-NLBNPIT367S0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-NLBNPIT367T8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-NLBNPIT367U6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,09/02/2026,SeDeX
-NLBNPIT367W2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AJL0,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AJM8,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AJP1,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AJS5,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AJT3,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AJX5,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AJY3,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AJZ0,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AKE3,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AKG8,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AKJ2,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AKK0,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AKL8,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AKR5,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AKS3,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AH99,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AHA7,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AHB5,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AHC3,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AHD1,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AHE9,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5ALA9,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AGD3,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AGE1,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AGF8,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AGH4,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AGK8,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AGL6,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AGM4,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AGN2,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AGP7,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AHF6,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AHK6,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AHM2,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AHQ3,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AJ06,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AJ14,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AJ22,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AJ30,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AJ48,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AJ55,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AJ89,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AJJ4,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AG90,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AGB7,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AGC5,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AGQ5,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AGR3,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AGS1,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AGT9,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AGU7,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AGV5,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AGX1,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AGY9,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AH08,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AH40,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AH57,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AH73,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AG66,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AG74,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AG82,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AFD5,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AFF0,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AFG8,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AE43,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AE50,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AE76,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AE84,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AE92,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AFB9,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AFS3,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AFT1,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AFW5,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AFY1,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AG09,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AG17,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AG33,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AG41,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AG58,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AFH6,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AFN4,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
+DE000VJ5AFQ7,TURBO,Vontobel,Singolo Sottostante,Singolo,09/02/2026,SeDeX
 NLBNPIT362D3,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,06/02/2026,SeDeX
 DE000UN4A4C9,TURBO,Unicredit,Singolo Sottostante,Singolo,06/02/2026,SeDeX
 DE000UN4A4D7,TURBO,Unicredit,Singolo Sottostante,Singolo,06/02/2026,SeDeX
 DE000UN4A4E5,TURBO,Unicredit,Singolo Sottostante,Singolo,06/02/2026,SeDeX
 DE000UN4A4H8,TURBO,Unicredit,Singolo Sottostante,Singolo,06/02/2026,SeDeX
+DE000UN48536,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+DE000UN47XN2,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+DE000UN47XQ5,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+DE000UN47XR3,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+DE000UN484Q2,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+DE000UN484T6,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+DE000UN484U4,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+DE000UN484V2,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
 DE000UN484W0,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
 DE000UN484X8,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
 DE000UN48502,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
 DE000UN48510,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
 DE000UN48528,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-DE000UN48536,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+DE000UN47X72,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+DE000UN47X98,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+DE000UN47XC5,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+DE000UN47XD3,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+DE000UN47XF8,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+DE000UN47XH4,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+DE000UN47XJ0,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+DE000UN47XK8,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+DE000UN47XM4,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+DE000UN46LB4,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+DE000UN46LC2,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+DE000UN46LD0,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+DE000UN46LT6,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+DE000UN46LU4,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+DE000UN46LV2,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+DE000UN46QE7,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+DE000UN46QF4,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+DE000UN46QG2,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+DE000UN46QH0,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+DE000UN46SD5,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
 DE000UN46SE3,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
 DE000UN46SF0,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
 DE000UN46SH6,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
@@ -848,68 +875,53 @@ DE000UN47X15,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
 DE000UN47X23,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
 DE000UN47X31,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
 DE000UN47X56,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-DE000UN47X72,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-DE000UN47X98,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-DE000UN47XC5,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-DE000UN47XD3,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-DE000UN47XF8,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-DE000UN47XH4,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-DE000UN47XJ0,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-DE000UN47XK8,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-DE000UN47XM4,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-DE000UN47XN2,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-DE000UN47XQ5,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-DE000UN47XR3,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-DE000UN484Q2,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-DE000UN484T6,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-DE000UN484U4,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-DE000UN484V2,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-DE000UN46LB4,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-DE000UN46LC2,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-DE000UN46LD0,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-DE000UN46LT6,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-DE000UN46LU4,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-DE000UN46LV2,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-DE000UN46QE7,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-DE000UN46QF4,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-DE000UN46QG2,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-DE000UN46QH0,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-DE000UN46SD5,TURBO,Unicredit,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+NLBNPIT35TQ5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+NLBNPIT35TR3,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+NLBNPIT35TV5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+NLBNPIT35UV3,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+NLBNPIT35UX9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+NLBNPIT35UY7,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+NLBNPIT35V16,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+NLBNPIT35V32,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+NLBNPIT35UK6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+NLBNPIT35UN0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+NLBNPIT35UO8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+NLBNPIT35TN2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+NLBNPIT35TO0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+NLBNPIT35TP7,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+NLBNPIT35TL6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+DE000VJ4ZHT7,TURBO,Vontobel,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+DE000VJ4ZHV3,TURBO,Vontobel,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+DE000VJ4ZHX9,TURBO,Vontobel,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+DE000VJ4ZJC9,TURBO,Vontobel,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+DE000VJ4ZJD7,TURBO,Vontobel,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+DE000VJ4ZJE5,TURBO,Vontobel,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+DE000VJ4ZJF2,TURBO,Vontobel,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+DE000VJ4ZJG0,TURBO,Vontobel,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+DE000VJ4ZJK2,TURBO,Vontobel,Singolo Sottostante,Singolo,05/02/2026,SeDeX
 DE000VJ4ZF85,TURBO,Vontobel,Singolo Sottostante,Singolo,05/02/2026,SeDeX
 DE000VJ4ZH26,TURBO,Vontobel,Singolo Sottostante,Singolo,05/02/2026,SeDeX
 DE000VJ4ZH34,TURBO,Vontobel,Singolo Sottostante,Singolo,05/02/2026,SeDeX
 DE000VJ4ZH67,TURBO,Vontobel,Singolo Sottostante,Singolo,05/02/2026,SeDeX
 DE000VJ4ZH75,TURBO,Vontobel,Singolo Sottostante,Singolo,05/02/2026,SeDeX
 DE000VJ4ZH91,TURBO,Vontobel,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-DE000VJ4ZHT7,TURBO,Vontobel,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-DE000VJ4ZHV3,TURBO,Vontobel,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-DE000VJ4ZHX9,TURBO,Vontobel,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-DE000VJ4ZJC9,TURBO,Vontobel,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-NLBNPIT35W80,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-NLBNPIT35W98,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-NLBNPIT35WA3,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-NLBNPIT35WG0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-NLBNPIT35WH8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-NLBNPIT35WI6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-NLBNPIT35WJ4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-NLBNPIT35WK2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-NLBNPIT35WN6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-NLBNPIT35WO4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-NLBNPIT35TL6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-NLBNPIT35TN2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-NLBNPIT35TO0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-NLBNPIT35TP7,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-NLBNPIT35TQ5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-NLBNPIT35TR3,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-NLBNPIT35TV5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-NLBNPIT35UK6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-NLBNPIT35UN0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-NLBNPIT35UO8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-NLBNPIT35UV3,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-NLBNPIT35UX9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-NLBNPIT35UY7,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-NLBNPIT35V16,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-NLBNPIT35V32,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+DE000VJ4ZJL0,TURBO,Vontobel,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+DE000VJ4ZJM8,TURBO,Vontobel,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+DE000VJ4ZJN6,TURBO,Vontobel,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+DE000VJ4ZJQ9,TURBO,Vontobel,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+DE000VJ4ZJR7,TURBO,Vontobel,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+DE000VJ4ZJT3,TURBO,Vontobel,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+DE000VJ4ZK05,TURBO,Vontobel,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+DE000VJ4ZK13,TURBO,Vontobel,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+DE000VJ4ZK21,TURBO,Vontobel,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+DE000VJ4ZKG8,TURBO,Vontobel,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+DE000VJ4ZKH6,TURBO,Vontobel,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+DE000VJ4ZKP9,TURBO,Vontobel,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+DE000VJ4ZKX3,TURBO,Vontobel,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+DE000VJ4ZKZ8,TURBO,Vontobel,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+DE000VJ4ZLE1,TURBO,Vontobel,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+NLBNPIT35V40,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+NLBNPIT35V57,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
 NLBNPIT35V81,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
 NLBNPIT35VA5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
 NLBNPIT35VC1,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
@@ -919,8 +931,6 @@ NLBNPIT35VG2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
 NLBNPIT35VH0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
 NLBNPIT35VJ6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
 NLBNPIT35VL2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-NLBNPIT35V40,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-NLBNPIT35V57,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
 NLBNPIT35VM0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
 NLBNPIT35VO6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
 NLBNPIT35VP3,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
@@ -933,69 +943,16 @@ NLBNPIT35W31,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
 NLBNPIT35W56,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
 NLBNPIT35W64,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
 NLBNPIT35W72,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-DE000VJ4ZJR7,TURBO,Vontobel,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-DE000VJ4ZJT3,TURBO,Vontobel,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-DE000VJ4ZK05,TURBO,Vontobel,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-DE000VJ4ZK13,TURBO,Vontobel,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-DE000VJ4ZK21,TURBO,Vontobel,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-DE000VJ4ZKG8,TURBO,Vontobel,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-DE000VJ4ZKH6,TURBO,Vontobel,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-DE000VJ4ZKP9,TURBO,Vontobel,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-DE000VJ4ZKX3,TURBO,Vontobel,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-DE000VJ4ZKZ8,TURBO,Vontobel,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-DE000VJ4ZLE1,TURBO,Vontobel,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-DE000VJ4ZJM8,TURBO,Vontobel,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-DE000VJ4ZJN6,TURBO,Vontobel,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-DE000VJ4ZJQ9,TURBO,Vontobel,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-DE000VJ4ZJD7,TURBO,Vontobel,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-DE000VJ4ZJE5,TURBO,Vontobel,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-DE000VJ4ZJF2,TURBO,Vontobel,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-DE000VJ4ZJG0,TURBO,Vontobel,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-DE000VJ4ZJK2,TURBO,Vontobel,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-DE000VJ4ZJL0,TURBO,Vontobel,Singolo Sottostante,Singolo,05/02/2026,SeDeX
-NLBNPIT35RA3,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-NLBNPIT35RC9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-NLBNPIT35RE5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-NLBNPIT35RF2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-NLBNPIT35RG0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-NLBNPIT35RH8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-NLBNPIT35RI6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-NLBNPIT35RJ4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-NLBNPIT35RS5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-NLBNPIT35R79,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-NLBNPIT35R87,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-NLBNPIT35R95,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-NLBNPIT35QY5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-NLBNPIT35R12,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-NLBNPIT35R53,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-NLBNPIT35QR9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-NLBNPIT35QT5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-NLBNPIT35QU3,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-NLBNPIT35QV1,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-NLBNPIT35QW9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-NLBNPIT35QX7,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-NLBNPIT35QI8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-NLBNPIT35QJ6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-NLBNPIT35QN8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-NLBNPIT35QD9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-NLBNPIT35QE7,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-NLBNPIT35QF4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-NLBNPIT35Q70,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-NLBNPIT35Q88,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-NLBNPIT35QC1,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-NLBNPIT35OQ6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-NLBNPIT35OS2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-NLBNPIT35OT0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-NLBNPIT35OU8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-NLBNPIT35OY0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-NLBNPIT35OZ7,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-NLBNPIT35O98,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-NLBNPIT35OA0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-NLBNPIT35OG7,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-NLBNPIT35OH5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-NLBNPIT35OM5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-NLBNPIT35OO1,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-NLBNPIT35O80,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+NLBNPIT35W80,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+NLBNPIT35W98,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+NLBNPIT35WA3,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+NLBNPIT35WG0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+NLBNPIT35WH8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+NLBNPIT35WI6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+NLBNPIT35WJ4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+NLBNPIT35WK2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+NLBNPIT35WN6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
+NLBNPIT35WO4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,05/02/2026,SeDeX
 DE000FD9PPS8,LEVA FISSA,Societe Generale,Singolo Sottostante,Singolo,04/02/2026,SeDeX
 DE000FD9Q305,TURBO,Societe Generale,Singolo Sottostante,Singolo,04/02/2026,SeDeX
 DE000FD9Q313,TURBO,Societe Generale,Singolo Sottostante,Singolo,04/02/2026,SeDeX
@@ -1003,6 +960,17 @@ DE000FD9Q321,TURBO,Societe Generale,Singolo Sottostante,Singolo,04/02/2026,SeDeX
 DE000FD9Q339,TURBO,Societe Generale,Singolo Sottostante,Singolo,04/02/2026,SeDeX
 DE000FD9Q354,TURBO,Societe Generale,Singolo Sottostante,Singolo,04/02/2026,SeDeX
 DE000FD9Q362,TURBO,Societe Generale,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+DE000FD9Q4Q8,TURBO,Societe Generale,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+DE000FD9Q4R6,TURBO,Societe Generale,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+DE000FD9Q4S4,TURBO,Societe Generale,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+DE000FD9Q4T2,TURBO,Societe Generale,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+DE000FD9Q4U0,TURBO,Societe Generale,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+DE000FD9Q4J3,TURBO,Societe Generale,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+DE000FD9Q4K1,TURBO,Societe Generale,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+DE000FD9Q4L9,TURBO,Societe Generale,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+DE000FD9Q4M7,TURBO,Societe Generale,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+DE000FD9Q4N5,TURBO,Societe Generale,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+DE000FD9Q4P0,TURBO,Societe Generale,Singolo Sottostante,Singolo,04/02/2026,SeDeX
 DE000FD9Q370,TURBO,Societe Generale,Singolo Sottostante,Singolo,04/02/2026,SeDeX
 DE000FD9Q388,TURBO,Societe Generale,Singolo Sottostante,Singolo,04/02/2026,SeDeX
 DE000FD9Q396,TURBO,Societe Generale,Singolo Sottostante,Singolo,04/02/2026,SeDeX
@@ -1021,28 +989,27 @@ DE000FD9Q4B0,TURBO,Societe Generale,Singolo Sottostante,Singolo,04/02/2026,SeDeX
 DE000FD9Q4C8,TURBO,Societe Generale,Singolo Sottostante,Singolo,04/02/2026,SeDeX
 DE000FD9Q4D6,TURBO,Societe Generale,Singolo Sottostante,Singolo,04/02/2026,SeDeX
 DE000FD9Q4H7,TURBO,Societe Generale,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-DE000FD9Q4J3,TURBO,Societe Generale,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-DE000FD9Q4K1,TURBO,Societe Generale,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-DE000FD9Q4L9,TURBO,Societe Generale,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-DE000FD9Q4M7,TURBO,Societe Generale,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-DE000FD9Q4N5,TURBO,Societe Generale,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-DE000FD9Q4P0,TURBO,Societe Generale,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-DE000FD9Q4Q8,TURBO,Societe Generale,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-DE000FD9Q4R6,TURBO,Societe Generale,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-DE000FD9Q4S4,TURBO,Societe Generale,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-DE000FD9Q4T2,TURBO,Societe Generale,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-DE000FD9Q4U0,TURBO,Societe Generale,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-DE000VJ4T9T7,TURBO,Vontobel,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-DE000VJ4T9V3,TURBO,Vontobel,Singolo Sottostante,Singolo,04/02/2026,SeDeX
 DE000VJ4T9Z4,TURBO,Vontobel,Singolo Sottostante,Singolo,04/02/2026,SeDeX
 DE000VJ4TUN6,TURBO,Vontobel,Singolo Sottostante,Singolo,04/02/2026,SeDeX
 DE000VJ4UBP9,TURBO,Vontobel,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-DE000VJ4T8Y9,TURBO,Vontobel,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-DE000VJ4T932,TURBO,Vontobel,Singolo Sottostante,Singolo,04/02/2026,SeDeX
 DE000VJ4T957,TURBO,Vontobel,Singolo Sottostante,Singolo,04/02/2026,SeDeX
 DE000VJ4T9B5,TURBO,Vontobel,Singolo Sottostante,Singolo,04/02/2026,SeDeX
 DE000VJ4T9D1,TURBO,Vontobel,Singolo Sottostante,Singolo,04/02/2026,SeDeX
 DE000VJ4T9S9,TURBO,Vontobel,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+DE000VJ4T9T7,TURBO,Vontobel,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+DE000VJ4T9V3,TURBO,Vontobel,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+DE000VJ4T6N6,TURBO,Vontobel,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+DE000VJ4T825,TURBO,Vontobel,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+DE000VJ4T841,TURBO,Vontobel,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+DE000VJ4T874,TURBO,Vontobel,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+DE000VJ4T8T9,TURBO,Vontobel,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+DE000VJ4T8V5,TURBO,Vontobel,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+DE000VJ4T8W3,TURBO,Vontobel,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+DE000VJ4T8Y9,TURBO,Vontobel,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+DE000VJ4T932,TURBO,Vontobel,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+DE000VJ4T6E5,TURBO,Vontobel,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+DE000VJ4T6J4,TURBO,Vontobel,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+DE000VJ4T6L0,TURBO,Vontobel,Singolo Sottostante,Singolo,04/02/2026,SeDeX
 DE000VJ4T4S0,TURBO,Vontobel,Singolo Sottostante,Singolo,04/02/2026,SeDeX
 DE000VJ4T4U6,TURBO,Vontobel,Singolo Sottostante,Singolo,04/02/2026,SeDeX
 DE000VJ4T4W2,TURBO,Vontobel,Singolo Sottostante,Singolo,04/02/2026,SeDeX
@@ -1052,23 +1019,100 @@ DE000VJ4T569,TURBO,Vontobel,Singolo Sottostante,Singolo,04/02/2026,SeDeX
 DE000VJ4T593,TURBO,Vontobel,Singolo Sottostante,Singolo,04/02/2026,SeDeX
 DE000VJ4T6A3,TURBO,Vontobel,Singolo Sottostante,Singolo,04/02/2026,SeDeX
 DE000VJ4T6D7,TURBO,Vontobel,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-DE000VJ4T6E5,TURBO,Vontobel,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-DE000VJ4T6J4,TURBO,Vontobel,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-DE000VJ4T6L0,TURBO,Vontobel,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-DE000VJ4T6N6,TURBO,Vontobel,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-DE000VJ4T825,TURBO,Vontobel,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-DE000VJ4T841,TURBO,Vontobel,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-DE000VJ4T874,TURBO,Vontobel,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-DE000VJ4T8T9,TURBO,Vontobel,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-DE000VJ4T8V5,TURBO,Vontobel,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-DE000VJ4T8W3,TURBO,Vontobel,Singolo Sottostante,Singolo,04/02/2026,SeDeX
-DE000VJ4NTH3,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-DE000VJ4NTJ9,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+NLBNPIT35RG0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+NLBNPIT35RH8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+NLBNPIT35RI6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+NLBNPIT35RJ4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+NLBNPIT35RS5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+NLBNPIT35OY0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+NLBNPIT35OZ7,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+NLBNPIT35Q70,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+NLBNPIT35RC9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+NLBNPIT35RE5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+NLBNPIT35RF2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+NLBNPIT35R87,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+NLBNPIT35R95,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+NLBNPIT35RA3,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+NLBNPIT35QT5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+NLBNPIT35QU3,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+NLBNPIT35QV1,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+NLBNPIT35QW9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+NLBNPIT35QX7,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+NLBNPIT35QY5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+NLBNPIT35R12,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+NLBNPIT35R53,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+NLBNPIT35R79,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+NLBNPIT35Q88,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+NLBNPIT35QC1,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+NLBNPIT35QD9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+NLBNPIT35QE7,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+NLBNPIT35QF4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+NLBNPIT35QI8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+NLBNPIT35QJ6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+NLBNPIT35QN8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+NLBNPIT35QR9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+NLBNPIT35OA0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+NLBNPIT35OG7,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+NLBNPIT35OH5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+NLBNPIT35OM5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+NLBNPIT35OO1,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+NLBNPIT35OQ6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+NLBNPIT35O80,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+NLBNPIT35O98,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+NLBNPIT35OS2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+NLBNPIT35OT0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+NLBNPIT35OU8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,04/02/2026,SeDeX
+NLBNPIT35LP4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+NLBNPIT35LQ2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+NLBNPIT35LR0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+NLBNPIT35M25,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+NLBNPIT35M66,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+NLBNPIT35M74,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+NLBNPIT35M82,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+NLBNPIT35M90,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+NLBNPIT35MG1,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+NLBNPIT35MH9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+NLBNPIT35KI1,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+NLBNPIT35KJ9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+NLBNPIT35KN1,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+NLBNPIT35KO9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+NLBNPIT35KW2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+NLBNPIT35KY8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+NLBNPIT35LT6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+NLBNPIT35LW0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+NLBNPIT35LX8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+NLBNPIT35LJ7,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+NLBNPIT35LL3,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+NLBNPIT35LO7,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+NLBNPIT35LF5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+NLBNPIT35LG3,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+NLBNPIT35LI9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+NLBNPIT35LA6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+NLBNPIT35LB4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+NLBNPIT35LE8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+NLBNPIT35KZ5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+NLBNPIT35L34,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+NLBNPIT35L42,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+NLBNPIT35J61,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+NLBNPIT35JE2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+NLBNPIT35KH3,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+NLBNPIT35J12,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+NLBNPIT35J46,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+NLBNPIT35J53,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+NLBNPIT35IW6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+NLBNPIT35IX4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
 DE000VJ4NTK7,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
 DE000VJ4NTL5,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
 DE000VJ4NTZ5,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-DE000VJ4NQY4,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-DE000VJ4NQZ1,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+DE000VJ4NSV6,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+DE000VJ4NT26,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+DE000VJ4NTE0,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+DE000VJ4NTG5,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+DE000VJ4NTH3,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+DE000VJ4NTJ9,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+DE000VJ4NS68,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+DE000VJ4NSG7,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+DE000VJ4NSR4,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
 DE000VJ4NR44,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
 DE000VJ4NR77,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
 DE000VJ4NRA2,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
@@ -1078,131 +1122,42 @@ DE000VJ4NRH7,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
 DE000VJ4NRJ3,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
 DE000VJ4NRN5,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
 DE000VJ4NS50,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-DE000VJ4NS68,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-DE000VJ4NSG7,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-DE000VJ4NSR4,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-DE000VJ4NSV6,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-DE000VJ4NT26,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-DE000VJ4NTE0,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-DE000VJ4NTG5,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-DE000VJ4NC17,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-DE000VJ4NC58,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-DE000VJ4NQ03,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-DE000VJ4NQ29,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+DE000VJ4NQP2,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+DE000VJ4NQT4,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+DE000VJ4NQV0,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+DE000VJ4NQX6,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+DE000VJ4NQY4,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+DE000VJ4NQZ1,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+DE000VJ4NQH9,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+DE000VJ4NQJ5,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+DE000VJ4NQK3,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
 DE000VJ4NQ37,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
 DE000VJ4NQA4,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
 DE000VJ4NQB2,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
 DE000VJ4NQC0,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
 DE000VJ4NQD8,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
 DE000VJ4NQG1,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-DE000VJ4NQH9,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-DE000VJ4NQJ5,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-DE000VJ4NQK3,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-DE000VJ4NQP2,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-DE000VJ4NQT4,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-DE000VJ4NQV0,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-DE000VJ4NQX6,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-NLBNPIT35M74,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-NLBNPIT35M82,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-NLBNPIT35M90,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-NLBNPIT35MG1,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-NLBNPIT35MH9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-NLBNPIT35L42,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-NLBNPIT35LA6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-NLBNPIT35LB4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-NLBNPIT35LE8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-NLBNPIT35LF5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-NLBNPIT35LG3,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-NLBNPIT35LI9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-NLBNPIT35LJ7,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-NLBNPIT35LL3,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-NLBNPIT35LO7,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-NLBNPIT35LP4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-NLBNPIT35LQ2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-NLBNPIT35LR0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-NLBNPIT35LT6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-NLBNPIT35LW0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-NLBNPIT35LX8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-NLBNPIT35M25,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-NLBNPIT35M66,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-NLBNPIT35IX4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-NLBNPIT35J12,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-NLBNPIT35J46,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-NLBNPIT35J53,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-NLBNPIT35J61,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-NLBNPIT35JE2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-NLBNPIT35KH3,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-NLBNPIT35KI1,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-NLBNPIT35KJ9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-NLBNPIT35KN1,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-NLBNPIT35KO9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-NLBNPIT35KW2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-NLBNPIT35KY8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-NLBNPIT35KZ5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-NLBNPIT35L34,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-NLBNPIT35IW6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,03/02/2026,SeDeX
-NLBNPIT35IR6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-NLBNPIT35IT2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-NLBNPIT35IK1,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-NLBNPIT35IL9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-NLBNPIT35IN5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-NLBNPIT35IO3,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-NLBNPIT35IP0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-NLBNPIT35IQ8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-NLBNPIT35FS0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-NLBNPIT35FT8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-NLBNPIT35FU6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-NLBNPIT35FV4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-NLBNPIT35FY8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-NLBNPIT35FZ5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-NLBNPIT35G07,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-NLBNPIT35G15,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-NLBNPIT35G23,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-NLBNPIT35G31,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-NLBNPIT35G49,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-NLBNPIT35G56,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-NLBNPIT35G64,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-NLBNPIT35I39,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-NLBNPIT35I47,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-NLBNPIT35I54,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-NLBNPIT35I62,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-NLBNPIT35I96,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-NLBNPIT35IB0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-NLBNPIT35IC8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-NLBNPIT35IH7,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-NLBNPIT35II5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-NLBNPIT35G72,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-NLBNPIT35HA4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-NLBNPIT35HB2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-NLBNPIT35HD8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-NLBNPIT35HK3,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-NLBNPIT35HL1,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-NLBNPIT35HM9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-NLBNPIT35HP2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-NLBNPIT35HR8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-NLBNPIT35HS6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-NLBNPIT35HU2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-NLBNPIT35HV0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-NLBNPIT35HW8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-NLBNPIT35HX6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-NLBNPIT35HY4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-NLBNPIT35I05,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-NLBNPIT35I13,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-NLBNPIT35I21,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+DE000VJ4NC58,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+DE000VJ4NQ03,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+DE000VJ4NQ29,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+DE000VJ4NC17,TURBO,Vontobel,Singolo Sottostante,Singolo,03/02/2026,SeDeX
+DE000VJ4HHD9,TURBO,Vontobel,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+DE000VJ4HJ00,TURBO,Vontobel,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+DE000VJ4HJ18,TURBO,Vontobel,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+DE000VJ4HJF0,TURBO,Vontobel,Singolo Sottostante,Singolo,02/02/2026,SeDeX
 DE000VJ4HQC2,TURBO,Vontobel,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+DE000VJ4HG86,TURBO,Vontobel,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+DE000VJ4HGN0,TURBO,Vontobel,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+DE000VJ4HGP5,TURBO,Vontobel,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+DE000VJ4HF95,TURBO,Vontobel,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+DE000VJ4HFB7,TURBO,Vontobel,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+DE000VJ4HG78,TURBO,Vontobel,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+DE000VJ4HGR1,TURBO,Vontobel,Singolo Sottostante,Singolo,02/02/2026,SeDeX
 DE000VJ4HGS9,TURBO,Vontobel,Singolo Sottostante,Singolo,02/02/2026,SeDeX
 DE000VJ4HGZ4,TURBO,Vontobel,Singolo Sottostante,Singolo,02/02/2026,SeDeX
 DE000VJ4HH10,TURBO,Vontobel,Singolo Sottostante,Singolo,02/02/2026,SeDeX
 DE000VJ4HH44,TURBO,Vontobel,Singolo Sottostante,Singolo,02/02/2026,SeDeX
 DE000VJ4HH69,TURBO,Vontobel,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-DE000VJ4HHD9,TURBO,Vontobel,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-DE000VJ4HJ00,TURBO,Vontobel,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-DE000VJ4HJ18,TURBO,Vontobel,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-DE000VJ4HJF0,TURBO,Vontobel,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-DE000VJ4HAK9,TURBO,Vontobel,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-DE000VJ4HAM5,TURBO,Vontobel,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-DE000VJ4HAN3,TURBO,Vontobel,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-DE000VJ4HAP8,TURBO,Vontobel,Singolo Sottostante,Singolo,02/02/2026,SeDeX
 DE000VJ4HE21,TURBO,Vontobel,Singolo Sottostante,Singolo,02/02/2026,SeDeX
 DE000VJ4HE39,TURBO,Vontobel,Singolo Sottostante,Singolo,02/02/2026,SeDeX
 DE000VJ4HE62,TURBO,Vontobel,Singolo Sottostante,Singolo,02/02/2026,SeDeX
@@ -1212,33 +1167,63 @@ DE000VJ4HE96,TURBO,Vontobel,Singolo Sottostante,Singolo,02/02/2026,SeDeX
 DE000VJ4HF46,TURBO,Vontobel,Singolo Sottostante,Singolo,02/02/2026,SeDeX
 DE000VJ4HF53,TURBO,Vontobel,Singolo Sottostante,Singolo,02/02/2026,SeDeX
 DE000VJ4HF79,TURBO,Vontobel,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-DE000VJ4HF95,TURBO,Vontobel,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-DE000VJ4HFB7,TURBO,Vontobel,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-DE000VJ4HG78,TURBO,Vontobel,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-DE000VJ4HG86,TURBO,Vontobel,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-DE000VJ4HGN0,TURBO,Vontobel,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-DE000VJ4HGP5,TURBO,Vontobel,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-DE000VJ4HGR1,TURBO,Vontobel,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-DE000UN415V6,TURBO,Unicredit,Singolo Sottostante,Singolo,02/02/2026,SeDeX
-DE000UN415S2,TURBO,Unicredit,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+NLBNPIT35HX6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+NLBNPIT35HY4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+NLBNPIT35I05,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+NLBNPIT35IP0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+NLBNPIT35IQ8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+NLBNPIT35IR6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+NLBNPIT35I47,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+NLBNPIT35I54,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+NLBNPIT35I62,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+NLBNPIT35I96,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+NLBNPIT35IB0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+NLBNPIT35IC8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+NLBNPIT35IH7,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+NLBNPIT35II5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+NLBNPIT35IK1,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+NLBNPIT35IL9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+NLBNPIT35IN5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+NLBNPIT35IO3,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+NLBNPIT35HP2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+NLBNPIT35HR8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+NLBNPIT35HS6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+NLBNPIT35HU2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+NLBNPIT35HV0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+NLBNPIT35HW8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+NLBNPIT35G56,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+NLBNPIT35G64,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+NLBNPIT35G72,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+NLBNPIT35I13,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+NLBNPIT35I21,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+NLBNPIT35I39,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+NLBNPIT35HA4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+NLBNPIT35HB2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+NLBNPIT35HD8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+NLBNPIT35HK3,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+NLBNPIT35HL1,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+NLBNPIT35HM9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+NLBNPIT35FU6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+NLBNPIT35FV4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+NLBNPIT35FY8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+NLBNPIT35FZ5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+NLBNPIT35G07,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+NLBNPIT35G15,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+NLBNPIT35G23,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+NLBNPIT35G31,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+NLBNPIT35G49,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+NLBNPIT35FS0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+NLBNPIT35FT8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+NLBNPIT35IT2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,02/02/2026,SeDeX
 DE000UN415T0,TURBO,Unicredit,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+DE000UN415V6,TURBO,Unicredit,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+DE000VJ4HAK9,TURBO,Vontobel,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+DE000VJ4HAM5,TURBO,Vontobel,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+DE000VJ4HAN3,TURBO,Vontobel,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+DE000VJ4HAP8,TURBO,Vontobel,Singolo Sottostante,Singolo,02/02/2026,SeDeX
+DE000UN415S2,TURBO,Unicredit,Singolo Sottostante,Singolo,02/02/2026,SeDeX
 NLBNPIT35DO4,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,30/01/2026,SeDeX
-NLBNPIT354I9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
-NLBNPIT355B1,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
-NLBNPIT355E5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
-NLBNPIT355G0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
-NLBNPIT355J4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
-NLBNPIT355K2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
-NLBNPIT355U1,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
-NLBNPIT355W7,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
-NLBNPIT355X5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
-NLBNPIT355Y3,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
-NLBNPIT355Z0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
-NLBNPIT35639,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
-NLBNPIT356A1,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
-NLBNPIT356C7,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
-NLBNPIT356D5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
-NLBNPIT356H6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
+NLBNPIT35753,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
 NLBNPIT356K0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
 NLBNPIT356L8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
 NLBNPIT356P9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
@@ -1250,23 +1235,7 @@ NLBNPIT356Y1,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
 NLBNPIT356Z8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
 NLBNPIT35712,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
 NLBNPIT35738,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
-NLBNPIT355O4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
-NLBNPIT355Q9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
-NLBNPIT355S5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
 NLBNPIT35746,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
-NLBNPIT35753,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
-NLBNPIT353U6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
-NLBNPIT353X0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
-NLBNPIT353Y8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
-NLBNPIT35407,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
-NLBNPIT35415,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
-NLBNPIT35423,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
-NLBNPIT35480,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
-NLBNPIT354A6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
-NLBNPIT354B4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
-NLBNPIT354E8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
-NLBNPIT354F5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
-DE000UN3W4H3,TURBO,Unicredit,Singolo Sottostante,Singolo,29/01/2026,SeDeX
 DE000UN3W4J9,TURBO,Unicredit,Singolo Sottostante,Singolo,29/01/2026,SeDeX
 DE000UN3W4L5,TURBO,Unicredit,Singolo Sottostante,Singolo,29/01/2026,SeDeX
 DE000UN3WBC0,TURBO,Unicredit,Singolo Sottostante,Singolo,29/01/2026,SeDeX
@@ -1282,19 +1251,10 @@ DE000UN3WC03,TURBO,Unicredit,Singolo Sottostante,Singolo,29/01/2026,SeDeX
 DE000UN3WC37,TURBO,Unicredit,Singolo Sottostante,Singolo,29/01/2026,SeDeX
 DE000UN3WC60,TURBO,Unicredit,Singolo Sottostante,Singolo,29/01/2026,SeDeX
 DE000UN3WC78,TURBO,Unicredit,Singolo Sottostante,Singolo,29/01/2026,SeDeX
-DE000VJ39UU6,TURBO,Vontobel,Singolo Sottostante,Singolo,29/01/2026,SeDeX
-DE000VJ39UW2,TURBO,Vontobel,Singolo Sottostante,Singolo,29/01/2026,SeDeX
-DE000VJ39UX0,TURBO,Vontobel,Singolo Sottostante,Singolo,29/01/2026,SeDeX
-DE000VJ39UY8,TURBO,Vontobel,Singolo Sottostante,Singolo,29/01/2026,SeDeX
-DE000VJ39VC2,TURBO,Vontobel,Singolo Sottostante,Singolo,29/01/2026,SeDeX
-DE000VJ39VD0,TURBO,Vontobel,Singolo Sottostante,Singolo,29/01/2026,SeDeX
-DE000VJ39VF5,TURBO,Vontobel,Singolo Sottostante,Singolo,29/01/2026,SeDeX
-DE000VJ39TF9,TURBO,Vontobel,Singolo Sottostante,Singolo,29/01/2026,SeDeX
-DE000VJ39U05,TURBO,Vontobel,Singolo Sottostante,Singolo,29/01/2026,SeDeX
-DE000VJ39UE0,TURBO,Vontobel,Singolo Sottostante,Singolo,29/01/2026,SeDeX
-DE000VJ39UG5,TURBO,Vontobel,Singolo Sottostante,Singolo,29/01/2026,SeDeX
-DE000VJ39UK7,TURBO,Vontobel,Singolo Sottostante,Singolo,29/01/2026,SeDeX
-DE000VJ39UN1,TURBO,Vontobel,Singolo Sottostante,Singolo,29/01/2026,SeDeX
+DE000UN3W4H3,TURBO,Unicredit,Singolo Sottostante,Singolo,29/01/2026,SeDeX
+DE000VJ39T40,TURBO,Vontobel,Singolo Sottostante,Singolo,29/01/2026,SeDeX
+DE000VJ39T57,TURBO,Vontobel,Singolo Sottostante,Singolo,29/01/2026,SeDeX
+DE000VJ39T65,TURBO,Vontobel,Singolo Sottostante,Singolo,29/01/2026,SeDeX
 DE000VJ390K9,TURBO,Vontobel,Singolo Sottostante,Singolo,29/01/2026,SeDeX
 DE000VJ39ND7,TURBO,Vontobel,Singolo Sottostante,Singolo,29/01/2026,SeDeX
 DE000VJ39NG0,TURBO,Vontobel,Singolo Sottostante,Singolo,29/01/2026,SeDeX
@@ -1302,47 +1262,51 @@ DE000VJ39NH8,TURBO,Vontobel,Singolo Sottostante,Singolo,29/01/2026,SeDeX
 DE000VJ39S66,TURBO,Vontobel,Singolo Sottostante,Singolo,29/01/2026,SeDeX
 DE000VJ39S82,TURBO,Vontobel,Singolo Sottostante,Singolo,29/01/2026,SeDeX
 DE000VJ39T24,TURBO,Vontobel,Singolo Sottostante,Singolo,29/01/2026,SeDeX
-DE000VJ39T40,TURBO,Vontobel,Singolo Sottostante,Singolo,29/01/2026,SeDeX
-DE000VJ39T57,TURBO,Vontobel,Singolo Sottostante,Singolo,29/01/2026,SeDeX
-DE000VJ39T65,TURBO,Vontobel,Singolo Sottostante,Singolo,29/01/2026,SeDeX
+DE000VJ39UK7,TURBO,Vontobel,Singolo Sottostante,Singolo,29/01/2026,SeDeX
+DE000VJ39UN1,TURBO,Vontobel,Singolo Sottostante,Singolo,29/01/2026,SeDeX
+DE000VJ39UU6,TURBO,Vontobel,Singolo Sottostante,Singolo,29/01/2026,SeDeX
+DE000VJ39UW2,TURBO,Vontobel,Singolo Sottostante,Singolo,29/01/2026,SeDeX
+DE000VJ39UX0,TURBO,Vontobel,Singolo Sottostante,Singolo,29/01/2026,SeDeX
+DE000VJ39UY8,TURBO,Vontobel,Singolo Sottostante,Singolo,29/01/2026,SeDeX
 DE000VJ39T73,TURBO,Vontobel,Singolo Sottostante,Singolo,29/01/2026,SeDeX
 DE000VJ39T81,TURBO,Vontobel,Singolo Sottostante,Singolo,29/01/2026,SeDeX
-DE000VJ35WH7,TURBO,Vontobel,Singolo Sottostante,Singolo,28/01/2026,SeDeX
-DE000VJ35WK1,TURBO,Vontobel,Singolo Sottostante,Singolo,28/01/2026,SeDeX
-DE000VJ35WZ9,TURBO,Vontobel,Singolo Sottostante,Singolo,28/01/2026,SeDeX
-DE000VJ35XL7,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,28/01/2026,SeDeX
-DE000VJ35XM5,TURBO,Vontobel,Singolo Sottostante,Singolo,28/01/2026,SeDeX
-DE000VJ35XP8,TURBO,Vontobel,Singolo Sottostante,Singolo,28/01/2026,SeDeX
-DE000VJ35XG7,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,28/01/2026,SeDeX
-DE000VJ35XH5,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,28/01/2026,SeDeX
-DE000VJ35XJ1,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,28/01/2026,SeDeX
-DE000VJ356F0,TURBO,Vontobel,Singolo Sottostante,Singolo,28/01/2026,SeDeX
-DE000VJ356G8,TURBO,Vontobel,Singolo Sottostante,Singolo,28/01/2026,SeDeX
-DE000VJ356H6,TURBO,Vontobel,Singolo Sottostante,Singolo,28/01/2026,SeDeX
-DE000VJ35VY4,TURBO,Vontobel,Singolo Sottostante,Singolo,28/01/2026,SeDeX
-DE000VJ35W56,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,28/01/2026,SeDeX
-DE000VJ35W64,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,28/01/2026,SeDeX
-DE000VJ356J2,TURBO,Vontobel,Singolo Sottostante,Singolo,28/01/2026,SeDeX
-DE000VJ35TK7,TURBO,Vontobel,Singolo Sottostante,Singolo,28/01/2026,SeDeX
-DE000VJ35VW8,TURBO,Vontobel,Singolo Sottostante,Singolo,28/01/2026,SeDeX
-DE000VJ356C7,TURBO,Vontobel,Singolo Sottostante,Singolo,28/01/2026,SeDeX
-DE000VJ356D5,TURBO,Vontobel,Singolo Sottostante,Singolo,28/01/2026,SeDeX
-DE000VJ356E3,TURBO,Vontobel,Singolo Sottostante,Singolo,28/01/2026,SeDeX
-DE000UN3V2K2,TURBO,Unicredit,Singolo Sottostante,Singolo,28/01/2026,SeDeX
-DE000UN3V281,TURBO,Unicredit,Singolo Sottostante,Singolo,28/01/2026,SeDeX
-DE000UN3V299,TURBO,Unicredit,Singolo Sottostante,Singolo,28/01/2026,SeDeX
-DE000UN3V2A3,TURBO,Unicredit,Singolo Sottostante,Singolo,28/01/2026,SeDeX
-DE000UN3V2D7,TURBO,Unicredit,Singolo Sottostante,Singolo,28/01/2026,SeDeX
-DE000UN3V2F2,TURBO,Unicredit,Singolo Sottostante,Singolo,28/01/2026,SeDeX
-DE000UN3V2G0,TURBO,Unicredit,Singolo Sottostante,Singolo,28/01/2026,SeDeX
-DE000UN3V2J4,TURBO,Unicredit,Singolo Sottostante,Singolo,28/01/2026,SeDeX
-NLBNPIT351Q8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,28/01/2026,SeDeX
-NLBNPIT350C0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,28/01/2026,SeDeX
-NLBNPIT350E6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,28/01/2026,SeDeX
-NLBNPIT350W8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,28/01/2026,SeDeX
-NLBNPIT350Y4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,28/01/2026,SeDeX
-NLBNPIT350Z1,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,28/01/2026,SeDeX
-NLBNPIT35100,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,28/01/2026,SeDeX
+DE000VJ39TF9,TURBO,Vontobel,Singolo Sottostante,Singolo,29/01/2026,SeDeX
+DE000VJ39U05,TURBO,Vontobel,Singolo Sottostante,Singolo,29/01/2026,SeDeX
+DE000VJ39UE0,TURBO,Vontobel,Singolo Sottostante,Singolo,29/01/2026,SeDeX
+DE000VJ39UG5,TURBO,Vontobel,Singolo Sottostante,Singolo,29/01/2026,SeDeX
+DE000VJ39VC2,TURBO,Vontobel,Singolo Sottostante,Singolo,29/01/2026,SeDeX
+DE000VJ39VD0,TURBO,Vontobel,Singolo Sottostante,Singolo,29/01/2026,SeDeX
+DE000VJ39VF5,TURBO,Vontobel,Singolo Sottostante,Singolo,29/01/2026,SeDeX
+NLBNPIT355J4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
+NLBNPIT355K2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
+NLBNPIT355O4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
+NLBNPIT355Q9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
+NLBNPIT355S5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
+NLBNPIT355U1,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
+NLBNPIT355W7,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
+NLBNPIT355X5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
+NLBNPIT355Y3,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
+NLBNPIT356C7,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
+NLBNPIT356D5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
+NLBNPIT356H6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
+NLBNPIT355Z0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
+NLBNPIT35639,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
+NLBNPIT356A1,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
+NLBNPIT354E8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
+NLBNPIT354F5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
+NLBNPIT354I9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
+NLBNPIT355B1,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
+NLBNPIT355E5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
+NLBNPIT355G0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
+NLBNPIT35407,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
+NLBNPIT35415,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
+NLBNPIT35423,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
+NLBNPIT35480,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
+NLBNPIT354A6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
+NLBNPIT354B4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
+NLBNPIT353U6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
+NLBNPIT353X0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
+NLBNPIT353Y8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,29/01/2026,SeDeX
 NLBNPIT35118,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,28/01/2026,SeDeX
 NLBNPIT35175,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,28/01/2026,SeDeX
 NLBNPIT35183,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,28/01/2026,SeDeX
@@ -1354,24 +1318,93 @@ NLBNPIT351L9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,28/01/2026,SeDeX
 NLBNPIT351M7,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,28/01/2026,SeDeX
 NLBNPIT351N5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,28/01/2026,SeDeX
 NLBNPIT351P0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,28/01/2026,SeDeX
+NLBNPIT351Q8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,28/01/2026,SeDeX
+NLBNPIT350C0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,28/01/2026,SeDeX
+NLBNPIT350E6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,28/01/2026,SeDeX
+NLBNPIT350W8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,28/01/2026,SeDeX
+NLBNPIT350Y4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,28/01/2026,SeDeX
+NLBNPIT350Z1,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,28/01/2026,SeDeX
+NLBNPIT35100,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,28/01/2026,SeDeX
 DE000FD9BZ07,LEVA FISSA,Societe Generale,Singolo Sottostante,Singolo,28/01/2026,SeDeX
 DE000FD9BZ15,LEVA FISSA,Societe Generale,Singolo Sottostante,Singolo,28/01/2026,SeDeX
 DE000FD9BZY5,LEVA FISSA,Societe Generale,Singolo Sottostante,Singolo,28/01/2026,SeDeX
-DE000FD68569,LEVA FISSA,Societe Generale,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-DE000FD68577,LEVA FISSA,Societe Generale,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-DE000FD68585,LEVA FISSA,Societe Generale,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-DE000FD68593,LEVA FISSA,Societe Generale,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-NLBNPIT34W24,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-NLBNPIT34W73,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-NLBNPIT34W81,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-NLBNPIT34WD0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-NLBNPIT34WF5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-NLBNPIT34WI9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-NLBNPIT34WK5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-NLBNPIT34WO7,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-NLBNPIT34WP4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-NLBNPIT34WR0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-NLBNPIT34WS8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+DE000VJ35XH5,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,28/01/2026,SeDeX
+DE000VJ35XJ1,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,28/01/2026,SeDeX
+DE000VJ35XL7,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,28/01/2026,SeDeX
+DE000VJ35XM5,TURBO,Vontobel,Singolo Sottostante,Singolo,28/01/2026,SeDeX
+DE000VJ35XP8,TURBO,Vontobel,Singolo Sottostante,Singolo,28/01/2026,SeDeX
+DE000VJ35W56,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,28/01/2026,SeDeX
+DE000VJ35W64,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,28/01/2026,SeDeX
+DE000VJ35WH7,TURBO,Vontobel,Singolo Sottostante,Singolo,28/01/2026,SeDeX
+DE000VJ35WK1,TURBO,Vontobel,Singolo Sottostante,Singolo,28/01/2026,SeDeX
+DE000VJ35WZ9,TURBO,Vontobel,Singolo Sottostante,Singolo,28/01/2026,SeDeX
+DE000VJ35XG7,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,28/01/2026,SeDeX
+DE000VJ356D5,TURBO,Vontobel,Singolo Sottostante,Singolo,28/01/2026,SeDeX
+DE000VJ356E3,TURBO,Vontobel,Singolo Sottostante,Singolo,28/01/2026,SeDeX
+DE000VJ356F0,TURBO,Vontobel,Singolo Sottostante,Singolo,28/01/2026,SeDeX
+DE000VJ356G8,TURBO,Vontobel,Singolo Sottostante,Singolo,28/01/2026,SeDeX
+DE000VJ356H6,TURBO,Vontobel,Singolo Sottostante,Singolo,28/01/2026,SeDeX
+DE000VJ356J2,TURBO,Vontobel,Singolo Sottostante,Singolo,28/01/2026,SeDeX
+DE000VJ35TK7,TURBO,Vontobel,Singolo Sottostante,Singolo,28/01/2026,SeDeX
+DE000VJ35VW8,TURBO,Vontobel,Singolo Sottostante,Singolo,28/01/2026,SeDeX
+DE000VJ35VY4,TURBO,Vontobel,Singolo Sottostante,Singolo,28/01/2026,SeDeX
+DE000VJ356C7,TURBO,Vontobel,Singolo Sottostante,Singolo,28/01/2026,SeDeX
+DE000UN3V2J4,TURBO,Unicredit,Singolo Sottostante,Singolo,28/01/2026,SeDeX
+DE000UN3V2K2,TURBO,Unicredit,Singolo Sottostante,Singolo,28/01/2026,SeDeX
+DE000UN3V281,TURBO,Unicredit,Singolo Sottostante,Singolo,28/01/2026,SeDeX
+DE000UN3V299,TURBO,Unicredit,Singolo Sottostante,Singolo,28/01/2026,SeDeX
+DE000UN3V2A3,TURBO,Unicredit,Singolo Sottostante,Singolo,28/01/2026,SeDeX
+DE000UN3V2D7,TURBO,Unicredit,Singolo Sottostante,Singolo,28/01/2026,SeDeX
+DE000UN3V2F2,TURBO,Unicredit,Singolo Sottostante,Singolo,28/01/2026,SeDeX
+DE000UN3V2G0,TURBO,Unicredit,Singolo Sottostante,Singolo,28/01/2026,SeDeX
+DE000UN3STG1,TURBO,Unicredit,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+DE000UN3STK3,TURBO,Unicredit,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+DE000UN3STL1,TURBO,Unicredit,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+DE000UN3STR8,TURBO,Unicredit,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+DE000UN3STS6,TURBO,Unicredit,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+DE000UN3STT4,TURBO,Unicredit,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+DE000UN3STU2,TURBO,Unicredit,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+DE000UN3STV0,TURBO,Unicredit,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+DE000UN3STW8,TURBO,Unicredit,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+DE000UN3STX6,TURBO,Unicredit,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+DE000UN3STY4,TURBO,Unicredit,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+DE000UN3STZ1,TURBO,Unicredit,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+DE000UN3ST75,TURBO,Unicredit,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+DE000UN3ST83,TURBO,Unicredit,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+DE000UN3ST91,TURBO,Unicredit,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+DE000UN3STA4,TURBO,Unicredit,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+DE000UN3STE6,TURBO,Unicredit,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+DE000VJ316D9,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+DE000VJ316E7,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+DE000VJ316U3,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+DE000VJ31YW1,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+DE000VJ31YY7,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+DE000VJ315A7,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+DE000VJ315D1,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+DE000VJ315G4,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+DE000VJ315H2,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+DE000VJ315K6,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+DE000VJ315M2,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+DE000VJ315P5,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+DE000VJ315Q3,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+DE000VJ315R1,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+DE000VJ315W1,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+DE000VJ31611,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+DE000VJ316A5,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+DE000VJ314N3,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+DE000VJ314P8,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+DE000VJ314R4,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+DE000VJ314D4,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+DE000VJ314E2,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+DE000VJ314M5,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+DE000VJ314S2,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+DE000VJ314U8,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+DE000VJ314V6,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+DE000VJ314W4,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+DE000VJ314Y0,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+DE000VJ314Z7,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+DE000VJ31470,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+DE000VJ31496,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
 NLBNPIT34TV8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,27/01/2026,SeDeX
 NLBNPIT34TX4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,27/01/2026,SeDeX
 NLBNPIT34U18,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,27/01/2026,SeDeX
@@ -1384,104 +1417,71 @@ NLBNPIT34UI3,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,27/01/2026,SeDeX
 NLBNPIT34UK9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,27/01/2026,SeDeX
 NLBNPIT34VM3,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,27/01/2026,SeDeX
 NLBNPIT34VO9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-DE000UN3STY4,TURBO,Unicredit,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-DE000UN3STZ1,TURBO,Unicredit,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-DE000UN3STK3,TURBO,Unicredit,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-DE000UN3STL1,TURBO,Unicredit,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-DE000UN3STR8,TURBO,Unicredit,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-DE000UN3STS6,TURBO,Unicredit,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-DE000UN3STT4,TURBO,Unicredit,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-DE000UN3STU2,TURBO,Unicredit,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-DE000UN3STV0,TURBO,Unicredit,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-DE000UN3STW8,TURBO,Unicredit,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-DE000UN3STX6,TURBO,Unicredit,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-DE000UN3ST75,TURBO,Unicredit,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-DE000UN3ST83,TURBO,Unicredit,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-DE000UN3ST91,TURBO,Unicredit,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-DE000UN3STA4,TURBO,Unicredit,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-DE000UN3STE6,TURBO,Unicredit,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-DE000UN3STG1,TURBO,Unicredit,Singolo Sottostante,Singolo,27/01/2026,SeDeX
 NLBNPIT34VT8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,27/01/2026,SeDeX
 NLBNPIT34VV4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-DE000VJ316U3,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-DE000VJ31YW1,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-DE000VJ31YY7,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-DE000VJ315M2,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-DE000VJ315P5,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-DE000VJ315Q3,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-DE000VJ315R1,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-DE000VJ315W1,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-DE000VJ31611,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-DE000VJ316A5,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-DE000VJ316D9,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-DE000VJ316E7,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-DE000VJ315G4,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-DE000VJ315H2,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-DE000VJ315K6,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-DE000VJ31470,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-DE000VJ31496,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-DE000VJ314D4,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-DE000VJ314E2,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-DE000VJ314R4,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-DE000VJ314S2,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-DE000VJ314U8,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-DE000VJ314M5,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-DE000VJ314N3,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-DE000VJ314P8,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-DE000VJ314V6,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-DE000VJ314W4,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-DE000VJ314Y0,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-DE000VJ314Z7,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-DE000VJ315A7,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-DE000VJ315D1,TURBO,Vontobel,Singolo Sottostante,Singolo,27/01/2026,SeDeX
-IT0005686859,LEVA FISSA,FinecoBank,Banca MPS,Singolo,26/01/2026,SeDeX
+NLBNPIT34W24,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+NLBNPIT34W73,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+NLBNPIT34W81,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+NLBNPIT34WD0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+NLBNPIT34WF5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+NLBNPIT34WI9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+NLBNPIT34WK5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+NLBNPIT34WO7,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+NLBNPIT34WP4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+NLBNPIT34WR0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+NLBNPIT34WS8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+DE000FD68569,LEVA FISSA,Societe Generale,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+DE000FD68577,LEVA FISSA,Societe Generale,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+DE000FD68585,LEVA FISSA,Societe Generale,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+DE000FD68593,LEVA FISSA,Societe Generale,Singolo Sottostante,Singolo,27/01/2026,SeDeX
+IT0005686784,LEVA FISSA,FinecoBank,Mediolanum,Singolo,26/01/2026,SeDeX
 IT0005686602,LEVA FISSA,FinecoBank,A2A,Singolo,26/01/2026,SeDeX
-IT0005687659,LEVA FISSA,FinecoBank,Buzzi Unicem,Singolo,26/01/2026,SeDeX
+IT0005687667,LEVA FISSA,FinecoBank,Buzzi Unicem,Singolo,26/01/2026,SeDeX
 IT0005687550,LEVA FISSA,FinecoBank,BPER Banca,Singolo,26/01/2026,SeDeX
 IT0005686727,LEVA FISSA,FinecoBank,Azimut,Singolo,26/01/2026,SeDeX
 IT0005686974,LEVA FISSA,FinecoBank,BP SONDRIO,Singolo,26/01/2026,SeDeX
 IT0005686917,LEVA FISSA,FinecoBank,Banco BPM,Singolo,26/01/2026,SeDeX
-DE000UN3PVS8,TURBO,Unicredit,Singolo Sottostante,Singolo,26/01/2026,SeDeX
-IT0005686867,LEVA FISSA,FinecoBank,Banca MPS,Singolo,26/01/2026,SeDeX
+IT0005686669,LEVA FISSA,FinecoBank,Amplifon,Singolo,26/01/2026,SeDeX
+IT0005686792,LEVA FISSA,FinecoBank,Mediolanum,Singolo,26/01/2026,SeDeX
 IT0005686610,LEVA FISSA,FinecoBank,A2A,Singolo,26/01/2026,SeDeX
-IT0005687667,LEVA FISSA,FinecoBank,Buzzi Unicem,Singolo,26/01/2026,SeDeX
+IT0005687659,LEVA FISSA,FinecoBank,Buzzi Unicem,Singolo,26/01/2026,SeDeX
 IT0005687568,LEVA FISSA,FinecoBank,BPER Banca,Singolo,26/01/2026,SeDeX
 IT0005686735,LEVA FISSA,FinecoBank,Azimut,Singolo,26/01/2026,SeDeX
 IT0005686982,LEVA FISSA,FinecoBank,BP SONDRIO,Singolo,26/01/2026,SeDeX
 IT0005686925,LEVA FISSA,FinecoBank,Banco BPM,Singolo,26/01/2026,SeDeX
-DE000UN3PVU4,TURBO,Unicredit,Singolo Sottostante,Singolo,26/01/2026,SeDeX
-IT0005686784,LEVA FISSA,FinecoBank,Mediolanum,Singolo,26/01/2026,SeDeX
+IT0005686677,LEVA FISSA,FinecoBank,Amplifon,Singolo,26/01/2026,SeDeX
+IT0005686859,LEVA FISSA,FinecoBank,Banca MPS,Singolo,26/01/2026,SeDeX
 IT0005687618,LEVA FISSA,FinecoBank,Brunello Cucinelli,Singolo,26/01/2026,SeDeX
 IT0005686933,LEVA FISSA,FinecoBank,INWIT,Singolo,26/01/2026,SeDeX
 IT0005686628,LEVA FISSA,FinecoBank,Campari,Singolo,26/01/2026,SeDeX
 IT0005686990,LEVA FISSA,FinecoBank,Italgas,Singolo,26/01/2026,SeDeX
 IT0005686685,LEVA FISSA,FinecoBank,DiaSorin,Singolo,26/01/2026,SeDeX
 IT0005686743,LEVA FISSA,FinecoBank,Generali,Singolo,26/01/2026,SeDeX
-DE000UN3PVW0,TURBO,Unicredit,Singolo Sottostante,Singolo,26/01/2026,SeDeX
-IT0005686792,LEVA FISSA,FinecoBank,Mediolanum,Singolo,26/01/2026,SeDeX
+DE000UN3PVS8,TURBO,Unicredit,Singolo Sottostante,Singolo,26/01/2026,SeDeX
+IT0005686867,LEVA FISSA,FinecoBank,Banca MPS,Singolo,26/01/2026,SeDeX
 IT0005687626,LEVA FISSA,FinecoBank,Brunello Cucinelli,Singolo,26/01/2026,SeDeX
 IT0005686941,LEVA FISSA,FinecoBank,INWIT,Singolo,26/01/2026,SeDeX
 IT0005686636,LEVA FISSA,FinecoBank,Campari,Singolo,26/01/2026,SeDeX
 IT0005687006,LEVA FISSA,FinecoBank,Italgas,Singolo,26/01/2026,SeDeX
 IT0005686693,LEVA FISSA,FinecoBank,DiaSorin,Singolo,26/01/2026,SeDeX
 IT0005686750,LEVA FISSA,FinecoBank,Generali,Singolo,26/01/2026,SeDeX
-DE000UN3Q4M1,TURBO,Unicredit,Singolo Sottostante,Singolo,26/01/2026,SeDeX
+DE000UN3PVU4,TURBO,Unicredit,Singolo Sottostante,Singolo,26/01/2026,SeDeX
 IT0005686834,LEVA FISSA,FinecoBank,Recordati,Singolo,26/01/2026,SeDeX
 IT0005686800,LEVA FISSA,FinecoBank,HERA,Singolo,26/01/2026,SeDeX
 IT0005686891,LEVA FISSA,FinecoBank,Saipem,Singolo,26/01/2026,SeDeX
 IT0005687675,LEVA FISSA,FinecoBank,Moncler,Singolo,26/01/2026,SeDeX
 IT0005686644,LEVA FISSA,FinecoBank,NEXI,Singolo,26/01/2026,SeDeX
-IT0005687022,LEVA FISSA,FinecoBank,Terna,Singolo,26/01/2026,SeDeX
+IT0005687014,LEVA FISSA,FinecoBank,Terna,Singolo,26/01/2026,SeDeX
 IT0005687634,LEVA FISSA,FinecoBank,Lottomatica,Singolo,26/01/2026,SeDeX
-NLBNPIT34SF3,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,26/01/2026,SeDeX
+DE000UN3PVW0,TURBO,Unicredit,Singolo Sottostante,Singolo,26/01/2026,SeDeX
 IT0005686842,LEVA FISSA,FinecoBank,Recordati,Singolo,26/01/2026,SeDeX
 IT0005686826,LEVA FISSA,FinecoBank,HERA,Singolo,26/01/2026,SeDeX
 IT0005686909,LEVA FISSA,FinecoBank,Saipem,Singolo,26/01/2026,SeDeX
 IT0005687683,LEVA FISSA,FinecoBank,Moncler,Singolo,26/01/2026,SeDeX
 IT0005686651,LEVA FISSA,FinecoBank,NEXI,Singolo,26/01/2026,SeDeX
-IT0005687014,LEVA FISSA,FinecoBank,Terna,Singolo,26/01/2026,SeDeX
+IT0005687022,LEVA FISSA,FinecoBank,Terna,Singolo,26/01/2026,SeDeX
 IT0005687642,LEVA FISSA,FinecoBank,Lottomatica,Singolo,26/01/2026,SeDeX
-NLBNPIT34SH9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,26/01/2026,SeDeX
+NLBNPIT34SM9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,26/01/2026,SeDeX
 IT0005687592,LEVA FISSA,FinecoBank,Unipol Gruppo Finanziario,Singolo,26/01/2026,SeDeX
 IT0005687576,LEVA FISSA,FinecoBank,Iveco,Singolo,26/01/2026,SeDeX
 IT0005686701,LEVA FISSA,FinecoBank,Poste Italiane,Singolo,26/01/2026,SeDeX
@@ -1489,21 +1489,21 @@ IT0005686768,LEVA FISSA,FinecoBank,Prysmian,Singolo,26/01/2026,SeDeX
 IT0005687600,LEVA FISSA,FinecoBank,Unipol Gruppo Finanziario,Singolo,26/01/2026,SeDeX
 IT0005687584,LEVA FISSA,FinecoBank,Iveco,Singolo,26/01/2026,SeDeX
 IT0005686719,LEVA FISSA,FinecoBank,Poste Italiane,Singolo,26/01/2026,SeDeX
-NLBNPIT34SK3,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,26/01/2026,SeDeX
+NLBNPIT34SR8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,26/01/2026,SeDeX
 IT0005686958,LEVA FISSA,FinecoBank,Snam,Singolo,26/01/2026,SeDeX
 IT0005686776,LEVA FISSA,FinecoBank,Prysmian,Singolo,26/01/2026,SeDeX
 IT0005686966,LEVA FISSA,FinecoBank,Snam,Singolo,26/01/2026,SeDeX
-NLBNPIT34SM9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,26/01/2026,SeDeX
-NLBNPIT34SR8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,26/01/2026,SeDeX
 NLBNPIT34SZ1,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,26/01/2026,SeDeX
 NLBNPIT34S61,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,26/01/2026,SeDeX
 NLBNPIT34S79,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,26/01/2026,SeDeX
 NLBNPIT34S95,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,26/01/2026,SeDeX
+NLBNPIT34SF3,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,26/01/2026,SeDeX
+NLBNPIT34SH9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,26/01/2026,SeDeX
+NLBNPIT34SK3,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,26/01/2026,SeDeX
 NLBNPIT34SA4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,26/01/2026,SeDeX
 NLBNPIT34SB2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,26/01/2026,SeDeX
 NLBNPIT34SE6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,26/01/2026,SeDeX
-IT0005686669,LEVA FISSA,FinecoBank,Amplifon,Singolo,26/01/2026,SeDeX
-IT0005686677,LEVA FISSA,FinecoBank,Amplifon,Singolo,26/01/2026,SeDeX
+DE000UN3Q4M1,TURBO,Unicredit,Singolo Sottostante,Singolo,26/01/2026,SeDeX
 DE000VJ3YA33,TURBO,Vontobel,Singolo Sottostante,Singolo,26/01/2026,SeDeX
 DE000VJ3YA41,TURBO,Vontobel,Singolo Sottostante,Singolo,26/01/2026,SeDeX
 DE000VJ3YDV7,TURBO,Vontobel,Singolo Sottostante,Singolo,26/01/2026,SeDeX
@@ -1516,7 +1516,18 @@ DE000VJ3YFB4,TURBO,Vontobel,Singolo Sottostante,Singolo,26/01/2026,SeDeX
 IT0005686875,LEVA FISSA,FinecoBank,Fincantieri,Singolo,26/01/2026,SeDeX
 IT0005686883,LEVA FISSA,FinecoBank,Fincantieri,Singolo,26/01/2026,SeDeX
 NLBNPIT34S12,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,23/01/2026,SeDeX
-NLBNPIT34GP7,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,22/01/2026,SeDeX
+NLBNPIT34KB9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,22/01/2026,SeDeX
+NLBNPIT34KF0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,22/01/2026,SeDeX
+NLBNPIT34KM6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,22/01/2026,SeDeX
+NLBNPIT34K51,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,22/01/2026,SeDeX
+NLBNPIT34K85,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,22/01/2026,SeDeX
+NLBNPIT34KA1,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,22/01/2026,SeDeX
+NLBNPIT34JB1,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,22/01/2026,SeDeX
+NLBNPIT34JC9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,22/01/2026,SeDeX
+NLBNPIT34JF2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,22/01/2026,SeDeX
+NLBNPIT34JG0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,22/01/2026,SeDeX
+NLBNPIT34JL0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,22/01/2026,SeDeX
+NLBNPIT34JM8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,22/01/2026,SeDeX
 NLBNPIT34KO2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,22/01/2026,SeDeX
 NLBNPIT34KP9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,22/01/2026,SeDeX
 NLBNPIT34KR5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,22/01/2026,SeDeX
@@ -1524,29 +1535,16 @@ NLBNPIT34KU9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,22/01/2026,SeDeX
 NLBNPIT34KV7,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,22/01/2026,SeDeX
 NLBNPIT34KX3,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,22/01/2026,SeDeX
 NLBNPIT34KY1,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,22/01/2026,SeDeX
-NLBNPIT34K51,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,22/01/2026,SeDeX
-NLBNPIT34K85,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,22/01/2026,SeDeX
-NLBNPIT34KA1,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,22/01/2026,SeDeX
-NLBNPIT34KB9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,22/01/2026,SeDeX
-NLBNPIT34KF0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,22/01/2026,SeDeX
-NLBNPIT34KM6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,22/01/2026,SeDeX
+NLBNPIT34GP7,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,22/01/2026,SeDeX
+NLBNPIT34GQ5,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,22/01/2026,SeDeX
+NLBNPIT34GR3,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,22/01/2026,SeDeX
+NLBNPIT34GS1,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,22/01/2026,SeDeX
 NLBNPIT34GT9,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,22/01/2026,SeDeX
 NLBNPIT34IZ2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,22/01/2026,SeDeX
 NLBNPIT34J05,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,22/01/2026,SeDeX
 NLBNPIT34J21,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,22/01/2026,SeDeX
 NLBNPIT34J39,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,22/01/2026,SeDeX
 NLBNPIT34J54,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,22/01/2026,SeDeX
-NLBNPIT34JB1,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,22/01/2026,SeDeX
-NLBNPIT34JC9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,22/01/2026,SeDeX
-NLBNPIT34JF2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,22/01/2026,SeDeX
-NLBNPIT34JG0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,22/01/2026,SeDeX
-NLBNPIT34JL0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,22/01/2026,SeDeX
-NLBNPIT34JM8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,22/01/2026,SeDeX
-NLBNPIT34GQ5,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,22/01/2026,SeDeX
-NLBNPIT34GR3,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,22/01/2026,SeDeX
-NLBNPIT34GS1,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,22/01/2026,SeDeX
-DE000FD6ZZ10,LEVA FISSA,Societe Generale,Singolo Sottostante,Singolo,22/01/2026,SeDeX
-DE000FD6ZZ36,LEVA FISSA,Societe Generale,Singolo Sottostante,Singolo,22/01/2026,SeDeX
 DE000UN3JAU1,TURBO,Unicredit,Singolo Sottostante,Singolo,22/01/2026,SeDeX
 DE000UN3JAZ0,TURBO,Unicredit,Singolo Sottostante,Singolo,22/01/2026,SeDeX
 DE000UN3JB01,TURBO,Unicredit,Singolo Sottostante,Singolo,22/01/2026,SeDeX
@@ -1557,139 +1555,168 @@ DE000UN3JBM6,TURBO,Unicredit,Singolo Sottostante,Singolo,22/01/2026,SeDeX
 DE000UN3JBN4,TURBO,Unicredit,Singolo Sottostante,Singolo,22/01/2026,SeDeX
 DE000UN3JBP9,TURBO,Unicredit,Singolo Sottostante,Singolo,22/01/2026,SeDeX
 DE000UN3JBQ7,TURBO,Unicredit,Singolo Sottostante,Singolo,22/01/2026,SeDeX
+DE000VJ3RHF5,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,22/01/2026,SeDeX
+DE000VJ3RHG3,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,22/01/2026,SeDeX
+DE000VJ3RHH1,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,22/01/2026,SeDeX
+DE000VJ3RHJ7,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,22/01/2026,SeDeX
+DE000VJ3RHK5,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,22/01/2026,SeDeX
+DE000VJ3RKL7,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,22/01/2026,SeDeX
+DE000VJ3RKM5,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,22/01/2026,SeDeX
+DE000VJ3RHC2,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,22/01/2026,SeDeX
+DE000VJ3RHD0,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,22/01/2026,SeDeX
+DE000VJ3RHE8,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,22/01/2026,SeDeX
 DE000VJ3Q5B7,TURBO,Vontobel,Singolo Sottostante,Singolo,22/01/2026,SeDeX
-DE000VJ3Q5D3,TURBO,Vontobel,Singolo Sottostante,Singolo,22/01/2026,SeDeX
-DE000VJ3Q5E1,TURBO,Vontobel,Singolo Sottostante,Singolo,22/01/2026,SeDeX
-DE000VJ3RAL8,TURBO,Vontobel,Singolo Sottostante,Singolo,22/01/2026,SeDeX
 DE000VJ3RCX9,TURBO,Vontobel,Singolo Sottostante,Singolo,22/01/2026,SeDeX
 DE000VJ3RCZ4,TURBO,Vontobel,Singolo Sottostante,Singolo,22/01/2026,SeDeX
 DE000VJ3RD21,TURBO,Vontobel,Singolo Sottostante,Singolo,22/01/2026,SeDeX
+DE000VJ3Q5D3,TURBO,Vontobel,Singolo Sottostante,Singolo,22/01/2026,SeDeX
+DE000VJ3Q5E1,TURBO,Vontobel,Singolo Sottostante,Singolo,22/01/2026,SeDeX
+DE000VJ3RAL8,TURBO,Vontobel,Singolo Sottostante,Singolo,22/01/2026,SeDeX
 DE000VJ3RAM6,TURBO,Vontobel,Singolo Sottostante,Singolo,22/01/2026,SeDeX
 DE000VJ3RAQ7,TURBO,Vontobel,Singolo Sottostante,Singolo,22/01/2026,SeDeX
 DE000VJ3RC48,TURBO,Vontobel,Singolo Sottostante,Singolo,22/01/2026,SeDeX
 DE000VJ3RCQ3,TURBO,Vontobel,Singolo Sottostante,Singolo,22/01/2026,SeDeX
 DE000VJ3RCR1,TURBO,Vontobel,Singolo Sottostante,Singolo,22/01/2026,SeDeX
 DE000VJ3RCV3,TURBO,Vontobel,Singolo Sottostante,Singolo,22/01/2026,SeDeX
-DE000VJ3RDU3,TURBO,Vontobel,Singolo Sottostante,Singolo,22/01/2026,SeDeX
-DE000VJ3RG28,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,22/01/2026,SeDeX
-DE000VJ3RG36,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,22/01/2026,SeDeX
-DE000VJ3RG51,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,22/01/2026,SeDeX
-DE000VJ3RG69,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,22/01/2026,SeDeX
-DE000VJ3RG77,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,22/01/2026,SeDeX
 DE000VJ3RD54,TURBO,Vontobel,Singolo Sottostante,Singolo,22/01/2026,SeDeX
 DE000VJ3RDA5,TURBO,Vontobel,Singolo Sottostante,Singolo,22/01/2026,SeDeX
 DE000VJ3RDR9,TURBO,Vontobel,Singolo Sottostante,Singolo,22/01/2026,SeDeX
+DE000VJ3RG51,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,22/01/2026,SeDeX
+DE000VJ3RG69,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,22/01/2026,SeDeX
+DE000VJ3RG77,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,22/01/2026,SeDeX
 DE000VJ3RG93,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,22/01/2026,SeDeX
 DE000VJ3RHA6,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,22/01/2026,SeDeX
 DE000VJ3RHB4,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,22/01/2026,SeDeX
-DE000VJ3RHF5,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,22/01/2026,SeDeX
-DE000VJ3RHG3,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,22/01/2026,SeDeX
-DE000VJ3RHH1,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,22/01/2026,SeDeX
-DE000VJ3RHC2,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,22/01/2026,SeDeX
-DE000VJ3RHD0,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,22/01/2026,SeDeX
-DE000VJ3RHE8,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,22/01/2026,SeDeX
-DE000VJ3RHJ7,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,22/01/2026,SeDeX
-DE000VJ3RHK5,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,22/01/2026,SeDeX
-DE000VJ3RKL7,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,22/01/2026,SeDeX
-DE000VJ3RKM5,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,22/01/2026,SeDeX
-DE000UN3JNR0,TURBO,Unicredit,Singolo Sottostante,Singolo,22/01/2026,SeDeX
-DE000UN3JNS8,TURBO,Unicredit,Singolo Sottostante,Singolo,22/01/2026,SeDeX
-DE000UN3JNU4,TURBO,Unicredit,Singolo Sottostante,Singolo,22/01/2026,SeDeX
-DE000UN3JNV2,TURBO,Unicredit,Singolo Sottostante,Singolo,22/01/2026,SeDeX
-DE000UN3JNW0,TURBO,Unicredit,Singolo Sottostante,Singolo,22/01/2026,SeDeX
-DE000UN3K6M2,TURBO,Unicredit,Singolo Sottostante,Singolo,22/01/2026,SeDeX
+DE000VJ3RDU3,TURBO,Vontobel,Singolo Sottostante,Singolo,22/01/2026,SeDeX
+DE000VJ3RG28,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,22/01/2026,SeDeX
+DE000VJ3RG36,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,22/01/2026,SeDeX
+DE000UN3KF95,TURBO,Unicredit,Singolo Sottostante,Singolo,22/01/2026,SeDeX
+DE000UN3KFA0,TURBO,Unicredit,Singolo Sottostante,Singolo,22/01/2026,SeDeX
+DE000UN3JBS3,TURBO,Unicredit,Singolo Sottostante,Singolo,22/01/2026,SeDeX
+DE000UN3JNE8,TURBO,Unicredit,Singolo Sottostante,Singolo,22/01/2026,SeDeX
+DE000UN3JNF5,TURBO,Unicredit,Singolo Sottostante,Singolo,22/01/2026,SeDeX
+DE000UN3JNG3,TURBO,Unicredit,Singolo Sottostante,Singolo,22/01/2026,SeDeX
 DE000UN3JNH1,TURBO,Unicredit,Singolo Sottostante,Singolo,22/01/2026,SeDeX
 DE000UN3JNJ7,TURBO,Unicredit,Singolo Sottostante,Singolo,22/01/2026,SeDeX
 DE000UN3JNK5,TURBO,Unicredit,Singolo Sottostante,Singolo,22/01/2026,SeDeX
 DE000UN3JNL3,TURBO,Unicredit,Singolo Sottostante,Singolo,22/01/2026,SeDeX
 DE000UN3JNN9,TURBO,Unicredit,Singolo Sottostante,Singolo,22/01/2026,SeDeX
 DE000UN3JNQ2,TURBO,Unicredit,Singolo Sottostante,Singolo,22/01/2026,SeDeX
-DE000UN3JNE8,TURBO,Unicredit,Singolo Sottostante,Singolo,22/01/2026,SeDeX
-DE000UN3JNF5,TURBO,Unicredit,Singolo Sottostante,Singolo,22/01/2026,SeDeX
-DE000UN3JNG3,TURBO,Unicredit,Singolo Sottostante,Singolo,22/01/2026,SeDeX
-DE000UN3JBR5,TURBO,Unicredit,Singolo Sottostante,Singolo,22/01/2026,SeDeX
-DE000UN3JBS3,TURBO,Unicredit,Singolo Sottostante,Singolo,22/01/2026,SeDeX
+DE000UN3JNR0,TURBO,Unicredit,Singolo Sottostante,Singolo,22/01/2026,SeDeX
+DE000UN3JNS8,TURBO,Unicredit,Singolo Sottostante,Singolo,22/01/2026,SeDeX
+DE000UN3JNU4,TURBO,Unicredit,Singolo Sottostante,Singolo,22/01/2026,SeDeX
+DE000UN3JNV2,TURBO,Unicredit,Singolo Sottostante,Singolo,22/01/2026,SeDeX
+DE000UN3JNW0,TURBO,Unicredit,Singolo Sottostante,Singolo,22/01/2026,SeDeX
+DE000UN3K6M2,TURBO,Unicredit,Singolo Sottostante,Singolo,22/01/2026,SeDeX
 DE000UN3K6N0,TURBO,Unicredit,Singolo Sottostante,Singolo,22/01/2026,SeDeX
 DE000UN3K6Q3,TURBO,Unicredit,Singolo Sottostante,Singolo,22/01/2026,SeDeX
 DE000UN3K6R1,TURBO,Unicredit,Singolo Sottostante,Singolo,22/01/2026,SeDeX
-DE000UN3K7R9,TURBO,Unicredit,Singolo Sottostante,Singolo,22/01/2026,SeDeX
-DE000UN3K7S7,TURBO,Unicredit,Singolo Sottostante,Singolo,22/01/2026,SeDeX
-DE000UN3KF95,TURBO,Unicredit,Singolo Sottostante,Singolo,22/01/2026,SeDeX
 DE000UN3K6S9,TURBO,Unicredit,Singolo Sottostante,Singolo,22/01/2026,SeDeX
 DE000UN3K7M0,TURBO,Unicredit,Singolo Sottostante,Singolo,22/01/2026,SeDeX
 DE000UN3K7Q1,TURBO,Unicredit,Singolo Sottostante,Singolo,22/01/2026,SeDeX
-DE000UN3KFA0,TURBO,Unicredit,Singolo Sottostante,Singolo,22/01/2026,SeDeX
-DE000VJ3MQB6,TURBO,Vontobel,Singolo Sottostante,Singolo,21/01/2026,SeDeX
-DE000VJ3MQC4,TURBO,Vontobel,Singolo Sottostante,Singolo,21/01/2026,SeDeX
-DE000VJ3MQG5,TURBO,Vontobel,Singolo Sottostante,Singolo,21/01/2026,SeDeX
+DE000UN3K7R9,TURBO,Unicredit,Singolo Sottostante,Singolo,22/01/2026,SeDeX
+DE000UN3K7S7,TURBO,Unicredit,Singolo Sottostante,Singolo,22/01/2026,SeDeX
+DE000UN3JBR5,TURBO,Unicredit,Singolo Sottostante,Singolo,22/01/2026,SeDeX
+DE000FD6ZZ10,LEVA FISSA,Societe Generale,Singolo Sottostante,Singolo,22/01/2026,SeDeX
+DE000FD6ZZ36,LEVA FISSA,Societe Generale,Singolo Sottostante,Singolo,22/01/2026,SeDeX
+NLBNPIT34BD4,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,21/01/2026,SeDeX
+NLBNPIT34DW0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,21/01/2026,SeDeX
+NLBNPIT34E59,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,21/01/2026,SeDeX
+NLBNPIT34BA0,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,21/01/2026,SeDeX
+NLBNPIT34BB8,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,21/01/2026,SeDeX
+NLBNPIT34BC6,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,21/01/2026,SeDeX
+NLBNPIT34B86,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,21/01/2026,SeDeX
+NLBNPIT34B94,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,21/01/2026,SeDeX
+DE000VJ3MQN1,TURBO,Vontobel,Singolo Sottostante,Singolo,21/01/2026,SeDeX
+DE000VJ3MQS0,TURBO,Vontobel,Singolo Sottostante,Singolo,21/01/2026,SeDeX
 DE000VJ3MQJ9,TURBO,Vontobel,Singolo Sottostante,Singolo,21/01/2026,SeDeX
 DE000VJ3MQL5,TURBO,Vontobel,Singolo Sottostante,Singolo,21/01/2026,SeDeX
 DE000VJ3MQM3,TURBO,Vontobel,Singolo Sottostante,Singolo,21/01/2026,SeDeX
-DE000VJ3MQN1,TURBO,Vontobel,Singolo Sottostante,Singolo,21/01/2026,SeDeX
-DE000VJ3MQS0,TURBO,Vontobel,Singolo Sottostante,Singolo,21/01/2026,SeDeX
 DE000VJ3MPF9,TURBO,Vontobel,Singolo Sottostante,Singolo,21/01/2026,SeDeX
 DE000VJ3MPX2,TURBO,Vontobel,Singolo Sottostante,Singolo,21/01/2026,SeDeX
 DE000VJ3MQA8,TURBO,Vontobel,Singolo Sottostante,Singolo,21/01/2026,SeDeX
-DE000VJ3MP97,TURBO,Vontobel,Singolo Sottostante,Singolo,21/01/2026,SeDeX
-DE000VJ3MPC6,TURBO,Vontobel,Singolo Sottostante,Singolo,21/01/2026,SeDeX
-DE000VJ3MPD4,TURBO,Vontobel,Singolo Sottostante,Singolo,21/01/2026,SeDeX
-DE000VJ3MNL2,TURBO,Vontobel,Singolo Sottostante,Singolo,21/01/2026,SeDeX
-DE000VJ3MNQ1,TURBO,Vontobel,Singolo Sottostante,Singolo,21/01/2026,SeDeX
-DE000VJ3MNT5,TURBO,Vontobel,Singolo Sottostante,Singolo,21/01/2026,SeDeX
-DE000VJ3MP63,TURBO,Vontobel,Singolo Sottostante,Singolo,21/01/2026,SeDeX
-DE000VJ3MP71,TURBO,Vontobel,Singolo Sottostante,Singolo,21/01/2026,SeDeX
-DE000VJ3MP89,TURBO,Vontobel,Singolo Sottostante,Singolo,21/01/2026,SeDeX
-DE000VJ3MM74,TURBO,Vontobel,Singolo Sottostante,Singolo,21/01/2026,SeDeX
-DE000VJ3MM82,TURBO,Vontobel,Singolo Sottostante,Singolo,21/01/2026,SeDeX
+DE000VJ3MQB6,TURBO,Vontobel,Singolo Sottostante,Singolo,21/01/2026,SeDeX
+DE000VJ3MQC4,TURBO,Vontobel,Singolo Sottostante,Singolo,21/01/2026,SeDeX
+DE000VJ3MQG5,TURBO,Vontobel,Singolo Sottostante,Singolo,21/01/2026,SeDeX
 DE000VJ3MN40,TURBO,Vontobel,Singolo Sottostante,Singolo,21/01/2026,SeDeX
 DE000VJ3MNE7,TURBO,Vontobel,Singolo Sottostante,Singolo,21/01/2026,SeDeX
 DE000VJ3MNF4,TURBO,Vontobel,Singolo Sottostante,Singolo,21/01/2026,SeDeX
 DE000VJ3MNG2,TURBO,Vontobel,Singolo Sottostante,Singolo,21/01/2026,SeDeX
 DE000VJ3MNH0,TURBO,Vontobel,Singolo Sottostante,Singolo,21/01/2026,SeDeX
 DE000VJ3MNK4,TURBO,Vontobel,Singolo Sottostante,Singolo,21/01/2026,SeDeX
-NLBNPIT34EO5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,21/01/2026,SeDeX
-NLBNPIT34FH6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,21/01/2026,SeDeX
-NLBNPIT34FI4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,21/01/2026,SeDeX
-NLBNPIT34FN4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,21/01/2026,SeDeX
-NLBNPIT34FR5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,21/01/2026,SeDeX
-NLBNPIT34FW5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,21/01/2026,SeDeX
+DE000VJ3MNL2,TURBO,Vontobel,Singolo Sottostante,Singolo,21/01/2026,SeDeX
+DE000VJ3MNQ1,TURBO,Vontobel,Singolo Sottostante,Singolo,21/01/2026,SeDeX
+DE000VJ3MNT5,TURBO,Vontobel,Singolo Sottostante,Singolo,21/01/2026,SeDeX
+DE000VJ3MP63,TURBO,Vontobel,Singolo Sottostante,Singolo,21/01/2026,SeDeX
+DE000VJ3MP71,TURBO,Vontobel,Singolo Sottostante,Singolo,21/01/2026,SeDeX
+DE000VJ3MP89,TURBO,Vontobel,Singolo Sottostante,Singolo,21/01/2026,SeDeX
+DE000VJ3MP97,TURBO,Vontobel,Singolo Sottostante,Singolo,21/01/2026,SeDeX
+DE000VJ3MPC6,TURBO,Vontobel,Singolo Sottostante,Singolo,21/01/2026,SeDeX
+DE000VJ3MPD4,TURBO,Vontobel,Singolo Sottostante,Singolo,21/01/2026,SeDeX
+NLBNPIT34GL6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,21/01/2026,SeDeX
+NLBNPIT34GM4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,21/01/2026,SeDeX
 NLBNPIT34FX3,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,21/01/2026,SeDeX
 NLBNPIT34G16,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,21/01/2026,SeDeX
 NLBNPIT34G65,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,21/01/2026,SeDeX
-NLBNPIT34G73,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,21/01/2026,SeDeX
-NLBNPIT34G99,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,21/01/2026,SeDeX
-NLBNPIT34GI2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,21/01/2026,SeDeX
-NLBNPIT34GL6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,21/01/2026,SeDeX
-NLBNPIT34GM4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,21/01/2026,SeDeX
-NLBNPIT34BA0,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,21/01/2026,SeDeX
-NLBNPIT34BB8,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,21/01/2026,SeDeX
-NLBNPIT34BC6,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,21/01/2026,SeDeX
-NLBNPIT34B86,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,21/01/2026,SeDeX
-NLBNPIT34B94,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,21/01/2026,SeDeX
 NLBNPIT34E91,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,21/01/2026,SeDeX
 NLBNPIT34EA4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,21/01/2026,SeDeX
 NLBNPIT34EF3,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,21/01/2026,SeDeX
 NLBNPIT34EJ5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,21/01/2026,SeDeX
 NLBNPIT34EM9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,21/01/2026,SeDeX
 NLBNPIT34EN7,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,21/01/2026,SeDeX
-NLBNPIT34BD4,LEVA FISSA,Bnp Paribas,Singolo Sottostante,Singolo,21/01/2026,SeDeX
-NLBNPIT34DW0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,21/01/2026,SeDeX
-NLBNPIT34E59,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,21/01/2026,SeDeX
+NLBNPIT34EO5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,21/01/2026,SeDeX
+NLBNPIT34FH6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,21/01/2026,SeDeX
+NLBNPIT34FI4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,21/01/2026,SeDeX
+NLBNPIT34FN4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,21/01/2026,SeDeX
+NLBNPIT34FR5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,21/01/2026,SeDeX
+NLBNPIT34FW5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,21/01/2026,SeDeX
+NLBNPIT34G73,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,21/01/2026,SeDeX
+NLBNPIT34G99,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,21/01/2026,SeDeX
+NLBNPIT34GI2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,21/01/2026,SeDeX
+DE000VJ3MM74,TURBO,Vontobel,Singolo Sottostante,Singolo,21/01/2026,SeDeX
+DE000VJ3MM82,TURBO,Vontobel,Singolo Sottostante,Singolo,21/01/2026,SeDeX
 IT0005686560,TURBO,FinecoBank,CAC40,Singolo,20/01/2026,SeDeX
-NLBNPIT345O5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,20/01/2026,SeDeX
+DE000VJ3JHX5,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,20/01/2026,SeDeX
 IT0005686578,TURBO,FinecoBank,CAC40,Singolo,20/01/2026,SeDeX
+DE000VJ3JHU1,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,20/01/2026,SeDeX
+DE000VJ3JHV9,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,20/01/2026,SeDeX
+DE000VJ3JHW7,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,20/01/2026,SeDeX
+DE000VJ3JGZ2,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,20/01/2026,SeDeX
+DE000VJ3JHS5,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,20/01/2026,SeDeX
+DE000VJ3JHT3,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,20/01/2026,SeDeX
+DE000VJ3JG02,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,20/01/2026,SeDeX
+DE000VJ3JG10,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,20/01/2026,SeDeX
+DE000VJ3JGX7,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,20/01/2026,SeDeX
+DE000VJ3JGY5,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,20/01/2026,SeDeX
+DE000VJ3H7Y6,TURBO,Vontobel,Singolo Sottostante,Singolo,20/01/2026,SeDeX
+DE000VJ3H8G1,TURBO,Vontobel,Singolo Sottostante,Singolo,20/01/2026,SeDeX
+DE000VJ3H905,TURBO,Vontobel,Singolo Sottostante,Singolo,20/01/2026,SeDeX
+DE000VJ3H9S4,TURBO,Vontobel,Singolo Sottostante,Singolo,20/01/2026,SeDeX
+DE000VJ3H9U0,TURBO,Vontobel,Singolo Sottostante,Singolo,20/01/2026,SeDeX
+DE000VJ3JAE0,TURBO,Vontobel,Singolo Sottostante,Singolo,20/01/2026,SeDeX
+DE000VJ3JAH3,TURBO,Vontobel,Singolo Sottostante,Singolo,20/01/2026,SeDeX
+NLBNPIT345V0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,20/01/2026,SeDeX
+NLBNPIT345O5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,20/01/2026,SeDeX
 NLBNPIT345S6,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,20/01/2026,SeDeX
 NLBNPIT345U2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,20/01/2026,SeDeX
-NLBNPIT345V0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,20/01/2026,SeDeX
 NLBNPIT34533,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,20/01/2026,SeDeX
 NLBNPIT34582,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,20/01/2026,SeDeX
 NLBNPIT345B2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,20/01/2026,SeDeX
 NLBNPIT345I7,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,20/01/2026,SeDeX
 NLBNPIT345L1,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,20/01/2026,SeDeX
 NLBNPIT345M9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,20/01/2026,SeDeX
+NLBNPIT344M2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,20/01/2026,SeDeX
+NLBNPIT344N0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,20/01/2026,SeDeX
+NLBNPIT344P5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,20/01/2026,SeDeX
 NLBNPIT344R1,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,20/01/2026,SeDeX
 NLBNPIT344Y7,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,20/01/2026,SeDeX
 NLBNPIT34517,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,20/01/2026,SeDeX
+NLBNPIT34483,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,20/01/2026,SeDeX
+NLBNPIT344B5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,20/01/2026,SeDeX
+NLBNPIT344C3,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,20/01/2026,SeDeX
+NLBNPIT344I0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,20/01/2026,SeDeX
+NLBNPIT344J8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,20/01/2026,SeDeX
+NLBNPIT344L4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,20/01/2026,SeDeX
 NLBNPIT342V7,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,20/01/2026,SeDeX
 NLBNPIT342W5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,20/01/2026,SeDeX
 NLBNPIT342X3,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,20/01/2026,SeDeX
@@ -1700,41 +1727,14 @@ NLBNPIT343E1,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,20/01/2026,SeDeX
 NLBNPIT343F8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,20/01/2026,SeDeX
 NLBNPIT343H4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,20/01/2026,SeDeX
 NLBNPIT34467,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,20/01/2026,SeDeX
-NLBNPIT34483,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,20/01/2026,SeDeX
-NLBNPIT344B5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,20/01/2026,SeDeX
-NLBNPIT344C3,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,20/01/2026,SeDeX
-NLBNPIT344I0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,20/01/2026,SeDeX
-NLBNPIT344J8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,20/01/2026,SeDeX
-NLBNPIT344L4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,20/01/2026,SeDeX
-NLBNPIT344M2,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,20/01/2026,SeDeX
-NLBNPIT344N0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,20/01/2026,SeDeX
-NLBNPIT344P5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,20/01/2026,SeDeX
-DE000VJ3H7Y6,TURBO,Vontobel,Singolo Sottostante,Singolo,20/01/2026,SeDeX
-DE000VJ3H8G1,TURBO,Vontobel,Singolo Sottostante,Singolo,20/01/2026,SeDeX
-DE000VJ3H905,TURBO,Vontobel,Singolo Sottostante,Singolo,20/01/2026,SeDeX
-DE000VJ3H9S4,TURBO,Vontobel,Singolo Sottostante,Singolo,20/01/2026,SeDeX
-DE000VJ3H9U0,TURBO,Vontobel,Singolo Sottostante,Singolo,20/01/2026,SeDeX
-DE000VJ3JAE0,TURBO,Vontobel,Singolo Sottostante,Singolo,20/01/2026,SeDeX
-DE000VJ3JAH3,TURBO,Vontobel,Singolo Sottostante,Singolo,20/01/2026,SeDeX
-DE000VJ3JHU1,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,20/01/2026,SeDeX
-DE000VJ3JHV9,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,20/01/2026,SeDeX
-DE000VJ3JHW7,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,20/01/2026,SeDeX
-DE000VJ3JHX5,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,20/01/2026,SeDeX
-DE000VJ3JG10,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,20/01/2026,SeDeX
-DE000VJ3JGX7,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,20/01/2026,SeDeX
-DE000VJ3JGY5,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,20/01/2026,SeDeX
-DE000VJ3JGZ2,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,20/01/2026,SeDeX
-DE000VJ3JHS5,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,20/01/2026,SeDeX
-DE000VJ3JHT3,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,20/01/2026,SeDeX
-DE000VJ3JG02,LEVA FISSA,Vontobel,Singolo Sottostante,Singolo,20/01/2026,SeDeX
-DE000VJ3EF08,TURBO,Vontobel,Singolo Sottostante,Singolo,19/01/2026,SeDeX
-DE000VJ3EF65,TURBO,Vontobel,Singolo Sottostante,Singolo,19/01/2026,SeDeX
-DE000VJ3EF73,TURBO,Vontobel,Singolo Sottostante,Singolo,19/01/2026,SeDeX
-NLBNPIT341O4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,19/01/2026,SeDeX
-NLBNPIT341P1,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,19/01/2026,SeDeX
-NLBNPIT341Q9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,19/01/2026,SeDeX
 NLBNPIT341R7,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,19/01/2026,SeDeX
 NLBNPIT341S5,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,19/01/2026,SeDeX
 NLBNPIT34194,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,19/01/2026,SeDeX
 NLBNPIT341L0,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,19/01/2026,SeDeX
 NLBNPIT341M8,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,19/01/2026,SeDeX
+NLBNPIT341O4,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,19/01/2026,SeDeX
+NLBNPIT341P1,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,19/01/2026,SeDeX
+NLBNPIT341Q9,TURBO,Bnp Paribas,Singolo Sottostante,Singolo,19/01/2026,SeDeX
+DE000VJ3EF73,TURBO,Vontobel,Singolo Sottostante,Singolo,19/01/2026,SeDeX
+DE000VJ3EF08,TURBO,Vontobel,Singolo Sottostante,Singolo,19/01/2026,SeDeX
+DE000VJ3EF65,TURBO,Vontobel,Singolo Sottostante,Singolo,19/01/2026,SeDeX
