@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """
-Scraper CED per isin-research.com/certificati - Solo RECENTI (30gg) con sottostanti categorizzati.
-Playwright + BS4. Output: certificates-recenti.json/csv
+Scraper CED v15 per isin-research.com - SOLO RECENTI (30gg) con categoria sottostanti
 """
 
 import asyncio
@@ -10,7 +9,6 @@ from playwright.async_api import async_playwright
 from bs4 import BeautifulSoup
 from datetime import datetime, timedelta
 import json
-import sys
 import os
 import time
 
@@ -36,7 +34,8 @@ async def classify_sottostante(sott_str):
     return 'Singolo'  # Azioni/commodity
 
 async def scrape_ced(page):
-    """Scraping principali tabella nuove emissioni."""
+    """Scraping nuove emissioni CED."""
+    print(f"📡 Scraping {URL_NUOVE} (recenti da {cutoff_date.strftime(DATE_FORMAT)})")
     await page.goto(URL_NUOVE, wait_until='networkidle')
     await page.wait_for_selector('table', timeout=30000)
     
@@ -45,7 +44,7 @@ async def scrape_ced(page):
     rows = soup.select('table tr')[1:]  # Skip header
     
     certificati = []
-    for row in rows:
+    for i, row in enumerate(rows):
         cols = [col.get_text(strip=True) for col in row.find_all(['td', 'th'])]
         if len(cols) < 6:
             continue
@@ -64,10 +63,10 @@ async def scrape_ced(page):
                     'Recente': 'Sì'
                 }
                 certificati.append(cert)
-                print(f"Aggiunto: {isin} - {cert['Categoria_Sottostante']}")
-        except ValueError:
-            continue  # Data invalida
-        time.sleep(0.5)  # Delay gentile
+                print(f"✅ {len(certificati)}: {isin} - {cert['Categoria_Sottostante']}")
+        except ValueError as e:
+            print(f"⚠️ Skip riga {i}: {e}")
+            continue
     
     return certificati
 
@@ -82,17 +81,17 @@ async def main():
         certificati_recenti = await scrape_ced(page)
         await browser.close()
         
-        # Output
+        # Output per sito
         df = pd.DataFrame(certificati_recenti)
         df.to_json('certificates-recenti.json', orient='records', date_format='iso', indent=2)
         df.to_csv('certificates-recenti.csv', index=False)
         
-        print(f"🏆 Scraping completato: {len(certificati_recenti)} certificati recenti salvati.")
-        print(f"Cutoff: {cutoff_date.strftime(DATE_FORMAT)}")
-        
-        # Compatibilità vecchio: salva anche all-json per sito
+        # Compatibilità vecchio formato
         with open('certificates-data.json', 'w') as f:
             json.dump(certificati_recenti, f, indent=2, ensure_ascii=False)
+        
+        print(f"🏆 COMPLETATO: {len(certificati_recenti)} certificati recenti salvati!")
+        print(f"📁 File: certificates-recenti.json/csv + certificates-data.json")
 
 if __name__ == '__main__':
     asyncio.run(main())
