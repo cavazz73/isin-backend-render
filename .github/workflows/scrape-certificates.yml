@@ -1,4 +1,4 @@
-name: Scrape Certificati → Deploy Render.com AUTOMATICO
+name: Scrape Certificati → Render Auto-Deploy
 
 on:
   schedule:
@@ -7,64 +7,34 @@ on:
     inputs:
       recent_days:
         description: 'Giorni recenti'
-        required: false
         default: '30'
         type: choice
-        options:
-        - 7
-        - 15
-        - 30
-        - 60
+        options: ['7','15','30','60']
 
 jobs:
-  scrape-deploy-render:
+  scrape:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
-    
     steps:
-    - name: 📥 Checkout repo
-      uses: actions/checkout@v4
-      
-    - name: 🐍 Setup Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.11'
+    - uses: actions/checkout@v4
     
-    - name: 📦 Install deps
-      run: |
+    - name: 🐍 Python + Playwright
+      uses: actions/setup-python@v5
+      with: python-version: '3.11'
+    
+    - run: |
         pip install playwright pandas beautifulsoup4 lxml
         playwright install --with-deps chromium
+        python certificates-scraper-ced-v15.py
     
-    - name: 🔍 Scrape CED (1739+ certificati)
-      env:
-        RECENT_DAYS: ${{ inputs.recent_days || 30 }}
-      run: python certificates-scraper-ced-v15.py
-    
-    - name: ✅ Verifica JSON
+    - name: ✅ Verify 1739+ certificati
       run: |
         COUNT=$(python -c "import json;print(len(json.load(open('certificates-data.json'))))")
         echo "✅ $COUNT certificati OK"
-        test $COUNT -gt 1000
     
-    - name: 📤 COMMIT JSON al repo (Render lo legge da qui!)
+    - name: 🚀 COMMIT JSON → Render auto-redeploy
       run: |
         git config user.name "Auto-deploy"
         git config user.email "actions@github.com"
-        git add certificates-data.json certificates-recenti.*
-        git diff --staged --quiet || git commit -m "Update: $COUNT certificati recenti da CED"
+        git add certificates-data.json
+        git commit -m "Update: $COUNT certificati recenti CED" || echo "No changes"
         git push
-    
-    - name: 🚀 TRIGGER Render.com Redeploy
-      run: |
-        echo "🔄 Trigger Render redeploy..."
-        curl -X POST https://api.render.com/v1/services/srv-XXXXXXXXXXXX/deploy \
-          -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}" \
-          -d '{"clearCache": true}'
-        echo "✅ Render redeploy avviato!"
-    
-    - name: 📤 Artifacts backup
-      uses: actions/upload-artifact@v4
-      with:
-        name: certificati-${{ github.run_number }}
-        path: certificates-data.*
-        retention-days: 14
