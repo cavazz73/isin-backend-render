@@ -42,16 +42,16 @@ jobs:
       env:
         RECENT_DAYS: ${{ inputs.recent_days || 30 }}
       run: |
-        ls -la *.py  # Debug: mostra file Python
+        ls -la *.py
         pwd
         python certificates-scraper-ced-v15.py
     
     - name: ✅ Verify output files
       run: |
-        ls -la certificates-*.*
+        ls -la certificates-* 
         test -f certificates-recenti.json
         test -s certificates-recenti.json
-        python -c "import json; data=json.load(open('certificates-recenti.json')); print(f'{len(data)} certificati OK')"
+        python -c "import json; data=json.load(open('certificates-recenti.json')); print(f'✅ {len(data)} certificati recenti OK')"
     
     - name: 📤 Upload artifacts
       uses: actions/upload-artifact@v4
@@ -61,12 +61,3 @@ jobs:
           certificates-recenti.*
           certificates-data.json
         retention-days: 7
-    
-    - name: 📱 Notify Discord (opzionale)
-      if: always()
-      uses: 8398a7/action-slack@v3
-      with:
-        status: ${{ job.status }}
-        fields: repo,message,commit,author,action,eventName,ref,workflow
-      env:
-        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
