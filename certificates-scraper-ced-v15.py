@@ -1,12 +1,10 @@
 #!/usr/bin/env python3
 """
-Scraper CED v17 - FIX DATE COLONNA 5 + Pandas Safe
-- Estrae tutte le nuove emissioni da CED
-- Filtra per ultimi RECENT_DAYS
-- Salva:
-  - certificates-recenti.json (lista pura)
-  - certificates-recenti.csv
-  - certificates-data.json (FORMATO BACKEND: success/count/certificates/metadata)
+Scraper CED v17 - dati mappati per API certificates-8.js
+- Campi generati compatibili con:
+  - c.isin, c.name, c.issuer, c.type
+  - c.underlying, c.underlying_name, c.underlying_category
+  - c.annual_coupon_yield, c.barrier, c.barrier_down
 """
 
 import asyncio
@@ -18,25 +16,26 @@ import os
 from datetime import datetime, timedelta
 import re
 
-RECENT_DAYS = int(os.getenv('RECENT_DAYS', '30'))
+RECENT_DAYS = int(os.getenv("RECENT_DAYS", "30"))
 cutoff_date = datetime.now() - timedelta(days=RECENT_DAYS)
-DATE_FORMAT = '%d/%m/%Y'
+DATE_FORMAT = "%d/%m/%Y"
 
 
-def classify_sottostante(sott_str):
-    if not sott_str or len(sott_str) < 2:
-        return 'Altro'
-    sott_str = sott_str.lower()
-    keywords = {
-        'Indici': ['indice', 'ftse', 'dax', 'spx', 'euro stoxx', 's&p', 'nasdaq'],
-        'Valute': ['eur', 'usd', 'gbp', 'chf', 'jpy', 'valuta', 'fx', 'cross'],
-        'Tassi': ['euribor', 'tasso', 'eonia', 'sonia', 'libor'],
-        'Credit Link': ['credit', 'cln', 'linked']
-    }
-    for cat, kws in keywords.items():
-        if any(kw in sott_str for kw in kws):
-            return cat
-    return 'Singolo'
+def classify_underlying_category(sott_str: str) -> str:
+    if not sott_str:
+        return "other"
+    s = sott_str.lower()
+    if "indice" in s or any(k in s for k in ["ftse", "dax", "sp", "euro stoxx", "nasdaq"]):
+        return "index"
+    if any(k in s for k in ["eur/", "usd/", "gbp/", "chf/", "jpy/", "fx", "valuta"]):
+        return "fx"
+    if any(k in s for k in ["euribor", "tasso", "rate", "eonia", "sonia", "libor"]):
+        return "rate"
+    if any(k in s for k in ["credit", "cln", "linked"]):
+        return "credit"
+    if any(k in s for k in ["basket", "worst of", "best of"]):
+        return "basket"
+    return "single"
 
 
 async def scrape_ced_completo(page):
@@ -50,7 +49,6 @@ async def scrape_ced_completo(page):
     print(f"📊 Totale righe: {len(rows)}")
 
     certificati = []
-    emittenti_unici = set()
 
     for i, row in enumerate(rows):
         cols = [col.get_text(strip=True) for col in row.find_all(["td", "th"])]
@@ -59,41 +57,60 @@ async def scrape_ced_completo(page):
         if len(cols) < 7 or cols[0] in ["ISIN", "NOME", "EMITTENTE", "SOTTOSTANTE"]:
             continue
 
-        # Validazione ISIN (12 char alfanumerici)
         isin = cols[0].strip()
         if not re.match(r"^[A-Z0-9]{12}$", isin):
             continue
 
         try:
-            # STRUTTURA: [0=ISIN,1=NOME,2=EMITTENTE,3=SOTT.,4=...,5=DATA,...]
+            # [0=ISIN,1=NOME,2=EMITTENTE,3=SOTT.,4=...,5=DATA,...]
             data_str = cols[5].strip()
             data_em = datetime.strptime(data_str, DATE_FORMAT)
 
-            if data_em >= cutoff_date:
-                nome = cols[1]
-                emittente = cols[2]
-                sottostante = cols[3]
+            if data_em < cutoff_date:
+                continue
 
-                emittenti_unici.add(emittente)
+            nome = cols[1].strip()
+            emittente = cols[2].strip()
+            sottostante = cols[3].strip()
 
-                cert = {
-                    "ISIN": isin,
-                    "Nome": nome,
-                    "Emittente": emittente,
-                    "Sottostante": sottostante,
-                    "Categoria_Sottostante": classify_sottostante(sottostante),
-                    "Data_Emissione": data_str,
-                    "Mercato": "SeDeX",
-                }
-                certificati.append(cert)
+            cert = {
+                # 🔹 campi base attesi dal backend/frontend
+                "isin": isin,
+                "name": nome,
+                "issuer": emittente,
+                "type": "Certificato",  # CED non dà sempre il tipo, placeholder generico
 
-                if len(certificati) % 50 == 0:
-                    print(f"⏳ {len(certificati)} recenti | Riga {i}")
+                # 🔹 sottostanti
+                "underlying": sottostante,
+                "underlying_name": sottostante,
+                "underlying_category": classify_underlying_category(sottostante),
+
+                # 🔹 date & mercato
+                "issue_date": data_str,
+                "maturity_date": None,  # non disponibile in questa pagina
+                "market": "SeDeX",
+
+                # 🔹 campi numerici richiesti ma non presenti qui
+                "price": None,
+                "strike": None,
+                "barrier": None,
+                "barrier_down": None,
+                "annual_coupon_yield": None,
+
+                # 🔹 per compatibilità con API
+                "scenario_analysis": None,
+                "source": "CED_nuove_emissioni",
+            }
+
+            certificati.append(cert)
+
+            if len(certificati) % 100 == 0:
+                print(f"⏳ {len(certificati)} recenti | Riga {i}")
 
         except (ValueError, IndexError):
             continue
 
-    print(f"🎯 EMITTENTI ({len(emittenti_unici)}): {sorted(emittenti_unici)}")
+    print(f"🎯 Totale certificati recenti: {len(certificati)}")
     return certificati
 
 
@@ -108,10 +125,10 @@ async def main():
         certificati_recenti = await scrape_ced_completo(page)
         await browser.close()
 
-        # DataFrame per analisi/CSV
+        # DataFrame per debug/CSV
         df = pd.DataFrame(certificati_recenti)
 
-        # 1) JSON lista pura (per debug / frontend)
+        # JSON lista pura (come prima)
         df.to_json(
             "certificates-recenti.json",
             orient="records",
@@ -120,10 +137,9 @@ async def main():
             force_ascii=False,
         )
 
-        # 2) CSV
         df.to_csv("certificates-recenti.csv", index=False)
 
-        # 3) JSON FORMATO BACKEND (quello che il tuo server si aspetta)
+        # JSON FORMATO ATTESO DA certificates-8.js
         backend_payload = {
             "success": True,
             "count": len(certificati_recenti),
@@ -131,9 +147,9 @@ async def main():
             "metadata": {
                 "timestamp": datetime.now().isoformat(),
                 "version": "ced-v17",
-                "sources": ["Certificati e Derivati"],
                 "recent_days": RECENT_DAYS,
                 "cutoff_date": cutoff_date.strftime(DATE_FORMAT),
+                "sources": ["Certificati e Derivati - nuove emissioni"],
             },
         }
 
@@ -145,10 +161,10 @@ async def main():
 
         if len(certificati_recenti) > 0:
             print("\n📊 Emittenti TOP 5:")
-            print(df["Emittente"].value_counts().head())
-            print("\n📊 Categorie:")
-            print(df["Categoria_Sottostante"].value_counts())
-            print(f"\n📋 Prime 3: {list(df['ISIN'])[:3]}")
+            print(df["issuer"].value_counts().head())
+            print("\n📊 Categorie sottostante:")
+            print(df["underlying_category"].value_counts())
+            print(f"\n📋 Prime 3 ISIN: {list(df['isin'])[:3]}")
         else:
             print("❌ Nessun certificato recente trovato")
 
