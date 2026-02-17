@@ -128,16 +128,41 @@ async def scrape_detail(page, isin: str) -> Dict:
 
 async def main():
     import sys
-    sys.stdout.reconfigure(line_buffering=True)  # Flush immediato per Actions
+    sys.stdout.reconfigure(line_buffering=True)
+    certificati = []
     try:
         async with async_playwright() as p:
-            browser = await p.chromium.launch(
-                headless=True,
-                args=[
-                    '--no-sandbox', '--disable-dev-shm-usage', '--disable-gpu',
-                    '--disable-extensions', '--disable-images', '--single-process',
-                    '--no-zygote', '--no-first-run'
-                ],
-                timeout=30000
-            )
-            context
+            browser = await p.chromium.launch(headless=True, args=['--no-sandbox', '--disable-dev-shm-usage', '--disable-gpu'])
+            context = await browser.new_context(user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36')
+            page = await context.new_page()
+            
+            certificati = await scrape_listing(page)
+            print(f"📋 {len(certificati)} ISIN da listing")
+            
+            filled = 0
+            for i, cert in enumerate(certificati[:MAX_DETAIL_ISIN]):
+                detail = await scrape_detail(page, cert['isin'])
+                cert.update(detail)
+                if detail.get('strike') or detail.get('barrier'): 
+                    filled += 1
+                print(f"🔍 {i+1}/{MAX_DETAIL_ISIN}: {cert['isin']} → {detail.get('type')}")
+                await asyncio.sleep(1.5)
+            
+            await browser.close()
+            
+            pd.DataFrame(certificati).to_json('certificates-recenti.json', orient='records', indent=2)
+            pd.DataFrame(certificati).to_csv('certificates-recenti.csv', index=False)
+            
+            payload = {'success': True, 'count': len(certificati), 'certificates': certificati, 
+                      'metadata': {'version': 'v21', 'details_filled': filled}}
+            with open('certificates-data.json', 'w', encoding='utf-8') as f:
+                json.dump(payload, f, indent=2, ensure_ascii=False)
+            
+            print(f"✅ {len(certificati)} tot | {filled} details")
+    except Exception as e:
+        print(f"⚠️ Errore: {str(e)[:100]}")
+    finally:
+        print("🏁 DONE - exit 0")
+
+if __name__ == '__main__':
+    asyncio.run(main())
