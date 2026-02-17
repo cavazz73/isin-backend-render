@@ -127,74 +127,17 @@ async def scrape_detail(page, isin: str) -> Dict:
         return {}
 
 async def main():
-    start_time = time.time()
+    import sys
+    sys.stdout.reconfigure(line_buffering=True)  # Flush immediato per Actions
     try:
         async with async_playwright() as p:
             browser = await p.chromium.launch(
                 headless=True,
                 args=[
-                    '--no-sandbox',
-                    '--disable-dev-shm-usage',
-                    '--disable-gpu',
-                    '--disable-extensions',
-                    '--disable-images',
-                    '--disable-background-timer-throttling',
-                    '--disable-renderer-backgrounding'
-                ]
+                    '--no-sandbox', '--disable-dev-shm-usage', '--disable-gpu',
+                    '--disable-extensions', '--disable-images', '--single-process',
+                    '--no-zygote', '--no-first-run'
+                ],
+                timeout=30000
             )
-            context = await browser.new_context(
-                user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-                viewport={'width': 1920, 'height': 1080},
-                extra_http_headers={'Accept-Language': 'it-IT,it;q=0.9,en;q=0.8'}
-            )
-            page = await context.new_page()
-            
-            certificati = await scrape_listing(page)
-            print(f"📋 Listing OK: {len(certificati)} ISIN")
-            
-            filled = 0
-            for i, cert in enumerate(certificati[:MAX_DETAIL_ISIN]):
-                detail = await scrape_detail(page, cert['isin'])
-                cert.update(detail)
-                if detail.get('strike') or detail.get('barrier'): 
-                    filled += 1
-                print(f"🔍 {i+1}/{MAX_DETAIL_ISIN}: {cert['isin']} | tipo:{detail.get('type')}|barrier:{detail.get('barrier')}")
-                await asyncio.sleep(1.2 + (i % 4)*0.3)  # 1.2-2s
-            
-            await browser.close()
-            
-            df = pd.DataFrame(certificati)
-            df.to_json('certificates-recenti.json', orient='records', indent=2, date_format='iso')
-            df.to_csv('certificates-recenti.csv', index=False)
-            
-            backend_payload = {
-                'success': True,
-                'count': len(certificati),
-                'certificates': certificati,
-                'metadata': {
-                    'timestamp': datetime.now().isoformat(),
-                    'version': 'ced-v20-stable',
-                    'recent_days': RECENT_DAYS,
-                    'cutoff_date': cutoff_date.strftime(DATE_FORMAT),
-                    'sources': 'CED listing+schede',
-                    'details_filled': filled,
-                    'runtime_sec': round(time.time() - start_time, 1)
-                }
-            }
-            with open('certificates-data.json', 'w', encoding='utf-8') as f:
-                json.dump(backend_payload, f, indent=2, ensure_ascii=False)
-            
-            print(f"✅ {len(certificati)} total | {filled} details | {backend_payload['metadata']['runtime_sec']}s")
-            print("Sample tipi:", df['type'].value_counts().head().to_dict())
-            print("Sample barrier:", df['barrier'].value_counts().head().to_dict())
-    
-    except KeyboardInterrupt:
-        print("\n⏹️ Interrotto manualmente")
-    except Exception as e:
-        print(f"⚠️ Catturato: {str(e)[:120]}")
-    finally:
-        print("🏁 EXIT SUCCESS - File pronti")
-
-if __name__ == '__main__':
-    asyncio.run(main())
-
+            context
