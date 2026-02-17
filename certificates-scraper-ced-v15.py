@@ -86,45 +86,85 @@ async def scrape_listing(page) -> List[Dict]:
     return certificati[:MAX_DETAIL_ISIN * 2]  # Buffer per fallimenti
 
 async def scrape_detail(page, isin: str) -> Dict:
-    """Step 2: Dettaglio singola scheda"""
+    """Step 2: Dettaglio scheda - parsing tabelle HTML"""
     url = f"https://www.certificatiederivati.it/db_bs_scheda_certificato.asp?isin={isin}"
-    print(f"🔍 Detail {isin} → {url}")
+    print(f"🔍 {isin}")
     try:
         await page.goto(url, wait_until='networkidle', timeout=30000)
         await page.wait_for_timeout(3000)
         html = await page.content()
         soup = BeautifulSoup(html, 'lxml')
         
-        # Estrai tipo (Phoenix, Cash Collect, etc.)
+        # Tipo dal titolo h1/h2/h3
         tipo = 'Certificato'
-        tipo_elem = soup.find(text=re.compile(r'(Phoenix|Cash Collect|Turbo|Bonus|Barrier|Step Down)', re.I))
-        if tipo_elem: tipo = tipo_elem.strip().upper()
+        title = soup.find(['h1', 'h2', 'h3'])
+        if title:
+            tipo_text = title.get_text(strip=True).upper()
+            if 'PHOENIX' in tipo_text: tipo = 'PHOENIX MEMORY'
+            elif 'CASH COLLECT' in tipo_text: tipo = 'CASH COLLECT'
+            elif 'TURBO' in tipo_text: tipo = 'TURBO'
+            elif 'REVERSE' in tipo_text: tipo = 'REVERSE PROTECT'
+            else: tipo = tipo_text[:50]
         
-        # Strike, Barriera (cerca tabelle/prodotto)
-        strike = barrier = barrier_down = annual_coupon_yield = None
-        text = soup.get_text()
-        strike_match = re.search(r'Strike[:\s]*([0-9,.]+)', text, re.I)
-        if strike_match: strike = strike_match.group(1).replace(',', '.')
+        # Barriera dalla tabella "Barriera Down"
+        barrier = barrier_down = None
+        for table in soup.find_all('table'):
+            text_table = table.get_text()
+            if 'Barriera Down' in text_table or 'BARRIERA' in text_table.upper():
+                rows = table.find_all('tr')
+                for row in rows:
+                    cols = [c.get_text(strip=True) for c in row.find_all('td')]
+                    for col in cols:
+                        if '%' in col and len(col) < 10 and col[0].isdigit():
+                            barrier = col
+                            barrier_down = True
+                            break
+                    if barrier: break
         
-        barrier_match = re.search(r'Barriera[:\s]*(-?\d+(?:,\d+)?%)?', text, re.I)
-        if barrier_match: barrier = barrier_match.group(1)
+        # Strike dalla tabella sottostanti (colonna STRIKE)
+        strike = None
+        for table in soup.find_all('table'):
+            header_row = table.find('tr')
+            if header_row:
+                headers = [h.get_text(strip=True).upper() for h in header_row.find_all(['th', 'td'])]
+                if 'STRIKE' in headers:
+                    strike_idx = headers.index('STRIKE')
+                    rows = table.find_all('tr')[1:]  # Skip header
+                    for row in rows[:1]:  # Prima riga dati
+                        cols = [c.get_text(strip=True) for c in row.find_all('td')]
+                        if len(cols) > strike_idx:
+                            strike = cols[strike_idx].replace('.', '').replace(',', '.')
+                            break
+                    break
         
-        if 'down' in text.lower() or barrier and float(barrier.replace(',', '.')) < 0: barrier_down = True
-        
-        coupon_match = re.search(r'(Cedola|Coupon)[:\s]*(\d+(?:,\d+)?%)?', text, re.I)
-        if coupon_match: annual_coupon_yield = coupon_match.group(2)
+        # Cedola dalla tabella "Date rilevamento" (colonna CEDOLA)
+        coupon = None
+        for table in soup.find_all('table'):
+            header_row = table.find('tr')
+            if header_row:
+                headers = [h.get_text(strip=True).upper() for h in header_row.find_all(['th', 'td'])]
+                if 'CEDOLA' in headers:
+                    cedola_idx = headers.index('CEDOLA')
+                    rows = table.find_all('tr')[1:]
+                    for row in rows[:1]:
+                        cols = [c.get_text(strip=True) for c in row.find_all('td')]
+                        if len(cols) > cedola_idx:
+                            coupon = cols[cedola_idx]
+                            break
+                    break
         
         return {
             'type': tipo,
             'strike': strike,
             'barrier': barrier,
             'barrier_down': barrier_down,
-            'annual_coupon_yield': annual_coupon_yield,
-            'source': 'CED_scheda'
+            'annual_coupon_yield': coupon,
+            'source': 'CED_scheda_v23'
         }
     except Exception as e:
-        print(f"❌ Detail {isin} fallito: {e}")
+        print(f"❌ {isin}: {str(e)[:40]}")
         return {}
+
 
 async def main():
     import sys
