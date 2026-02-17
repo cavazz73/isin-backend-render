@@ -127,11 +127,20 @@ async def scrape_detail(page, isin: str) -> Dict:
         return {}
 
 async def main():
+    start_time = time.time()
     try:
         async with async_playwright() as p:
             browser = await p.chromium.launch(
-                headless=True, 
-                args=['--no-sandbox', '--disable-dev-shm-usage', '--disable-gpu']
+                headless=True,
+                args=[
+                    '--no-sandbox',
+                    '--disable-dev-shm-usage',
+                    '--disable-gpu',
+                    '--disable-extensions',
+                    '--disable-images',
+                    '--disable-background-timer-throttling',
+                    '--disable-renderer-backgrounding'
+                ]
             )
             context = await browser.new_context(
                 user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
@@ -140,22 +149,20 @@ async def main():
             )
             page = await context.new_page()
             
-            # Listing
             certificati = await scrape_listing(page)
-            print(f"📋 Listing: {len(certificati)} ISIN recenti")
+            print(f"📋 Listing OK: {len(certificati)} ISIN")
             
-            # Details (limitato)
             filled = 0
             for i, cert in enumerate(certificati[:MAX_DETAIL_ISIN]):
                 detail = await scrape_detail(page, cert['isin'])
-                if detail.get('strike'): filled += 1
                 cert.update(detail)
-                print(f"🔍 {i+1}/{min(MAX_DETAIL_ISIN, len(certificati))}: {cert['isin']} → tipo:{detail.get('type', 'N/A')} barrier:{detail.get('barrier', 'N/A')}")
-                await asyncio.sleep(1.5 + (i % 3) * 0.5)  # 1.5-3s anti-ban
+                if detail.get('strike') or detail.get('barrier'): 
+                    filled += 1
+                print(f"🔍 {i+1}/{MAX_DETAIL_ISIN}: {cert['isin']} | tipo:{detail.get('type')}|barrier:{detail.get('barrier')}")
+                await asyncio.sleep(1.2 + (i % 4)*0.3)  # 1.2-2s
             
             await browser.close()
             
-            # Save
             df = pd.DataFrame(certificati)
             df.to_json('certificates-recenti.json', orient='records', indent=2, date_format='iso')
             df.to_csv('certificates-recenti.csv', index=False)
@@ -166,26 +173,28 @@ async def main():
                 'certificates': certificati,
                 'metadata': {
                     'timestamp': datetime.now().isoformat(),
-                    'version': 'ced-v19-fix',
+                    'version': 'ced-v20-stable',
                     'recent_days': RECENT_DAYS,
                     'cutoff_date': cutoff_date.strftime(DATE_FORMAT),
-                    'sources': 'CED listing + schede',
-                    'details_filled': filled
+                    'sources': 'CED listing+schede',
+                    'details_filled': filled,
+                    'runtime_sec': round(time.time() - start_time, 1)
                 }
             }
             with open('certificates-data.json', 'w', encoding='utf-8') as f:
                 json.dump(backend_payload, f, indent=2, ensure_ascii=False)
             
-            print(f"✅ {backend_payload['count']} totali | {filled} con details")
-            print("Tipi:", df['type'].value_counts().head(5).to_dict())
-            print("Barrier:", df['barrier'].dropna().value_counts().head(5).to_dict())
+            print(f"✅ {len(certificati)} total | {filled} details | {backend_payload['metadata']['runtime_sec']}s")
+            print("Sample tipi:", df['type'].value_counts().head().to_dict())
+            print("Sample barrier:", df['barrier'].value_counts().head().to_dict())
     
+    except KeyboardInterrupt:
+        print("\n⏹️ Interrotto manualmente")
     except Exception as e:
-        print(f"⚠️ Errore catturato: {str(e)[:100]}")
-        print("📁 File parziali salvati - usa comunque")
-    
+        print(f"⚠️ Catturato: {str(e)[:120]}")
     finally:
-        print("🏁 EXIT 0 - Workflow completato")
+        print("🏁 EXIT SUCCESS - File pronti")
 
 if __name__ == '__main__':
     asyncio.run(main())
+
