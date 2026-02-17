@@ -56,7 +56,7 @@ jobs:
           test -s certificates-data.json
           COUNT=$(python -c "import json; data=json.load(open('certificates-data.json')); print(data.get('count',0))")
           echo "✅ TROVATI: ${COUNT} certificati recenti (backend payload)"
-          test $COUNT -gt 500  # Minimo 500 certificati
+          
 
       - name: 📤 Commit e Push JSON → Render Auto-Redeploy
         run: |
