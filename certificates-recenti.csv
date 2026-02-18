@@ -1,101 +1,101 @@
 isin,name,issuer,type,underlying,underlying_name,underlying_category,issue_date,maturity_date,market,price,strike,barrier,barrier_down,annual_coupon_yield,scenario_analysis,source
-IT0006773722,PHOENIX MEMORY AIRBAG STEP DOWN,Marex Financial,CAPITALE CONDIZIONATAMENTE PROTETTO,Basket di azioni worst of,Basket di azioni worst of,basket,16/02/2026,,SeDeX,,,40 %,True,"0,94 %",,CED_scheda_v23
-DE000VJ50SV5,CASH COLLECT MEMORY STEP DOWN,Vontobel,CAPITALE CONDIZIONATAMENTE PROTETTO,Singolo Sottostante,Singolo Sottostante,single,16/02/2026,,SeDeX,,,40 %,True,"0,63 %",,CED_scheda_v23
-DE000UP3Y5X0,TRACKER,Ubs,CAPITALE NON PROTETTO,Adaptive Equity Allocation,Adaptive Equity Allocation,single,16/02/2026,,SeDeX,,,,,,,CED_scheda_v23
-XS3015646600,DIGITAL REVERSE AUTOCALLABLE,JP Morgan Chase N.V.,CAPITALE PROTETTO,Singolo Sottostante,Singolo Sottostante,single,16/02/2026,,SeDeX,,,,,"2,26 %",,CED_scheda_v23
-DE000VJ5X196,TOP BONUS,Vontobel,CAPITALE CONDIZIONATAMENTE PROTETTO,Singolo Sottostante,Singolo Sottostante,single,16/02/2026,,SeDeX,,,100 %,True,,,CED_scheda_v23
-CH1484584508,PHOENIX MEMORY STEP DOWN,Leonteq Securities,CAPITALE CONDIZIONATAMENTE PROTETTO,Basket Sottostanti Misti,Basket Sottostanti Misti,basket,16/02/2026,,SeDeX,,,60 %,True,1 %,,CED_scheda_v23
-IT0006773243,EXPRESS,Santander,CAPITALE CONDIZIONATAMENTE PROTETTO,Basket di indici worst of,Basket di indici worst of,basket,16/02/2026,,SeDeX,,,40 %,True,,,CED_scheda_v23
-CH1505568969,REVERSE PROTECT OUTPERFORMANCE,Leonteq Securities,CAPITALE CONDIZIONATAMENTE PROTETTO,Basket di indici worst of,Basket di indici worst of,basket,16/02/2026,,SeDeX,,,120 %,True,,,CED_scheda_v23
-IT0006773730,PHOENIX MEMORY STEP DOWN,Marex Financial,CAPITALE CONDIZIONATAMENTE PROTETTO,Basket di azioni worst of,Basket di azioni worst of,basket,16/02/2026,,SeDeX,,,55 %,True,"1,4 %",,CED_scheda_v23
-DE000VJ50SW3,CASH COLLECT MEMORY STEP DOWN,Vontobel,CAPITALE CONDIZIONATAMENTE PROTETTO,Basket di azioni worst of,Basket di azioni worst of,basket,16/02/2026,,SeDeX,,,60 %,True,"2,5 %",,CED_scheda_v23
-XS2878538078,PHOENIX MEMORY AIRBAG STEP DOWN,Societe Generale,CAPITALE CONDIZIONATAMENTE PROTETTO,Basket di azioni worst of,Basket di azioni worst of,basket,16/02/2026,,SeDeX,,,50 %,True,1 %,,CED_scheda_v23
+XS3251202407,PHOENIX MEMORY,Bnp Paribas,CAPITALE CONDIZIONATAMENTE PROTETTO,Basket di indici worst of,Basket di indici worst of,basket,17/02/2026,,SeDeX,,,50 %,True,"6,1 %",,CED_scheda_v23
+IT0005691404,FIXED CASH COLLECT,Intesa Sanpaolo,CAPITALE CONDIZIONATAMENTE PROTETTO,Basket di azioni worst of,Basket di azioni worst of,basket,17/02/2026,,SeDeX,,,55 %,True,"8,15 %",,CED_scheda_v23
+DE000VJ52AV9,CASH COLLECT MEMORY STEP DOWN,Vontobel,CAPITALE CONDIZIONATAMENTE PROTETTO,Singolo Sottostante,Singolo Sottostante,single,17/02/2026,,SeDeX,,,60 %,True,"1,06 %",,CED_scheda_v23
+IT0005692436,PHOENIX MEMORY STEP DOWN,Intesa Sanpaolo,CAPITALE CONDIZIONATAMENTE PROTETTO,Basket di azioni worst of,Basket di azioni worst of,basket,17/02/2026,,SeDeX,,,50 %,True,"0,9 %",,CED_scheda_v23
+CH1484585133,PHOENIX MEMORY STEP DOWN,Leonteq Securities,CAPITALE CONDIZIONATAMENTE PROTETTO,Basket di azioni worst of,Basket di azioni worst of,basket,17/02/2026,,SeDeX,,,50 %,True,"1,25 %",,CED_scheda_v23
+IT0005694739,PHOENIX MEMORY,Intesa Sanpaolo,CAPITALE CONDIZIONATAMENTE PROTETTO,Basket di azioni worst of,Basket di azioni worst of,basket,17/02/2026,,SeDeX,,,70 %,True,2 %,,CED_scheda_v23
+DE000VJ52AW7,CASH COLLECT MEMORY STEP DOWN,Vontobel,CAPITALE CONDIZIONATAMENTE PROTETTO,Basket di azioni worst of,Basket di azioni worst of,basket,17/02/2026,,SeDeX,,,60 %,True,"1,3 %",,CED_scheda_v23
+IT0005694796,PHOENIX MEMORY STEP DOWN,Intesa Sanpaolo,CAPITALE CONDIZIONATAMENTE PROTETTO,Basket di azioni worst of,Basket di azioni worst of,basket,17/02/2026,,SeDeX,,,50 %,True,1 %,,CED_scheda_v23
+XS3255734223,CREDIT LINKED CALLABLE,Bnp Paribas,CREDIT LINKED NOTE,Singolo Sottostante,Singolo Sottostante,single,17/02/2026,,SeDeX,,,,,"4,35 %",,CED_scheda_v23
+IT0005694804,PHOENIX MEMORY STEP DOWN,Intesa Sanpaolo,CAPITALE CONDIZIONATAMENTE PROTETTO,Basket di azioni worst of,Basket di azioni worst of,basket,17/02/2026,,SeDeX,,,50 %,True,"1,08 %",,CED_scheda_v23
+DE000VJ52AX5,CASH COLLECT MEMORY STEP DOWN,Vontobel,CAPITALE CONDIZIONATAMENTE PROTETTO,Singolo Sottostante,Singolo Sottostante,single,17/02/2026,,SeDeX,,,60 %,True,"0,93 %",,CED_scheda_v23
+IT0005694812,PHOENIX MEMORY STEP DOWN,Intesa Sanpaolo,CAPITALE CONDIZIONATAMENTE PROTETTO,Basket di azioni worst of,Basket di azioni worst of,basket,17/02/2026,,SeDeX,,,50 %,True,"0,85 %",,CED_scheda_v23
+XS3255734496,CREDIT LINKED CALLABLE,Bnp Paribas,CREDIT LINKED NOTE,Singolo Sottostante,Singolo Sottostante,single,17/02/2026,,SeDeX,,,,,"4,25 %",,CED_scheda_v23
+IT0005694820,PHOENIX MEMORY STEP DOWN,Intesa Sanpaolo,CAPITALE CONDIZIONATAMENTE PROTETTO,Basket di azioni worst of,Basket di azioni worst of,basket,17/02/2026,,SeDeX,,,50 %,True,"1,25 %",,CED_scheda_v23
+DE000VJ52AY3,CASH COLLECT MEMORY STEP DOWN,Vontobel,CAPITALE CONDIZIONATAMENTE PROTETTO,Basket di azioni worst of,Basket di azioni worst of,basket,17/02/2026,,SeDeX,,,55 %,True,"1,22 %",,CED_scheda_v23
+IT0005694838,PHOENIX MEMORY STEP DOWN,Intesa Sanpaolo,CAPITALE CONDIZIONATAMENTE PROTETTO,Basket di azioni worst of,Basket di azioni worst of,basket,17/02/2026,,SeDeX,,,50 %,True,"0,98 %",,CED_scheda_v23
+DE000VJ55M20,CASH COLLECT MEMORY STEP DOWN,Vontobel,CAPITALE CONDIZIONATAMENTE PROTETTO,Basket di azioni worst of,Basket di azioni worst of,basket,17/02/2026,,SeDeX,,,55 %,True,"1,03 %",,CED_scheda_v23
+IT0005694846,PHOENIX MEMORY STEP DOWN,Intesa Sanpaolo,CAPITALE CONDIZIONATAMENTE PROTETTO,Basket di indici worst of,Basket di indici worst of,basket,17/02/2026,,SeDeX,,,60 %,True,"0,66 %",,CED_scheda_v23
+IT0006773763,PHOENIX MEMORY STEP DOWN,Marex Financial,CAPITALE CONDIZIONATAMENTE PROTETTO,Basket di azioni worst of,Basket di azioni worst of,basket,17/02/2026,,SeDeX,,,50 %,True,"1,75 %",,CED_scheda_v23
+IT0005694853,PHOENIX MEMORY STEP DOWN,Intesa Sanpaolo,CAPITALE CONDIZIONATAMENTE PROTETTO,Basket di indici worst of,Basket di indici worst of,basket,17/02/2026,,SeDeX,,,60 %,True,"0,53 %",,CED_scheda_v23
+XS3255756978,EQUITY PROTECTION CAP CALLABLE,Bnp Paribas,CAPITALE PROTETTO,Singolo Sottostante,Singolo Sottostante,single,17/02/2026,,SeDeX,,,,,,,CED_scheda_v23
+IT0005694861,PHOENIX MEMORY STEP DOWN,Intesa Sanpaolo,CAPITALE CONDIZIONATAMENTE PROTETTO,Basket di azioni worst of,Basket di azioni worst of,basket,17/02/2026,,SeDeX,,,50 %,True,"0,83 %",,CED_scheda_v23
+XS3262971941,FIXED CASH COLLECT,Barclays,CAPITALE CONDIZIONATAMENTE PROTETTO,Basket di azioni worst of,Basket di azioni worst of,basket,17/02/2026,,SeDeX,,,65 %,True,"0,89 %",,CED_scheda_v23
+IT0005694879,PHOENIX MEMORY STEP DOWN,Intesa Sanpaolo,CAPITALE CONDIZIONATAMENTE PROTETTO,Basket di azioni worst of,Basket di azioni worst of,basket,17/02/2026,,SeDeX,,,50 %,True,"0,88 %",,CED_scheda_v23
+IT0005694887,PHOENIX MEMORY STEP DOWN,Intesa Sanpaolo,CAPITALE CONDIZIONATAMENTE PROTETTO,Basket di azioni worst of,Basket di azioni worst of,basket,17/02/2026,,SeDeX,,,50 %,True,"0,65 %",,CED_scheda_v23
 CH1484585521,PHOENIX MEMORY AIRBAG STEP DOWN,Leonteq Securities,CAPITALE CONDIZIONATAMENTE PROTETTO,Singolo Sottostante,Singolo Sottostante,single,16/02/2026,,SeDeX,,,50 %,True,"1,5 %",,CED_scheda_v23
-DE000VJ5X8E4,CASH COLLECT MEMORY STEP DOWN,Vontobel,CAPITALE CONDIZIONATAMENTE PROTETTO,Basket di azioni worst of,Basket di azioni worst of,basket,16/02/2026,,SeDeX,,,55 %,True,"1,56 %",,CED_scheda_v23
-DE000VJ50SZ6,CASH COLLECT MEMORY STEP DOWN,Vontobel,CAPITALE CONDIZIONATAMENTE PROTETTO,Singolo Sottostante,Singolo Sottostante,single,16/02/2026,,SeDeX,,,40 %,True,"1,89 %",,CED_scheda_v23
-XS2878542856,PHOENIX MEMORY ONE STAR,Societe Generale,CAPITALE CONDIZIONATAMENTE PROTETTO,Basket di azioni worst of,Basket di azioni worst of,basket,16/02/2026,,SeDeX,,,60 %,True,"0,73 %",,CED_scheda_v23
+DE000VJ5X196,TOP BONUS,Vontobel,CAPITALE CONDIZIONATAMENTE PROTETTO,Singolo Sottostante,Singolo Sottostante,single,16/02/2026,,SeDeX,,,100 %,True,,,CED_scheda_v23
+CH1505568969,REVERSE PROTECT OUTPERFORMANCE,Leonteq Securities,CAPITALE CONDIZIONATAMENTE PROTETTO,Basket di indici worst of,Basket di indici worst of,basket,16/02/2026,,SeDeX,,,120 %,True,,,CED_scheda_v23
+DE000UP3Y5X0,TRACKER,Ubs,CAPITALE NON PROTETTO,Adaptive Equity Allocation,Adaptive Equity Allocation,single,16/02/2026,,SeDeX,,,,,,,CED_scheda_v23
 CH1484586008,PHOENIX MEMORY SOFTCALLABLE,Leonteq Securities,CAPITALE CONDIZIONATAMENTE PROTETTO,Basket Sottostanti Misti,Basket Sottostanti Misti,basket,16/02/2026,,SeDeX,,,60 %,True,"0,75 %",,CED_scheda_v23
+DE000VJ5X8E4,CASH COLLECT MEMORY STEP DOWN,Vontobel,CAPITALE CONDIZIONATAMENTE PROTETTO,Basket di azioni worst of,Basket di azioni worst of,basket,16/02/2026,,SeDeX,,,55 %,True,"1,56 %",,CED_scheda_v23
+DE000VJ50SV5,CASH COLLECT MEMORY STEP DOWN,Vontobel,CAPITALE CONDIZIONATAMENTE PROTETTO,Singolo Sottostante,Singolo Sottostante,single,16/02/2026,,SeDeX,,,40 %,True,"0,63 %",,CED_scheda_v23
+XS3015646600,DIGITAL REVERSE AUTOCALLABLE,JP Morgan Chase N.V.,CAPITALE PROTETTO,Singolo Sottostante,Singolo Sottostante,single,16/02/2026,,SeDeX,,,,,"2,26 %",,CED_scheda_v23
+CH1484584508,PHOENIX MEMORY STEP DOWN,Leonteq Securities,CAPITALE CONDIZIONATAMENTE PROTETTO,Basket Sottostanti Misti,Basket Sottostanti Misti,basket,16/02/2026,,SeDeX,,,60 %,True,1 %,,CED_scheda_v23
 DE000VJ5X8F1,CASH COLLECT MEMORY STEP DOWN,Vontobel,CAPITALE CONDIZIONATAMENTE PROTETTO,Basket di azioni worst of,Basket di azioni worst of,basket,16/02/2026,,SeDeX,,,55 %,True,"1,44 %",,CED_scheda_v23
-XS3262936019,PHOENIX MEMORY STEP DOWN,Barclays,CAPITALE CONDIZIONATAMENTE PROTETTO,Basket di azioni worst of,Basket di azioni worst of,basket,16/02/2026,,SeDeX,,,40 %,True,"1,06 %",,CED_scheda_v23
-XS2878542930,PHOENIX MEMORY,Societe Generale,CAPITALE CONDIZIONATAMENTE PROTETTO,Singolo Sottostante,Singolo Sottostante,single,16/02/2026,,SeDeX,,,60 %,True,"2,6 %",,CED_scheda_v23
-XS3262936878,PHOENIX MEMORY STEP DOWN,Barclays,CAPITALE CONDIZIONATAMENTE PROTETTO,Basket di azioni worst of,Basket di azioni worst of,basket,16/02/2026,,SeDeX,,,60 %,True,1 %,,CED_scheda_v23
+IT0006773243,EXPRESS,Santander,CAPITALE CONDIZIONATAMENTE PROTETTO,Basket di indici worst of,Basket di indici worst of,basket,16/02/2026,,SeDeX,,,40 %,True,,,CED_scheda_v23
+XS2878538078,PHOENIX MEMORY AIRBAG STEP DOWN,Societe Generale,CAPITALE CONDIZIONATAMENTE PROTETTO,Basket di azioni worst of,Basket di azioni worst of,basket,16/02/2026,,SeDeX,,,50 %,True,1 %,,CED_scheda_v23
+DE000VJ50SW3,CASH COLLECT MEMORY STEP DOWN,Vontobel,CAPITALE CONDIZIONATAMENTE PROTETTO,Basket di azioni worst of,Basket di azioni worst of,basket,16/02/2026,,SeDeX,,,60 %,True,"2,5 %",,CED_scheda_v23
 DE000VJ5X8G9,CASH COLLECT MEMORY STEP DOWN,Vontobel,CAPITALE CONDIZIONATAMENTE PROTETTO,Basket di azioni worst of,Basket di azioni worst of,basket,16/02/2026,,SeDeX,,,55 %,True,"1,59 %",,CED_scheda_v23
-XS3262948709,PHOENIX MEMORY STEP DOWN,Barclays,CAPITALE CONDIZIONATAMENTE PROTETTO,Basket di azioni worst of,Basket di azioni worst of,basket,16/02/2026,,SeDeX,,,65 %,True,"3,94 %",,CED_scheda_v23
-XS2878548465,CASH COLLECT MEMORY AIRBAG MAGNET LOOKBACK,Societe Generale,CAPITALE CONDIZIONATAMENTE PROTETTO,Basket di azioni worst of,Basket di azioni worst of,basket,16/02/2026,,SeDeX,,,50 %,True,"0,85 %",,CED_scheda_v23
+DE000VJ50SZ6,CASH COLLECT MEMORY STEP DOWN,Vontobel,CAPITALE CONDIZIONATAMENTE PROTETTO,Singolo Sottostante,Singolo Sottostante,single,16/02/2026,,SeDeX,,,40 %,True,"1,89 %",,CED_scheda_v23
+IT0005691248,EQUITY FIXED PREMIUM AUTOCALLABLE,Banco BPM,CAPITALE CONDIZIONATAMENTE PROTETTO,Basket di azioni worst of,Basket di azioni worst of,basket,16/02/2026,,SeDeX,,,30 %,True,"0,3 %",,CED_scheda_v23
+XS3262936019,PHOENIX MEMORY STEP DOWN,Barclays,CAPITALE CONDIZIONATAMENTE PROTETTO,Basket di azioni worst of,Basket di azioni worst of,basket,16/02/2026,,SeDeX,,,40 %,True,"1,06 %",,CED_scheda_v23
 DE000VJ5X8S4,CASH COLLECT MEMORY STEP DOWN,Vontobel,CAPITALE CONDIZIONATAMENTE PROTETTO,Basket di azioni worst of,Basket di azioni worst of,basket,16/02/2026,,SeDeX,,,55 %,True,"1,68 %",,CED_scheda_v23
+XS3262936878,PHOENIX MEMORY STEP DOWN,Barclays,CAPITALE CONDIZIONATAMENTE PROTETTO,Basket di azioni worst of,Basket di azioni worst of,basket,16/02/2026,,SeDeX,,,60 %,True,1 %,,CED_scheda_v23
+XS2878542856,PHOENIX MEMORY ONE STAR,Societe Generale,CAPITALE CONDIZIONATAMENTE PROTETTO,Basket di azioni worst of,Basket di azioni worst of,basket,16/02/2026,,SeDeX,,,60 %,True,"0,73 %",,CED_scheda_v23
+XS3262948709,PHOENIX MEMORY STEP DOWN,Barclays,CAPITALE CONDIZIONATAMENTE PROTETTO,Basket di azioni worst of,Basket di azioni worst of,basket,16/02/2026,,SeDeX,,,65 %,True,"3,94 %",,CED_scheda_v23
 DE000VJ5X8T2,CASH COLLECT MEMORY STEP DOWN,Vontobel,CAPITALE CONDIZIONATAMENTE PROTETTO,Basket di azioni worst of,Basket di azioni worst of,basket,16/02/2026,,SeDeX,,,55 %,True,"1,67 %",,CED_scheda_v23
-DE000VJ5XA81,CASH COLLECT MEMORY STEP DOWN,Vontobel,CAPITALE CONDIZIONATAMENTE PROTETTO,Basket di azioni worst of,Basket di azioni worst of,basket,16/02/2026,,SeDeX,,,55 %,True,"1,5 %",,CED_scheda_v23
-DE000VJ5XMU7,CASH COLLECT MEMORY STEP DOWN,Vontobel,CAPITALE CONDIZIONATAMENTE PROTETTO,Basket di azioni worst of,Basket di azioni worst of,basket,16/02/2026,,SeDeX,,,55 %,True,"2,43 %",,CED_scheda_v23
-DE000VJ5XMV5,CASH COLLECT MEMORY AIRBAG STEP DOWN,Vontobel,CAPITALE CONDIZIONATAMENTE PROTETTO,Basket di azioni worst of,Basket di azioni worst of,basket,16/02/2026,,SeDeX,,,60 %,True,"2,05 %",,CED_scheda_v23
-NLBNPIT36K26,TURBO,Bnp Paribas,A LEVA,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_scheda_v23
-NLBNPIT36K34,TURBO,Bnp Paribas,A LEVA,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_scheda_v23
-NLBNPIT36K42,TURBO,Bnp Paribas,A LEVA,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_scheda_v23
-NLBNPIT36K59,TURBO,Bnp Paribas,A LEVA,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_scheda_v23
-NLBNPIT36K67,TURBO,Bnp Paribas,A LEVA,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_scheda_v23
-NLBNPIT36K75,TURBO,Bnp Paribas,A LEVA,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_scheda_v23
-NLBNPIT36K83,TURBO,Bnp Paribas,A LEVA,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_scheda_v23
-NLBNPIT36K91,TURBO,Bnp Paribas,A LEVA,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_scheda_v23
-NLBNPIT36KA6,TURBO,Bnp Paribas,A LEVA,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_scheda_v23
-NLBNPIT36KB4,TURBO,Bnp Paribas,A LEVA,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_scheda_v23
-NLBNPIT36LT4,TURBO,Bnp Paribas,A LEVA,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_scheda_v23
-NLBNPIT36LV0,TURBO,Bnp Paribas,A LEVA,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_scheda_v23
-NLBNPIT36LY4,TURBO,Bnp Paribas,A LEVA,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_scheda_v23
-NLBNPIT36LZ1,TURBO,Bnp Paribas,A LEVA,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_scheda_v23
-NLBNPIT36M16,TURBO,Bnp Paribas,A LEVA,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_scheda_v23
-NLBNPIT36M32,TURBO,Bnp Paribas,A LEVA,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_scheda_v23
-NLBNPIT36M40,TURBO,Bnp Paribas,A LEVA,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_scheda_v23
-NLBNPIT36M57,TURBO,Bnp Paribas,A LEVA,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_scheda_v23
-NLBNPIT36M65,TURBO,Bnp Paribas,A LEVA,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_scheda_v23
-NLBNPIT36M73,TURBO,Bnp Paribas,A LEVA,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_scheda_v23
-NLBNPIT36M81,TURBO,Bnp Paribas,A LEVA,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_scheda_v23
-NLBNPIT36M99,TURBO,Bnp Paribas,A LEVA,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_scheda_v23
-NLBNPIT36MD6,TURBO,Bnp Paribas,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
-NLBNPIT36ME4,TURBO,Bnp Paribas,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
-NLBNPIT36MF1,TURBO,Bnp Paribas,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
-NLBNPIT36MH7,TURBO,Bnp Paribas,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
-NLBNPIT36MJ3,TURBO,Bnp Paribas,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
-NLBNPIT36MK1,TURBO,Bnp Paribas,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
-NLBNPIT36ML9,TURBO,Bnp Paribas,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
-NLBNPIT36MN5,TURBO,Bnp Paribas,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
-NLBNPIT36MP0,TURBO,Bnp Paribas,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
-NLBNPIT36MQ8,TURBO,Bnp Paribas,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
-NLBNPIT36MS4,TURBO,Bnp Paribas,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
-NLBNPIT36MT2,TURBO,Bnp Paribas,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
-NLBNPIT36MW6,TURBO,Bnp Paribas,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
-DE000UN4HWQ5,TURBO,Unicredit,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
-DE000UN4HWS1,TURBO,Unicredit,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
-DE000UN4HWZ6,TURBO,Unicredit,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
-DE000UN4HX06,TURBO,Unicredit,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
-DE000UN4HX14,TURBO,Unicredit,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
-DE000UN4HWT9,TURBO,Unicredit,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
-DE000UN4HWV5,TURBO,Unicredit,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
-DE000UN4HWY9,TURBO,Unicredit,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
-DE000UN4HX22,TURBO,Unicredit,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
-DE000UN4HX30,TURBO,Unicredit,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
-DE000UN4HX48,TURBO,Unicredit,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
-DE000UN4HX55,TURBO,Unicredit,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
-DE000UN4HX63,TURBO,Unicredit,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
-DE000UN4HX71,TURBO,Unicredit,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
-DE000UN4HX89,TURBO,Unicredit,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
-DE000UN4HX97,TURBO,Unicredit,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
-DE000UN4HXA7,TURBO,Unicredit,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
-DE000UN4HXB5,TURBO,Unicredit,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
-DE000UN4HXC3,TURBO,Unicredit,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
-DE000UN4HXD1,TURBO,Unicredit,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
-DE000UN4HXE9,TURBO,Unicredit,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
-DE000UN4HXF6,TURBO,Unicredit,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
-DE000UN4HXG4,TURBO,Unicredit,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
-DE000UN4HXH2,TURBO,Unicredit,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
-DE000UN4HXJ8,TURBO,Unicredit,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
-DE000UN4HXK6,TURBO,Unicredit,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
-DE000UN4HXL4,TURBO,Unicredit,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
-DE000UN4HXM2,TURBO,Unicredit,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
-DE000UN4HXN0,TURBO,Unicredit,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
-DE000UN4HXP5,TURBO,Unicredit,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
-DE000UN4HXQ3,TURBO,Unicredit,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
-DE000UN4HXR1,TURBO,Unicredit,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
-DE000UN4HXS9,TURBO,Unicredit,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
-DE000UN4HXT7,TURBO,Unicredit,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
-DE000UN4HXU5,TURBO,Unicredit,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
-DE000UN4HXV3,TURBO,Unicredit,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
-DE000UN4HXW1,TURBO,Unicredit,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
+IT0006773706,PHOENIX MEMORY STEP DOWN,Marex Financial,CAPITALE CONDIZIONATAMENTE PROTETTO,Basket di indici worst of,Basket di indici worst of,basket,16/02/2026,,SeDeX,,,60 %,True,"0,58 %",,CED_scheda_v23
+XS2878542930,PHOENIX MEMORY,Societe Generale,CAPITALE CONDIZIONATAMENTE PROTETTO,Singolo Sottostante,Singolo Sottostante,single,16/02/2026,,SeDeX,,,60 %,True,"2,6 %",,CED_scheda_v23
+IT0006773714,PHOENIX MEMORY STEP DOWN,Marex Financial,CAPITALE CONDIZIONATAMENTE PROTETTO,Basket di Fondi WorstOf,Basket di Fondi WorstOf,basket,16/02/2026,,SeDeX,,,55 %,True,"0,75 %",,CED_scheda_v23
+DE000VJ5XA81,CASH COLLECT MEMORY STEP DOWN,Vontobel,Certificato,Basket di azioni worst of,Basket di azioni worst of,basket,16/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
+IT0006773722,PHOENIX MEMORY AIRBAG STEP DOWN,Marex Financial,Certificato,Basket di azioni worst of,Basket di azioni worst of,basket,16/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
+XS2878548465,CASH COLLECT MEMORY AIRBAG MAGNET LOOKBACK,Societe Generale,Certificato,Basket di azioni worst of,Basket di azioni worst of,basket,16/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
+IT0006773730,PHOENIX MEMORY STEP DOWN,Marex Financial,Certificato,Basket di azioni worst of,Basket di azioni worst of,basket,16/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
+DE000VJ5XMU7,CASH COLLECT MEMORY STEP DOWN,Vontobel,Certificato,Basket di azioni worst of,Basket di azioni worst of,basket,16/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
+DE000VJ5XMV5,CASH COLLECT MEMORY AIRBAG STEP DOWN,Vontobel,Certificato,Basket di azioni worst of,Basket di azioni worst of,basket,16/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
+DE000FD94DV1,TURBO,Societe Generale,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
+DE000FD94DW9,TURBO,Societe Generale,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
+DE000FD94DX7,TURBO,Societe Generale,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
+DE000FD94DY5,TURBO,Societe Generale,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
+DE000FD94DZ2,TURBO,Societe Generale,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
+DE000FD94E03,TURBO,Societe Generale,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
+DE000FD94E11,TURBO,Societe Generale,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
+DE000FD94E29,TURBO,Societe Generale,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
+DE000FD94E37,TURBO,Societe Generale,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
+DE000FD9YX69,LEVA FISSA,Societe Generale,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
+DE000FD9YX77,LEVA FISSA,Societe Generale,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
+DE000FD9YX85,LEVA FISSA,Societe Generale,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
+DE000FD9YYA0,LEVA FISSA,Societe Generale,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
+DE000FD9YYB8,LEVA FISSA,Societe Generale,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
+DE000FD9YYC6,LEVA FISSA,Societe Generale,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
+DE000FD94E45,TURBO,Societe Generale,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
+DE000FD94E60,TURBO,Societe Generale,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
+DE000FD94E78,TURBO,Societe Generale,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
+DE000FD94E86,TURBO,Societe Generale,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
+DE000FD94E94,TURBO,Societe Generale,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
+DE000FD94EA3,TURBO,Societe Generale,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
+DE000FD94EB1,TURBO,Societe Generale,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
+DE000FD94EC9,TURBO,Societe Generale,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
+DE000FD94ED7,TURBO,Societe Generale,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
+DE000FD94EE5,TURBO,Societe Generale,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
+DE000FD94EF2,TURBO,Societe Generale,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
+DE000FD94EG0,TURBO,Societe Generale,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
+DE000FD94EH8,TURBO,Societe Generale,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
+DE000FD94EJ4,TURBO,Societe Generale,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
+DE000FD94EK2,TURBO,Societe Generale,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
+DE000FD94EL0,TURBO,Societe Generale,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
+DE000FD94EM8,TURBO,Societe Generale,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
+DE000FD94EN6,TURBO,Societe Generale,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
+DE000FD94EP1,TURBO,Societe Generale,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
+DE000FD94EQ9,TURBO,Societe Generale,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
+DE000FD94ER7,TURBO,Societe Generale,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
+DE000FD9YYD4,LEVA FISSA,Societe Generale,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
+DE000VJ5RUT4,TURBO,Vontobel,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
+DE000VJ5RUW8,TURBO,Vontobel,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
+DE000VJ5RV01,TURBO,Vontobel,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
+DE000VJ5RV43,TURBO,Vontobel,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
+DE000VJ5RWB8,TURBO,Vontobel,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
+DE000VJ5RWD4,TURBO,Vontobel,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
+DE000VJ5RWF9,TURBO,Vontobel,Certificato,Singolo Sottostante,Singolo Sottostante,single,12/02/2026,,SeDeX,,,,,,,CED_nuove_emissioni
