@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """
-Scraper CED v26 DEFINITIVO - LISTING + DETAIL COMPLETO
-Fix:
-- Ignora placeholder 01/01/1900 di CED
-- Gestisce TRACKER senza barriere/cedole
-- Parsing robusto tabelle HTML reali
-- Annualizzazione cedole mensili
-- Clean numeri per frontend
+Scraper CED v16 DEFINITIVO - CON AJAX WAIT
+Fix COMPLETO:
+- Wait AJAX per barriera e cedole (#barriera, #rilevamento)
+- Data scadenza da "Data Valutazione finale" 
+- Parse tabelle AJAX popolate
+- Sottostanti con strike corretti
+- Clean numeri italiani → float
 """
 
 import asyncio
@@ -91,12 +91,24 @@ async def scrape_listing(page) -> List[Dict]:
     return certificati[:MAX_DETAIL_ISIN * 2]
 
 async def scrape_detail(page, isin: str) -> Dict:
-    """Step 2: Dettaglio scheda COMPLETO - v26 CON FIX PLACEHOLDER"""
+    """Step 2: Dettaglio scheda COMPLETO v16 - CON AJAX WAIT"""
     url = f"https://www.certificatiederivati.it/db_bs_scheda_certificato.asp?isin={isin}"
     print(f"🔍 {isin}")
     try:
         await page.goto(url, wait_until='networkidle', timeout=30000)
-        await page.wait_for_timeout(3000)
+        
+        # ✅ WAIT AJAX: Aspetta che i DIV siano popolati
+        try:
+            await page.wait_for_selector('#barriera table', timeout=8000)
+        except:
+            pass  # Alcuni certificati non hanno barriera
+        
+        try:
+            await page.wait_for_selector('#rilevamento table', timeout=8000)
+        except:
+            pass  # Alcuni certificati non hanno cedole
+        
+        await page.wait_for_timeout(3000)  # Attesa aggiuntiva per rendering
         html = await page.content()
         soup = BeautifulSoup(html, 'lxml')
         
@@ -104,23 +116,23 @@ async def scrape_detail(page, isin: str) -> Dict:
         tipo = 'Certificato'
         panel_heading = soup.find('div', class_='panel-heading')
         if panel_heading:
-            tipo = panel_heading.get_text(strip=True).upper()
+            h3 = panel_heading.find('h3')
+            if h3:
+                tipo = h3.get_text(strip=True).upper()
         
-        # 2. DATA SCADENZA - dalla tabella principale jumbotron
+        # 2. DATA SCADENZA - Cerca "Data Valutazione finale" (più affidabile)
         maturity_date = None
-        jumbotron = soup.find('div', class_='jumbotron')
-        if jumbotron:
-            rows = jumbotron.find_all('tr')
-            for row in rows:
-                cells = row.find_all(['th', 'td'])
-                if len(cells) >= 2:
-                    label = cells[0].get_text(strip=True)
-                    value = cells[1].get_text(strip=True)
-                    if 'Data Valutazione finale' in label or 'Data scadenza' in label:
-                        # FIX: Ignora placeholder CED
-                        if value != '01/01/1900' and value != '':
-                            maturity_date = value
-                        break
+        all_rows = soup.find_all('tr')
+        for row in all_rows:
+            cells = row.find_all(['th', 'td'])
+            if len(cells) >= 2:
+                label = cells[0].get_text(strip=True)
+                value = cells[1].get_text(strip=True)
+                if 'Data Valutazione finale' in label or 'Data scadenza' in label:
+                    if value and value != '01/01/1900' and value != '':
+                        maturity_date = value
+                        if 'Data Valutazione finale' in label:
+                            break  # Preferisci questa
         
         # 3. SOTTOSTANTI - tabella con header "Scheda Sottostante"
         underlyings = []
@@ -148,41 +160,73 @@ async def scrape_detail(page, isin: str) -> Dict:
                                         'weight': cols[peso_idx] if peso_idx and peso_idx < len(cols) else None
                                     }
                                     underlyings.append(underlying)
-                break
-        
-        # 4. BARRIERA DOWN - dalla tabella dopo "Barriera Down" heading
-        barrier = barrier_down = None
-        # Cerca tutte le righe della pagina
-        all_rows = soup.find_all('tr')
-        for i, row in enumerate(all_rows):
-            cells = row.find_all(['th', 'td'])
-            if len(cells) >= 2:
-                label = cells[0].get_text(strip=True)
-                if 'Barriera' in label and 'Down' not in label:  # Riga header "Barriera"
-                    # Cerca nelle righe successive
-                    for next_row in all_rows[i+1:i+5]:
-                        next_cells = next_row.find_all('td')
-                        if next_cells:
-                            first_cell = next_cells[0].get_text(strip=True)
-                            if '%' in first_cell and first_cell[0].isdigit():
-                                barrier = first_cell
-                                barrier_down = True
-                                break
-                    if barrier:
                         break
         
-        # 5. CEDOLA E TRIGGER - parsing AJAX (non disponibile in HTML statico)
-        # Per ora lasciamo null, richiederebbe chiamata AJAX separata
-        coupon = None
-        trigger_autocallable = None
-        coupon_frequency = 'annual'
+        # 4. BARRIERA - dal DIV #barriera popolato via AJAX
+        barrier = barrier_down = None
+        barriera_div = soup.find('div', id='barriera')
+        if barriera_div:
+            # Cerca tabella barriera
+            barriera_table = barriera_div.find('table')
+            if barriera_table:
+                td_cells = barriera_table.find_all('td')
+                for td in td_cells:
+                    text = td.get_text(strip=True)
+                    # Cerca pattern "60 %" o "60%"
+                    if '%' in text and text.replace('%', '').replace(' ', '').replace(',', '.').replace('.', '').isdigit():
+                        barrier = text
+                        barrier_down = True
+                        break
         
-        # Cerca "Date rilevamento" nella pagina per capire se ha cedole
-        page_text = soup.get_text()
-        if 'Date rilevamento' in page_text or 'CEDOLA' in page_text.upper():
-            # Ha struttura cedolare, ma dati in AJAX
-            # TODO: implementare chiamata ajax_rilevamento.asp se necessario
-            pass
+        # 5. CEDOLA - dal DIV #rilevamento popolato via AJAX
+        coupon = None
+        coupon_frequency = 'annual'
+        rilevamento_div = soup.find('div', id='rilevamento')
+        if rilevamento_div:
+            # Cerca tabella cedole
+            rilevamento_table = rilevamento_div.find('table')
+            if rilevamento_table:
+                # Cerca colonna "CEDOLA" o "PREMIO"
+                thead = rilevamento_table.find('thead')
+                tbody = rilevamento_table.find('tbody')
+                if thead and tbody:
+                    headers = [h.get_text(strip=True).upper() for h in thead.find_all('th')]
+                    if 'CEDOLA' in headers or 'PREMIO' in headers:
+                        coupon_idx = headers.index('CEDOLA') if 'CEDOLA' in headers else headers.index('PREMIO')
+                        first_row = tbody.find('tr')
+                        if first_row:
+                            cols = first_row.find_all('td')
+                            if len(cols) > coupon_idx:
+                                coupon = cols[coupon_idx].get_text(strip=True)
+                        
+                        # Determina frequenza (conta righe)
+                        num_rows = len(tbody.find_all('tr'))
+                        if num_rows > 12:
+                            coupon_frequency = 'monthly'
+                        elif num_rows > 4:
+                            coupon_frequency = 'quarterly'
+        
+        # 6. TRIGGER AUTOCALLABLE - dal DIV #rilevamento
+        trigger_autocallable = None
+        if rilevamento_div and rilevamento_table:
+            thead = rilevamento_table.find('thead')
+            if thead:
+                headers = [h.get_text(strip=True).upper() for h in thead.find_all('th')]
+                if 'TRIGGER' in headers or 'TRIGGER AUTOCALL' in headers:
+                    trigger_idx = None
+                    for idx, h in enumerate(headers):
+                        if 'TRIGGER' in h and 'AUTOCALL' in h:
+                            trigger_idx = idx
+                            break
+                    
+                    if trigger_idx is not None:
+                        tbody = rilevamento_table.find('tbody')
+                        if tbody:
+                            first_row = tbody.find('tr')
+                            if first_row:
+                                cols = first_row.find_all('td')
+                                if len(cols) > trigger_idx:
+                                    trigger_autocallable = cols[trigger_idx].get_text(strip=True)
         
         return {
             'type': tipo,
@@ -194,19 +238,19 @@ async def scrape_detail(page, isin: str) -> Dict:
             'coupon_frequency': coupon_frequency,
             'trigger_autocallable': trigger_autocallable,
             'underlyings': underlyings,
-            'source': 'CED_scheda_v26'
+            'source': 'CED_scheda_v16_ajax'
         }
     except Exception as e:
-        print(f"❌ {isin}: {str(e)[:40]}")
+        print(f"❌ {isin}: {str(e)[:50]}")
         return {}
 
 def clean_numeric_fields(certificati: List[Dict]) -> List[Dict]:
     """Step 3: Converte stringhe italiane → numeri + annualizza cedola mensile"""
     for cert in certificati:
-        # 1. Pulisci barrier: "50 %" → 50.0
+        # 1. Pulisci barrier: "60 %" → 60.0
         if cert.get('barrier') and isinstance(cert['barrier'], str):
             try:
-                val = cert['barrier'].replace('%', '').replace(',', '.').strip()
+                val = cert['barrier'].replace('%', '').replace(',', '.').replace(' ', '').strip()
                 cert['barrier'] = float(val) if val else None
             except:
                 cert['barrier'] = None
@@ -214,7 +258,7 @@ def clean_numeric_fields(certificati: List[Dict]) -> List[Dict]:
         # 2. Pulisci coupon: "0,83 %" → 0.83
         if cert.get('annual_coupon_yield') and isinstance(cert['annual_coupon_yield'], str):
             try:
-                val = cert['annual_coupon_yield'].replace('%', '').replace(',', '.').strip()
+                val = cert['annual_coupon_yield'].replace('%', '').replace(',', '.').replace(' ', '').strip()
                 cert['annual_coupon_yield'] = float(val) if val else None
             except:
                 cert['annual_coupon_yield'] = None
@@ -227,19 +271,20 @@ def clean_numeric_fields(certificati: List[Dict]) -> List[Dict]:
         # 4. Pulisci trigger: "65 %" → 65.0
         if cert.get('trigger_autocallable') and isinstance(cert['trigger_autocallable'], str):
             try:
-                val = cert['trigger_autocallable'].replace('%', '').replace(',', '.').strip()
+                val = cert['trigger_autocallable'].replace('%', '').replace(',', '.').replace(' ', '').strip()
                 cert['trigger_autocallable'] = float(val) if val else None
             except:
                 cert['trigger_autocallable'] = None
         
-        # 5. Pulisci strike principale: "10519" → 10519.0 (ma NON "1" di TRACKER indice)
+        # 5. Pulisci strike principale: "10.519" → 10519.0 (virgola italiana)
         if cert.get('strike') and isinstance(cert['strike'], str):
             try:
-                # Se strike = "1" e tipo TRACKER, lascia come stringa descrittiva
+                # Se strike = "1" e tipo TRACKER, lascia come base indice
                 if cert['strike'].strip() == '1' and 'TRACKER' in cert.get('type', ''):
-                    cert['strike'] = 1.0  # Base indice
+                    cert['strike'] = 1.0
                 else:
-                    val = cert['strike'].replace('.', '').replace(',', '.')
+                    # Gestisci formato italiano: "9.585" = 9585 oppure "9,585" = 9.585
+                    val = cert['strike'].replace('.', '').replace(',', '.').strip()
                     cert['strike'] = float(val) if val else None
             except:
                 cert['strike'] = None
@@ -249,7 +294,7 @@ def clean_numeric_fields(certificati: List[Dict]) -> List[Dict]:
             for und in cert['underlyings']:
                 if und.get('strike') and isinstance(und['strike'], str):
                     try:
-                        val = und['strike'].replace('.', '').replace(',', '.')
+                        val = und['strike'].replace('.', '').replace(',', '.').strip()
                         und['strike'] = float(val) if val else None
                     except:
                         und['strike'] = None
@@ -289,7 +334,7 @@ async def main():
             
             # STEP 3: Clean numeri per frontend
             certificati = clean_numeric_fields(certificati)
-            print(f"🧹 Cleaned {len(certificati)} certificati (v26-placeholder-fix)")
+            print(f"🧹 Cleaned {len(certificati)} certificati (v16-ajax-complete)")
             
             # STEP 4: Salva output
             pd.DataFrame(certificati).to_json('certificates-recenti.json', orient='records', indent=2)
@@ -300,7 +345,7 @@ async def main():
                 'count': len(certificati), 
                 'certificates': certificati, 
                 'metadata': {
-                    'version': 'v26-placeholder-fix',
+                    'version': 'v16-ajax-complete',
                     'details_filled': filled,
                     'scraped_at': datetime.now().isoformat()
                 }
@@ -309,7 +354,7 @@ async def main():
             with open('certificates-data.json', 'w', encoding='utf-8') as f:
                 json.dump(payload, f, indent=2, ensure_ascii=False)
             
-            print(f"✅ {len(certificati)} tot | {filled} details | v26-placeholder-fix")
+            print(f"✅ {len(certificati)} tot | {filled} details | v16-ajax-complete")
             
     except Exception as e:
         print(f"⚠️ Errore: {str(e)[:80]}")
