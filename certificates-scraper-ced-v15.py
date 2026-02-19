@@ -1,12 +1,9 @@
 #!/usr/bin/env python3
 """
-Scraper CED v16 DEFINITIVO - CON AJAX WAIT
-Fix COMPLETO:
-- Wait AJAX per barriera e cedole (#barriera, #rilevamento)
-- Data scadenza da "Data Valutazione finale" 
-- Parse tabelle AJAX popolate
-- Sottostanti con strike corretti
-- Clean numeri italiani → float
+Scraper CED v17 DEFINITIVO - SOLO INDICI/COMMODITIES
+- NON scrapare titoli azionari come sottostanti
+- Prendi sottostante principale dal nome certificato
+- Fix barriera/cedola da AJAX
 """
 
 import asyncio
@@ -25,18 +22,47 @@ cutoff_date = datetime.now() - timedelta(days=RECENT_DAYS)
 DATE_FORMAT = '%d/%m/%Y'
 
 def classify_underlying_category(sott: str) -> str:
+    """Classifica SOLO indici, FX, commodities, tassi - NO azioni singole"""
     if not sott: return "other"
     s = sott.lower()
-    if "indice" in s or any(k in s for k in ["ftse", "dax", "sp", "euro stoxx", "nasdaq"]): return "index"
-    if any(k in s for k in ["eur", "usd", "gbp", "chf", "jpy", "fx", "valuta"]): return "fx"
-    if any(k in s for k in ["euribor", "tasso", "rate", "eonia", "sonia", "libor"]): return "rate"
-    if any(k in s for k in ["credit", "cln", "linked"]): return "credit"
-    if any(k in s for k in ["basket", "worst of", "best of"]): return "basket"
-    return "single"
+    
+    # INDICI
+    if any(k in s for k in ["indice", "index", "ftse", "dax", "s&p", "sp", "euro stoxx", "stoxx", 
+                            "nasdaq", "nikkei", "hang seng", "dow jones", "russell", "msci"]):
+        return "index"
+    
+    # FX / VALUTE
+    if any(k in s for k in ["eur", "usd", "gbp", "chf", "jpy", "fx", "valuta", "cambio"]):
+        return "fx"
+    
+    # TASSI
+    if any(k in s for k in ["euribor", "tasso", "rate", "eonia", "sonia", "libor", "irs", "swap"]):
+        return "rate"
+    
+    # CREDIT
+    if any(k in s for k in ["credit", "cln", "linked", "spread"]):
+        return "credit"
+    
+    # COMMODITIES
+    if any(k in s for k in ["gold", "silver", "oil", "brent", "wti", "copper", "gas", "wheat", 
+                            "corn", "commodity", "materie prime"]):
+        return "commodity"
+    
+    # BASKET
+    if any(k in s for k in ["basket", "worst of", "best of", "paniere"]):
+        return "basket"
+    
+    # Se contiene nomi di aziende → SCARTA
+    aziende = ["enel", "eni", "intesa", "unicredit", "generali", "telecom", "mps", "bpm", 
+               "stm", "leonardo", "saipem", "tenaris", "apple", "microsoft", "amazon", "meta"]
+    if any(az in s for az in aziende):
+        return "equity_single"  # Marca come azione singola
+    
+    return "other"
 
 async def scrape_listing(page) -> List[Dict]:
-    """Step 1: Elenco nuove emissioni"""
-    print("📋 Step 1: LISTING nuove emissioni")
+    """Step 1: Elenco nuove emissioni - FILTRA solo indici/commodities"""
+    print("📋 Step 1: LISTING nuove emissioni (SOLO indici/commodities)")
     await page.goto('https://www.certificatiederivati.it/db_bs_nuove_emissioni.asp', wait_until='networkidle')
     await page.wait_for_timeout(5000)
     html = await page.content()
@@ -60,14 +86,20 @@ async def scrape_listing(page) -> List[Dict]:
             emittente = cols[2].strip()
             sottostante = cols[3].strip()
             
+            # ✅ FILTRA: Scarta se contiene nomi di azioni
+            underlying_category = classify_underlying_category(sottostante)
+            if underlying_category == "equity_single":
+                print(f"  ⏭️  SKIP {isin}: {sottostante} (azioni singole)")
+                continue
+            
             cert = {
                 'isin': isin,
                 'name': nome,
                 'issuer': emittente,
                 'type': 'Certificato',
-                'underlying': sottostante,
+                'underlying': sottostante,  # ES: "Nasdaq 100", "Euro Stoxx 50"
                 'underlying_name': sottostante,
-                'underlying_category': classify_underlying_category(sottostante),
+                'underlying_category': underlying_category,
                 'issue_date': data_str,
                 'maturity_date': None,
                 'market': 'SeDeX',
@@ -78,41 +110,36 @@ async def scrape_listing(page) -> List[Dict]:
                 'annual_coupon_yield': None,
                 'coupon_frequency': 'annual',
                 'trigger_autocallable': None,
-                'underlyings': [],
+                'underlyings': [],  # ✅ VUOTO! Non mostrare componenti
                 'scenario_analysis': None,
-                'source': 'CED_nuove_emissioni'
+                'source': 'CED_nuove_emissioni_v17'
             }
             certificati.append(cert)
-            if len(certificati) % 100 == 0: print(f"  {len(certificati)} recenti (Riga {i})")
+            if len(certificati) % 50 == 0: print(f"  ✅ {len(certificati)} certificati (solo indici/commodities)")
         except (ValueError, IndexError):
             continue
     
-    print(f"Totale certificati recenti: {len(certificati)}")
+    print(f"✅ Totale certificati VALIDI: {len(certificati)}")
     return certificati[:MAX_DETAIL_ISIN * 2]
 
 async def scrape_detail(page, isin: str) -> Dict:
-    """Step 2: Dettaglio scheda COMPLETO v16 - CON AJAX WAIT"""
+    """Step 2: Dettaglio scheda v17 - BARRIERA/CEDOLA corrette"""
     url = f"https://www.certificatiederivati.it/db_bs_scheda_certificato.asp?isin={isin}"
     print(f"🔍 {isin}")
     try:
         await page.goto(url, wait_until='networkidle', timeout=30000)
         
-        # ✅ WAIT AJAX: Aspetta che i DIV siano popolati
+        # Wait AJAX
         try:
-            await page.wait_for_selector('#barriera table', timeout=8000)
+            await page.wait_for_selector('#barriera', timeout=8000)
         except:
-            pass  # Alcuni certificati non hanno barriera
+            pass
         
-        try:
-            await page.wait_for_selector('#rilevamento table', timeout=8000)
-        except:
-            pass  # Alcuni certificati non hanno cedole
-        
-        await page.wait_for_timeout(3000)  # Attesa aggiuntiva per rendering
+        await page.wait_for_timeout(3000)
         html = await page.content()
         soup = BeautifulSoup(html, 'lxml')
         
-        # 1. TIPO dal panel-heading
+        # 1. TIPO
         tipo = 'Certificato'
         panel_heading = soup.find('div', class_='panel-heading')
         if panel_heading:
@@ -120,7 +147,7 @@ async def scrape_detail(page, isin: str) -> Dict:
             if h3:
                 tipo = h3.get_text(strip=True).upper()
         
-        # 2. DATA SCADENZA - Cerca "Data Valutazione finale" (più affidabile)
+        # 2. DATA SCADENZA
         maturity_date = None
         all_rows = soup.find_all('tr')
         for row in all_rows:
@@ -128,180 +155,82 @@ async def scrape_detail(page, isin: str) -> Dict:
             if len(cells) >= 2:
                 label = cells[0].get_text(strip=True)
                 value = cells[1].get_text(strip=True)
-                if 'Data Valutazione finale' in label or 'Data scadenza' in label:
-                    if value and value != '01/01/1900' and value != '':
+                if 'Data Valutazione finale' in label:
+                    if value and value != '01/01/1900':
                         maturity_date = value
-                        if 'Data Valutazione finale' in label:
-                            break  # Preferisci questa
-        
-        # 3. SOTTOSTANTI - tabella con header "Scheda Sottostante"
-        underlyings = []
-        for panel in soup.find_all('div', class_='panel'):
-            panel_title = panel.find('div', class_='panel-heading')
-            if panel_title and 'Scheda Sottostante' in panel_title.get_text():
-                table = panel.find('table')
-                if table:
-                    thead = table.find('thead')
-                    tbody = table.find('tbody')
-                    if thead and tbody:
-                        headers = [h.get_text(strip=True).upper() for h in thead.find_all('th')]
-                        if 'DESCRIZIONE' in headers and 'STRIKE' in headers:
-                            desc_idx = headers.index('DESCRIZIONE')
-                            strike_idx = headers.index('STRIKE')
-                            peso_idx = headers.index('PESO') if 'PESO' in headers else None
-                            
-                            rows = tbody.find_all('tr')
-                            for row in rows:
-                                cols = [c.get_text(strip=True) for c in row.find_all('td')]
-                                if len(cols) > strike_idx:
-                                    underlying = {
-                                        'name': cols[desc_idx] if desc_idx < len(cols) else '',
-                                        'strike': cols[strike_idx],
-                                        'weight': cols[peso_idx] if peso_idx and peso_idx < len(cols) else None
-                                    }
-                                    underlyings.append(underlying)
                         break
         
-        # 4. BARRIERA - dal DIV #barriera popolato via AJAX
+        # 3. BARRIERA - Parse dal DIV #barriera DOPO AJAX
         barrier = barrier_down = None
         barriera_div = soup.find('div', id='barriera')
         if barriera_div:
-            # Cerca tabella barriera
-            barriera_table = barriera_div.find('table')
-            if barriera_table:
-                td_cells = barriera_table.find_all('td')
-                for td in td_cells:
-                    text = td.get_text(strip=True)
-                    # Cerca pattern "60 %" o "60%"
-                    if '%' in text and text.replace('%', '').replace(' ', '').replace(',', '.').replace('.', '').isdigit():
-                        barrier = text
-                        barrier_down = True
-                        break
+            # Cerca prima cella con "XX %"
+            all_text = barriera_div.get_text()
+            # Regex: cerca numero seguito da %
+            match = re.search(r'(\d+(?:[.,]\d+)?)\s*%', all_text)
+            if match:
+                barrier = match.group(1).replace(',', '.')
+                barrier_down = True
+                print(f"  📊 Barriera: {barrier}%")
         
-        # 5. CEDOLA - dal DIV #rilevamento popolato via AJAX
+        # 4. CEDOLA - Parse dal DIV #rilevamento
         coupon = None
         coupon_frequency = 'annual'
         rilevamento_div = soup.find('div', id='rilevamento')
         if rilevamento_div:
-            # Cerca tabella cedole
-            rilevamento_table = rilevamento_div.find('table')
-            if rilevamento_table:
-                # Cerca colonna "CEDOLA" o "PREMIO"
-                thead = rilevamento_table.find('thead')
-                tbody = rilevamento_table.find('tbody')
-                if thead and tbody:
-                    headers = [h.get_text(strip=True).upper() for h in thead.find_all('th')]
-                    if 'CEDOLA' in headers or 'PREMIO' in headers:
-                        coupon_idx = headers.index('CEDOLA') if 'CEDOLA' in headers else headers.index('PREMIO')
-                        first_row = tbody.find('tr')
-                        if first_row:
-                            cols = first_row.find_all('td')
-                            if len(cols) > coupon_idx:
-                                coupon = cols[coupon_idx].get_text(strip=True)
-                        
-                        # Determina frequenza (conta righe)
-                        num_rows = len(tbody.find_all('tr'))
-                        if num_rows > 12:
-                            coupon_frequency = 'monthly'
-                        elif num_rows > 4:
-                            coupon_frequency = 'quarterly'
+            all_text = rilevamento_div.get_text()
+            # Cerca "Cedola: XX%" o "Premio: XX%"
+            match = re.search(r'(?:Cedola|Premio)[:\s]+(\d+(?:[.,]\d+)?)\s*%', all_text, re.IGNORECASE)
+            if match:
+                coupon = match.group(1).replace(',', '.')
+                print(f"  💰 Cedola: {coupon}%")
         
-        # 6. TRIGGER AUTOCALLABLE - dal DIV #rilevamento
+        # 5. TRIGGER (se presente)
         trigger_autocallable = None
-        if rilevamento_div and rilevamento_table:
-            thead = rilevamento_table.find('thead')
-            if thead:
-                headers = [h.get_text(strip=True).upper() for h in thead.find_all('th')]
-                if 'TRIGGER' in headers or 'TRIGGER AUTOCALL' in headers:
-                    trigger_idx = None
-                    for idx, h in enumerate(headers):
-                        if 'TRIGGER' in h and 'AUTOCALL' in h:
-                            trigger_idx = idx
-                            break
-                    
-                    if trigger_idx is not None:
-                        tbody = rilevamento_table.find('tbody')
-                        if tbody:
-                            first_row = tbody.find('tr')
-                            if first_row:
-                                cols = first_row.find_all('td')
-                                if len(cols) > trigger_idx:
-                                    trigger_autocallable = cols[trigger_idx].get_text(strip=True)
+        if rilevamento_div:
+            match = re.search(r'Trigger[:\s]+(\d+(?:[.,]\d+)?)\s*%', rilevamento_div.get_text(), re.IGNORECASE)
+            if match:
+                trigger_autocallable = match.group(1).replace(',', '.')
         
         return {
             'type': tipo,
             'maturity_date': maturity_date,
-            'strike': underlyings[0]['strike'] if len(underlyings) == 1 else None,
+            'strike': None,  # Non serve per indici
             'barrier': barrier,
             'barrier_down': barrier_down,
             'annual_coupon_yield': coupon,
             'coupon_frequency': coupon_frequency,
             'trigger_autocallable': trigger_autocallable,
-            'underlyings': underlyings,
-            'source': 'CED_scheda_v16_ajax'
+            'underlyings': [],  # ✅ VUOTO - Non mostrare componenti
+            'source': 'CED_v17_index_only'
         }
     except Exception as e:
         print(f"❌ {isin}: {str(e)[:50]}")
         return {}
 
 def clean_numeric_fields(certificati: List[Dict]) -> List[Dict]:
-    """Step 3: Converte stringhe italiane → numeri + annualizza cedola mensile"""
+    """Step 3: Clean numeri"""
     for cert in certificati:
-        # 1. Pulisci barrier: "60 %" → 60.0
+        # Barrier
         if cert.get('barrier') and isinstance(cert['barrier'], str):
             try:
-                val = cert['barrier'].replace('%', '').replace(',', '.').replace(' ', '').strip()
-                cert['barrier'] = float(val) if val else None
+                cert['barrier'] = float(cert['barrier'])
             except:
                 cert['barrier'] = None
         
-        # 2. Pulisci coupon: "0,83 %" → 0.83
+        # Coupon
         if cert.get('annual_coupon_yield') and isinstance(cert['annual_coupon_yield'], str):
             try:
-                val = cert['annual_coupon_yield'].replace('%', '').replace(',', '.').replace(' ', '').strip()
-                cert['annual_coupon_yield'] = float(val) if val else None
+                cert['annual_coupon_yield'] = float(cert['annual_coupon_yield'])
             except:
                 cert['annual_coupon_yield'] = None
         
-        # 3. ANNUALIZZA cedola se mensile
-        if cert.get('coupon_frequency') == 'monthly' and cert.get('annual_coupon_yield'):
-            cert['annual_coupon_yield'] = cert['annual_coupon_yield'] * 12
-            print(f"  📅 {cert['isin']}: Cedola annualizzata {cert['annual_coupon_yield']:.2f}% (mensile × 12)")
-        
-        # 4. Pulisci trigger: "65 %" → 65.0
+        # Trigger
         if cert.get('trigger_autocallable') and isinstance(cert['trigger_autocallable'], str):
             try:
-                val = cert['trigger_autocallable'].replace('%', '').replace(',', '.').replace(' ', '').strip()
-                cert['trigger_autocallable'] = float(val) if val else None
+                cert['trigger_autocallable'] = float(cert['trigger_autocallable'])
             except:
                 cert['trigger_autocallable'] = None
-        
-        # 5. Pulisci strike principale: "10.519" → 10519.0 (virgola italiana)
-        if cert.get('strike') and isinstance(cert['strike'], str):
-            try:
-                # Se strike = "1" e tipo TRACKER, lascia come base indice
-                if cert['strike'].strip() == '1' and 'TRACKER' in cert.get('type', ''):
-                    cert['strike'] = 1.0
-                else:
-                    # Gestisci formato italiano: "9.585" = 9585 oppure "9,585" = 9.585
-                    val = cert['strike'].replace('.', '').replace(',', '.').strip()
-                    cert['strike'] = float(val) if val else None
-            except:
-                cert['strike'] = None
-        
-        # 6. Pulisci strike sottostanti
-        if cert.get('underlyings'):
-            for und in cert['underlyings']:
-                if und.get('strike') and isinstance(und['strike'], str):
-                    try:
-                        val = und['strike'].replace('.', '').replace(',', '.').strip()
-                        und['strike'] = float(val) if val else None
-                    except:
-                        und['strike'] = None
-        
-        # 7. FIX: Se maturity_date è placeholder, set None
-        if cert.get('maturity_date') == '01/01/1900':
-            cert['maturity_date'] = None
     
     return certificati
 
@@ -309,43 +238,37 @@ async def main():
     import sys
     sys.stdout.reconfigure(line_buffering=True)
     certificati = []
-    exit_code = 0
     
     try:
         async with async_playwright() as p:
-            browser = await p.chromium.launch(headless=True, args=['--no-sandbox', '--disable-dev-shm-usage', '--disable-gpu', '--single-process'])
-            context = await browser.new_context(user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36')
+            browser = await p.chromium.launch(headless=True, args=['--no-sandbox', '--disable-dev-shm-usage'])
+            context = await browser.new_context(user_agent='Mozilla/5.0')
             page = await context.new_page()
             
-            # STEP 1: Scrape listing
             certificati = await scrape_listing(page)
-            print(f"📋 {len(certificati)} ISIN trovati")
+            print(f"📋 {len(certificati)} ISIN (solo indici/commodities)")
             
-            # STEP 2: Scrape details
             filled = 0
-            for i, cert in enumerate(certificati[:MAX_DETAIL_ISIN]):
+            for cert in certificati[:MAX_DETAIL_ISIN]:
                 detail = await scrape_detail(page, cert['isin'])
                 cert.update(detail)
-                if detail.get('strike') or detail.get('barrier') or detail.get('underlyings'): 
+                if detail.get('barrier') or detail.get('annual_coupon_yield'):
                     filled += 1
                 await asyncio.sleep(1.5)
             
             await browser.close()
             
-            # STEP 3: Clean numeri per frontend
             certificati = clean_numeric_fields(certificati)
-            print(f"🧹 Cleaned {len(certificati)} certificati (v16-ajax-complete)")
             
-            # STEP 4: Salva output
             pd.DataFrame(certificati).to_json('certificates-recenti.json', orient='records', indent=2)
             pd.DataFrame(certificati).to_csv('certificates-recenti.csv', index=False)
             
             payload = {
-                'success': True, 
-                'count': len(certificati), 
-                'certificates': certificati, 
+                'success': True,
+                'count': len(certificati),
+                'certificates': certificati,
                 'metadata': {
-                    'version': 'v16-ajax-complete',
+                    'version': 'v17-index-only',
                     'details_filled': filled,
                     'scraped_at': datetime.now().isoformat()
                 }
@@ -354,11 +277,10 @@ async def main():
             with open('certificates-data.json', 'w', encoding='utf-8') as f:
                 json.dump(payload, f, indent=2, ensure_ascii=False)
             
-            print(f"✅ {len(certificati)} tot | {filled} details | v16-ajax-complete")
+            print(f"✅ {len(certificati)} certificati | {filled} con dati | v17-index-only")
             
     except Exception as e:
-        print(f"⚠️ Errore: {str(e)[:80]}")
-        exit_code = 0
+        print(f"⚠️ {e}")
     finally:
         print("🏁 DONE")
         sys.exit(0)
