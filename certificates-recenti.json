@@ -25,45 +25,7 @@
       }
     ],
     "scenario_analysis":null,
-    "source":"CED_scheda_v26"
-  },
-  {
-    "isin":"IT0005679425",
-    "name":"FIXED CASH COLLECT STEP DOWN",
-    "issuer":"Unicredit",
-    "type":"FIXED CASH COLLECT STEP DOWN",
-    "underlying":"Basket di azioni worst of",
-    "underlying_name":"Basket di azioni worst of",
-    "underlying_category":"basket",
-    "issue_date":"18\/02\/2026",
-    "maturity_date":"04\/02\/2030",
-    "market":"SeDeX",
-    "price":null,
-    "strike":null,
-    "barrier":60.0,
-    "barrier_down":true,
-    "annual_coupon_yield":null,
-    "coupon_frequency":"annual",
-    "trigger_autocallable":null,
-    "underlyings":[
-      {
-        "name":"Enel",
-        "strike":9.585,
-        "weight":""
-      },
-      {
-        "name":"Eni",
-        "strike":17.944,
-        "weight":""
-      },
-      {
-        "name":"Intesa Sanpaolo",
-        "strike":6.048,
-        "weight":""
-      }
-    ],
-    "scenario_analysis":null,
-    "source":"CED_scheda_v26"
+    "source":"CED_scheda_v16_ajax"
   },
   {
     "isin":"DE000VJ59273",
@@ -78,10 +40,10 @@
     "market":"SeDeX",
     "price":null,
     "strike":null,
-    "barrier":50.0,
-    "barrier_down":true,
-    "annual_coupon_yield":null,
-    "coupon_frequency":"annual",
+    "barrier":null,
+    "barrier_down":null,
+    "annual_coupon_yield":9.96,
+    "coupon_frequency":"monthly",
     "trigger_autocallable":null,
     "underlyings":[
       {
@@ -106,7 +68,7 @@
       }
     ],
     "scenario_analysis":null,
-    "source":"CED_scheda_v26"
+    "source":"CED_scheda_v16_ajax"
   },
   {
     "isin":"DE000UQ8JNB0",
@@ -121,10 +83,10 @@
     "market":"SeDeX",
     "price":null,
     "strike":null,
-    "barrier":50.0,
-    "barrier_down":true,
-    "annual_coupon_yield":null,
-    "coupon_frequency":"annual",
+    "barrier":null,
+    "barrier_down":null,
+    "annual_coupon_yield":23.28,
+    "coupon_frequency":"monthly",
     "trigger_autocallable":null,
     "underlyings":[
       {
@@ -149,73 +111,205 @@
       }
     ],
     "scenario_analysis":null,
-    "source":"CED_scheda_v26"
+    "source":"CED_scheda_v16_ajax"
   },
   {
-    "isin":"GB00BVJWH804",
-    "name":"PHOENIX MEMORY",
-    "issuer":"Goldman Sachs",
-    "type":"PHOENIX MEMORY",
+    "isin":"IT0006773748",
+    "name":"PHOENIX MEMORY STEP DOWN",
+    "issuer":"Marex Financial",
+    "type":"PHOENIX MEMORY STEP DOWN",
+    "underlying":"Basket di indici worst of",
+    "underlying_name":"Basket di indici worst of",
+    "underlying_category":"basket",
+    "issue_date":"18\/02\/2026",
+    "maturity_date":"13\/02\/2029",
+    "market":"SeDeX",
+    "price":null,
+    "strike":null,
+    "barrier":null,
+    "barrier_down":null,
+    "annual_coupon_yield":9.0,
+    "coupon_frequency":"monthly",
+    "trigger_autocallable":null,
+    "underlyings":[
+      {
+        "name":"Euro Stoxx 50",
+        "strike":5985.23,
+        "weight":""
+      },
+      {
+        "name":"S&P 500",
+        "strike":6836.17,
+        "weight":""
+      },
+      {
+        "name":"Eurostoxx Banks",
+        "strike":258.08,
+        "weight":""
+      }
+    ],
+    "scenario_analysis":null,
+    "source":"CED_scheda_v16_ajax"
+  },
+  {
+    "isin":"IT0005679425",
+    "name":"FIXED CASH COLLECT STEP DOWN",
+    "issuer":"Unicredit",
+    "type":"FIXED CASH COLLECT STEP DOWN",
     "underlying":"Basket di azioni worst of",
     "underlying_name":"Basket di azioni worst of",
     "underlying_category":"basket",
     "issue_date":"18\/02\/2026",
-    "maturity_date":"16\/01\/2029",
+    "maturity_date":"04\/02\/2030",
     "market":"SeDeX",
     "price":null,
     "strike":null,
-    "barrier":60.0,
-    "barrier_down":true,
-    "annual_coupon_yield":null,
+    "barrier":null,
+    "barrier_down":null,
+    "annual_coupon_yield":21.0,
+    "coupon_frequency":"monthly",
+    "trigger_autocallable":null,
+    "underlyings":[
+      {
+        "name":"Enel",
+        "strike":9.585,
+        "weight":""
+      },
+      {
+        "name":"Eni",
+        "strike":17.944,
+        "weight":""
+      },
+      {
+        "name":"Intesa Sanpaolo",
+        "strike":6.048,
+        "weight":""
+      }
+    ],
+    "scenario_analysis":null,
+    "source":"CED_scheda_v16_ajax"
+  },
+  {
+    "isin":"CH1484586248",
+    "name":"PHOENIX MEMORY SOFTCALLABLE",
+    "issuer":"Leonteq Securities",
+    "type":"PHOENIX MEMORY SOFTCALLABLE",
+    "underlying":"Singolo Sottostante",
+    "underlying_name":"Singolo Sottostante",
+    "underlying_category":"single",
+    "issue_date":"18\/02\/2026",
+    "maturity_date":"11\/02\/2028",
+    "market":"SeDeX",
+    "price":null,
+    "strike":47.37,
+    "barrier":null,
+    "barrier_down":null,
+    "annual_coupon_yield":12.0,
+    "coupon_frequency":"monthly",
+    "trigger_autocallable":null,
+    "underlyings":[
+      {
+        "name":"Eldorado Gold",
+        "strike":47.37,
+        "weight":""
+      }
+    ],
+    "scenario_analysis":null,
+    "source":"CED_scheda_v16_ajax"
+  },
+  {
+    "isin":"XS2878535645",
+    "name":"PHOENIX MEMORY BASKET STAR STEP DOWN",
+    "issuer":"Societe Generale",
+    "type":"PHOENIX MEMORY BASKET STAR STEP DOWN",
+    "underlying":"Basket di azioni worst of",
+    "underlying_name":"Basket di azioni worst of",
+    "underlying_category":"basket",
+    "issue_date":"18\/02\/2026",
+    "maturity_date":"15\/01\/2029",
+    "market":"SeDeX",
+    "price":null,
+    "strike":null,
+    "barrier":null,
+    "barrier_down":null,
+    "annual_coupon_yield":10.8,
+    "coupon_frequency":"monthly",
+    "trigger_autocallable":null,
+    "underlyings":[
+      {
+        "name":"Eni",
+        "strike":16.72,
+        "weight":""
+      },
+      {
+        "name":"Enel",
+        "strike":9.321,
+        "weight":""
+      },
+      {
+        "name":"Banco BPM",
+        "strike":12.535,
+        "weight":""
+      }
+    ],
+    "scenario_analysis":null,
+    "source":"CED_scheda_v16_ajax"
+  },
+  {
+    "isin":"XS3077242942",
+    "name":"DIGITAL REVERSE AUTOCALLABLE",
+    "issuer":"Citigroup",
+    "type":"DIGITAL REVERSE AUTOCALLABLE",
+    "underlying":"Singolo Sottostante",
+    "underlying_name":"Singolo Sottostante",
+    "underlying_category":"single",
+    "issue_date":"18\/02\/2026",
+    "maturity_date":"11\/02\/2030",
+    "market":"SeDeX",
+    "price":null,
+    "strike":4.0,
+    "barrier":null,
+    "barrier_down":null,
+    "annual_coupon_yield":4.1,
     "coupon_frequency":"annual",
     "trigger_autocallable":null,
     "underlyings":[
       {
-        "name":"Apple",
-        "strike":248.04,
+        "name":"Solactive BTP 10 Annual Comp. Yield",
+        "strike":4.0,
         "weight":""
-      },
+      }
+    ],
+    "scenario_analysis":null,
+    "source":"CED_scheda_v16_ajax"
+  },
+  {
+    "isin":"DE000GV9VZT0",
+    "name":"EXPRESS STEP DOWN",
+    "issuer":"Goldman Sachs",
+    "type":"EXPRESS STEP DOWN",
+    "underlying":"Singolo Sottostante",
+    "underlying_name":"Singolo Sottostante",
+    "underlying_category":"single",
+    "issue_date":"18\/02\/2026",
+    "maturity_date":"10\/02\/2031",
+    "market":"SeDeX",
+    "price":null,
+    "strike":413.27,
+    "barrier":null,
+    "barrier_down":null,
+    "annual_coupon_yield":"",
+    "coupon_frequency":"quarterly",
+    "trigger_autocallable":null,
+    "underlyings":[
       {
         "name":"Microsoft",
-        "strike":465.95,
+        "strike":413.27,
         "weight":""
       }
     ],
     "scenario_analysis":null,
-    "source":"CED_scheda_v26"
-  },
-  {
-    "isin":"IT0005690166",
-    "name":"PHOENIX MEMORY STEP DOWN",
-    "issuer":"Intesa Sanpaolo",
-    "type":"PHOENIX MEMORY STEP DOWN",
-    "underlying":"Basket di azioni worst of",
-    "underlying_name":"Basket di azioni worst of",
-    "underlying_category":"basket",
-    "issue_date":"18\/02\/2026",
-    "maturity_date":"15\/02\/2029",
-    "market":"SeDeX",
-    "price":null,
-    "strike":null,
-    "barrier":55.0,
-    "barrier_down":true,
-    "annual_coupon_yield":null,
-    "coupon_frequency":"annual",
-    "trigger_autocallable":null,
-    "underlyings":[
-      {
-        "name":"Chevron",
-        "strike":176.9,
-        "weight":""
-      },
-      {
-        "name":"Exxon",
-        "strike":141.4,
-        "weight":""
-      }
-    ],
-    "scenario_analysis":null,
-    "source":"CED_scheda_v26"
+    "source":"CED_scheda_v16_ajax"
   },
   {
     "isin":"DE000VJ59281",
@@ -230,10 +324,10 @@
     "market":"SeDeX",
     "price":null,
     "strike":null,
-    "barrier":60.0,
-    "barrier_down":true,
-    "annual_coupon_yield":null,
-    "coupon_frequency":"annual",
+    "barrier":null,
+    "barrier_down":null,
+    "annual_coupon_yield":4.66,
+    "coupon_frequency":"quarterly",
     "trigger_autocallable":null,
     "underlyings":[
       {
@@ -258,63 +352,7 @@
       }
     ],
     "scenario_analysis":null,
-    "source":"CED_scheda_v26"
-  },
-  {
-    "isin":"CH1484586248",
-    "name":"PHOENIX MEMORY SOFTCALLABLE",
-    "issuer":"Leonteq Securities",
-    "type":"PHOENIX MEMORY SOFTCALLABLE",
-    "underlying":"Singolo Sottostante",
-    "underlying_name":"Singolo Sottostante",
-    "underlying_category":"single",
-    "issue_date":"18\/02\/2026",
-    "maturity_date":"11\/02\/2028",
-    "market":"SeDeX",
-    "price":null,
-    "strike":47.37,
-    "barrier":60.0,
-    "barrier_down":true,
-    "annual_coupon_yield":null,
-    "coupon_frequency":"annual",
-    "trigger_autocallable":null,
-    "underlyings":[
-      {
-        "name":"Eldorado Gold",
-        "strike":47.37,
-        "weight":""
-      }
-    ],
-    "scenario_analysis":null,
-    "source":"CED_scheda_v26"
-  },
-  {
-    "isin":"DE000GV9VZT0",
-    "name":"EXPRESS STEP DOWN",
-    "issuer":"Goldman Sachs",
-    "type":"EXPRESS STEP DOWN",
-    "underlying":"Singolo Sottostante",
-    "underlying_name":"Singolo Sottostante",
-    "underlying_category":"single",
-    "issue_date":"18\/02\/2026",
-    "maturity_date":"10\/02\/2031",
-    "market":"SeDeX",
-    "price":null,
-    "strike":413.27,
-    "barrier":65.0,
-    "barrier_down":true,
-    "annual_coupon_yield":null,
-    "coupon_frequency":"annual",
-    "trigger_autocallable":null,
-    "underlyings":[
-      {
-        "name":"Microsoft",
-        "strike":413.27,
-        "weight":""
-      }
-    ],
-    "scenario_analysis":null,
-    "source":"CED_scheda_v26"
+    "source":"CED_scheda_v16_ajax"
   },
   {
     "isin":"DE000VJ36QE4",
@@ -342,258 +380,7 @@
       }
     ],
     "scenario_analysis":null,
-    "source":"CED_scheda_v26"
-  },
-  {
-    "isin":"DE000VJ59299",
-    "name":"CASH COLLECT MEMORY STEP DOWN",
-    "issuer":"Vontobel",
-    "type":"CASH COLLECT MEMORY STEP DOWN",
-    "underlying":"Basket di azioni worst of",
-    "underlying_name":"Basket di azioni worst of",
-    "underlying_category":"basket",
-    "issue_date":"18\/02\/2026",
-    "maturity_date":"16\/02\/2029",
-    "market":"SeDeX",
-    "price":null,
-    "strike":null,
-    "barrier":60.0,
-    "barrier_down":true,
-    "annual_coupon_yield":null,
-    "coupon_frequency":"annual",
-    "trigger_autocallable":null,
-    "underlyings":[
-      {
-        "name":"Banca MPS",
-        "strike":8.274,
-        "weight":""
-      },
-      {
-        "name":"BPER Banca",
-        "strike":11.738,
-        "weight":""
-      },
-      {
-        "name":"Unicredit",
-        "strike":72.34,
-        "weight":""
-      },
-      {
-        "name":"Banco BPM",
-        "strike":11.898,
-        "weight":""
-      }
-    ],
-    "scenario_analysis":null,
-    "source":"CED_scheda_v26"
-  },
-  {
-    "isin":"CH1484586289",
-    "name":"PHOENIX MEMORY SOFTCALLABLE",
-    "issuer":"Leonteq Securities",
-    "type":"PHOENIX MEMORY SOFTCALLABLE",
-    "underlying":"Singolo Sottostante",
-    "underlying_name":"Singolo Sottostante",
-    "underlying_category":"single",
-    "issue_date":"18\/02\/2026",
-    "maturity_date":"11\/02\/2028",
-    "market":"SeDeX",
-    "price":null,
-    "strike":109.82,
-    "barrier":60.0,
-    "barrier_down":true,
-    "annual_coupon_yield":null,
-    "coupon_frequency":"annual",
-    "trigger_autocallable":null,
-    "underlyings":[
-      {
-        "name":"AngloGold Ashanti",
-        "strike":109.82,
-        "weight":""
-      }
-    ],
-    "scenario_analysis":null,
-    "source":"CED_scheda_v26"
-  },
-  {
-    "isin":"XS2878535645",
-    "name":"PHOENIX MEMORY BASKET STAR STEP DOWN",
-    "issuer":"Societe Generale",
-    "type":"PHOENIX MEMORY BASKET STAR STEP DOWN",
-    "underlying":"Basket di azioni worst of",
-    "underlying_name":"Basket di azioni worst of",
-    "underlying_category":"basket",
-    "issue_date":"18\/02\/2026",
-    "maturity_date":"15\/01\/2029",
-    "market":"SeDeX",
-    "price":null,
-    "strike":null,
-    "barrier":60.0,
-    "barrier_down":true,
-    "annual_coupon_yield":null,
-    "coupon_frequency":"annual",
-    "trigger_autocallable":null,
-    "underlyings":[
-      {
-        "name":"Eni",
-        "strike":16.72,
-        "weight":""
-      },
-      {
-        "name":"Enel",
-        "strike":9.321,
-        "weight":""
-      },
-      {
-        "name":"Banco BPM",
-        "strike":12.535,
-        "weight":""
-      }
-    ],
-    "scenario_analysis":null,
-    "source":"CED_scheda_v26"
-  },
-  {
-    "isin":"IT0006773748",
-    "name":"PHOENIX MEMORY STEP DOWN",
-    "issuer":"Marex Financial",
-    "type":"PHOENIX MEMORY STEP DOWN",
-    "underlying":"Basket di indici worst of",
-    "underlying_name":"Basket di indici worst of",
-    "underlying_category":"basket",
-    "issue_date":"18\/02\/2026",
-    "maturity_date":"13\/02\/2029",
-    "market":"SeDeX",
-    "price":null,
-    "strike":null,
-    "barrier":55.0,
-    "barrier_down":true,
-    "annual_coupon_yield":null,
-    "coupon_frequency":"annual",
-    "trigger_autocallable":null,
-    "underlyings":[
-      {
-        "name":"Euro Stoxx 50",
-        "strike":5985.23,
-        "weight":""
-      },
-      {
-        "name":"S&P 500",
-        "strike":6836.17,
-        "weight":""
-      },
-      {
-        "name":"Eurostoxx Banks",
-        "strike":258.08,
-        "weight":""
-      }
-    ],
-    "scenario_analysis":null,
-    "source":"CED_scheda_v26"
-  },
-  {
-    "isin":"XS3255733258",
-    "name":"PHOENIX MEMORY",
-    "issuer":"Bnp Paribas",
-    "type":"PHOENIX MEMORY",
-    "underlying":"Basket di azioni worst of",
-    "underlying_name":"Basket di azioni worst of",
-    "underlying_category":"basket",
-    "issue_date":"18\/02\/2026",
-    "maturity_date":"28\/01\/2028",
-    "market":"SeDeX",
-    "price":null,
-    "strike":null,
-    "barrier":50.0,
-    "barrier_down":true,
-    "annual_coupon_yield":null,
-    "coupon_frequency":"annual",
-    "trigger_autocallable":null,
-    "underlyings":[
-      {
-        "name":"Adyen",
-        "strike":1283.0,
-        "weight":""
-      },
-      {
-        "name":"Bayer",
-        "strike":45.19,
-        "weight":""
-      },
-      {
-        "name":"Kering",
-        "strike":266.2,
-        "weight":""
-      }
-    ],
-    "scenario_analysis":null,
-    "source":"CED_scheda_v26"
-  },
-  {
-    "isin":"CH1484586719",
-    "name":"PHOENIX MEMORY SOFTCALLABLE",
-    "issuer":"Leonteq Securities",
-    "type":"PHOENIX MEMORY SOFTCALLABLE",
-    "underlying":"Singolo Sottostante",
-    "underlying_name":"Singolo Sottostante",
-    "underlying_category":"single",
-    "issue_date":"18\/02\/2026",
-    "maturity_date":"11\/02\/2028",
-    "market":"SeDeX",
-    "price":null,
-    "strike":34.4,
-    "barrier":60.0,
-    "barrier_down":true,
-    "annual_coupon_yield":null,
-    "coupon_frequency":"annual",
-    "trigger_autocallable":null,
-    "underlyings":[
-      {
-        "name":"Kinross Gold",
-        "strike":34.4,
-        "weight":""
-      }
-    ],
-    "scenario_analysis":null,
-    "source":"CED_scheda_v26"
-  },
-  {
-    "isin":"XS2878535991",
-    "name":"PHOENIX MEMORY AIRBAG STEP DOWN",
-    "issuer":"Societe Generale",
-    "type":"PHOENIX MEMORY AIRBAG STEP DOWN",
-    "underlying":"Basket di azioni worst of",
-    "underlying_name":"Basket di azioni worst of",
-    "underlying_category":"basket",
-    "issue_date":"18\/02\/2026",
-    "maturity_date":"15\/01\/2029",
-    "market":"SeDeX",
-    "price":null,
-    "strike":null,
-    "barrier":50.0,
-    "barrier_down":true,
-    "annual_coupon_yield":null,
-    "coupon_frequency":"annual",
-    "trigger_autocallable":null,
-    "underlyings":[
-      {
-        "name":"Banco BPM",
-        "strike":12.535,
-        "weight":""
-      },
-      {
-        "name":"Banco Bilbao Vizcaya Argentaria",
-        "strike":21.01,
-        "weight":""
-      },
-      {
-        "name":"Commerzbank",
-        "strike":36.03,
-        "weight":""
-      }
-    ],
-    "scenario_analysis":null,
-    "source":"CED_scheda_v26"
+    "source":"CED_scheda_v16_ajax"
   },
   {
     "isin":"IT0006773771",
@@ -608,10 +395,10 @@
     "market":"SeDeX",
     "price":null,
     "strike":null,
-    "barrier":55.0,
-    "barrier_down":true,
-    "annual_coupon_yield":null,
-    "coupon_frequency":"annual",
+    "barrier":null,
+    "barrier_down":null,
+    "annual_coupon_yield":9.0,
+    "coupon_frequency":"monthly",
     "trigger_autocallable":null,
     "underlyings":[
       {
@@ -636,7 +423,258 @@
       }
     ],
     "scenario_analysis":null,
-    "source":"CED_scheda_v26"
+    "source":"CED_scheda_v16_ajax"
+  },
+  {
+    "isin":"IT0005690166",
+    "name":"PHOENIX MEMORY STEP DOWN",
+    "issuer":"Intesa Sanpaolo",
+    "type":"PHOENIX MEMORY STEP DOWN",
+    "underlying":"Basket di azioni worst of",
+    "underlying_name":"Basket di azioni worst of",
+    "underlying_category":"basket",
+    "issue_date":"18\/02\/2026",
+    "maturity_date":"15\/02\/2029",
+    "market":"SeDeX",
+    "price":null,
+    "strike":null,
+    "barrier":null,
+    "barrier_down":null,
+    "annual_coupon_yield":6.0,
+    "coupon_frequency":"monthly",
+    "trigger_autocallable":null,
+    "underlyings":[
+      {
+        "name":"Chevron",
+        "strike":176.9,
+        "weight":""
+      },
+      {
+        "name":"Exxon",
+        "strike":141.4,
+        "weight":""
+      }
+    ],
+    "scenario_analysis":null,
+    "source":"CED_scheda_v16_ajax"
+  },
+  {
+    "isin":"CH1484586289",
+    "name":"PHOENIX MEMORY SOFTCALLABLE",
+    "issuer":"Leonteq Securities",
+    "type":"PHOENIX MEMORY SOFTCALLABLE",
+    "underlying":"Singolo Sottostante",
+    "underlying_name":"Singolo Sottostante",
+    "underlying_category":"single",
+    "issue_date":"18\/02\/2026",
+    "maturity_date":"11\/02\/2028",
+    "market":"SeDeX",
+    "price":null,
+    "strike":109.82,
+    "barrier":null,
+    "barrier_down":null,
+    "annual_coupon_yield":14.04,
+    "coupon_frequency":"monthly",
+    "trigger_autocallable":null,
+    "underlyings":[
+      {
+        "name":"AngloGold Ashanti",
+        "strike":109.82,
+        "weight":""
+      }
+    ],
+    "scenario_analysis":null,
+    "source":"CED_scheda_v16_ajax"
+  },
+  {
+    "isin":"XS2878535991",
+    "name":"PHOENIX MEMORY AIRBAG STEP DOWN",
+    "issuer":"Societe Generale",
+    "type":"PHOENIX MEMORY AIRBAG STEP DOWN",
+    "underlying":"Basket di azioni worst of",
+    "underlying_name":"Basket di azioni worst of",
+    "underlying_category":"basket",
+    "issue_date":"18\/02\/2026",
+    "maturity_date":"15\/01\/2029",
+    "market":"SeDeX",
+    "price":null,
+    "strike":null,
+    "barrier":null,
+    "barrier_down":null,
+    "annual_coupon_yield":12.0,
+    "coupon_frequency":"monthly",
+    "trigger_autocallable":null,
+    "underlyings":[
+      {
+        "name":"Banco BPM",
+        "strike":12.535,
+        "weight":""
+      },
+      {
+        "name":"Banco Bilbao Vizcaya Argentaria",
+        "strike":21.01,
+        "weight":""
+      },
+      {
+        "name":"Commerzbank",
+        "strike":36.03,
+        "weight":""
+      }
+    ],
+    "scenario_analysis":null,
+    "source":"CED_scheda_v16_ajax"
+  },
+  {
+    "isin":"XS3255733258",
+    "name":"PHOENIX MEMORY",
+    "issuer":"Bnp Paribas",
+    "type":"PHOENIX MEMORY",
+    "underlying":"Basket di azioni worst of",
+    "underlying_name":"Basket di azioni worst of",
+    "underlying_category":"basket",
+    "issue_date":"18\/02\/2026",
+    "maturity_date":"28\/01\/2028",
+    "market":"SeDeX",
+    "price":null,
+    "strike":null,
+    "barrier":null,
+    "barrier_down":null,
+    "annual_coupon_yield":15.6,
+    "coupon_frequency":"monthly",
+    "trigger_autocallable":null,
+    "underlyings":[
+      {
+        "name":"Adyen",
+        "strike":1283.0,
+        "weight":""
+      },
+      {
+        "name":"Bayer",
+        "strike":45.19,
+        "weight":""
+      },
+      {
+        "name":"Kering",
+        "strike":266.2,
+        "weight":""
+      }
+    ],
+    "scenario_analysis":null,
+    "source":"CED_scheda_v16_ajax"
+  },
+  {
+    "isin":"GB00BVJWH804",
+    "name":"PHOENIX MEMORY",
+    "issuer":"Goldman Sachs",
+    "type":"PHOENIX MEMORY",
+    "underlying":"Basket di azioni worst of",
+    "underlying_name":"Basket di azioni worst of",
+    "underlying_category":"basket",
+    "issue_date":"18\/02\/2026",
+    "maturity_date":"16\/01\/2029",
+    "market":"SeDeX",
+    "price":null,
+    "strike":null,
+    "barrier":null,
+    "barrier_down":null,
+    "annual_coupon_yield":9.25,
+    "coupon_frequency":"annual",
+    "trigger_autocallable":null,
+    "underlyings":[
+      {
+        "name":"Apple",
+        "strike":248.04,
+        "weight":""
+      },
+      {
+        "name":"Microsoft",
+        "strike":465.95,
+        "weight":""
+      }
+    ],
+    "scenario_analysis":null,
+    "source":"CED_scheda_v16_ajax"
+  },
+  {
+    "isin":"DE000VJ59299",
+    "name":"CASH COLLECT MEMORY STEP DOWN",
+    "issuer":"Vontobel",
+    "type":"CASH COLLECT MEMORY STEP DOWN",
+    "underlying":"Basket di azioni worst of",
+    "underlying_name":"Basket di azioni worst of",
+    "underlying_category":"basket",
+    "issue_date":"18\/02\/2026",
+    "maturity_date":"16\/02\/2029",
+    "market":"SeDeX",
+    "price":null,
+    "strike":null,
+    "barrier":null,
+    "barrier_down":null,
+    "annual_coupon_yield":15.0,
+    "coupon_frequency":"monthly",
+    "trigger_autocallable":null,
+    "underlyings":[
+      {
+        "name":"Banca MPS",
+        "strike":8.274,
+        "weight":""
+      },
+      {
+        "name":"BPER Banca",
+        "strike":11.738,
+        "weight":""
+      },
+      {
+        "name":"Unicredit",
+        "strike":72.34,
+        "weight":""
+      },
+      {
+        "name":"Banco BPM",
+        "strike":11.898,
+        "weight":""
+      }
+    ],
+    "scenario_analysis":null,
+    "source":"CED_scheda_v16_ajax"
+  },
+  {
+    "isin":"XS2878537773",
+    "name":"PHOENIX MEMORY AIRBAG STEP DOWN",
+    "issuer":"Societe Generale",
+    "type":"PHOENIX MEMORY AIRBAG STEP DOWN",
+    "underlying":"Basket di azioni worst of",
+    "underlying_name":"Basket di azioni worst of",
+    "underlying_category":"basket",
+    "issue_date":"18\/02\/2026",
+    "maturity_date":"30\/01\/2029",
+    "market":"SeDeX",
+    "price":null,
+    "strike":null,
+    "barrier":null,
+    "barrier_down":null,
+    "annual_coupon_yield":9.6,
+    "coupon_frequency":"monthly",
+    "trigger_autocallable":null,
+    "underlyings":[
+      {
+        "name":"Banco BPM",
+        "strike":12.62,
+        "weight":""
+      },
+      {
+        "name":"Poste Italiane",
+        "strike":22.2,
+        "weight":""
+      },
+      {
+        "name":"Stellantis",
+        "strike":8.286,
+        "weight":""
+      }
+    ],
+    "scenario_analysis":null,
+    "source":"CED_scheda_v16_ajax"
   },
   {
     "isin":"XS3262985909",
@@ -651,10 +689,10 @@
     "market":"SeDeX",
     "price":null,
     "strike":null,
-    "barrier":50.0,
-    "barrier_down":true,
-    "annual_coupon_yield":null,
-    "coupon_frequency":"annual",
+    "barrier":null,
+    "barrier_down":null,
+    "annual_coupon_yield":9.0,
+    "coupon_frequency":"monthly",
     "trigger_autocallable":null,
     "underlyings":[
       {
@@ -679,135 +717,7 @@
       }
     ],
     "scenario_analysis":null,
-    "source":"CED_scheda_v26"
-  },
-  {
-    "isin":"CH1484587139",
-    "name":"PHOENIX MEMORY STEP DOWN",
-    "issuer":"Leonteq Securities",
-    "type":"PHOENIX MEMORY STEP DOWN",
-    "underlying":"Basket di azioni worst of",
-    "underlying_name":"Basket di azioni worst of",
-    "underlying_category":"basket",
-    "issue_date":"18\/02\/2026",
-    "maturity_date":"11\/02\/2030",
-    "market":"SeDeX",
-    "price":null,
-    "strike":null,
-    "barrier":50.0,
-    "barrier_down":true,
-    "annual_coupon_yield":null,
-    "coupon_frequency":"annual",
-    "trigger_autocallable":null,
-    "underlyings":[
-      {
-        "name":"AngloGold Ashanti",
-        "strike":109.82,
-        "weight":""
-      },
-      {
-        "name":"Albemarle",
-        "strike":166.35,
-        "weight":""
-      },
-      {
-        "name":"Pan American Silver",
-        "strike":57.93,
-        "weight":""
-      }
-    ],
-    "scenario_analysis":null,
-    "source":"CED_scheda_v26"
-  },
-  {
-    "isin":"XS2878537773",
-    "name":"PHOENIX MEMORY AIRBAG STEP DOWN",
-    "issuer":"Societe Generale",
-    "type":"PHOENIX MEMORY AIRBAG STEP DOWN",
-    "underlying":"Basket di azioni worst of",
-    "underlying_name":"Basket di azioni worst of",
-    "underlying_category":"basket",
-    "issue_date":"18\/02\/2026",
-    "maturity_date":"30\/01\/2029",
-    "market":"SeDeX",
-    "price":null,
-    "strike":null,
-    "barrier":50.0,
-    "barrier_down":true,
-    "annual_coupon_yield":null,
-    "coupon_frequency":"annual",
-    "trigger_autocallable":null,
-    "underlyings":[
-      {
-        "name":"Banco BPM",
-        "strike":12.62,
-        "weight":""
-      },
-      {
-        "name":"Poste Italiane",
-        "strike":22.2,
-        "weight":""
-      },
-      {
-        "name":"Stellantis",
-        "strike":8.286,
-        "weight":""
-      }
-    ],
-    "scenario_analysis":null,
-    "source":"CED_scheda_v26"
-  },
-  {
-    "isin":"XS3077242942",
-    "name":"DIGITAL REVERSE AUTOCALLABLE",
-    "issuer":"Citigroup",
-    "type":"DIGITAL REVERSE AUTOCALLABLE",
-    "underlying":"Singolo Sottostante",
-    "underlying_name":"Singolo Sottostante",
-    "underlying_category":"single",
-    "issue_date":"18\/02\/2026",
-    "maturity_date":"11\/02\/2030",
-    "market":"SeDeX",
-    "price":null,
-    "strike":4.0,
-    "barrier":null,
-    "barrier_down":null,
-    "annual_coupon_yield":null,
-    "coupon_frequency":"annual",
-    "trigger_autocallable":null,
-    "underlyings":[
-      {
-        "name":"Solactive BTP 10 Annual Comp. Yield",
-        "strike":4.0,
-        "weight":""
-      }
-    ],
-    "scenario_analysis":null,
-    "source":"CED_scheda_v26"
-  },
-  {
-    "isin":"XS3262986030",
-    "name":"PHOENIX MEMORY",
-    "issuer":"Barclays",
-    "type":"Certificato",
-    "underlying":"Basket di azioni worst of",
-    "underlying_name":"Basket di azioni worst of",
-    "underlying_category":"basket",
-    "issue_date":"18\/02\/2026",
-    "maturity_date":null,
-    "market":"SeDeX",
-    "price":null,
-    "strike":null,
-    "barrier":null,
-    "barrier_down":null,
-    "annual_coupon_yield":null,
-    "coupon_frequency":"annual",
-    "trigger_autocallable":null,
-    "underlyings":[
-
-    ],
-    "scenario_analysis":null,
-    "source":"CED_scheda_v26"
+    "source":"CED_scheda_v16_ajax"
   },
   {
     "isin":"XS2878538318",
@@ -822,10 +732,10 @@
     "market":"SeDeX",
     "price":null,
     "strike":null,
-    "barrier":55.0,
-    "barrier_down":true,
-    "annual_coupon_yield":null,
-    "coupon_frequency":"annual",
+    "barrier":null,
+    "barrier_down":null,
+    "annual_coupon_yield":11.4,
+    "coupon_frequency":"monthly",
     "trigger_autocallable":null,
     "underlyings":[
       {
@@ -845,45 +755,35 @@
       }
     ],
     "scenario_analysis":null,
-    "source":"CED_scheda_v26"
+    "source":"CED_scheda_v16_ajax"
   },
   {
-    "isin":"XS3263002845",
-    "name":"PHOENIX MEMORY STEP DOWN",
-    "issuer":"Barclays",
-    "type":"PHOENIX MEMORY STEP DOWN",
-    "underlying":"Basket di azioni worst of",
-    "underlying_name":"Basket di azioni worst of",
-    "underlying_category":"basket",
+    "isin":"CH1484586719",
+    "name":"PHOENIX MEMORY SOFTCALLABLE",
+    "issuer":"Leonteq Securities",
+    "type":"PHOENIX MEMORY SOFTCALLABLE",
+    "underlying":"Singolo Sottostante",
+    "underlying_name":"Singolo Sottostante",
+    "underlying_category":"single",
     "issue_date":"18\/02\/2026",
-    "maturity_date":"19\/02\/2029",
+    "maturity_date":"11\/02\/2028",
     "market":"SeDeX",
     "price":null,
-    "strike":null,
-    "barrier":40.0,
-    "barrier_down":true,
-    "annual_coupon_yield":null,
-    "coupon_frequency":"annual",
+    "strike":34.4,
+    "barrier":null,
+    "barrier_down":null,
+    "annual_coupon_yield":12.0,
+    "coupon_frequency":"monthly",
     "trigger_autocallable":null,
     "underlyings":[
       {
-        "name":"BPER Banca",
-        "strike":11.955,
-        "weight":""
-      },
-      {
-        "name":"Ferrari",
-        "strike":310.1,
-        "weight":""
-      },
-      {
-        "name":"STMicroelectronics (MI)",
-        "strike":28.785,
+        "name":"Kinross Gold",
+        "strike":34.4,
         "weight":""
       }
     ],
     "scenario_analysis":null,
-    "source":"CED_scheda_v26"
+    "source":"CED_scheda_v16_ajax"
   },
   {
     "isin":"XS3254819942",
@@ -898,10 +798,10 @@
     "market":"SeDeX",
     "price":null,
     "strike":null,
-    "barrier":60.0,
-    "barrier_down":true,
-    "annual_coupon_yield":null,
-    "coupon_frequency":"annual",
+    "barrier":null,
+    "barrier_down":null,
+    "annual_coupon_yield":24.6,
+    "coupon_frequency":"monthly",
     "trigger_autocallable":null,
     "underlyings":[
       {
@@ -916,45 +816,45 @@
       }
     ],
     "scenario_analysis":null,
-    "source":"CED_scheda_v26"
+    "source":"CED_scheda_v16_ajax"
   },
   {
-    "isin":"XS3263004544",
+    "isin":"XS3262986030",
     "name":"PHOENIX MEMORY",
     "issuer":"Barclays",
     "type":"PHOENIX MEMORY",
-    "underlying":"Basket di Fondi WorstOf",
-    "underlying_name":"Basket di Fondi WorstOf",
+    "underlying":"Basket di azioni worst of",
+    "underlying_name":"Basket di azioni worst of",
     "underlying_category":"basket",
     "issue_date":"18\/02\/2026",
-    "maturity_date":"05\/03\/2029",
+    "maturity_date":"04\/03\/2031",
     "market":"SeDeX",
     "price":null,
     "strike":null,
-    "barrier":65.0,
-    "barrier_down":true,
-    "annual_coupon_yield":null,
-    "coupon_frequency":"annual",
+    "barrier":null,
+    "barrier_down":null,
+    "annual_coupon_yield":7.2,
+    "coupon_frequency":"monthly",
     "trigger_autocallable":null,
     "underlyings":[
       {
-        "name":"Vaneck Vectors Gold Miners",
+        "name":"Axa",
         "strike":1.0,
         "weight":""
       },
       {
-        "name":"Ishares Silver Trust",
+        "name":"Erg",
         "strike":1.0,
         "weight":""
       },
       {
-        "name":"Vaneck Vectors Junior Gold",
+        "name":"Saipem",
         "strike":1.0,
         "weight":""
       }
     ],
     "scenario_analysis":null,
-    "source":"CED_scheda_v26"
+    "source":"CED_scheda_v16_ajax"
   },
   {
     "isin":"XS3254820106",
@@ -969,10 +869,10 @@
     "market":"SeDeX",
     "price":null,
     "strike":null,
-    "barrier":50.0,
-    "barrier_down":true,
-    "annual_coupon_yield":null,
-    "coupon_frequency":"annual",
+    "barrier":null,
+    "barrier_down":null,
+    "annual_coupon_yield":26.4,
+    "coupon_frequency":"monthly",
     "trigger_autocallable":null,
     "underlyings":[
       {
@@ -992,7 +892,121 @@
       }
     ],
     "scenario_analysis":null,
-    "source":"CED_scheda_v26"
+    "source":"CED_scheda_v16_ajax"
+  },
+  {
+    "isin":"CH1484587139",
+    "name":"PHOENIX MEMORY STEP DOWN",
+    "issuer":"Leonteq Securities",
+    "type":"PHOENIX MEMORY STEP DOWN",
+    "underlying":"Basket di azioni worst of",
+    "underlying_name":"Basket di azioni worst of",
+    "underlying_category":"basket",
+    "issue_date":"18\/02\/2026",
+    "maturity_date":"11\/02\/2030",
+    "market":"SeDeX",
+    "price":null,
+    "strike":null,
+    "barrier":null,
+    "barrier_down":null,
+    "annual_coupon_yield":12.0,
+    "coupon_frequency":"monthly",
+    "trigger_autocallable":null,
+    "underlyings":[
+      {
+        "name":"AngloGold Ashanti",
+        "strike":109.82,
+        "weight":""
+      },
+      {
+        "name":"Albemarle",
+        "strike":166.35,
+        "weight":""
+      },
+      {
+        "name":"Pan American Silver",
+        "strike":57.93,
+        "weight":""
+      }
+    ],
+    "scenario_analysis":null,
+    "source":"CED_scheda_v16_ajax"
+  },
+  {
+    "isin":"XS3263002845",
+    "name":"PHOENIX MEMORY STEP DOWN",
+    "issuer":"Barclays",
+    "type":"PHOENIX MEMORY STEP DOWN",
+    "underlying":"Basket di azioni worst of",
+    "underlying_name":"Basket di azioni worst of",
+    "underlying_category":"basket",
+    "issue_date":"18\/02\/2026",
+    "maturity_date":"19\/02\/2029",
+    "market":"SeDeX",
+    "price":null,
+    "strike":null,
+    "barrier":null,
+    "barrier_down":null,
+    "annual_coupon_yield":10.8,
+    "coupon_frequency":"monthly",
+    "trigger_autocallable":null,
+    "underlyings":[
+      {
+        "name":"BPER Banca",
+        "strike":11.955,
+        "weight":""
+      },
+      {
+        "name":"Ferrari",
+        "strike":310.1,
+        "weight":""
+      },
+      {
+        "name":"STMicroelectronics (MI)",
+        "strike":28.785,
+        "weight":""
+      }
+    ],
+    "scenario_analysis":null,
+    "source":"CED_scheda_v16_ajax"
+  },
+  {
+    "isin":"XS3263004544",
+    "name":"PHOENIX MEMORY",
+    "issuer":"Barclays",
+    "type":"PHOENIX MEMORY",
+    "underlying":"Basket di Fondi WorstOf",
+    "underlying_name":"Basket di Fondi WorstOf",
+    "underlying_category":"basket",
+    "issue_date":"18\/02\/2026",
+    "maturity_date":"05\/03\/2029",
+    "market":"SeDeX",
+    "price":null,
+    "strike":null,
+    "barrier":null,
+    "barrier_down":null,
+    "annual_coupon_yield":2.25,
+    "coupon_frequency":"quarterly",
+    "trigger_autocallable":null,
+    "underlyings":[
+      {
+        "name":"Vaneck Vectors Gold Miners",
+        "strike":1.0,
+        "weight":""
+      },
+      {
+        "name":"Ishares Silver Trust",
+        "strike":1.0,
+        "weight":""
+      },
+      {
+        "name":"Vaneck Vectors Junior Gold",
+        "strike":1.0,
+        "weight":""
+      }
+    ],
+    "scenario_analysis":null,
+    "source":"CED_scheda_v16_ajax"
   },
   {
     "isin":"XS3266411548",
@@ -1009,8 +1023,8 @@
     "strike":4.0,
     "barrier":null,
     "barrier_down":null,
-    "annual_coupon_yield":null,
-    "coupon_frequency":"annual",
+    "annual_coupon_yield":32.28,
+    "coupon_frequency":"monthly",
     "trigger_autocallable":null,
     "underlyings":[
       {
@@ -1020,7 +1034,7 @@
       }
     ],
     "scenario_analysis":null,
-    "source":"CED_scheda_v26"
+    "source":"CED_scheda_v16_ajax"
   },
   {
     "isin":"XS3278600542",
@@ -1037,14 +1051,14 @@
     "strike":null,
     "barrier":null,
     "barrier_down":null,
-    "annual_coupon_yield":null,
-    "coupon_frequency":"annual",
+    "annual_coupon_yield":5.4,
+    "coupon_frequency":"monthly",
     "trigger_autocallable":null,
     "underlyings":[
 
     ],
     "scenario_analysis":null,
-    "source":"CED_scheda_v26"
+    "source":"CED_scheda_v16_ajax"
   },
   {
     "isin":"XS3280955058",
@@ -1059,10 +1073,10 @@
     "market":"SeDeX",
     "price":null,
     "strike":null,
-    "barrier":65.0,
-    "barrier_down":true,
-    "annual_coupon_yield":null,
-    "coupon_frequency":"annual",
+    "barrier":null,
+    "barrier_down":null,
+    "annual_coupon_yield":8.4,
+    "coupon_frequency":"monthly",
     "trigger_autocallable":null,
     "underlyings":[
       {
@@ -1082,7 +1096,7 @@
       }
     ],
     "scenario_analysis":null,
-    "source":"CED_scheda_v26"
+    "source":"CED_scheda_v16_ajax"
   },
   {
     "isin":"XS3291791252",
@@ -1097,10 +1111,10 @@
     "market":"SeDeX",
     "price":null,
     "strike":447.3817,
-    "barrier":75.0,
-    "barrier_down":true,
-    "annual_coupon_yield":null,
-    "coupon_frequency":"annual",
+    "barrier":null,
+    "barrier_down":null,
+    "annual_coupon_yield":3.5,
+    "coupon_frequency":"quarterly",
     "trigger_autocallable":null,
     "underlyings":[
       {
@@ -1110,7 +1124,7 @@
       }
     ],
     "scenario_analysis":null,
-    "source":"CED_scheda_v26"
+    "source":"CED_scheda_v16_ajax"
   },
   {
     "isin":"XS3291791336",
@@ -1125,10 +1139,10 @@
     "market":"SeDeX",
     "price":null,
     "strike":327.58,
-    "barrier":60.0,
-    "barrier_down":true,
-    "annual_coupon_yield":null,
-    "coupon_frequency":"annual",
+    "barrier":null,
+    "barrier_down":null,
+    "annual_coupon_yield":3.5,
+    "coupon_frequency":"quarterly",
     "trigger_autocallable":null,
     "underlyings":[
       {
@@ -1138,7 +1152,7 @@
       }
     ],
     "scenario_analysis":null,
-    "source":"CED_scheda_v26"
+    "source":"CED_scheda_v16_ajax"
   },
   {
     "isin":"XS3291791419",
@@ -1153,10 +1167,10 @@
     "market":"SeDeX",
     "price":null,
     "strike":424.7267,
-    "barrier":60.0,
-    "barrier_down":true,
-    "annual_coupon_yield":null,
-    "coupon_frequency":"annual",
+    "barrier":null,
+    "barrier_down":null,
+    "annual_coupon_yield":3.9,
+    "coupon_frequency":"quarterly",
     "trigger_autocallable":null,
     "underlyings":[
       {
@@ -1166,7 +1180,7 @@
       }
     ],
     "scenario_analysis":null,
-    "source":"CED_scheda_v26"
+    "source":"CED_scheda_v16_ajax"
   },
   {
     "isin":"XS3291791682",
@@ -1181,10 +1195,10 @@
     "market":"SeDeX",
     "price":null,
     "strike":185.6933,
-    "barrier":60.5,
-    "barrier_down":true,
-    "annual_coupon_yield":null,
-    "coupon_frequency":"annual",
+    "barrier":null,
+    "barrier_down":null,
+    "annual_coupon_yield":3.5,
+    "coupon_frequency":"quarterly",
     "trigger_autocallable":null,
     "underlyings":[
       {
@@ -1194,7 +1208,7 @@
       }
     ],
     "scenario_analysis":null,
-    "source":"CED_scheda_v26"
+    "source":"CED_scheda_v16_ajax"
   },
   {
     "isin":"XS3261331675",
@@ -1222,7 +1236,7 @@
       }
     ],
     "scenario_analysis":null,
-    "source":"CED_scheda_v26"
+    "source":"CED_scheda_v16_ajax"
   },
   {
     "isin":"IT0005691404",
@@ -1237,9 +1251,9 @@
     "market":"SeDeX",
     "price":null,
     "strike":null,
-    "barrier":55.0,
-    "barrier_down":true,
-    "annual_coupon_yield":null,
+    "barrier":null,
+    "barrier_down":null,
+    "annual_coupon_yield":8.15,
     "coupon_frequency":"annual",
     "trigger_autocallable":null,
     "underlyings":[
@@ -1260,311 +1274,35 @@
       }
     ],
     "scenario_analysis":null,
-    "source":"CED_scheda_v26"
+    "source":"CED_scheda_v16_ajax"
   },
   {
-    "isin":"XS3251202407",
-    "name":"PHOENIX MEMORY",
-    "issuer":"Bnp Paribas",
-    "type":"PHOENIX MEMORY",
-    "underlying":"Basket di indici worst of",
-    "underlying_name":"Basket di indici worst of",
-    "underlying_category":"basket",
-    "issue_date":"17\/02\/2026",
-    "maturity_date":"10\/05\/2030",
-    "market":"SeDeX",
-    "price":null,
-    "strike":null,
-    "barrier":50.0,
-    "barrier_down":true,
-    "annual_coupon_yield":null,
-    "coupon_frequency":"annual",
-    "trigger_autocallable":null,
-    "underlyings":[
-      {
-        "name":"Euro Stoxx 50",
-        "strike":6021.85,
-        "weight":""
-      },
-      {
-        "name":"Eurostoxx Banks",
-        "strike":264.9,
-        "weight":""
-      }
-    ],
-    "scenario_analysis":null,
-    "source":"CED_scheda_v26"
-  },
-  {
-    "isin":"IT0006773839",
-    "name":"PHONIX MEMORY",
-    "issuer":"Santander",
-    "type":"PHONIX MEMORY",
-    "underlying":"Basket di azioni worst of",
-    "underlying_name":"Basket di azioni worst of",
-    "underlying_category":"basket",
-    "issue_date":"17\/02\/2026",
-    "maturity_date":"10\/02\/2031",
-    "market":"SeDeX",
-    "price":null,
-    "strike":null,
-    "barrier":65.0,
-    "barrier_down":true,
-    "annual_coupon_yield":null,
-    "coupon_frequency":"annual",
-    "trigger_autocallable":null,
-    "underlyings":[
-      {
-        "name":"Enel",
-        "strike":9.585,
-        "weight":""
-      },
-      {
-        "name":"Intesa Sanpaolo",
-        "strike":6.048,
-        "weight":""
-      },
-      {
-        "name":"Eni",
-        "strike":17.944,
-        "weight":""
-      },
-      {
-        "name":"Generali",
-        "strike":35.36,
-        "weight":""
-      }
-    ],
-    "scenario_analysis":null,
-    "source":"CED_scheda_v26"
-  },
-  {
-    "isin":"XS3262971941",
-    "name":"FIXED CASH COLLECT",
-    "issuer":"Barclays",
-    "type":"FIXED CASH COLLECT",
-    "underlying":"Basket di azioni worst of",
-    "underlying_name":"Basket di azioni worst of",
-    "underlying_category":"basket",
-    "issue_date":"17\/02\/2026",
-    "maturity_date":"05\/03\/2029",
-    "market":"SeDeX",
-    "price":null,
-    "strike":null,
-    "barrier":65.0,
-    "barrier_down":true,
-    "annual_coupon_yield":null,
-    "coupon_frequency":"annual",
-    "trigger_autocallable":null,
-    "underlyings":[
-      {
-        "name":"Saipem",
-        "strike":1.0,
-        "weight":""
-      },
-      {
-        "name":"Leonardo",
-        "strike":1.0,
-        "weight":""
-      },
-      {
-        "name":"Unicredit",
-        "strike":1.0,
-        "weight":""
-      },
-      {
-        "name":"Moncler",
-        "strike":1.0,
-        "weight":""
-      }
-    ],
-    "scenario_analysis":null,
-    "source":"CED_scheda_v26"
-  },
-  {
-    "isin":"IT0005692436",
-    "name":"PHOENIX MEMORY STEP DOWN",
-    "issuer":"Intesa Sanpaolo",
-    "type":"PHOENIX MEMORY STEP DOWN",
-    "underlying":"Basket di azioni worst of",
-    "underlying_name":"Basket di azioni worst of",
-    "underlying_category":"basket",
-    "issue_date":"17\/02\/2026",
-    "maturity_date":"08\/02\/2029",
-    "market":"SeDeX",
-    "price":null,
-    "strike":null,
-    "barrier":50.0,
-    "barrier_down":true,
-    "annual_coupon_yield":null,
-    "coupon_frequency":"annual",
-    "trigger_autocallable":null,
-    "underlyings":[
-      {
-        "name":"Unicredit",
-        "strike":76.55,
-        "weight":""
-      },
-      {
-        "name":"Credit Agricole",
-        "strike":18.04,
-        "weight":""
-      },
-      {
-        "name":"Banco BPM",
-        "strike":12.66,
-        "weight":""
-      }
-    ],
-    "scenario_analysis":null,
-    "source":"CED_scheda_v26"
-  },
-  {
-    "isin":"XS3255734223",
-    "name":"CREDIT LINKED CALLABLE",
-    "issuer":"Bnp Paribas",
-    "type":"CREDIT LINKED CALLABLE",
+    "isin":"DE000VJ52AV9",
+    "name":"CASH COLLECT MEMORY STEP DOWN",
+    "issuer":"Vontobel",
+    "type":"CASH COLLECT MEMORY STEP DOWN",
     "underlying":"Singolo Sottostante",
     "underlying_name":"Singolo Sottostante",
     "underlying_category":"single",
     "issue_date":"17\/02\/2026",
-    "maturity_date":"20\/06\/2033",
+    "maturity_date":"13\/08\/2027",
     "market":"SeDeX",
     "price":null,
-    "strike":null,
+    "strike":6.671,
     "barrier":null,
     "barrier_down":null,
-    "annual_coupon_yield":null,
-    "coupon_frequency":"annual",
+    "annual_coupon_yield":12.72,
+    "coupon_frequency":"monthly",
     "trigger_autocallable":null,
     "underlyings":[
-
-    ],
-    "scenario_analysis":null,
-    "source":"CED_scheda_v26"
-  },
-  {
-    "isin":"CH1484585133",
-    "name":"PHOENIX MEMORY STEP DOWN",
-    "issuer":"Leonteq Securities",
-    "type":"PHOENIX MEMORY STEP DOWN",
-    "underlying":"Basket di azioni worst of",
-    "underlying_name":"Basket di azioni worst of",
-    "underlying_category":"basket",
-    "issue_date":"17\/02\/2026",
-    "maturity_date":"10\/02\/2028",
-    "market":"SeDeX",
-    "price":null,
-    "strike":null,
-    "barrier":50.0,
-    "barrier_down":true,
-    "annual_coupon_yield":null,
-    "coupon_frequency":"annual",
-    "trigger_autocallable":null,
-    "underlyings":[
-      {
-        "name":"NEXI",
-        "strike":3.239,
-        "weight":""
-      },
       {
         "name":"Stellantis",
-        "strike":6.654,
+        "strike":6.671,
         "weight":""
       }
     ],
     "scenario_analysis":null,
-    "source":"CED_scheda_v26"
-  },
-  {
-    "isin":"XS3255734496",
-    "name":"CREDIT LINKED CALLABLE",
-    "issuer":"Bnp Paribas",
-    "type":"CREDIT LINKED CALLABLE",
-    "underlying":"Singolo Sottostante",
-    "underlying_name":"Singolo Sottostante",
-    "underlying_category":"single",
-    "issue_date":"17\/02\/2026",
-    "maturity_date":"20\/06\/2033",
-    "market":"SeDeX",
-    "price":null,
-    "strike":null,
-    "barrier":null,
-    "barrier_down":null,
-    "annual_coupon_yield":null,
-    "coupon_frequency":"annual",
-    "trigger_autocallable":null,
-    "underlyings":[
-
-    ],
-    "scenario_analysis":null,
-    "source":"CED_scheda_v26"
-  },
-  {
-    "isin":"IT0005694739",
-    "name":"PHOENIX MEMORY",
-    "issuer":"Intesa Sanpaolo",
-    "type":"PHOENIX MEMORY",
-    "underlying":"Basket di azioni worst of",
-    "underlying_name":"Basket di azioni worst of",
-    "underlying_category":"basket",
-    "issue_date":"17\/02\/2026",
-    "maturity_date":"09\/02\/2029",
-    "market":"SeDeX",
-    "price":null,
-    "strike":null,
-    "barrier":70.0,
-    "barrier_down":true,
-    "annual_coupon_yield":null,
-    "coupon_frequency":"annual",
-    "trigger_autocallable":null,
-    "underlyings":[
-      {
-        "name":"Engie",
-        "strike":26.0,
-        "weight":""
-      },
-      {
-        "name":"Enel",
-        "strike":9.529,
-        "weight":""
-      },
-      {
-        "name":"Iberdrola",
-        "strike":19.135,
-        "weight":""
-      }
-    ],
-    "scenario_analysis":null,
-    "source":"CED_scheda_v26"
-  },
-  {
-    "isin":"XS3255756978",
-    "name":"EQUITY PROTECTION CAP CALLABLE",
-    "issuer":"Bnp Paribas",
-    "type":"EQUITY PROTECTION CAP CALLABLE",
-    "underlying":"Singolo Sottostante",
-    "underlying_name":"Singolo Sottostante",
-    "underlying_category":"single",
-    "issue_date":"17\/02\/2026",
-    "maturity_date":"01\/02\/2029",
-    "market":"SeDeX",
-    "price":null,
-    "strike":8250.3,
-    "barrier":null,
-    "barrier_down":null,
-    "annual_coupon_yield":null,
-    "coupon_frequency":"annual",
-    "trigger_autocallable":null,
-    "underlyings":[
-      {
-        "name":"CSI 1000",
-        "strike":8250.3,
-        "weight":""
-      }
-    ],
-    "scenario_analysis":null,
-    "source":"CED_scheda_v26"
+    "source":"CED_scheda_v16_ajax"
   },
   {
     "isin":"DE000UN4N7J2",
@@ -1579,10 +1317,10 @@
     "market":"SeDeX",
     "price":null,
     "strike":null,
-    "barrier":50.0,
-    "barrier_down":true,
-    "annual_coupon_yield":null,
-    "coupon_frequency":"annual",
+    "barrier":null,
+    "barrier_down":null,
+    "annual_coupon_yield":24.0,
+    "coupon_frequency":"monthly",
     "trigger_autocallable":null,
     "underlyings":[
       {
@@ -1607,35 +1345,316 @@
       }
     ],
     "scenario_analysis":null,
-    "source":"CED_scheda_v26"
+    "source":"CED_scheda_v16_ajax"
   },
   {
-    "isin":"DE000VJ52AV9",
-    "name":"CASH COLLECT MEMORY STEP DOWN",
-    "issuer":"Vontobel",
-    "type":"CASH COLLECT MEMORY STEP DOWN",
-    "underlying":"Singolo Sottostante",
-    "underlying_name":"Singolo Sottostante",
-    "underlying_category":"single",
+    "isin":"XS3262971941",
+    "name":"FIXED CASH COLLECT",
+    "issuer":"Barclays",
+    "type":"FIXED CASH COLLECT",
+    "underlying":"Basket di azioni worst of",
+    "underlying_name":"Basket di azioni worst of",
+    "underlying_category":"basket",
     "issue_date":"17\/02\/2026",
-    "maturity_date":"13\/08\/2027",
+    "maturity_date":"05\/03\/2029",
     "market":"SeDeX",
     "price":null,
-    "strike":6.671,
-    "barrier":60.0,
-    "barrier_down":true,
-    "annual_coupon_yield":null,
-    "coupon_frequency":"annual",
+    "strike":null,
+    "barrier":null,
+    "barrier_down":null,
+    "annual_coupon_yield":10.68,
+    "coupon_frequency":"monthly",
     "trigger_autocallable":null,
     "underlyings":[
       {
-        "name":"Stellantis",
-        "strike":6.671,
+        "name":"Saipem",
+        "strike":1.0,
+        "weight":""
+      },
+      {
+        "name":"Leonardo",
+        "strike":1.0,
+        "weight":""
+      },
+      {
+        "name":"Unicredit",
+        "strike":1.0,
+        "weight":""
+      },
+      {
+        "name":"Moncler",
+        "strike":1.0,
         "weight":""
       }
     ],
     "scenario_analysis":null,
-    "source":"CED_scheda_v26"
+    "source":"CED_scheda_v16_ajax"
+  },
+  {
+    "isin":"IT0005692436",
+    "name":"PHOENIX MEMORY STEP DOWN",
+    "issuer":"Intesa Sanpaolo",
+    "type":"PHOENIX MEMORY STEP DOWN",
+    "underlying":"Basket di azioni worst of",
+    "underlying_name":"Basket di azioni worst of",
+    "underlying_category":"basket",
+    "issue_date":"17\/02\/2026",
+    "maturity_date":"08\/02\/2029",
+    "market":"SeDeX",
+    "price":null,
+    "strike":null,
+    "barrier":null,
+    "barrier_down":null,
+    "annual_coupon_yield":10.8,
+    "coupon_frequency":"monthly",
+    "trigger_autocallable":null,
+    "underlyings":[
+      {
+        "name":"Unicredit",
+        "strike":76.55,
+        "weight":""
+      },
+      {
+        "name":"Credit Agricole",
+        "strike":18.04,
+        "weight":""
+      },
+      {
+        "name":"Banco BPM",
+        "strike":12.66,
+        "weight":""
+      }
+    ],
+    "scenario_analysis":null,
+    "source":"CED_scheda_v16_ajax"
+  },
+  {
+    "isin":"CH1484585133",
+    "name":"PHOENIX MEMORY STEP DOWN",
+    "issuer":"Leonteq Securities",
+    "type":"PHOENIX MEMORY STEP DOWN",
+    "underlying":"Basket di azioni worst of",
+    "underlying_name":"Basket di azioni worst of",
+    "underlying_category":"basket",
+    "issue_date":"17\/02\/2026",
+    "maturity_date":"10\/02\/2028",
+    "market":"SeDeX",
+    "price":null,
+    "strike":null,
+    "barrier":null,
+    "barrier_down":null,
+    "annual_coupon_yield":15.0,
+    "coupon_frequency":"monthly",
+    "trigger_autocallable":null,
+    "underlyings":[
+      {
+        "name":"NEXI",
+        "strike":3.239,
+        "weight":""
+      },
+      {
+        "name":"Stellantis",
+        "strike":6.654,
+        "weight":""
+      }
+    ],
+    "scenario_analysis":null,
+    "source":"CED_scheda_v16_ajax"
+  },
+  {
+    "isin":"XS3251202407",
+    "name":"PHOENIX MEMORY",
+    "issuer":"Bnp Paribas",
+    "type":"PHOENIX MEMORY",
+    "underlying":"Basket di indici worst of",
+    "underlying_name":"Basket di indici worst of",
+    "underlying_category":"basket",
+    "issue_date":"17\/02\/2026",
+    "maturity_date":"10\/05\/2030",
+    "market":"SeDeX",
+    "price":null,
+    "strike":null,
+    "barrier":null,
+    "barrier_down":null,
+    "annual_coupon_yield":6.1,
+    "coupon_frequency":"annual",
+    "trigger_autocallable":null,
+    "underlyings":[
+      {
+        "name":"Euro Stoxx 50",
+        "strike":6021.85,
+        "weight":""
+      },
+      {
+        "name":"Eurostoxx Banks",
+        "strike":264.9,
+        "weight":""
+      }
+    ],
+    "scenario_analysis":null,
+    "source":"CED_scheda_v16_ajax"
+  },
+  {
+    "isin":"XS3255734223",
+    "name":"CREDIT LINKED CALLABLE",
+    "issuer":"Bnp Paribas",
+    "type":"CREDIT LINKED CALLABLE",
+    "underlying":"Singolo Sottostante",
+    "underlying_name":"Singolo Sottostante",
+    "underlying_category":"single",
+    "issue_date":"17\/02\/2026",
+    "maturity_date":"20\/06\/2033",
+    "market":"SeDeX",
+    "price":null,
+    "strike":null,
+    "barrier":null,
+    "barrier_down":null,
+    "annual_coupon_yield":4.35,
+    "coupon_frequency":"quarterly",
+    "trigger_autocallable":null,
+    "underlyings":[
+
+    ],
+    "scenario_analysis":null,
+    "source":"CED_scheda_v16_ajax"
+  },
+  {
+    "isin":"IT0005694739",
+    "name":"PHOENIX MEMORY",
+    "issuer":"Intesa Sanpaolo",
+    "type":"PHOENIX MEMORY",
+    "underlying":"Basket di azioni worst of",
+    "underlying_name":"Basket di azioni worst of",
+    "underlying_category":"basket",
+    "issue_date":"17\/02\/2026",
+    "maturity_date":"09\/02\/2029",
+    "market":"SeDeX",
+    "price":null,
+    "strike":null,
+    "barrier":null,
+    "barrier_down":null,
+    "annual_coupon_yield":2.0,
+    "coupon_frequency":"quarterly",
+    "trigger_autocallable":null,
+    "underlyings":[
+      {
+        "name":"Engie",
+        "strike":26.0,
+        "weight":""
+      },
+      {
+        "name":"Enel",
+        "strike":9.529,
+        "weight":""
+      },
+      {
+        "name":"Iberdrola",
+        "strike":19.135,
+        "weight":""
+      }
+    ],
+    "scenario_analysis":null,
+    "source":"CED_scheda_v16_ajax"
+  },
+  {
+    "isin":"DE000VJ52AW7",
+    "name":"CASH COLLECT MEMORY STEP DOWN",
+    "issuer":"Vontobel",
+    "type":"CASH COLLECT MEMORY STEP DOWN",
+    "underlying":"Basket di azioni worst of",
+    "underlying_name":"Basket di azioni worst of",
+    "underlying_category":"basket",
+    "issue_date":"17\/02\/2026",
+    "maturity_date":"13\/08\/2027",
+    "market":"SeDeX",
+    "price":null,
+    "strike":null,
+    "barrier":null,
+    "barrier_down":null,
+    "annual_coupon_yield":15.6,
+    "coupon_frequency":"monthly",
+    "trigger_autocallable":null,
+    "underlyings":[
+      {
+        "name":"NEXI",
+        "strike":3.245,
+        "weight":""
+      },
+      {
+        "name":"Stellantis",
+        "strike":6.664,
+        "weight":""
+      }
+    ],
+    "scenario_analysis":null,
+    "source":"CED_scheda_v16_ajax"
+  },
+  {
+    "isin":"DE000UN4N7K0",
+    "name":"CASH COLLECT MEMORY STEP DOWN",
+    "issuer":"Unicredit",
+    "type":"CASH COLLECT MEMORY STEP DOWN",
+    "underlying":"Basket di azioni worst of",
+    "underlying_name":"Basket di azioni worst of",
+    "underlying_category":"basket",
+    "issue_date":"17\/02\/2026",
+    "maturity_date":"14\/02\/2029",
+    "market":"SeDeX",
+    "price":null,
+    "strike":null,
+    "barrier":null,
+    "barrier_down":null,
+    "annual_coupon_yield":31.68,
+    "coupon_frequency":"monthly",
+    "trigger_autocallable":null,
+    "underlyings":[
+      {
+        "name":"Humana Inc",
+        "strike":184.1,
+        "weight":""
+      },
+      {
+        "name":"Best Buy",
+        "strike":65.8,
+        "weight":""
+      },
+      {
+        "name":"Super Micro Computer",
+        "strike":30.54,
+        "weight":""
+      },
+      {
+        "name":"Stellantis",
+        "strike":6.613,
+        "weight":""
+      }
+    ],
+    "scenario_analysis":null,
+    "source":"CED_scheda_v16_ajax"
+  },
+  {
+    "isin":"XS3255734496",
+    "name":"CREDIT LINKED CALLABLE",
+    "issuer":"Bnp Paribas",
+    "type":"CREDIT LINKED CALLABLE",
+    "underlying":"Singolo Sottostante",
+    "underlying_name":"Singolo Sottostante",
+    "underlying_category":"single",
+    "issue_date":"17\/02\/2026",
+    "maturity_date":"20\/06\/2033",
+    "market":"SeDeX",
+    "price":null,
+    "strike":null,
+    "barrier":null,
+    "barrier_down":null,
+    "annual_coupon_yield":4.25,
+    "coupon_frequency":"quarterly",
+    "trigger_autocallable":null,
+    "underlyings":[
+
+    ],
+    "scenario_analysis":null,
+    "source":"CED_scheda_v16_ajax"
   },
   {
     "isin":"IT0005694796",
@@ -1650,10 +1669,10 @@
     "market":"SeDeX",
     "price":null,
     "strike":null,
-    "barrier":50.0,
-    "barrier_down":true,
-    "annual_coupon_yield":null,
-    "coupon_frequency":"annual",
+    "barrier":null,
+    "barrier_down":null,
+    "annual_coupon_yield":12.0,
+    "coupon_frequency":"monthly",
     "trigger_autocallable":null,
     "underlyings":[
       {
@@ -1673,43 +1692,38 @@
       }
     ],
     "scenario_analysis":null,
-    "source":"CED_scheda_v26"
+    "source":"CED_scheda_v16_ajax"
   },
   {
-    "isin":"DE000VJ52AW7",
+    "isin":"DE000VJ52AX5",
     "name":"CASH COLLECT MEMORY STEP DOWN",
     "issuer":"Vontobel",
     "type":"CASH COLLECT MEMORY STEP DOWN",
-    "underlying":"Basket di azioni worst of",
-    "underlying_name":"Basket di azioni worst of",
-    "underlying_category":"basket",
+    "underlying":"Singolo Sottostante",
+    "underlying_name":"Singolo Sottostante",
+    "underlying_category":"single",
     "issue_date":"17\/02\/2026",
     "maturity_date":"13\/08\/2027",
     "market":"SeDeX",
     "price":null,
-    "strike":null,
-    "barrier":60.0,
-    "barrier_down":true,
-    "annual_coupon_yield":null,
-    "coupon_frequency":"annual",
+    "strike":3.247,
+    "barrier":null,
+    "barrier_down":null,
+    "annual_coupon_yield":11.16,
+    "coupon_frequency":"monthly",
     "trigger_autocallable":null,
     "underlyings":[
       {
         "name":"NEXI",
-        "strike":3.245,
-        "weight":""
-      },
-      {
-        "name":"Stellantis",
-        "strike":6.664,
+        "strike":3.247,
         "weight":""
       }
     ],
     "scenario_analysis":null,
-    "source":"CED_scheda_v26"
+    "source":"CED_scheda_v16_ajax"
   },
   {
-    "isin":"DE000UN4N7K0",
+    "isin":"DE000UN4N7L8",
     "name":"CASH COLLECT MEMORY STEP DOWN",
     "issuer":"Unicredit",
     "type":"Certificato",
@@ -1733,9 +1747,9 @@
     "source":"CED_nuove_emissioni"
   },
   {
-    "isin":"DE000VJ52AX5",
-    "name":"CASH COLLECT MEMORY STEP DOWN",
-    "issuer":"Vontobel",
+    "isin":"XS3255756978",
+    "name":"EQUITY PROTECTION CAP CALLABLE",
+    "issuer":"Bnp Paribas",
     "type":"Certificato",
     "underlying":"Singolo Sottostante",
     "underlying_name":"Singolo Sottostante",
@@ -1805,54 +1819,6 @@
     "source":"CED_nuove_emissioni"
   },
   {
-    "isin":"DE000UN4N7L8",
-    "name":"CASH COLLECT MEMORY STEP DOWN",
-    "issuer":"Unicredit",
-    "type":"Certificato",
-    "underlying":"Basket di azioni worst of",
-    "underlying_name":"Basket di azioni worst of",
-    "underlying_category":"basket",
-    "issue_date":"17\/02\/2026",
-    "maturity_date":null,
-    "market":"SeDeX",
-    "price":null,
-    "strike":null,
-    "barrier":null,
-    "barrier_down":null,
-    "annual_coupon_yield":null,
-    "coupon_frequency":"annual",
-    "trigger_autocallable":null,
-    "underlyings":[
-
-    ],
-    "scenario_analysis":null,
-    "source":"CED_nuove_emissioni"
-  },
-  {
-    "isin":"DE000VJ55M20",
-    "name":"CASH COLLECT MEMORY STEP DOWN",
-    "issuer":"Vontobel",
-    "type":"Certificato",
-    "underlying":"Basket di azioni worst of",
-    "underlying_name":"Basket di azioni worst of",
-    "underlying_category":"basket",
-    "issue_date":"17\/02\/2026",
-    "maturity_date":null,
-    "market":"SeDeX",
-    "price":null,
-    "strike":null,
-    "barrier":null,
-    "barrier_down":null,
-    "annual_coupon_yield":null,
-    "coupon_frequency":"annual",
-    "trigger_autocallable":null,
-    "underlyings":[
-
-    ],
-    "scenario_analysis":null,
-    "source":"CED_nuove_emissioni"
-  },
-  {
     "isin":"IT0005694812",
     "name":"PHOENIX MEMORY STEP DOWN",
     "issuer":"Intesa Sanpaolo",
@@ -1877,9 +1843,9 @@
     "source":"CED_nuove_emissioni"
   },
   {
-    "isin":"IT0006773763",
-    "name":"PHOENIX MEMORY STEP DOWN",
-    "issuer":"Marex Financial",
+    "isin":"IT0006773839",
+    "name":"PHONIX MEMORY",
+    "issuer":"Santander",
     "type":"Certificato",
     "underlying":"Basket di azioni worst of",
     "underlying_name":"Basket di azioni worst of",
@@ -1925,9 +1891,57 @@
     "source":"CED_nuove_emissioni"
   },
   {
+    "isin":"DE000VJ55M20",
+    "name":"CASH COLLECT MEMORY STEP DOWN",
+    "issuer":"Vontobel",
+    "type":"Certificato",
+    "underlying":"Basket di azioni worst of",
+    "underlying_name":"Basket di azioni worst of",
+    "underlying_category":"basket",
+    "issue_date":"17\/02\/2026",
+    "maturity_date":null,
+    "market":"SeDeX",
+    "price":null,
+    "strike":null,
+    "barrier":null,
+    "barrier_down":null,
+    "annual_coupon_yield":null,
+    "coupon_frequency":"annual",
+    "trigger_autocallable":null,
+    "underlyings":[
+
+    ],
+    "scenario_analysis":null,
+    "source":"CED_nuove_emissioni"
+  },
+  {
     "isin":"IT0005694838",
     "name":"PHOENIX MEMORY STEP DOWN",
     "issuer":"Intesa Sanpaolo",
+    "type":"Certificato",
+    "underlying":"Basket di azioni worst of",
+    "underlying_name":"Basket di azioni worst of",
+    "underlying_category":"basket",
+    "issue_date":"17\/02\/2026",
+    "maturity_date":null,
+    "market":"SeDeX",
+    "price":null,
+    "strike":null,
+    "barrier":null,
+    "barrier_down":null,
+    "annual_coupon_yield":null,
+    "coupon_frequency":"annual",
+    "trigger_autocallable":null,
+    "underlyings":[
+
+    ],
+    "scenario_analysis":null,
+    "source":"CED_nuove_emissioni"
+  },
+  {
+    "isin":"IT0006773763",
+    "name":"PHOENIX MEMORY STEP DOWN",
+    "issuer":"Marex Financial",
     "type":"Certificato",
     "underlying":"Basket di azioni worst of",
     "underlying_name":"Basket di azioni worst of",
@@ -2189,78 +2203,6 @@
     "source":"CED_nuove_emissioni"
   },
   {
-    "isin":"DE000VJ5RWD4",
-    "name":"TURBO",
-    "issuer":"Vontobel",
-    "type":"Certificato",
-    "underlying":"Singolo Sottostante",
-    "underlying_name":"Singolo Sottostante",
-    "underlying_category":"single",
-    "issue_date":"12\/02\/2026",
-    "maturity_date":null,
-    "market":"SeDeX",
-    "price":null,
-    "strike":null,
-    "barrier":null,
-    "barrier_down":null,
-    "annual_coupon_yield":null,
-    "coupon_frequency":"annual",
-    "trigger_autocallable":null,
-    "underlyings":[
-
-    ],
-    "scenario_analysis":null,
-    "source":"CED_nuove_emissioni"
-  },
-  {
-    "isin":"DE000VJ5RWF9",
-    "name":"TURBO",
-    "issuer":"Vontobel",
-    "type":"Certificato",
-    "underlying":"Singolo Sottostante",
-    "underlying_name":"Singolo Sottostante",
-    "underlying_category":"single",
-    "issue_date":"12\/02\/2026",
-    "maturity_date":null,
-    "market":"SeDeX",
-    "price":null,
-    "strike":null,
-    "barrier":null,
-    "barrier_down":null,
-    "annual_coupon_yield":null,
-    "coupon_frequency":"annual",
-    "trigger_autocallable":null,
-    "underlyings":[
-
-    ],
-    "scenario_analysis":null,
-    "source":"CED_nuove_emissioni"
-  },
-  {
-    "isin":"DE000VJ5RWH5",
-    "name":"TURBO",
-    "issuer":"Vontobel",
-    "type":"Certificato",
-    "underlying":"Singolo Sottostante",
-    "underlying_name":"Singolo Sottostante",
-    "underlying_category":"single",
-    "issue_date":"12\/02\/2026",
-    "maturity_date":null,
-    "market":"SeDeX",
-    "price":null,
-    "strike":null,
-    "barrier":null,
-    "barrier_down":null,
-    "annual_coupon_yield":null,
-    "coupon_frequency":"annual",
-    "trigger_autocallable":null,
-    "underlyings":[
-
-    ],
-    "scenario_analysis":null,
-    "source":"CED_nuove_emissioni"
-  },
-  {
     "isin":"DE000VJ5RWJ1",
     "name":"TURBO",
     "issuer":"Vontobel",
@@ -2333,9 +2275,9 @@
     "source":"CED_nuove_emissioni"
   },
   {
-    "isin":"DE000FD94D04",
+    "isin":"DE000VJ5RWD4",
     "name":"TURBO",
-    "issuer":"Societe Generale",
+    "issuer":"Vontobel",
     "type":"Certificato",
     "underlying":"Singolo Sottostante",
     "underlying_name":"Singolo Sottostante",
@@ -2357,9 +2299,9 @@
     "source":"CED_nuove_emissioni"
   },
   {
-    "isin":"DE000FD94D12",
+    "isin":"DE000VJ5RWF9",
     "name":"TURBO",
-    "issuer":"Societe Generale",
+    "issuer":"Vontobel",
     "type":"Certificato",
     "underlying":"Singolo Sottostante",
     "underlying_name":"Singolo Sottostante",
@@ -2381,9 +2323,9 @@
     "source":"CED_nuove_emissioni"
   },
   {
-    "isin":"DE000FD94D20",
+    "isin":"DE000VJ5RWH5",
     "name":"TURBO",
-    "issuer":"Societe Generale",
+    "issuer":"Vontobel",
     "type":"Certificato",
     "underlying":"Singolo Sottostante",
     "underlying_name":"Singolo Sottostante",
@@ -2405,9 +2347,9 @@
     "source":"CED_nuove_emissioni"
   },
   {
-    "isin":"DE000FD94D38",
+    "isin":"NLBNPIT36K26",
     "name":"TURBO",
-    "issuer":"Societe Generale",
+    "issuer":"Bnp Paribas",
     "type":"Certificato",
     "underlying":"Singolo Sottostante",
     "underlying_name":"Singolo Sottostante",
@@ -2429,9 +2371,9 @@
     "source":"CED_nuove_emissioni"
   },
   {
-    "isin":"DE000FD94D46",
+    "isin":"NLBNPIT36K34",
     "name":"TURBO",
-    "issuer":"Societe Generale",
+    "issuer":"Bnp Paribas",
     "type":"Certificato",
     "underlying":"Singolo Sottostante",
     "underlying_name":"Singolo Sottostante",
@@ -2453,9 +2395,9 @@
     "source":"CED_nuove_emissioni"
   },
   {
-    "isin":"DE000FD94D53",
+    "isin":"NLBNPIT36K42",
     "name":"TURBO",
-    "issuer":"Societe Generale",
+    "issuer":"Bnp Paribas",
     "type":"Certificato",
     "underlying":"Singolo Sottostante",
     "underlying_name":"Singolo Sottostante",
@@ -2477,9 +2419,9 @@
     "source":"CED_nuove_emissioni"
   },
   {
-    "isin":"DE000FD94E03",
+    "isin":"NLBNPIT36K59",
     "name":"TURBO",
-    "issuer":"Societe Generale",
+    "issuer":"Bnp Paribas",
     "type":"Certificato",
     "underlying":"Singolo Sottostante",
     "underlying_name":"Singolo Sottostante",
@@ -2501,9 +2443,9 @@
     "source":"CED_nuove_emissioni"
   },
   {
-    "isin":"DE000FD94E11",
+    "isin":"NLBNPIT36K67",
     "name":"TURBO",
-    "issuer":"Societe Generale",
+    "issuer":"Bnp Paribas",
     "type":"Certificato",
     "underlying":"Singolo Sottostante",
     "underlying_name":"Singolo Sottostante",
@@ -2525,9 +2467,9 @@
     "source":"CED_nuove_emissioni"
   },
   {
-    "isin":"DE000FD94E29",
+    "isin":"NLBNPIT36K75",
     "name":"TURBO",
-    "issuer":"Societe Generale",
+    "issuer":"Bnp Paribas",
     "type":"Certificato",
     "underlying":"Singolo Sottostante",
     "underlying_name":"Singolo Sottostante",
@@ -2549,9 +2491,9 @@
     "source":"CED_nuove_emissioni"
   },
   {
-    "isin":"DE000FD94E37",
+    "isin":"NLBNPIT36K83",
     "name":"TURBO",
-    "issuer":"Societe Generale",
+    "issuer":"Bnp Paribas",
     "type":"Certificato",
     "underlying":"Singolo Sottostante",
     "underlying_name":"Singolo Sottostante",
@@ -2573,9 +2515,9 @@
     "source":"CED_nuove_emissioni"
   },
   {
-    "isin":"DE000FD94E45",
+    "isin":"NLBNPIT36K91",
     "name":"TURBO",
-    "issuer":"Societe Generale",
+    "issuer":"Bnp Paribas",
     "type":"Certificato",
     "underlying":"Singolo Sottostante",
     "underlying_name":"Singolo Sottostante",
@@ -2597,9 +2539,9 @@
     "source":"CED_nuove_emissioni"
   },
   {
-    "isin":"DE000FD94E60",
+    "isin":"NLBNPIT36KA6",
     "name":"TURBO",
-    "issuer":"Societe Generale",
+    "issuer":"Bnp Paribas",
     "type":"Certificato",
     "underlying":"Singolo Sottostante",
     "underlying_name":"Singolo Sottostante",
@@ -2621,9 +2563,9 @@
     "source":"CED_nuove_emissioni"
   },
   {
-    "isin":"DE000FD94E78",
+    "isin":"NLBNPIT36KB4",
     "name":"TURBO",
-    "issuer":"Societe Generale",
+    "issuer":"Bnp Paribas",
     "type":"Certificato",
     "underlying":"Singolo Sottostante",
     "underlying_name":"Singolo Sottostante",
@@ -2645,9 +2587,9 @@
     "source":"CED_nuove_emissioni"
   },
   {
-    "isin":"DE000FD94E86",
+    "isin":"NLBNPIT36LT4",
     "name":"TURBO",
-    "issuer":"Societe Generale",
+    "issuer":"Bnp Paribas",
     "type":"Certificato",
     "underlying":"Singolo Sottostante",
     "underlying_name":"Singolo Sottostante",
@@ -2669,9 +2611,9 @@
     "source":"CED_nuove_emissioni"
   },
   {
-    "isin":"DE000FD94E94",
+    "isin":"NLBNPIT36LV0",
     "name":"TURBO",
-    "issuer":"Societe Generale",
+    "issuer":"Bnp Paribas",
     "type":"Certificato",
     "underlying":"Singolo Sottostante",
     "underlying_name":"Singolo Sottostante",
@@ -2693,9 +2635,9 @@
     "source":"CED_nuove_emissioni"
   },
   {
-    "isin":"DE000FD94EA3",
+    "isin":"NLBNPIT36LY4",
     "name":"TURBO",
-    "issuer":"Societe Generale",
+    "issuer":"Bnp Paribas",
     "type":"Certificato",
     "underlying":"Singolo Sottostante",
     "underlying_name":"Singolo Sottostante",
@@ -2717,9 +2659,9 @@
     "source":"CED_nuove_emissioni"
   },
   {
-    "isin":"DE000FD94EB1",
+    "isin":"NLBNPIT36LZ1",
     "name":"TURBO",
-    "issuer":"Societe Generale",
+    "issuer":"Bnp Paribas",
     "type":"Certificato",
     "underlying":"Singolo Sottostante",
     "underlying_name":"Singolo Sottostante",
@@ -2741,9 +2683,9 @@
     "source":"CED_nuove_emissioni"
   },
   {
-    "isin":"DE000FD94EC9",
+    "isin":"NLBNPIT36M16",
     "name":"TURBO",
-    "issuer":"Societe Generale",
+    "issuer":"Bnp Paribas",
     "type":"Certificato",
     "underlying":"Singolo Sottostante",
     "underlying_name":"Singolo Sottostante",
@@ -2765,9 +2707,9 @@
     "source":"CED_nuove_emissioni"
   },
   {
-    "isin":"DE000FD94ED7",
+    "isin":"NLBNPIT36M32",
     "name":"TURBO",
-    "issuer":"Societe Generale",
+    "issuer":"Bnp Paribas",
     "type":"Certificato",
     "underlying":"Singolo Sottostante",
     "underlying_name":"Singolo Sottostante",
@@ -2789,9 +2731,9 @@
     "source":"CED_nuove_emissioni"
   },
   {
-    "isin":"DE000FD94EE5",
+    "isin":"NLBNPIT36M40",
     "name":"TURBO",
-    "issuer":"Societe Generale",
+    "issuer":"Bnp Paribas",
     "type":"Certificato",
     "underlying":"Singolo Sottostante",
     "underlying_name":"Singolo Sottostante",
@@ -2813,9 +2755,9 @@
     "source":"CED_nuove_emissioni"
   },
   {
-    "isin":"DE000FD94EF2",
+    "isin":"NLBNPIT36M57",
     "name":"TURBO",
-    "issuer":"Societe Generale",
+    "issuer":"Bnp Paribas",
     "type":"Certificato",
     "underlying":"Singolo Sottostante",
     "underlying_name":"Singolo Sottostante",
@@ -2837,9 +2779,9 @@
     "source":"CED_nuove_emissioni"
   },
   {
-    "isin":"DE000FD94EG0",
+    "isin":"NLBNPIT36M65",
     "name":"TURBO",
-    "issuer":"Societe Generale",
+    "issuer":"Bnp Paribas",
     "type":"Certificato",
     "underlying":"Singolo Sottostante",
     "underlying_name":"Singolo Sottostante",
@@ -2861,9 +2803,9 @@
     "source":"CED_nuove_emissioni"
   },
   {
-    "isin":"DE000FD94EH8",
+    "isin":"NLBNPIT36M73",
     "name":"TURBO",
-    "issuer":"Societe Generale",
+    "issuer":"Bnp Paribas",
     "type":"Certificato",
     "underlying":"Singolo Sottostante",
     "underlying_name":"Singolo Sottostante",
@@ -2885,9 +2827,81 @@
     "source":"CED_nuove_emissioni"
   },
   {
-    "isin":"DE000FD94EJ4",
+    "isin":"NLBNPIT36M81",
     "name":"TURBO",
-    "issuer":"Societe Generale",
+    "issuer":"Bnp Paribas",
+    "type":"Certificato",
+    "underlying":"Singolo Sottostante",
+    "underlying_name":"Singolo Sottostante",
+    "underlying_category":"single",
+    "issue_date":"12\/02\/2026",
+    "maturity_date":null,
+    "market":"SeDeX",
+    "price":null,
+    "strike":null,
+    "barrier":null,
+    "barrier_down":null,
+    "annual_coupon_yield":null,
+    "coupon_frequency":"annual",
+    "trigger_autocallable":null,
+    "underlyings":[
+
+    ],
+    "scenario_analysis":null,
+    "source":"CED_nuove_emissioni"
+  },
+  {
+    "isin":"NLBNPIT36M99",
+    "name":"TURBO",
+    "issuer":"Bnp Paribas",
+    "type":"Certificato",
+    "underlying":"Singolo Sottostante",
+    "underlying_name":"Singolo Sottostante",
+    "underlying_category":"single",
+    "issue_date":"12\/02\/2026",
+    "maturity_date":null,
+    "market":"SeDeX",
+    "price":null,
+    "strike":null,
+    "barrier":null,
+    "barrier_down":null,
+    "annual_coupon_yield":null,
+    "coupon_frequency":"annual",
+    "trigger_autocallable":null,
+    "underlyings":[
+
+    ],
+    "scenario_analysis":null,
+    "source":"CED_nuove_emissioni"
+  },
+  {
+    "isin":"NLBNPIT36MD6",
+    "name":"TURBO",
+    "issuer":"Bnp Paribas",
+    "type":"Certificato",
+    "underlying":"Singolo Sottostante",
+    "underlying_name":"Singolo Sottostante",
+    "underlying_category":"single",
+    "issue_date":"12\/02\/2026",
+    "maturity_date":null,
+    "market":"SeDeX",
+    "price":null,
+    "strike":null,
+    "barrier":null,
+    "barrier_down":null,
+    "annual_coupon_yield":null,
+    "coupon_frequency":"annual",
+    "trigger_autocallable":null,
+    "underlyings":[
+
+    ],
+    "scenario_analysis":null,
+    "source":"CED_nuove_emissioni"
+  },
+  {
+    "isin":"NLBNPIT36MF1",
+    "name":"TURBO",
+    "issuer":"Bnp Paribas",
     "type":"Certificato",
     "underlying":"Singolo Sottostante",
     "underlying_name":"Singolo Sottostante",
