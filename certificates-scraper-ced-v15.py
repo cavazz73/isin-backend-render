@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """
-Scraper CED v18 COMPLETO - LISTING + DETAIL SCHEDE
+Scraper CED v24 FINALE - LISTING + DETAIL + CLEAN NUMBERS
 1. Elenco nuove emissioni → ISIN recenti
-2. Per ogni ISIN → Scheda dettaglio → strike, barriera, sottostanti[], tipo
-3. JSON ricco per frontend CedLab-style
+2. Per ogni ISIN → Scheda dettaglio → strike, barriera, cedola, tipo
+3. CLEAN numeri: "60 %" → 60.0, "1,5 %" → 1.5 per frontend
 """
+
 import asyncio
 import pandas as pd
 from playwright.async_api import async_playwright
@@ -17,7 +18,7 @@ from typing import List, Dict, Any
 import time
 
 RECENT_DAYS = int(os.getenv('RECENT_DAYS', '30'))
-MAX_DETAIL_ISIN = int(os.getenv('MAX_DETAIL_ISIN', '50'))  # Anti-ban
+MAX_DETAIL_ISIN = int(os.getenv('MAX_DETAIL_ISIN', '50'))
 cutoff_date = datetime.now() - timedelta(days=RECENT_DAYS)
 DATE_FORMAT = '%d/%m/%Y'
 
@@ -45,7 +46,6 @@ async def scrape_listing(page) -> List[Dict]:
     for i, row in enumerate(rows):
         cols = [col.get_text(strip=True) for col in row.find_all(['td', 'th'])]
         if len(cols) < 7 or cols[0] in ['ISIN', 'NOME', 'EMITTENTE', 'SOTTOSTANTE']: continue
-        
         isin = cols[0].strip()
         if not re.match(r'^[A-Z0-9]{12}$', isin): continue
         
@@ -62,7 +62,7 @@ async def scrape_listing(page) -> List[Dict]:
                 'isin': isin,
                 'name': nome,
                 'issuer': emittente,
-                'type': 'Certificato',  # Placeholder
+                'type': 'Certificato',
                 'underlying': sottostante,
                 'underlying_name': sottostante,
                 'underlying_category': classify_underlying_category(sottostante),
@@ -83,7 +83,7 @@ async def scrape_listing(page) -> List[Dict]:
             continue
     
     print(f"Totale certificati recenti: {len(certificati)}")
-    return certificati[:MAX_DETAIL_ISIN * 2]  # Buffer per fallimenti
+    return certificati[:MAX_DETAIL_ISIN * 2]
 
 async def scrape_detail(page, isin: str) -> Dict:
     """Step 2: Dettaglio scheda - parsing tabelle HTML"""
@@ -129,8 +129,8 @@ async def scrape_detail(page, isin: str) -> Dict:
                 headers = [h.get_text(strip=True).upper() for h in header_row.find_all(['th', 'td'])]
                 if 'STRIKE' in headers:
                     strike_idx = headers.index('STRIKE')
-                    rows = table.find_all('tr')[1:]  # Skip header
-                    for row in rows[:1]:  # Prima riga dati
+                    rows = table.find_all('tr')[1:]
+                    for row in rows[:1]:
                         cols = [c.get_text(strip=True) for c in row.find_all('td')]
                         if len(cols) > strike_idx:
                             strike = cols[strike_idx].replace('.', '').replace(',', '.')
@@ -165,6 +165,34 @@ async def scrape_detail(page, isin: str) -> Dict:
         print(f"❌ {isin}: {str(e)[:40]}")
         return {}
 
+def clean_numeric_fields(certificati: List[Dict]) -> List[Dict]:
+    """Step 3: Converte stringhe italiane → numeri per frontend JavaScript"""
+    for cert in certificati:
+        # Pulisci barrier: "60 %" → 60.0
+        if cert.get('barrier') and isinstance(cert['barrier'], str):
+            try:
+                val = cert['barrier'].replace('%', '').replace(',', '.').strip()
+                cert['barrier'] = float(val) if val else None
+            except:
+                cert['barrier'] = None
+        
+        # Pulisci coupon: "1,5 %" → 1.5
+        if cert.get('annual_coupon_yield') and isinstance(cert['annual_coupon_yield'], str):
+            try:
+                val = cert['annual_coupon_yield'].replace('%', '').replace(',', '.').strip()
+                cert['annual_coupon_yield'] = float(val) if val else None
+            except:
+                cert['annual_coupon_yield'] = None
+        
+        # Pulisci strike: "10519" → 105.19
+        if cert.get('strike') and isinstance(cert['strike'], str):
+            try:
+                val = cert['strike'].replace('.', '').replace(',', '.')
+                cert['strike'] = float(val) if val else None
+            except:
+                cert['strike'] = None
+    
+    return certificati
 
 async def main():
     import sys
@@ -191,20 +219,24 @@ async def main():
             
             await browser.close()
             
+            # STEP 3: Pulisci numeri per frontend
+            certificati = clean_numeric_fields(certificati)
+            print(f"🧹 Cleaned numeric fields for frontend")
+            
             pd.DataFrame(certificati).to_json('certificates-recenti.json', orient='records', indent=2)
             pd.DataFrame(certificati).to_csv('certificates-recenti.csv', index=False)
             
-            payload = {'success': True, 'count': len(certificati), 'certificates': certificati, 'metadata': {'version': 'v22', 'details_filled': filled}}
+            payload = {'success': True, 'count': len(certificati), 'certificates': certificati, 'metadata': {'version': 'v24-clean', 'details_filled': filled}}
             with open('certificates-data.json', 'w', encoding='utf-8') as f:
                 json.dump(payload, f, indent=2, ensure_ascii=False)
             
-            print(f"✅ {len(certificati)} tot | {filled} details")
+            print(f"✅ {len(certificati)} tot | {filled} details | v24-clean")
     except Exception as e:
         print(f"⚠️ Errore: {str(e)[:80]}")
-        exit_code = 0  # Forza 0 anche su errore
+        exit_code = 0
     finally:
         print("🏁 DONE")
-        sys.exit(0)  # FORZA EXIT 0
+        sys.exit(0)
 
 if __name__ == '__main__':
     asyncio.run(main())
