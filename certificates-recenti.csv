@@ -1,1 +1,3 @@
-
+isin,name,issuer,type,underlying,underlying_name,underlying_category,issue_date,maturity_date,market,price,strike,barrier,barrier_down,annual_coupon_yield,coupon_frequency,trigger_autocallable,underlyings,scenario_analysis,source
+IT0005687006,LEVA FISSA,FinecoBank,LEVA FISSA,Italgas,Italgas,index,26/01/2026,01/01/1900,SeDeX,,,,,,annual,,[],,CED_v18_final
+IT0005686990,LEVA FISSA,FinecoBank,LEVA FISSA,Italgas,Italgas,index,26/01/2026,01/01/1900,SeDeX,,,,,,annual,,[],,CED_v18_final

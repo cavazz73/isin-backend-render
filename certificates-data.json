@@ -1,10 +1,54 @@
 {
   "success": true,
-  "count": 0,
-  "certificates": [],
+  "count": 2,
+  "certificates": [
+    {
+      "isin": "IT0005687006",
+      "name": "LEVA FISSA",
+      "issuer": "FinecoBank",
+      "type": "LEVA FISSA",
+      "underlying": "Italgas",
+      "underlying_name": "Italgas",
+      "underlying_category": "index",
+      "issue_date": "26/01/2026",
+      "maturity_date": "01/01/1900",
+      "market": "SeDeX",
+      "price": null,
+      "strike": null,
+      "barrier": null,
+      "barrier_down": null,
+      "annual_coupon_yield": null,
+      "coupon_frequency": "annual",
+      "trigger_autocallable": null,
+      "underlyings": [],
+      "scenario_analysis": null,
+      "source": "CED_v18_final"
+    },
+    {
+      "isin": "IT0005686990",
+      "name": "LEVA FISSA",
+      "issuer": "FinecoBank",
+      "type": "LEVA FISSA",
+      "underlying": "Italgas",
+      "underlying_name": "Italgas",
+      "underlying_category": "index",
+      "issue_date": "26/01/2026",
+      "maturity_date": "01/01/1900",
+      "market": "SeDeX",
+      "price": null,
+      "strike": null,
+      "barrier": null,
+      "barrier_down": null,
+      "annual_coupon_yield": null,
+      "coupon_frequency": "annual",
+      "trigger_autocallable": null,
+      "underlyings": [],
+      "scenario_analysis": null,
+      "source": "CED_v18_final"
+    }
+  ],
   "metadata": {
-    "version": "v17-index-only",
-    "details_filled": 0,
-    "scraped_at": "2026-02-19T16:39:53.285990"
+    "version": "v18-index-only",
+    "filled": 0
   }
 }

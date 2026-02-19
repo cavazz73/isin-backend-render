@@ -1,3 +1,50 @@
 [
+  {
+    "isin":"IT0005687006",
+    "name":"LEVA FISSA",
+    "issuer":"FinecoBank",
+    "type":"LEVA FISSA",
+    "underlying":"Italgas",
+    "underlying_name":"Italgas",
+    "underlying_category":"index",
+    "issue_date":"26\/01\/2026",
+    "maturity_date":"01\/01\/1900",
+    "market":"SeDeX",
+    "price":null,
+    "strike":null,
+    "barrier":null,
+    "barrier_down":null,
+    "annual_coupon_yield":null,
+    "coupon_frequency":"annual",
+    "trigger_autocallable":null,
+    "underlyings":[
 
+    ],
+    "scenario_analysis":null,
+    "source":"CED_v18_final"
+  },
+  {
+    "isin":"IT0005686990",
+    "name":"LEVA FISSA",
+    "issuer":"FinecoBank",
+    "type":"LEVA FISSA",
+    "underlying":"Italgas",
+    "underlying_name":"Italgas",
+    "underlying_category":"index",
+    "issue_date":"26\/01\/2026",
+    "maturity_date":"01\/01\/1900",
+    "market":"SeDeX",
+    "price":null,
+    "strike":null,
+    "barrier":null,
+    "barrier_down":null,
+    "annual_coupon_yield":null,
+    "coupon_frequency":"annual",
+    "trigger_autocallable":null,
+    "underlyings":[
+
+    ],
+    "scenario_analysis":null,
+    "source":"CED_v18_final"
+  }
 ]
