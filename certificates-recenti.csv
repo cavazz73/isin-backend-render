@@ -1,3 +1,32 @@
 isin,name,issuer,type,underlying,underlying_name,underlying_category,issue_date,maturity_date,market,price,strike,barrier,barrier_down,annual_coupon_yield,coupon_frequency,trigger_autocallable,underlyings,scenario_analysis,source
-IT0005687006,LEVA FISSA,FinecoBank,LEVA FISSA,Italgas,Italgas,index,26/01/2026,01/01/1900,SeDeX,,,,,,annual,,[],,CED_v18_final
-IT0005686990,LEVA FISSA,FinecoBank,LEVA FISSA,Italgas,Italgas,index,26/01/2026,01/01/1900,SeDeX,,,,,,annual,,[],,CED_v18_final
+DE000UQ8JNB0,PHOENIX MEMORY STEP DOWN,Ubs,PHOENIX MEMORY STEP DOWN,Basket di azioni worst of,Alphabet cl. A,index,18/02/2026,19/02/2031,SeDeX,,,50.0,True,1.94,annual,,[],,CED_v19
+IT0006773748,PHOENIX MEMORY STEP DOWN,Marex Financial,PHOENIX MEMORY STEP DOWN,Basket di indici worst of,Euro Stoxx 50,index,18/02/2026,13/02/2029,SeDeX,,,55.0,True,0.75,annual,,[],,CED_v19
+DE000GV9U2N3,EQUITY PROTECTION CAP,Goldman Sachs,EQUITY PROTECTION CAP,Singolo Sottostante,Nasdaq 100,index,18/02/2026,12/02/2029,SeDeX,,,,,,annual,,[],,CED_v19
+DE000VJ36QE4,TRACKER,Vontobel,TRACKER,Singolo Sottostante,Vontobel Rising Economies Disruptors,index,18/02/2026,01/01/1900,SeDeX,,,,,,annual,,[],,CED_v19
+CH1484586248,PHOENIX MEMORY SOFTCALLABLE,Leonteq Securities,PHOENIX MEMORY SOFTCALLABLE,Singolo Sottostante,Eldorado Gold,index,18/02/2026,11/02/2028,SeDeX,,,60.0,True,1.0,annual,,[],,CED_v19
+DE000GV9VZT0,EXPRESS STEP DOWN,Goldman Sachs,EXPRESS STEP DOWN,Singolo Sottostante,Microsoft,index,18/02/2026,10/02/2031,SeDeX,,,65.0,True,9.05,annual,,[],,CED_v19
+XS3077242942,DIGITAL REVERSE AUTOCALLABLE,Citigroup,DIGITAL REVERSE AUTOCALLABLE,Singolo Sottostante,Solactive BTP 10 Annual Comp. Yield,index,18/02/2026,11/02/2030,SeDeX,,,,,4.1,annual,,[],,CED_v19
+XS3255733258,PHOENIX MEMORY,Bnp Paribas,PHOENIX MEMORY,Basket di azioni worst of,Adyen,index,18/02/2026,28/01/2028,SeDeX,,,50.0,True,1.3,annual,,[],,CED_v19
+CH1484586289,PHOENIX MEMORY SOFTCALLABLE,Leonteq Securities,PHOENIX MEMORY SOFTCALLABLE,Singolo Sottostante,AngloGold Ashanti,index,18/02/2026,11/02/2028,SeDeX,,,60.0,True,1.17,annual,,[],,CED_v19
+CH1484586719,PHOENIX MEMORY SOFTCALLABLE,Leonteq Securities,PHOENIX MEMORY SOFTCALLABLE,Singolo Sottostante,Kinross Gold,index,18/02/2026,11/02/2028,SeDeX,,,60.0,True,1.0,annual,,[],,CED_v19
+GB00BVJWH804,PHOENIX MEMORY,Goldman Sachs,PHOENIX MEMORY,Basket di azioni worst of,Apple,index,18/02/2026,16/01/2029,SeDeX,,,60.0,True,9.25,annual,,[],,CED_v19
+XS3263004544,PHOENIX MEMORY,Barclays,PHOENIX MEMORY,Basket di Fondi WorstOf,Vaneck Vectors Gold Miners,index,18/02/2026,05/03/2029,SeDeX,,,65.0,True,2.25,annual,,[],,CED_v19
+CH1484587139,PHOENIX MEMORY STEP DOWN,Leonteq Securities,PHOENIX MEMORY STEP DOWN,Basket di azioni worst of,AngloGold Ashanti,index,18/02/2026,11/02/2030,SeDeX,,,50.0,True,1.0,annual,,[],,CED_v19
+XS3266411548,DIGITAL REVERSE AUTOCALLABLE,Bnp Paribas,DIGITAL REVERSE AUTOCALLABLE,Singolo Sottostante,Solactive BTP 10 Annual Comp. Yield,index,18/02/2026,09/02/2034,SeDeX,,,,,2.69,annual,,[],,CED_v19
+XS3278600542,CREDIT LINKED CALLABLE,Mediobanca,CREDIT LINKED CALLABLE,Singolo Sottostante,,index,18/02/2026,20/12/2035,SeDeX,,,,,0.45,annual,,[],,CED_v19
+XS3254819942,PHOENIX MEMORY,Dynamic Certificates,PHOENIX MEMORY,Basket di indici worst of,Solactive EU Banks,index,18/02/2026,14/12/2029,SeDeX,,,60.0,True,2.05,annual,,[],,CED_v19
+IT0005690166,PHOENIX MEMORY STEP DOWN,Intesa Sanpaolo,PHOENIX MEMORY STEP DOWN,Basket di azioni worst of,Chevron,index,18/02/2026,15/02/2029,SeDeX,,,55.0,True,0.5,annual,,[],,CED_v19
+XS3291791252,FIXED CASH COLLECT CONVERTIBLE,Mediobanca,FIXED CASH COLLECT CONVERTIBLE,Singolo Sottostante,Synopsys,index,18/02/2026,30/01/2029,SeDeX,,,75.0,True,3.5,annual,,[],,CED_v19
+XS3254820106,PHOENIX MEMORY,Dynamic Certificates,PHOENIX MEMORY,Basket di azioni worst of,Ryanair,index,18/02/2026,14/12/2029,SeDeX,,,50.0,True,2.2,annual,,[],,CED_v19
+XS3291791336,FIXED CASH COLLECT CONVERTIBLE,Mediobanca,FIXED CASH COLLECT CONVERTIBLE,Singolo Sottostante,Broadcom,index,18/02/2026,30/01/2029,SeDeX,,,60.0,True,3.5,annual,,[],,CED_v19
+XS3291791419,FIXED CASH COLLECT CONVERTIBLE,Mediobanca,FIXED CASH COLLECT CONVERTIBLE,Singolo Sottostante,Tesla,index,18/02/2026,30/01/2029,SeDeX,,,60.0,True,3.9,annual,,[],,CED_v19
+XS3291791682,FIXED CASH COLLECT CONVERTIBLE,Mediobanca,FIXED CASH COLLECT CONVERTIBLE,Singolo Sottostante,Nvidia,index,18/02/2026,30/01/2029,SeDeX,,,60.5,True,3.5,annual,,[],,CED_v19
+XS3261331675,EQUITY PROTECTION,Bnp Paribas,EQUITY PROTECTION,Singolo Sottostante,BNP Paribas Exane Strategic Metals ER 8%,index,18/02/2026,20/08/2029,SeDeX,,,,,,annual,,[],,CED_v19
+DE000UN4N7J2,CASH COLLECT MEMORY STEP DOWN,Unicredit,CASH COLLECT MEMORY STEP DOWN,Basket di azioni worst of,Best Buy,index,17/02/2026,14/02/2029,SeDeX,,,50.0,True,2.0,annual,,[],,CED_v19
+DE000VJ52AV9,CASH COLLECT MEMORY STEP DOWN,Vontobel,CASH COLLECT MEMORY STEP DOWN,Singolo Sottostante,Stellantis,index,17/02/2026,13/08/2027,SeDeX,,,60.0,True,1.06,annual,,[],,CED_v19
+DE000UN4N7K0,CASH COLLECT MEMORY STEP DOWN,Unicredit,CASH COLLECT MEMORY STEP DOWN,Basket di azioni worst of,Humana Inc,index,17/02/2026,14/02/2029,SeDeX,,,50.0,True,2.64,annual,,[],,CED_v19
+XS3251202407,PHOENIX MEMORY,Bnp Paribas,PHOENIX MEMORY,Basket di indici worst of,Euro Stoxx 50,index,17/02/2026,10/05/2030,SeDeX,,,50.0,True,6.1,annual,,[],,CED_v19
+XS3255734223,CREDIT LINKED CALLABLE,Bnp Paribas,CREDIT LINKED CALLABLE,Singolo Sottostante,,index,17/02/2026,20/06/2033,SeDeX,,,,,4.35,annual,,[],,CED_v19
+DE000UN4N7L8,CASH COLLECT MEMORY STEP DOWN,Unicredit,CASH COLLECT MEMORY STEP DOWN,Basket di azioni worst of,Advanced Micro Devices,index,17/02/2026,14/02/2029,SeDeX,,,50.0,True,2.21,annual,,[],,CED_v19
+XS3255734496,CREDIT LINKED CALLABLE,Bnp Paribas,CREDIT LINKED CALLABLE,Singolo Sottostante,,index,17/02/2026,20/06/2033,SeDeX,,,,,4.25,annual,,[],,CED_v19
+XS3255756978,EQUITY PROTECTION CAP CALLABLE,Bnp Paribas,EQUITY PROTECTION CAP CALLABLE,Singolo Sottostante,CSI 1000,index,17/02/2026,01/02/2029,SeDeX,,,,,7.0,annual,,[],,CED_v19
