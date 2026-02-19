@@ -1,9 +1,14 @@
 #!/usr/bin/env python3
 """
-Scraper CED v24 FINALE - LISTING + DETAIL + CLEAN NUMBERS
+Scraper CED v25 DEFINITIVO - LISTING + DETAIL COMPLETO + CLEAN
 1. Elenco nuove emissioni → ISIN recenti
-2. Per ogni ISIN → Scheda dettaglio → strike, barriera, cedola, tipo
-3. CLEAN numeri: "60 %" → 60.0, "1,5 %" → 1.5 per frontend
+2. Per ogni ISIN → Scheda dettaglio COMPLETA:
+   - Barriera corretta (50% non 1%)
+   - Data scadenza
+   - Sottostanti con strike
+   - Trigger autocallable
+   - Cedola annualizzata se mensile
+3. Clean numeri per frontend JavaScript
 """
 
 import asyncio
@@ -15,7 +20,6 @@ import os
 from datetime import datetime, timedelta
 import re
 from typing import List, Dict, Any
-import time
 
 RECENT_DAYS = int(os.getenv('RECENT_DAYS', '30'))
 MAX_DETAIL_ISIN = int(os.getenv('MAX_DETAIL_ISIN', '50'))
@@ -74,6 +78,9 @@ async def scrape_listing(page) -> List[Dict]:
                 'barrier': None,
                 'barrier_down': None,
                 'annual_coupon_yield': None,
+                'coupon_frequency': 'annual',
+                'trigger_autocallable': None,
+                'underlyings': [],
                 'scenario_analysis': None,
                 'source': 'CED_nuove_emissioni'
             }
@@ -86,7 +93,7 @@ async def scrape_listing(page) -> List[Dict]:
     return certificati[:MAX_DETAIL_ISIN * 2]
 
 async def scrape_detail(page, isin: str) -> Dict:
-    """Step 2: Dettaglio scheda - parsing tabelle HTML"""
+    """Step 2: Dettaglio scheda COMPLETO - v25 FIX DEFINITIVO"""
     url = f"https://www.certificatiederivati.it/db_bs_scheda_certificato.asp?isin={isin}"
     print(f"🔍 {isin}")
     try:
@@ -95,7 +102,7 @@ async def scrape_detail(page, isin: str) -> Dict:
         html = await page.content()
         soup = BeautifulSoup(html, 'lxml')
         
-        # Tipo dal titolo h1/h2/h3
+        # 1. TIPO dal titolo h1/h2/h3
         tipo = 'Certificato'
         title = soup.find(['h1', 'h2', 'h3'])
         if title:
@@ -106,69 +113,129 @@ async def scrape_detail(page, isin: str) -> Dict:
             elif 'REVERSE' in tipo_text: tipo = 'REVERSE PROTECT'
             else: tipo = tipo_text[:50]
         
-        # Barriera dalla tabella "Barriera Down"
-        barrier = barrier_down = None
+        # 2. DATA SCADENZA - cerca "Data Valutazione finale" o "DATA SCADENZA"
+        maturity_date = None
+        all_text = soup.get_text()
         for table in soup.find_all('table'):
-            text_table = table.get_text()
-            if 'Barriera Down' in text_table or 'BARRIERA' in text_table.upper():
+            rows = table.find_all('tr')
+            for row in rows:
+                cols = [c.get_text(strip=True) for c in row.find_all(['td', 'th'])]
+                if len(cols) >= 2:
+                    label = cols[0].strip()
+                    if 'Data Valutazione finale' in label or 'DATA SCADENZA' in label.upper() or 'Data scadenza' in label:
+                        maturity_date = cols[1].strip()
+                        break
+            if maturity_date: break
+        
+        # 3. BARRIERA DOWN - dalla tabella con header "Barriera Down"
+        barrier = barrier_down = None
+        for i, table in enumerate(soup.find_all('table')):
+            # Cerca heading precedente o testo prima tabella
+            prev_text = ""
+            prev = table.find_previous(['h2', 'h3', 'h4', 'div', 'p'])
+            if prev:
+                prev_text = prev.get_text()
+            
+            # Se heading contiene "Barriera Down"
+            if 'Barriera Down' in prev_text or 'BARRIERA' in prev_text.upper():
                 rows = table.find_all('tr')
                 for row in rows:
-                    cols = [c.get_text(strip=True) for c in row.find_all('td')]
+                    cols = [c.get_text(strip=True) for c in row.find_all(['td', 'th'])]
+                    # Cerca colonna con header "Barriera"
+                    if 'Barriera' in str(cols):
+                        continue  # Skip header
+                    # Prima riga dati con %
                     for col in cols:
-                        if '%' in col and len(col) < 10 and col[0].isdigit():
+                        if '%' in col and col[0].isdigit():
                             barrier = col
                             barrier_down = True
                             break
                     if barrier: break
+            if barrier: break
         
-        # Strike dalla tabella sottostanti (colonna STRIKE)
-        strike = None
+        # 4. SOTTOSTANTI - tabella "Scheda Sottostante" con colonne DESCRIZIONE, STRIKE, PESO
+        underlyings = []
         for table in soup.find_all('table'):
             header_row = table.find('tr')
             if header_row:
                 headers = [h.get_text(strip=True).upper() for h in header_row.find_all(['th', 'td'])]
-                if 'STRIKE' in headers:
+                if 'STRIKE' in headers and 'DESCRIZIONE' in headers:
                     strike_idx = headers.index('STRIKE')
-                    rows = table.find_all('tr')[1:]
-                    for row in rows[:1]:
+                    desc_idx = headers.index('DESCRIZIONE')
+                    peso_idx = headers.index('PESO') if 'PESO' in headers else None
+                    
+                    rows = table.find_all('tr')[1:]  # Skip header
+                    for row in rows:
                         cols = [c.get_text(strip=True) for c in row.find_all('td')]
-                        if len(cols) > strike_idx:
-                            strike = cols[strike_idx].replace('.', '').replace(',', '.')
-                            break
-                    break
+                        if len(cols) > strike_idx and cols[desc_idx]:
+                            underlying = {
+                                'name': cols[desc_idx],
+                                'strike': cols[strike_idx],
+                                'weight': cols[peso_idx] if peso_idx and peso_idx < len(cols) else None
+                            }
+                            underlyings.append(underlying)
+                    if underlyings:
+                        break
         
-        # Cedola dalla tabella "Date rilevamento" (colonna CEDOLA)
-        coupon = None
+        # 5. CEDOLA E TRIGGER da tabella "Date rilevamento"
+        coupon = trigger_autocallable = None
         for table in soup.find_all('table'):
             header_row = table.find('tr')
             if header_row:
                 headers = [h.get_text(strip=True).upper() for h in header_row.find_all(['th', 'td'])]
                 if 'CEDOLA' in headers:
                     cedola_idx = headers.index('CEDOLA')
+                    trigger_idx = None
+                    for h in ['TRIGGER CEDOLA', 'TRIGGER AUTOCALLABLE', 'TRIGGER']:
+                        if h in headers:
+                            trigger_idx = headers.index(h)
+                            break
+                    
                     rows = table.find_all('tr')[1:]
-                    for row in rows[:1]:
-                        cols = [c.get_text(strip=True) for c in row.find_all('td')]
+                    if rows:
+                        first_row = rows[0]
+                        cols = [c.get_text(strip=True) for c in first_row.find_all('td')]
                         if len(cols) > cedola_idx:
                             coupon = cols[cedola_idx]
-                            break
+                        if trigger_idx and len(cols) > trigger_idx:
+                            trigger_autocallable = cols[trigger_idx]
                     break
+        
+        # 6. FREQUENZA CEDOLA - rileva se mensile
+        coupon_frequency = 'annual'
+        page_text = soup.get_text().lower()
+        if 'mensil' in page_text or 'cedola a memoria' in page_text:
+            # Conta quante date rilevamento ci sono
+            for table in soup.find_all('table'):
+                header_row = table.find('tr')
+                if header_row:
+                    headers = [h.get_text(strip=True).upper() for h in header_row.find_all(['th', 'td'])]
+                    if 'DATA RILEVAMENTO' in headers:
+                        rows = table.find_all('tr')[1:]
+                        if len(rows) > 20:  # Se più di 20 date = probabilmente mensile
+                            coupon_frequency = 'monthly'
+                        break
         
         return {
             'type': tipo,
-            'strike': strike,
+            'maturity_date': maturity_date,
+            'strike': underlyings[0]['strike'] if len(underlyings) == 1 else None,  # Strike singolo
             'barrier': barrier,
             'barrier_down': barrier_down,
             'annual_coupon_yield': coupon,
-            'source': 'CED_scheda_v23'
+            'coupon_frequency': coupon_frequency,
+            'trigger_autocallable': trigger_autocallable,
+            'underlyings': underlyings,
+            'source': 'CED_scheda_v25'
         }
     except Exception as e:
         print(f"❌ {isin}: {str(e)[:40]}")
         return {}
 
 def clean_numeric_fields(certificati: List[Dict]) -> List[Dict]:
-    """Step 3: Converte stringhe italiane → numeri per frontend JavaScript"""
+    """Step 3: Converte stringhe italiane → numeri + annualizza cedola mensile"""
     for cert in certificati:
-        # Pulisci barrier: "60 %" → 60.0
+        # 1. Pulisci barrier: "50 %" → 50.0
         if cert.get('barrier') and isinstance(cert['barrier'], str):
             try:
                 val = cert['barrier'].replace('%', '').replace(',', '.').strip()
@@ -176,7 +243,7 @@ def clean_numeric_fields(certificati: List[Dict]) -> List[Dict]:
             except:
                 cert['barrier'] = None
         
-        # Pulisci coupon: "1,5 %" → 1.5
+        # 2. Pulisci coupon: "0,83 %" → 0.83
         if cert.get('annual_coupon_yield') and isinstance(cert['annual_coupon_yield'], str):
             try:
                 val = cert['annual_coupon_yield'].replace('%', '').replace(',', '.').strip()
@@ -184,13 +251,36 @@ def clean_numeric_fields(certificati: List[Dict]) -> List[Dict]:
             except:
                 cert['annual_coupon_yield'] = None
         
-        # Pulisci strike: "10519" → 105.19
+        # 3. ANNUALIZZA cedola se mensile
+        if cert.get('coupon_frequency') == 'monthly' and cert.get('annual_coupon_yield'):
+            cert['annual_coupon_yield'] = cert['annual_coupon_yield'] * 12
+            print(f"  📅 {cert['isin']}: Cedola annualizzata {cert['annual_coupon_yield']:.2f}% (mensile × 12)")
+        
+        # 4. Pulisci trigger: "65 %" → 65.0
+        if cert.get('trigger_autocallable') and isinstance(cert['trigger_autocallable'], str):
+            try:
+                val = cert['trigger_autocallable'].replace('%', '').replace(',', '.').strip()
+                cert['trigger_autocallable'] = float(val) if val else None
+            except:
+                cert['trigger_autocallable'] = None
+        
+        # 5. Pulisci strike principale: "10519" → 10519.0
         if cert.get('strike') and isinstance(cert['strike'], str):
             try:
                 val = cert['strike'].replace('.', '').replace(',', '.')
                 cert['strike'] = float(val) if val else None
             except:
                 cert['strike'] = None
+        
+        # 6. Pulisci strike sottostanti
+        if cert.get('underlyings'):
+            for und in cert['underlyings']:
+                if und.get('strike') and isinstance(und['strike'], str):
+                    try:
+                        val = und['strike'].replace('.', '').replace(',', '.')
+                        und['strike'] = float(val) if val else None
+                    except:
+                        und['strike'] = None
     
     return certificati
 
@@ -206,31 +296,46 @@ async def main():
             context = await browser.new_context(user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36')
             page = await context.new_page()
             
+            # STEP 1: Scrape listing
             certificati = await scrape_listing(page)
-            print(f"📋 {len(certificati)} ISIN")
+            print(f"📋 {len(certificati)} ISIN trovati")
             
+            # STEP 2: Scrape details
             filled = 0
             for i, cert in enumerate(certificati[:MAX_DETAIL_ISIN]):
                 detail = await scrape_detail(page, cert['isin'])
                 cert.update(detail)
-                if detail.get('strike') or detail.get('barrier'): filled += 1
+                if detail.get('strike') or detail.get('barrier') or detail.get('underlyings'): 
+                    filled += 1
                 print(f"🔍 {i+1}/{MAX_DETAIL_ISIN}: {cert['isin']}")
                 await asyncio.sleep(1.5)
             
             await browser.close()
             
-            # STEP 3: Pulisci numeri per frontend
+            # STEP 3: Clean numeri per frontend
             certificati = clean_numeric_fields(certificati)
-            print(f"🧹 Cleaned numeric fields for frontend")
+            print(f"🧹 Cleaned {len(certificati)} certificati (v25)")
             
+            # STEP 4: Salva output
             pd.DataFrame(certificati).to_json('certificates-recenti.json', orient='records', indent=2)
             pd.DataFrame(certificati).to_csv('certificates-recenti.csv', index=False)
             
-            payload = {'success': True, 'count': len(certificati), 'certificates': certificati, 'metadata': {'version': 'v24-clean', 'details_filled': filled}}
+            payload = {
+                'success': True, 
+                'count': len(certificati), 
+                'certificates': certificati, 
+                'metadata': {
+                    'version': 'v25-complete',
+                    'details_filled': filled,
+                    'scraped_at': datetime.now().isoformat()
+                }
+            }
+            
             with open('certificates-data.json', 'w', encoding='utf-8') as f:
                 json.dump(payload, f, indent=2, ensure_ascii=False)
             
-            print(f"✅ {len(certificati)} tot | {filled} details | v24-clean")
+            print(f"✅ {len(certificati)} tot | {filled} details filled | v25-complete")
+            
     except Exception as e:
         print(f"⚠️ Errore: {str(e)[:80]}")
         exit_code = 0
