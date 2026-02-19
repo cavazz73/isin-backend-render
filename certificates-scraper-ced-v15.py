@@ -1,9 +1,6 @@
 #!/usr/bin/env python3
 """
-Scraper CED v18 FINALE
-FIX 1: FILTRA solo indici/commodities (NO azioni)
-FIX 2: Barriera da tabella HTML popolata (dopo AJAX wait)
-FIX 3: Cedola da tabella rilevamento
+Scraper v19 - NON filtra nel listing, filtra DOPO aver letto i sottostanti VERI
 """
 
 import asyncio
@@ -21,43 +18,24 @@ MAX_DETAIL_ISIN = int(os.getenv('MAX_DETAIL_ISIN', '50'))
 cutoff_date = datetime.now() - timedelta(days=RECENT_DAYS)
 DATE_FORMAT = '%d/%m/%Y'
 
-def is_index_commodity_fx(sottostante: str) -> bool:
-    """TRUE se indice/commodity/FX - FALSE se azione singola"""
-    if not sottostante:
+def is_equity_stock(name: str) -> bool:
+    """TRUE se è un'azione singola (NON un indice)"""
+    if not name:
         return False
-    s = sottostante.lower()
+    n = name.lower()
     
-    # ✅ WHITELIST: Solo questi passano
-    allowed = [
-        # Indici
-        'indice', 'index', 'ftse', 'dax', 's&p', 'sp', 'euro stoxx', 'stoxx',
-        'nasdaq', 'nikkei', 'hang seng', 'dow jones', 'russell', 'msci',
-        # Commodities
-        'gold', 'silver', 'oil', 'brent', 'wti', 'copper', 'gas', 'wheat',
-        # FX
-        'eur/', 'usd/', 'gbp/', 'chf/', 'jpy/', 'fx', 'valuta', 'cambio',
-        # Tassi
-        'euribor', 'tasso', 'rate', 'eonia', 'sonia', 'irs',
-        # Credit
-        'credit', 'cln', 'spread'
-    ]
+    # Blacklist azioni italiane comuni
+    stocks = ['enel', 'eni', 'intesa', 'unicredit', 'generali', 'telecom',
+              'mps', 'bpm', 'banco bpm', 'stm', 'leonardo', 'saipem', 'tenaris',
+              'azimut', 'bper', 'ferrari', 'campari', 'atlantia', 'poste',
+              'amplifon', 'recordati', 'diasorin', 'nexi', 'prysmian',
+              'terna', 'snam', 'hera', 'a2a', 'fincantieri', 'iveco']
     
-    if any(k in s for k in allowed):
-        return True
-    
-    # ❌ BLACKLIST: Se contiene nomi aziende → SCARTA
-    blacklist = ['enel', 'eni', 'intesa', 'unicredit', 'generali', 'telecom',
-                 'mps', 'bpm', 'stmicroelectronics', 'leonardo', 'saipem',
-                 'apple', 'microsoft', 'amazon', 'meta', 'alphabet', 'tesla']
-    
-    if any(az in s for az in blacklist):
-        return False
-    
-    return False
+    return any(stock in n for stock in stocks)
 
 async def scrape_listing(page) -> List[Dict]:
-    """Step 1: FILTRA solo indici/commodities/FX"""
-    print("📋 LISTING - SOLO indici/commodities/FX")
+    """Prende TUTTI i certificati recenti (senza filtrare)"""
+    print("📋 LISTING - Tutti certificati recenti")
     await page.goto('https://www.certificatiederivati.it/db_bs_nuove_emissioni.asp', wait_until='networkidle')
     await page.wait_for_timeout(5000)
     html = await page.content()
@@ -80,21 +58,14 @@ async def scrape_listing(page) -> List[Dict]:
             if data_em < cutoff_date:
                 continue
             
-            sottostante = cols[3].strip()
-            
-            # ✅ FILTRO: Solo indici/commodities/FX
-            if not is_index_commodity_fx(sottostante):
-                print(f"  ⏭️  SKIP {isin}: {sottostante[:40]}")
-                continue
-            
             cert = {
                 'isin': isin,
                 'name': cols[1].strip(),
                 'issuer': cols[2].strip(),
                 'type': 'Certificato',
-                'underlying': sottostante,
-                'underlying_name': sottostante,
-                'underlying_category': 'index',  # Semplificato
+                'underlying': cols[3].strip(),  # Es: "Basket di azioni worst of"
+                'underlying_name': None,
+                'underlying_category': None,
                 'issue_date': data_str,
                 'maturity_date': None,
                 'market': 'SeDeX',
@@ -107,38 +78,69 @@ async def scrape_listing(page) -> List[Dict]:
                 'trigger_autocallable': None,
                 'underlyings': [],
                 'scenario_analysis': None,
-                'source': 'CED_v18'
+                'source': 'CED_v19'
             }
             certificati.append(cert)
-            
-            if len(certificati) % 20 == 0:
-                print(f"  ✅ {len(certificati)} validi")
         
         except (ValueError, IndexError):
             continue
     
-    print(f"✅ {len(certificati)} certificati (solo indici/commodities)")
+    print(f"✅ {len(certificati)} certificati totali")
     return certificati[:MAX_DETAIL_ISIN * 2]
 
-async def scrape_detail(page, isin: str) -> Dict:
-    """Step 2: Parse BARRIERA da tabella HTML popolata"""
+async def scrape_detail(page, cert: Dict) -> bool:
+    """
+    Scrape dettaglio + FILTRA se contiene azioni
+    Returns: True se è valido (indici), False se contiene azioni (da scartare)
+    """
+    isin = cert['isin']
     url = f"https://www.certificatiederivati.it/db_bs_scheda_certificato.asp?isin={isin}"
-    print(f"🔍 {isin}")
+    print(f"🔍 {isin}", end=" ")
     
     try:
         await page.goto(url, wait_until='networkidle', timeout=30000)
         
-        # WAIT AJAX: Aspetta DIV barriera + rilevamento
         try:
-            await page.wait_for_selector('#barriera', timeout=10000)
+            await page.wait_for_selector('#barriera', timeout=8000)
         except:
             pass
         
-        await page.wait_for_timeout(4000)  # Attesa rendering
+        await page.wait_for_timeout(3000)
         html = await page.content()
         soup = BeautifulSoup(html, 'lxml')
         
-        # 1. TIPO
+        # 1. SOTTOSTANTI - Parse tabella "Scheda Sottostante"
+        underlyings = []
+        for panel in soup.find_all('div', class_='panel'):
+            panel_title = panel.find('div', class_='panel-heading')
+            if panel_title and 'Scheda Sottostante' in panel_title.get_text():
+                table = panel.find('table')
+                if table:
+                    tbody = table.find('tbody')
+                    if tbody:
+                        rows = tbody.find_all('tr')
+                        for row in rows:
+                            cols = [c.get_text(strip=True) for c in row.find_all('td')]
+                            if len(cols) > 0:
+                                name = cols[0] if len(cols) > 0 else ''
+                                underlyings.append(name)
+                    break
+        
+        # 2. CHECK: Se contiene azioni → SCARTA
+        has_stocks = any(is_equity_stock(u) for u in underlyings)
+        
+        if has_stocks:
+            print(f"❌ AZIONI: {', '.join(underlyings[:3])}")
+            return False
+        
+        if not underlyings:
+            print(f"⚠️  No sottostanti")
+            return False
+        
+        # ✅ OK: È un indice/commodity/basket indici
+        print(f"✅ {underlyings[0][:30]}")
+        
+        # 3. TIPO
         tipo = 'Certificato'
         panel_heading = soup.find('div', class_='panel-heading')
         if panel_heading:
@@ -146,7 +148,7 @@ async def scrape_detail(page, isin: str) -> Dict:
             if h3:
                 tipo = h3.get_text(strip=True).upper()
         
-        # 2. DATA SCADENZA
+        # 4. DATA SCADENZA
         maturity_date = None
         for row in soup.find_all('tr'):
             cells = row.find_all(['th', 'td'])
@@ -157,49 +159,49 @@ async def scrape_detail(page, isin: str) -> Dict:
                     if maturity_date != '01/01/1900':
                         break
         
-        # 3. BARRIERA - Parse da TABELLA HTML (non da JavaScript params)
+        # 5. BARRIERA
         barrier = None
         barrier_down = None
         barriera_div = soup.find('div', id='barriera')
         if barriera_div:
-            # Cerca TUTTE le celle td dentro il DIV
             cells = barriera_div.find_all('td')
             for cell in cells:
                 text = cell.get_text(strip=True)
-                # Match "60 %" o "50%"
                 match = re.search(r'(\d+(?:[.,]\d+)?)\s*%', text)
                 if match:
                     barrier = float(match.group(1).replace(',', '.'))
                     barrier_down = True
-                    print(f"  📊 Barriera: {barrier}%")
                     break
         
-        # 4. CEDOLA - da tabella rilevamento
+        # 6. CEDOLA
         coupon = None
         rilevamento_div = soup.find('div', id='rilevamento')
         if rilevamento_div:
             cells = rilevamento_div.find_all('td')
             for cell in cells:
                 text = cell.get_text(strip=True)
-                # Match numero seguito da %
                 match = re.search(r'^(\d+(?:[.,]\d+)?)\s*%$', text)
                 if match:
                     coupon = float(match.group(1).replace(',', '.'))
-                    print(f"  💰 Cedola: {coupon}%")
                     break
         
-        return {
+        # Update certificato
+        cert.update({
             'type': tipo,
             'maturity_date': maturity_date,
             'barrier': barrier,
             'barrier_down': barrier_down,
             'annual_coupon_yield': coupon,
-            'source': 'CED_v18_final'
-        }
+            'underlying_name': underlyings[0] if underlyings else None,
+            'underlying_category': 'index',
+            'underlyings': []  # NON mostrare nel frontend
+        })
+        
+        return True
     
     except Exception as e:
-        print(f"❌ {isin}: {str(e)[:50]}")
-        return {}
+        print(f"❌ Error: {str(e)[:30]}")
+        return False
 
 async def main():
     import sys
@@ -211,33 +213,33 @@ async def main():
             context = await browser.new_context()
             page = await context.new_page()
             
-            certificati = await scrape_listing(page)
+            all_certs = await scrape_listing(page)
             
-            filled = 0
-            for cert in certificati[:MAX_DETAIL_ISIN]:
-                detail = await scrape_detail(page, cert['isin'])
-                cert.update(detail)
-                if detail.get('barrier'):
-                    filled += 1
+            # Scrape details + FILTRA azioni
+            valid_certs = []
+            for cert in all_certs[:MAX_DETAIL_ISIN]:
+                is_valid = await scrape_detail(page, cert)
+                if is_valid:
+                    valid_certs.append(cert)
                 await asyncio.sleep(1.5)
             
             await browser.close()
             
             # Salva
-            pd.DataFrame(certificati).to_json('certificates-recenti.json', orient='records', indent=2)
-            pd.DataFrame(certificati).to_csv('certificates-recenti.csv', index=False)
+            pd.DataFrame(valid_certs).to_json('certificates-recenti.json', orient='records', indent=2)
+            pd.DataFrame(valid_certs).to_csv('certificates-recenti.csv', index=False)
             
             payload = {
                 'success': True,
-                'count': len(certificati),
-                'certificates': certificati,
-                'metadata': {'version': 'v18-index-only', 'filled': filled}
+                'count': len(valid_certs),
+                'certificates': valid_certs,
+                'metadata': {'version': 'v19-filter-after-parse', 'total_checked': len(all_certs[:MAX_DETAIL_ISIN])}
             }
             
             with open('certificates-data.json', 'w') as f:
                 json.dump(payload, f, indent=2, ensure_ascii=False)
             
-            print(f"✅ {len(certificati)} tot | {filled} con barriera | v18-FINAL")
+            print(f"\n✅ {len(valid_certs)} validi (su {len(all_certs[:MAX_DETAIL_ISIN])} controllati) | v19")
     
     except Exception as e:
         print(f"⚠️ {e}")
