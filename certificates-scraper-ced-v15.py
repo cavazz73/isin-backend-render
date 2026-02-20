@@ -14,6 +14,7 @@ import re
 from datetime import datetime, timedelta
 from typing import List, Dict, Optional
 
+import pandas as pd
 from playwright.async_api import async_playwright
 from bs4 import BeautifulSoup
 
@@ -131,7 +132,7 @@ async def scrape_listing(page) -> List[Dict]:
         return []
     
     html = await page.content()
-    soup = BeautifulSoup(html, 'html.parser')
+    soup = BeautifulSoup(html, 'lxml')
     
     certificates = []
     
@@ -181,7 +182,7 @@ async def scrape_detail(page, cert: Dict) -> Optional[Dict]:
         return None
     
     html = await page.content()
-    soup = BeautifulSoup(html, 'html.parser')
+    soup = BeautifulSoup(html, 'lxml')
     
     result = {
         'isin': isin,
@@ -195,13 +196,12 @@ async def scrape_detail(page, cert: Dict) -> Optional[Dict]:
         'issue_date': parse_date(cert.get('issue_date')),
         'maturity_date': None,
         'barrier': None,
-        'barrier_type': None,
+        'barrier_down': None,
         'annual_coupon_yield': None,
         'coupon_frequency': 'annual',
         'reference_price': None,
         'scenario_analysis': None,
-        'source': 'certificatiederivati.it',
-        'scraped_at': datetime.now().isoformat()
+        'source': 'CED_v22'
     }
     
     # === 1. TIPO CERTIFICATO ===
@@ -236,8 +236,6 @@ async def scrape_detail(page, cert: Dict) -> Optional[Dict]:
         return None  # Skip azioni singole
     
     if not any(is_valid_underlying(u) for u in underlyings):
-        # Se non ha keyword validi ma neanche stocks, potrebbe essere ok
-        # Controlla nome certificato
         full_text = f"{result['name']} {result['underlying']}".lower()
         if not any(kw in full_text for kw in VALID_KEYWORDS):
             return None
@@ -255,7 +253,6 @@ async def scrape_detail(page, cert: Dict) -> Optional[Dict]:
                     break
     
     # === 5. BARRIERA ===
-    # Cerca nel div#barriera o panel barriera
     barrier_found = False
     
     barriera_div = soup.find('div', id='barriera')
@@ -265,13 +262,12 @@ async def scrape_detail(page, cert: Dict) -> Optional[Dict]:
             match = re.search(r'(\d{2,3})(?:\s*%)?', text)
             if match:
                 val = float(match.group(1))
-                if 10 <= val <= 100:  # Range realistico
+                if 10 <= val <= 100:
                     result['barrier'] = val
-                    result['barrier_type'] = 'European'
+                    result['barrier_down'] = True
                     barrier_found = True
                     break
     
-    # Fallback: cerca in tutti i panel
     if not barrier_found:
         for panel in soup.find_all('div', class_='panel'):
             heading = panel.find(['h3', 'div'], class_=['panel-title', 'panel-heading'])
@@ -283,7 +279,7 @@ async def scrape_detail(page, cert: Dict) -> Optional[Dict]:
                         val = float(match.group(1))
                         if 10 <= val <= 100:
                             result['barrier'] = val
-                            result['barrier_type'] = 'European'
+                            result['barrier_down'] = True
                             break
                 break
     
@@ -296,14 +292,12 @@ async def scrape_detail(page, cert: Dict) -> Optional[Dict]:
                 cells = row.find_all('td')
                 row_text = ' '.join([c.get_text(strip=True).lower() for c in cells])
                 
-                # Cerca valore cedola
                 for cell in cells:
                     text = cell.get_text(strip=True)
                     match = re.search(r'(\d+(?:[.,]\d+)?)\s*%?', text)
                     if match:
                         cedola = float(match.group(1).replace(',', '.'))
-                        if 0.1 <= cedola <= 50:  # Range realistico
-                            # Determina frequenza
+                        if 0.1 <= cedola <= 50:
                             if 'trimestral' in row_text or 'quarterly' in row_text:
                                 result['annual_coupon_yield'] = round(cedola * 4, 2)
                                 result['coupon_frequency'] = 'quarterly'
@@ -350,7 +344,6 @@ async def main():
             print("❌ No certificates found in listing!")
             await browser.close()
             
-            # Crea output vuoto
             output = {
                 'success': False,
                 'count': 0,
@@ -362,6 +355,10 @@ async def main():
             }
             with open('certificates-data.json', 'w') as f:
                 json.dump(output, f, indent=2)
+            
+            # File vuoti per evitare errori commit
+            pd.DataFrame().to_json('certificates-recenti.json', orient='records')
+            pd.DataFrame().to_csv('certificates-recenti.csv', index=False)
             return
         
         # 2. Scrape dettagli
@@ -415,12 +412,17 @@ async def main():
         with open('certificates-data.json', 'w', encoding='utf-8') as f:
             json.dump(output, f, indent=2, ensure_ascii=False)
         
+        # Salva anche CSV e JSON separati (per il workflow)
+        df = pd.DataFrame(valid_certs)
+        df.to_json('certificates-recenti.json', orient='records', indent=2)
+        df.to_csv('certificates-recenti.csv', index=False)
+        
         print("\n" + "=" * 60)
         print("COMPLETED")
         print(f"  ✅ Valid certificates: {len(valid_certs)}")
         print(f"  ⏭️ Skipped (stocks): {skipped}")
         print(f"  ❌ Errors: {errors}")
-        print(f"  💾 Saved to: certificates-data.json")
+        print(f"  💾 Saved: certificates-data.json, certificates-recenti.json, certificates-recenti.csv")
         print("=" * 60)
 
 
