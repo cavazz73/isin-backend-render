@@ -1,52 +1,30 @@
-name: Scrape CED Certificates
+name: Scrape CED Certificates v20
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 9 * * 1-5'  # Lun-Ven 9:00 UTC (10:00 CET)
+    - cron: '0 9 * * 1-5'  # 10:00 CET Lun-Ven
   push:
     paths:
-      - 'certificates-scraper-ced-v*.py'
+      - 'certificates-scraper-ced-v15.py**'
 jobs:
   scrape:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
     
-    - name: Set up Python 3.11
+    - name: Setup Python 3.11
       uses: actions/setup-python@v4
       with:
         python-version: '3.11'
     
-    - name: Install dependencies
-      run: |
-        pip install playwright pandas beautifulsoup4 lxml
+    - name: Install Python deps
+      run: pip install playwright pandas beautifulsoup4 lxml
     
-    - name: Install Playwright browsers ✅ FIX CRITICO
-      run: |
-        playwright install --with-deps chromium
+    - name: Install Playwright Chromium ✅
+      run: playwright install --with-deps chromium
     
-    - name: Run scraper
+    - name: Run scraper ✅ IL TUO FILE
       env:
         RECENT_DAYS: 30
         MAX_DETAIL_ISIN: 100
-      run: |
-        echo "🚀 Avvio scraper CED (recenti ultimi ${RECENT_DAYS}gg)"
-        python certificates-scraper-ced-v20.py
-    
-    - name: Verify output
-      run: |
-        if [ ! -f "certificates-data.json" ]; then
-          echo "❌ NO certificates-data.json generato!"
-          exit 1
-        fi
-        COUNT=$(jq '.count' certificates-data.json)
-        echo "✅ ${COUNT} certificati generati"
-        jq '.metadata' certificates-data.json
-    
-    - name: Commit results
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git add certificates-data.json certificates-validi.csv
-        git diff --staged --quiet || git commit -m "🤖 Update certificates $(date +%Y-%m-%d)"
-        git push
+      run
