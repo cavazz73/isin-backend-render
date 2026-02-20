@@ -1,32 +1,42 @@
-isin,name,issuer,type,underlying,underlying_name,underlying_category,issue_date,maturity_date,market,price,strike,barrier,barrier_down,annual_coupon_yield,coupon_frequency,trigger_autocallable,underlyings,scenario_analysis,source
-DE000UN4SNM0,CASH COLLECT MEMORY STEP DOWN,Unicredit,CASH COLLECT MEMORY STEP DOWN,Basket di indici worst of,Nikkei 225,index,19/02/2026,14/02/2029,SeDeX,,,55.0,True,0.76,annual,,[],,CED_v19
-GB00BW8VFX69,FIXED CASH COLLECT AIRBAG,Goldman Sachs,FIXED CASH COLLECT AIRBAG,Basket di azioni worst of,Intel,index,19/02/2026,12/02/2029,SeDeX,,,50.0,True,0.8,annual,,[],,CED_v19
-DE000VJ6A143,CASH COLLECT MEMORY STEP DOWN,Vontobel,CASH COLLECT MEMORY STEP DOWN,Basket di azioni worst of,Pan American Silver,index,19/02/2026,17/02/2028,SeDeX,,,50.0,True,1.92,annual,,[],,CED_v19
-DE000UN4SNN8,CASH COLLECT MEMORY STEP DOWN,Unicredit,CASH COLLECT MEMORY STEP DOWN,Basket di indici worst of,Eurostoxx Banks,index,19/02/2026,14/02/2029,SeDeX,,,55.0,True,0.97,annual,,[],,CED_v19
-DE000VJ6A150,CASH COLLECT MEMORY STEP DOWN,Vontobel,CASH COLLECT MEMORY STEP DOWN,Basket di azioni worst of,Novo Nordisk,index,19/02/2026,17/02/2028,SeDeX,,,55.0,True,1.5,annual,,[],,CED_v19
-DE000UN4SNP3,CASH COLLECT MEMORY STEP DOWN,Unicredit,CASH COLLECT MEMORY STEP DOWN,Basket di indici worst of,Eurostoxx Banks,index,19/02/2026,14/02/2029,SeDeX,,,55.0,True,0.97,annual,,[],,CED_v19
-DE000UN4SNQ1,CASH COLLECT MEMORY STEP DOWN,Unicredit,CASH COLLECT MEMORY STEP DOWN,Basket di indici worst of,S&P 500,index,19/02/2026,14/02/2029,SeDeX,,,55.0,True,0.99,annual,,[],,CED_v19
-GB00BW8VG002,FIXED CASH COLLECT AIRBAG,Goldman Sachs,FIXED CASH COLLECT AIRBAG,Basket di azioni worst of,ASML Holding,index,19/02/2026,12/02/2029,SeDeX,,,50.0,True,0.6,annual,,[],,CED_v19
-DE000VJ6A176,CASH COLLECT MEMORY STEP DOWN,Vontobel,CASH COLLECT MEMORY STEP DOWN,Basket di azioni worst of,AngloGold Ashanti,index,19/02/2026,17/02/2028,SeDeX,,,50.0,True,1.83,annual,,[],,CED_v19
-GB00BW8VG119,FIXED CASH COLLECT AIRBAG,Goldman Sachs,FIXED CASH COLLECT AIRBAG,Basket di azioni worst of,Volkswagen Pref,index,19/02/2026,12/02/2029,SeDeX,,,50.0,True,0.7,annual,,[],,CED_v19
-GB00BW8VGF52,FIXED CASH COLLECT AIRBAG,Goldman Sachs,FIXED CASH COLLECT AIRBAG,Basket di azioni worst of,Bayer,index,19/02/2026,12/02/2029,SeDeX,,,50.0,True,0.55,annual,,[],,CED_v19
-DE000VJ6DM72,CASH COLLECT MEMORY STEP DOWN,Vontobel,CASH COLLECT MEMORY STEP DOWN,Basket di azioni worst of,Sunrun,index,19/02/2026,17/08/2028,SeDeX,,,50.0,True,1.6,annual,,[],,CED_v19
-DE000VJ6DNB5,CASH COLLECT MEMORY STEP DOWN,Vontobel,CASH COLLECT MEMORY STEP DOWN,Basket di azioni worst of,Kinross Gold,index,19/02/2026,17/08/2027,SeDeX,,,55.0,True,1.25,annual,,[],,CED_v19
-GB00BW8VGJ90,FIXED CASH COLLECT AIRBAG,Goldman Sachs,FIXED CASH COLLECT AIRBAG,Basket di azioni worst of,Intel,index,19/02/2026,12/02/2029,SeDeX,,,50.0,True,0.85,annual,,[],,CED_v19
-GB00BW8VGK06,FIXED CASH COLLECT AIRBAG,Goldman Sachs,FIXED CASH COLLECT AIRBAG,Basket di azioni worst of,Kering,index,19/02/2026,12/02/2029,SeDeX,,,50.0,True,0.7,annual,,[],,CED_v19
-IT0006773789,PHOENIX MEMORY STEP DOWN,Marex Financial,PHOENIX MEMORY STEP DOWN,Basket Sottostanti Misti,S&P 500,index,19/02/2026,27/08/2029,SeDeX,,,60.0,True,2.25,annual,,[],,CED_v19
-NLBNPIT302F4,FIXED CASH COLLECT CALLABLE,Bnp Paribas,FIXED CASH COLLECT CALLABLE,Basket di azioni worst of,Microsoft,index,19/02/2026,24/02/2028,SeDeX,,,55.0,True,1.21,annual,,[],,CED_v19
-NLBNPIT302H0,FIXED CASH COLLECT CALLABLE,Bnp Paribas,FIXED CASH COLLECT CALLABLE,Basket di azioni worst of,Bayer,index,19/02/2026,24/02/2028,SeDeX,,,50.0,True,1.05,annual,,[],,CED_v19
-NLBNPIT302J6,FIXED CASH COLLECT CALLABLE,Bnp Paribas,FIXED CASH COLLECT CALLABLE,Basket di azioni worst of,Alibaba (CN),index,19/02/2026,24/02/2028,SeDeX,,,55.0,True,1.12,annual,,[],,CED_v19
-NLBNPIT302K4,FIXED CASH COLLECT CALLABLE,Bnp Paribas,FIXED CASH COLLECT CALLABLE,Basket di azioni worst of,Albemarle,index,19/02/2026,24/02/2028,SeDeX,,,45.0,True,1.4,annual,,[],,CED_v19
-NLBNPIT302L2,FIXED CASH COLLECT CALLABLE,Bnp Paribas,FIXED CASH COLLECT CALLABLE,Basket di azioni worst of,Coinbase,index,19/02/2026,24/02/2028,SeDeX,,,45.0,True,1.35,annual,,[],,CED_v19
-XS3262923207,PHOENIX MEMORY STEP DOWN,Barclays,PHOENIX MEMORY STEP DOWN,Basket di azioni worst of,Western Digital,index,19/02/2026,19/08/2027,SeDeX,,,40.0,True,1.8,annual,,[],,CED_v19
-XS3262923389,PHOENIX MEMORY STEP DOWN,Barclays,PHOENIX MEMORY STEP DOWN,Basket di azioni worst of,Tesla,index,19/02/2026,19/08/2027,SeDeX,,,40.0,True,1.5,annual,,[],,CED_v19
-XS3266625261,CREDIT LINKED FIX TO FLOATER CALLABLE,Bnp Paribas,CREDIT LINKED FIX TO FLOATER CALLABLE,Basket obbligazioni,,index,19/02/2026,25/09/2035,SeDeX,,,,,1.18,annual,,[],,CED_v19
-XS3266625345,CREDIT LINKED FIX TO FLOATER CALLABLE,Bnp Paribas,CREDIT LINKED FIX TO FLOATER CALLABLE,Basket obbligazioni,,index,19/02/2026,25/09/2035,SeDeX,,,,,1.25,annual,,[],,CED_v19
-XS3266625428,CREDIT LINKED FIX TO FLOATER CALLABLE,Bnp Paribas,CREDIT LINKED FIX TO FLOATER CALLABLE,Basket obbligazioni,,index,19/02/2026,25/09/2035,SeDeX,,,,,1.61,annual,,[],,CED_v19
-XS3266625691,CREDIT LINKED FIX TO FLOATER CALLABLE,Bnp Paribas,CREDIT LINKED FIX TO FLOATER CALLABLE,Basket obbligazioni,,index,19/02/2026,25/09/2035,SeDeX,,,,,1.14,annual,,[],,CED_v19
-XS3266625774,CREDIT LINKED FIX TO FLOATER CALLABLE,Bnp Paribas,CREDIT LINKED FIX TO FLOATER CALLABLE,Basket obbligazioni,,index,19/02/2026,25/09/2035,SeDeX,,,,,1.69,annual,,[],,CED_v19
-XS3284548073,CREDIT LINKED,Mediobanca,CREDIT LINKED,Singolo Sottostante,,index,19/02/2026,20/12/2035,SeDeX,,,,,0.5,annual,,[],,CED_v19
-XS3284549394,CREDIT LINKED CALLABLE,Mediobanca,CREDIT LINKED CALLABLE,Singolo Sottostante,,index,19/02/2026,20/12/2035,SeDeX,,,,,0.5,annual,,[],,CED_v19
-XS3284550640,CREDIT LINKED CALLABLE,Mediobanca,CREDIT LINKED CALLABLE,Singolo Sottostante,,index,19/02/2026,20/12/2035,SeDeX,,,,,0.46,annual,,[],,CED_v19
+isin,name,type,issuer,market,currency,underlying,underlyings,issue_date,maturity_date,barrier,barrier_down,annual_coupon_yield,coupon_frequency,reference_price,scenario_analysis,source
+IT0006773789,PHOENIX MEMORY STEP DOWN,PHOENIX MEMORY STEP DOWN,Marex Financial,SeDeX,EUR,S&P 500,"['S&P 500', 'iShares China Large-Cap Etf', 'Euro Stoxx 50', 'Nikkei 225']",2026-02-19,2029-09-05,60.0,True,26.0,annual,,,CED_v22
+DE000UN4SNM0,CASH COLLECT MEMORY STEP DOWN,CASH COLLECT MEMORY STEP DOWN,Unicredit,SeDeX,EUR,Nikkei 225,"['Nikkei 225', 'S&P 500', 'FTSE Mib', 'Nasdaq 100']",2026-02-19,2029-02-14,55.0,True,18.0,annual,,,CED_v22
+NLBNPIT30259,FIXED CASH COLLECT CALLABLE,FIXED CASH COLLECT CALLABLE,Bnp Paribas,SeDeX,EUR,Intesa Sanpaolo,"['Intesa Sanpaolo', 'Banco BPM', 'Unicredit']",2026-02-19,2028-03-06,55.0,True,26.0,annual,,,CED_v22
+DE000UN4SNN8,CASH COLLECT MEMORY STEP DOWN,CASH COLLECT MEMORY STEP DOWN,Unicredit,SeDeX,EUR,Eurostoxx Banks,"['Eurostoxx Banks', 'FTSE 100', 'S&P 500', 'Nikkei 225']",2026-02-19,2029-02-14,55.0,True,18.0,annual,,,CED_v22
+DE000UN4SNP3,CASH COLLECT MEMORY STEP DOWN,CASH COLLECT MEMORY STEP DOWN,Unicredit,SeDeX,EUR,Eurostoxx Banks,"['Eurostoxx Banks', 'Nikkei 225', 'S&P 500', 'FTSE Mib']",2026-02-19,2029-02-14,55.0,True,18.0,annual,,,CED_v22
+XS3284548073,CREDIT LINKED,CREDIT LINKED,Mediobanca,SeDeX,EUR,Singolo Sottostante,['Singolo Sottostante'],2026-02-19,2035-12-20,,,13.0,annual,,,CED_v22
+NLBNPIT30275,FIXED CASH COLLECT CALLABLE,FIXED CASH COLLECT CALLABLE,Bnp Paribas,SeDeX,EUR,Banca MPS,"['Banca MPS', 'Unicredit', 'Fineco', 'Banco BPM']",2026-02-19,2028-03-06,55.0,True,26.0,annual,,,CED_v22
+DE000UN4SNQ1,CASH COLLECT MEMORY STEP DOWN,CASH COLLECT MEMORY STEP DOWN,Unicredit,SeDeX,EUR,S&P 500,"['S&P 500', 'Nasdaq 100', 'Nikkei 225', 'Eurostoxx Banks']",2026-02-19,2029-02-14,55.0,True,18.0,annual,,,CED_v22
+XS3284549394,CREDIT LINKED CALLABLE,CREDIT LINKED CALLABLE,Mediobanca,SeDeX,EUR,Singolo Sottostante,['Singolo Sottostante'],2026-02-19,2035-12-20,,,13.0,annual,,,CED_v22
+NLBNPIT30283,FIXED CASH COLLECT CALLABLE,FIXED CASH COLLECT CALLABLE,Bnp Paribas,SeDeX,EUR,Banco BPM,"['Banco BPM', 'Unicredit', 'Banca MPS', 'Intesa Sanpaolo']",2026-02-19,2028-03-06,60.0,True,26.0,annual,,,CED_v22
+XS3284550640,CREDIT LINKED CALLABLE,CREDIT LINKED CALLABLE,Mediobanca,SeDeX,EUR,Singolo Sottostante,['Singolo Sottostante'],2026-02-19,2035-12-20,,,13.0,annual,,,CED_v22
+XS3266625261,CREDIT LINKED FIX TO FLOATER CALLABLE,CREDIT LINKED FIX TO FLOATER CALLABLE,Bnp Paribas,SeDeX,EUR,Basket obbligazioni,['Basket obbligazioni'],2026-02-19,2035-12-27,,,20.0,annual,,,CED_v22
+XS3266625345,CREDIT LINKED FIX TO FLOATER CALLABLE,CREDIT LINKED FIX TO FLOATER CALLABLE,Bnp Paribas,SeDeX,EUR,Basket obbligazioni,['Basket obbligazioni'],2026-02-19,2035-12-27,,,20.0,annual,,,CED_v22
+XS3266625428,CREDIT LINKED FIX TO FLOATER CALLABLE,CREDIT LINKED FIX TO FLOATER CALLABLE,Bnp Paribas,SeDeX,EUR,Basket obbligazioni,['Basket obbligazioni'],2026-02-19,2035-12-27,,,20.0,annual,,,CED_v22
+XS3266625691,CREDIT LINKED FIX TO FLOATER CALLABLE,CREDIT LINKED FIX TO FLOATER CALLABLE,Bnp Paribas,SeDeX,EUR,Basket obbligazioni,['Basket obbligazioni'],2026-02-19,2035-12-27,,,20.0,annual,,,CED_v22
+XS3266625774,CREDIT LINKED FIX TO FLOATER CALLABLE,CREDIT LINKED FIX TO FLOATER CALLABLE,Bnp Paribas,SeDeX,EUR,Basket obbligazioni,['Basket obbligazioni'],2026-02-19,2035-12-27,,,20.0,annual,,,CED_v22
+GB00BW8VGL13,FIXED CASH COLLECT AIRBAG,FIXED CASH COLLECT AIRBAG,Goldman Sachs,SeDeX,EUR,Unicredit,"['Unicredit', 'Banco BPM', 'Intesa Sanpaolo']",2026-02-19,2029-02-19,50.0,True,11.0,annual,,,CED_v22
+DE000VJ6A143,CASH COLLECT MEMORY STEP DOWN,CASH COLLECT MEMORY STEP DOWN,Vontobel,SeDeX,EUR,Pan American Silver,"['Pan American Silver', 'First Majestic Silver', 'AngloGold Ashanti']",2026-02-19,2028-02-17,50.0,True,17.0,annual,,,CED_v22
+DE000VJ6A168,CASH COLLECT MEMORY STEP DOWN,CASH COLLECT MEMORY STEP DOWN,Vontobel,SeDeX,EUR,Deutsche Bank,"['Deutsche Bank', 'Societe Generale', 'Commerzbank', 'Banco BPM']",2026-02-19,2028-02-17,55.0,True,17.0,annual,,,CED_v22
+DE000VJ6A176,CASH COLLECT MEMORY STEP DOWN,CASH COLLECT MEMORY STEP DOWN,Vontobel,SeDeX,EUR,AngloGold Ashanti,"['AngloGold Ashanti', 'First Majestic Silver', 'Pan American Silver']",2026-02-19,2028-02-17,50.0,True,17.0,annual,,,CED_v22
+DE000VJ6DM72,CASH COLLECT MEMORY STEP DOWN,CASH COLLECT MEMORY STEP DOWN,Vontobel,SeDeX,EUR,Sunrun,"['Sunrun', 'Array Biopharma', 'Constellation Energy']",2026-02-19,2028-08-17,50.0,True,17.0,annual,,,CED_v22
+DE000VJ6DNB5,CASH COLLECT MEMORY STEP DOWN,CASH COLLECT MEMORY STEP DOWN,Vontobel,SeDeX,EUR,Kinross Gold,"['Kinross Gold', 'AngloGold Ashanti']",2026-02-19,2027-08-17,55.0,True,17.0,annual,,,CED_v22
+DE000VJ59273,CASH COLLECT MEMORY AIRBAG STEP DOWN,CASH COLLECT MEMORY AIRBAG STEP DOWN,Vontobel,SeDeX,EUR,Banca MPS,"['Banca MPS', 'Unicredit', 'Banco BPM', 'STMicroelectronics (PA)']",2026-02-18,2031-02-17,50.0,True,17.0,annual,,,CED_v22
+CH1484586248,PHOENIX MEMORY SOFTCALLABLE,PHOENIX MEMORY SOFTCALLABLE,Leonteq Securities,SeDeX,EUR,Eldorado Gold,['Eldorado Gold'],2026-02-18,2028-02-18,60.0,True,11.0,annual,,,CED_v22
+DE000VJ59281,CASH COLLECT MEMORY STEP DOWN,CASH COLLECT MEMORY STEP DOWN,Vontobel,SeDeX,EUR,Commerzbank,"['Commerzbank', 'Unicredit', 'Banca MPS', 'Raiffeisen Bank']",2026-02-18,2029-02-16,60.0,True,18.0,annual,,,CED_v22
+XS3077242942,DIGITAL REVERSE AUTOCALLABLE,DIGITAL REVERSE AUTOCALLABLE,Citigroup,SeDeX,EUR,Solactive BTP 10 Annual Comp. Yield,['Solactive BTP 10 Annual Comp. Yield'],2026-02-18,2030-02-18,,,10.0,annual,,,CED_v22
+XS3278600542,CREDIT LINKED CALLABLE,CREDIT LINKED CALLABLE,Mediobanca,SeDeX,EUR,Singolo Sottostante,['Singolo Sottostante'],2026-02-18,2035-12-20,,,13.0,annual,,,CED_v22
+IT0006773748,PHOENIX MEMORY STEP DOWN,PHOENIX MEMORY STEP DOWN,Marex Financial,SeDeX,EUR,Euro Stoxx 50,"['Euro Stoxx 50', 'S&P 500', 'Eurostoxx Banks']",2026-02-18,2029-02-22,55.0,True,13.0,annual,,,CED_v22
+DE000VJ59299,CASH COLLECT MEMORY STEP DOWN,CASH COLLECT MEMORY STEP DOWN,Vontobel,SeDeX,EUR,Banca MPS,"['Banca MPS', 'BPER Banca', 'Unicredit', 'Banco BPM']",2026-02-18,2029-02-16,60.0,True,16.0,annual,,,CED_v22
+CH1484586289,PHOENIX MEMORY SOFTCALLABLE,PHOENIX MEMORY SOFTCALLABLE,Leonteq Securities,SeDeX,EUR,AngloGold Ashanti,['AngloGold Ashanti'],2026-02-18,2028-02-18,60.0,True,11.0,annual,,,CED_v22
+DE000GV9U2N3,EQUITY PROTECTION CAP,EQUITY PROTECTION CAP,Goldman Sachs,SeDeX,EUR,Nasdaq 100,['Nasdaq 100'],2026-02-18,2029-02-19,,,,annual,,,CED_v22
+CH1484586719,PHOENIX MEMORY SOFTCALLABLE,PHOENIX MEMORY SOFTCALLABLE,Leonteq Securities,SeDeX,EUR,Kinross Gold,['Kinross Gold'],2026-02-18,2028-02-18,60.0,True,11.0,annual,,,CED_v22
+XS2878535991,PHOENIX MEMORY AIRBAG STEP DOWN,PHOENIX MEMORY AIRBAG STEP DOWN,Societe Generale,SeDeX,EUR,Banco BPM,"['Banco BPM', 'Banco Bilbao Vizcaya Argentaria', 'Commerzbank']",2026-02-18,2029-01-22,50.0,True,16.0,annual,,,CED_v22
+CH1484587139,PHOENIX MEMORY STEP DOWN,PHOENIX MEMORY STEP DOWN,Leonteq Securities,SeDeX,EUR,AngloGold Ashanti,"['AngloGold Ashanti', 'Albemarle', 'Pan American Silver']",2026-02-18,2030-02-18,50.0,True,11.0,annual,,,CED_v22
+XS3177383315,CREDIT LINKED,CREDIT LINKED,Credit Agricole,SeDeX,EUR,Singolo Sottostante,['Singolo Sottostante'],2026-02-18,2035-12-30,,,23.0,annual,,,CED_v22
+XS3177383406,CREDIT LINKED,CREDIT LINKED,Credit Agricole,SeDeX,EUR,Singolo Sottostante,['Singolo Sottostante'],2026-02-18,2035-12-30,,,23.0,annual,,,CED_v22
+XS3263004544,PHOENIX MEMORY,PHOENIX MEMORY,Barclays,SeDeX,EUR,Vaneck Vectors Gold Miners,"['Vaneck Vectors Gold Miners', 'Ishares Silver Trust', 'Vaneck Vectors Junior Gold']",2026-02-18,2029-03-12,65.0,True,4.0,annual,,,CED_v22
+XS3266411548,DIGITAL REVERSE AUTOCALLABLE,DIGITAL REVERSE AUTOCALLABLE,Bnp Paribas,SeDeX,EUR,Solactive BTP 10 Annual Comp. Yield,['Solactive BTP 10 Annual Comp. Yield'],2026-02-18,2034-02-20,,,11.0,annual,,,CED_v22
+IT0005690166,PHOENIX MEMORY STEP DOWN,PHOENIX MEMORY STEP DOWN,Intesa Sanpaolo,SeDeX,EUR,Chevron,"['Chevron', 'Exxon']",2026-02-18,2029-02-19,55.0,True,12.0,annual,,,CED_v22
+DE000VJ5RV01,TURBO,TURBO,Vontobel,SeDeX,EUR,Unicredit,['Unicredit'],2026-02-12,2099-01-01,,,,annual,,,CED_v22
+DE000VJ5RWB8,TURBO,TURBO,Vontobel,SeDeX,EUR,EUR/USD,['EUR/USD'],2026-02-12,2099-01-01,,,,annual,,,CED_v22
