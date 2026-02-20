@@ -1,92 +1,52 @@
-name: "🛠️ Scrape Certificati CED → Render Auto-Deploy"
-
+name: Scrape CED Certificates
 on:
-  schedule:
-    - cron: '0 6 * * *'  # Daily 8AM CET
   workflow_dispatch:
-    inputs:
-      recent_days:
-        description: 'Giorni recenti (default: 30)'
-        required: false
-        default: '30'
-        type: choice
-        options:
-          - '7'
-          - '15'
-          - '30'
-          - '60'
-          - '90'
-
+  schedule:
+    - cron: '0 9 * * 1-5'  # Lun-Ven 9:00 UTC (10:00 CET)
+  push:
+    paths:
+      - 'certificates-scraper-ced-v*.py'
 jobs:
   scrape:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
-
     steps:
-      - name: 📥 Checkout repository
-        uses: actions/checkout@v4
-
-      - name: 🐍 Setup Python 3.11
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: 📦 Install Python dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install playwright pandas beautifulsoup4 lxml
-
-      - name: 🖥️ Install Playwright Chromium
-        run: |
-          playwright install --with-deps chromium
-
-      - name: 🔍 Scrape CED (certificati recenti)
-        env:
-          RECENT_DAYS: ${{ inputs.recent_days || 30 }}
-        run: |
-          echo "🚀 Avvio scraper CED (recenti ultimi ${RECENT_DAYS}gg)"
-          ls -la certificates-scraper-ced-*.py
-          python certificates-scraper-ced-v15.py
-
-      - name: ✅ Verifica output JSON backend
-        run: |
-          echo "📁 File generati:"
-          ls -lh certificates-* certificates-data.*
-          test -f certificates-data.json
-          test -s certificates-data.json
-          COUNT=$(python -c "import json; data=json.load(open('certificates-data.json')); print(data.get('count',0))")
-          echo "✅ TROVATI: ${COUNT} certificati recenti (backend payload)"
-          
-
-      - name: 📤 Commit e Push JSON → Render Auto-Redeploy
-        run: |
-          git config user.name "GitHub Actions [certificati]"
-          git config user.email "actions@github.com"
-          git add certificates-data.json certificates-recenti.*
-          if git diff --staged --quiet; then
-            echo "ℹ️ Nessun cambiamento nei dati"
-          else
-            COUNT=$(python -c "import json; data=json.load(open('certificates-data.json')); print(data.get('count',0))")
-            git commit -m "Update certificati: ${COUNT} nuovi da CED (ultimi ${RECENT_DAYS}gg) [skip ci]"
-            git push
-            echo "✅ JSON committato → Render auto-redeploy (su push)"
-          fi
-
-      - name: 📤 Backup Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: certificati-recenti-${{ github.run_number }}
-          path: |
-            certificates-data.json
-            certificates-recenti.*
-          retention-days: 14
-
-      - name: 📊 Summary
-        run: |
-          COUNT=$(python -c "import json; data=json.load(open('certificates-data.json')); print(data.get('count',0))")
-          echo "🎉 WORKFLOW COMPLETATO!"
-          echo "| Metriche   | Valore |"
-          echo "|------------|--------|"
-          echo "| Certificati| ${COUNT} |"
-          echo "| Periodo    | ultimi ${RECENT_DAYS} gg |"
-          echo "| Deploy     | ✅ Auto-Render via push |"
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: |
+        pip install playwright pandas beautifulsoup4 lxml
+    
+    - name: Install Playwright browsers ✅ FIX CRITICO
+      run: |
+        playwright install --with-deps chromium
+    
+    - name: Run scraper
+      env:
+        RECENT_DAYS: 30
+        MAX_DETAIL_ISIN: 100
+      run: |
+        echo "🚀 Avvio scraper CED (recenti ultimi ${RECENT_DAYS}gg)"
+        python certificates-scraper-ced-v20.py
+    
+    - name: Verify output
+      run: |
+        if [ ! -f "certificates-data.json" ]; then
+          echo "❌ NO certificates-data.json generato!"
+          exit 1
+        fi
+        COUNT=$(jq '.count' certificates-data.json)
+        echo "✅ ${COUNT} certificati generati"
+        jq '.metadata' certificates-data.json
+    
+    - name: Commit results
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add certificates-data.json certificates-validi.csv
+        git diff --staged --quiet || git commit -m "🤖 Update certificates $(date +%Y-%m-%d)"
+        git push
