@@ -1,4 +1,4 @@
-name: Scrape Certificates Daily
+name: Scrape CED Certificates
 
 on:
   schedule:
