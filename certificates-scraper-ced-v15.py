@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Scraper v15-10 - FILTRA SOLO: Indici/Commodities/Valute/Tassi/Credit Link
+CED Scraper v20 - Fix Playwright + Filtro Indici/Commodities/Valute/Tassi/Credit
 """
 
 import asyncio
@@ -20,229 +20,170 @@ cutoff_date = datetime.now() - timedelta(days=RECENT_DAYS)
 DATE_FORMAT = '%d/%m/%Y'
 
 def is_valid_underlying(name: str) -> bool:
-    """✅ TRUE solo per: indici/commodities/valute/tassi/credit link"""
-    if not name:
-        return False
-    
     n = name.lower()
-    
-    # ✅ INDICI
-    indices = ['nikkei', 'sp500', 's&p', 'dow', 'dax', 'cac', 'eurostoxx', 
-               'ftse', 'russell', 'nasdaq', 'mdax', 'sdax']
-    
-    # ✅ COMMODITIES
-    commodities = ['oro', 'gold', 'silver', 'argento', 'petrolio', 'oil', 
-                   'brent', 'wti', 'gas', 'grano', 'wheat', 'mais', 'corn', 
-                   'soia', 'soy', 'rame', 'copper']
-    
-    # ✅ VALUTE
-    currencies = ['eur', 'usd', 'gbp', 'chf', 'jpy', 'fx', 'eurusd']
-    
-    # ✅ TASSI
-    rates = ['euribor', 'eonia', 'libor', 'swap', 'yield']
-    
-    # ✅ CREDIT LINK
-    credit = ['credit', 'cln', 'cds']
-    
-    valid_keywords = indices + commodities + currencies + rates + credit
-    
-    return any(keyword in n for keyword in valid_keywords)
+    valid = [
+        # Indici
+        'nikkei', 'sp500', 's&p', 'dow', 'dax', 'cac', 'eurostoxx', 'ftse', 
+        # Commodities  
+        'oro', 'gold', 'silver', 'petrolio', 'oil', 'brent', 'wti', 'gas',
+        # Valute
+        'eur', 'usd', 'gbp', 'chf', 'jpy', 'fx',
+        # Tassi
+        'euribor', 'eonia', 'libor', 'swap', 'yield',
+        # Credit
+        'credit', 'cln', 'cds'
+    ]
+    return any(kw in n for kw in valid)
 
-def has_single_stock(underlyings: List[str]) -> bool:
-    """❌ TRUE se contiene azioni singole"""
-    stock_keywords = ['enel', 'eni', 'intesa', 'unicredit', 'generali', 
-                     'intel', 'asml', 'amd', 'tesla', 'nvidia', 'apple']
-    return any(any(stock in u.lower() for stock in stock_keywords) for u in underlyings)
+def has_stocks(underlyings: List[str]) -> bool:
+    stocks = ['enel', 'eni', 'intesa', 'intel', 'asml', 'tesla', 'apple']
+    return any(any(s in u.lower() for s in stocks) for u in underlyings)
 
 async def scrape_listing(page) -> List[Dict]:
-    print("📋 Scraping TUTTI certificati recenti...")
+    print("📋 Scraping listing...")
     await page.goto('https://www.certificatiederivati.it/db_bs_nuove_emissioni.asp', wait_until='networkidle')
     await page.wait_for_timeout(5000)
     
-    html = await page.content()
-    soup = BeautifulSoup(html, 'lxml')
+    soup = BeautifulSoup(await page.content(), 'lxml')
     rows = soup.select('table tr')
     
-    certificati = []
+    certs = []
     for row in rows:
         cols = [col.get_text(strip=True) for col in row.find_all(['td', 'th'])]
         if len(cols) < 7: continue
         
-        isin = cols[0].strip()
+        isin = cols[0]
         if not re.match(r'^[A-Z0-9]{12}$', isin): continue
         
         try:
-            data_str = cols[5].strip()
-            data_em = datetime.strptime(data_str, DATE_FORMAT)
+            data_em = datetime.strptime(cols[5], DATE_FORMAT)
             if data_em < cutoff_date: continue
             
-            certificati.append({
-                'isin': isin, 'name': cols[1].strip(), 'issuer': cols[2].strip(),
-                'type': 'Certificato', 'underlying': cols[3].strip(),
+            certs.append({
+                'isin': isin, 'name': cols[1], 'issuer': cols[2],
+                'type': 'Certificato', 'underlying': cols[3],
                 'underlying_name': None, 'underlying_category': None,
-                'issue_date': data_str, 'maturity_date': None,
-                'market': 'SeDeX', 'price': None, 'strike': None,
+                'issue_date': cols[5], 'maturity_date': None,
+                'market': 'SeDeX', 'price': None,
                 'barrier': None, 'barrier_down': None,
                 'annual_coupon_yield': None, 'coupon_frequency': 'annual',
-                'trigger_autocallable': None, 'underlyings': [],
-                'scenario_analysis': None, 'source': 'CED_v20'
+                'underlyings': [], 'source': 'CED_v20'
             })
-        except (ValueError, IndexError):
-            continue
+        except: continue
     
-    print(f"✅ {len(certificati)} totali recenti")
-    return certificati[:MAX_DETAIL_ISIN * 2]
+    print(f"✅ {len(certs)} recenti")
+    return certs[:MAX_DETAIL_ISIN * 2]
 
 async def scrape_detail(page, cert: Dict) -> bool:
     isin = cert['isin']
-    url = f"https://www.certificatiederivati.it/db_bs_scheda_certificato.asp?isin={isin}"
     print(f"🔍 {isin}", end=" ")
     
     try:
-        await page.goto(url, wait_until='networkidle', timeout=30000)
+        await page.goto(f"https://www.certificatiederivati.it/db_bs_scheda_certificato.asp?isin={isin}", 
+                       wait_until='networkidle', timeout=30000)
         await page.wait_for_timeout(3000)
         
-        html = await page.content()
-        soup = BeautifulSoup(html, 'lxml')
+        soup = BeautifulSoup(await page.content(), 'lxml')
         
-        # 1. SOTTOSTANTI COMPLETI
+        # Sottostanti
         underlyings = []
-        sottostanti_panel = None
         for panel in soup.find_all('div', class_='panel'):
-            title = panel.find('div', class_='panel-heading')
-            if title and any(kw in title.get_text().lower() for kw in ['sottostante', 'sottostanti']):
-                sottostanti_panel = panel
+            if 'sottostante' in panel.get_text().lower():
+                table = panel.find('table')
+                if table:
+                    for row in table.find('tbody').find_all('tr'):
+                        cols = [c.get_text(strip=True) for c in row.find_all('td')]
+                        if cols: underlyings.append(cols[0])
                 break
         
-        if sottostanti_panel:
-            table = sottostanti_panel.find('table')
-            if table:
-                tbody = table.find('tbody')
-                if tbody:
-                    rows = tbody.find_all('tr')
-                    for row in rows:
-                        cols = [c.get_text(strip=True) for c in row.find_all('td')]
-                        if cols:
-                            underlyings.append(cols[0])
-        
-        # 2. FILTRI RIGIDI
         if not underlyings:
-            print("⚠️ No sottostanti")
+            print("⚠️ No data")
             return False
         
-        # ❌ SCARTA se ha azioni
-        if has_single_stock(underlyings):
-            print(f"❌ AZIONI: {', '.join(underlyings[:2])}")
+        # Filtri
+        if has_stocks(underlyings):
+            print("❌ Stocks")
             return False
-        
-        # ✅ ACCETTA solo se ha sottostante valido
         if not any(is_valid_underlying(u) for u in underlyings):
-            print(f"❌ Invalidi: {', '.join(underlyings[:2])}")
+            print("❌ Invalid")
             return False
         
-        print(f"✅ {underlyings[0][:25]}...")
+        print(f"✅ {underlyings[0][:20]}")
         
-        # 3. TIPO
-        tipo_panel = soup.find('div', class_='panel-heading')
+        # Tipo
         tipo = 'Certificato'
-        if tipo_panel:
-            h3 = tipo_panel.find('h3')
-            if h3: tipo = h3.get_text(strip=True).upper()
+        h3 = soup.find('div', class_='panel-heading')
+        if h3: tipo = h3.find('h3').get_text(strip=True).upper()
         
-        # 4. SCADENZA
-        maturity_date = None
+        # Scadenza
         for row in soup.find_all('tr'):
             cells = row.find_all(['th', 'td'])
-            if len(cells) >= 2 and 'Data Valutazione finale' in cells[0].get_text():
-                maturity_date = cells[1].get_text(strip=True)
-                if maturity_date == '01/01/1900': maturity_date = None
+            if len(cells) >= 2 and 'Valutazione finale' in cells[0].get_text():
+                cert['maturity_date'] = cells[1].get_text(strip=True)
                 break
         
-        # 5. BARRIERA
-        barrier, barrier_down = None, None
+        # Barriera
         barriera_div = soup.find('div', id='barriera')
         if barriera_div:
-            cells = barriera_div.find_all('td')
-            for cell in cells:
-                text = cell.get_text(strip=True)
-                match = re.search(r'(\d+(?:[.,]\d+)?)\s*%', text)
-                if match:
-                    barrier = float(match.group(1).replace(',', '.'))
-                    barrier_down = True
+            for cell in barriera_div.find_all('td'):
+                m = re.search(r'(\d+(?:[.,]\d+)?)\s*%', cell.get_text())
+                if m:
+                    cert['barrier'] = float(m.group(1).replace(',', '.'))
+                    cert['barrier_down'] = True
                     break
         
-        # 6. CEDOLA (annualizza se mensile)
-        coupon = None
-        coupon_freq = 'annual'
-        rilevamento_div = soup.find('div', id='rilevamento')
-        if rilevamento_div:
-            cells = rilevamento_div.find_all('td')
-            for cell in cells:
-                text = cell.get_text(strip=True)
-                match = re.search(r'^(\d+(?:[.,]\d+)?)\s*%', text)
-                if match:
-                    coupon = float(match.group(1).replace(',', '.'))
-                    # Se trova "mensile" nel testo → annualizza
-                    if 'mensile' in text.lower():
+        # Cedola
+        rel_div = soup.find('div', id='rilevamento')
+        if rel_div:
+            for cell in rel_div.find_all('td'):
+                m = re.search(r'^(\d+(?:[.,]\d+)?)\s*%', cell.get_text())
+                if m:
+                    coupon = float(m.group(1).replace(',', '.'))
+                    if 'mensile' in cell.get_text().lower():
                         coupon *= 12
-                        coupon_freq = 'monthly'
+                        cert['coupon_frequency'] = 'monthly'
+                    cert['annual_coupon_yield'] = coupon
                     break
         
-        # SALVA
         cert.update({
             'type': tipo,
-            'maturity_date': maturity_date,
-            'barrier': barrier,
-            'barrier_down': barrier_down,
-            'annual_coupon_yield': coupon,
-            'coupon_frequency': coupon_freq,
-            'underlying_name': underlyings[0] if underlyings else None,
-            'underlying_category': 'index' if any(is_valid_underlying(u) for u in underlyings) else 'other',
-            'underlyings': underlyings[:5]  # Primo 5 per debug
+            'underlying_name': underlyings[0],
+            'underlying_category': 'index',
+            'underlyings': underlyings[:5]
         })
         
         return True
         
     except Exception as e:
-        print(f"💥 {str(e)[:30]}")
+        print(f"💥 {e}")
         return False
 
 async def main():
-    import sys
-    sys.stdout.reconfigure(line_buffering=True)
-    
     async with async_playwright() as p:
-        browser = await p.chromium.launch(headless=True, args=['--no-sandbox'])
-        page = await browser.new_context().new_page()
+        browser = await p.chromium.launch(headless=True)
+        context = await browser.new_context()  # ✅ FIX: await qui
+        page = await context.new_page()
         
         all_certs = await scrape_listing(page)
-        valid_certs = []
+        valid = []
         
         for cert in all_certs[:MAX_DETAIL_ISIN]:
             if await scrape_detail(page, cert):
-                valid_certs.append(cert)
+                valid.append(cert)
             await asyncio.sleep(1.5)
         
         await browser.close()
         
-        # SALVA
         output = {
-            'success': True,
-            'count': len(valid_certs),
-            'certificates': valid_certs,
-            'metadata': {
-                'version': 'v20-strict-filter',
-                'criteria': 'INDICI/COMMODITIES/VALUTE/TASSI/CREDIT ONLY',
-                'total_checked': len(all_certs),
-                'timestamp': datetime.now().isoformat()
-            }
+            'success': True, 'count': len(valid),
+            'certificates': valid,
+            'metadata': {'version': 'v20-fixed', 'checked': len(all_certs)}
         }
         
         with open('certificates-data.json', 'w') as f:
-            json.dump(output, f, indent=2, ensure_ascii=False)
+            json.dump(output, f, indent=2)
         
-        pd.DataFrame(valid_certs).to_csv('certificates-validi.csv', index=False)
-        print(f"\n🎉 {len(valid_certs)} VALID CERTIFICATI salvati in certificates-data.json")
+        print(f"🎉 {len(valid)} certificati validi salvati!")
 
 if __name__ == '__main__':
     asyncio.run(main())
