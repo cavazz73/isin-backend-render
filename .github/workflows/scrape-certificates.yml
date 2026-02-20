@@ -1,4 +1,4 @@
-name: Scrape CED Certificates v20
+name: Scrape CED Certificates
 on:
   workflow_dispatch:
   schedule:
