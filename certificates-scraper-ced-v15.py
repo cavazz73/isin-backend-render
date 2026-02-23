@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-CED Scraper v15 - FIXED & COMPLETE
+CED Scraper v14 - FIXED & COMPLETE
 Fixes:
   - barrier → barrier_down (allineato al frontend)
   - underlyings come oggetti con strike/spot/barrier/variation_pct
@@ -657,7 +657,7 @@ async def scrape_detail(page, cert: Dict) -> Optional[Dict]:
 
 async def main():
     print("=" * 60)
-    print("CED Scraper v15 - FIXED & COMPLETE")
+    print("CED Scraper v14 - FIXED & COMPLETE")
     print(f"Filtri: Indici, Commodities, Valute, Tassi, Credit")
     print(f"Ultimi {RECENT_DAYS} giorni, max {MAX_CERTIFICATES} certificati")
     print(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
@@ -727,7 +727,7 @@ def _save_output(certs: List[Dict], skipped: int, errors: int, error: str = None
         'count':        len(certs),
         'certificates': certs,
         'metadata': {
-            'version':        'v15-fixed',
+            'version':        'v14-fixed',
             'source':         'certificatiederivati.it',
             'criteria':       'Indici, Commodities, Valute, Tassi, Credit',
             'recent_days':    RECENT_DAYS,
