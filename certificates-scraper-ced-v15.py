@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
 CED Scraper v15 - COMPLETO
-Scrapes certificates from CED sponsor "tabelle prodotti" pages
-which have rich 14-column tables with all needed data.
+Scrapes certificates from CED "Tabella Prodotti Banca Generali"
+which has a rich 14-column table with all needed data.
 
 Strategy:
-1. Scrape multiple CED "tabelle prodotti" pages (14-column tables)
+1. Scrape the CED Banca Generali table (14 columns, ~120+ certificates)
 2. Filter: only indices, commodities, forex, rates, credit (NO single stocks)
 3. For filtered certs, visit detail page for enrichment (barrier type, issue date)
 4. Output in EXACT format the frontend expects
@@ -31,29 +31,9 @@ RETRY_COUNT = 3
 
 cutoff_date = datetime.now() - timedelta(days=RECENT_DAYS)
 
-# Pages to scrape (all have rich 14-column tables)
-SCRAPE_PAGES = [
-    {
-        'url': 'https://www.certificatiederivati.it/bs_promo_bgenerali.asp?t=redazione',
-        'name': 'Banca Generali'
-    },
-    {
-        'url': 'https://www.certificatiederivati.it/bs_promo_imi.asp?t=redazione',
-        'name': 'Intesa Sanpaolo'
-    },
-    {
-        'url': 'https://www.certificatiederivati.it/landingPageBNPNew.asp',
-        'name': 'BNP Paribas'
-    },
-    {
-        'url': 'https://www.certificatiederivati.it/bs_promo_ugc.asp?t=turbo',
-        'name': 'UniCredit'
-    },
-    {
-        'url': 'https://www.certificatiederivati.it/landingPageAkros.asp',
-        'name': 'Banco BPM'
-    },
-]
+# The ONE verified source page with 14-column table
+SOURCE_URL = 'https://www.certificatiederivati.it/bs_promo_bgenerali.asp?t=redazione'
+SOURCE_NAME = 'CED Banca Generali'
 
 # ============ FILTRI ============
 VALID_KEYWORDS = [
@@ -229,14 +209,16 @@ async def retry_goto(page, url: str, retries: int = RETRY_COUNT) -> bool:
     return False
 
 
+# ================================================================
+# STEP 1: Parse the 14-column table
+# ================================================================
+# Columns from the HTML source:
+# 0:isin  1:nome  2:emittente  3:scadenza  4:sottostante/basket
+# 5:worst_of(strike)  6:ask  7:prossima_rilevazione  8:premio%
+# 9:frequenza  10:barriera_premio  11:barriera_capitale  12:divisa  13:mercato
+
 def parse_table_row(cols) -> Optional[Dict]:
-    """
-    Parse riga tabella CED 14 colonne:
-    isin, nome, emittente, scadenza, sottostante/basket,
-    worst_of(strike), ask, prossima_rilevazione, premio%,
-    frequenza, barriera_premio, barriera_capitale, divisa, mercato
-    """
-    if len(cols) < 12:
+    if len(cols) < 14:
         return None
 
     for col in cols:
@@ -245,6 +227,7 @@ def parse_table_row(cols) -> Optional[Dict]:
 
     col_texts = [col.get_text(strip=True) for col in cols]
 
+    # ISIN dal link <a href="db_bs_scheda_certificato.asp?isin=XXX">
     isin = ''
     a_tag = cols[0].find('a')
     if a_tag:
@@ -260,32 +243,33 @@ def parse_table_row(cols) -> Optional[Dict]:
     if not re.match(r'^[A-Z]{2}[A-Z0-9]{9,11}$', isin):
         return None
 
-    wo_name, wo_strike = parse_worst_of(col_texts[5] if len(col_texts) > 5 else '')
+    wo_name, wo_strike = parse_worst_of(col_texts[5])
 
     return {
         'isin': isin,
-        'nome': col_texts[1] if len(col_texts) > 1 else '',
-        'emittente': col_texts[2] if len(col_texts) > 2 else '',
-        'scadenza': col_texts[3] if len(col_texts) > 3 else '',
-        'sottostante': col_texts[4] if len(col_texts) > 4 else '',
+        'nome': col_texts[1],
+        'emittente': col_texts[2],
+        'scadenza': col_texts[3],
+        'sottostante': col_texts[4],
         'wo_name': wo_name,
         'wo_strike': wo_strike,
-        'ask': parse_number(col_texts[6] if len(col_texts) > 6 else ''),
-        'premio': parse_number(col_texts[8] if len(col_texts) > 8 else ''),
-        'frequenza': col_texts[9] if len(col_texts) > 9 else '',
-        'has_memory': '*' in (col_texts[8] if len(col_texts) > 8 else ''),
-        'barr_premio': parse_number(col_texts[10] if len(col_texts) > 10 else ''),
-        'barr_capitale': parse_number(col_texts[11] if len(col_texts) > 11 else ''),
-        'divisa': (col_texts[12] if len(col_texts) > 12 else 'EUR').strip(),
-        'mercato': (col_texts[13] if len(col_texts) > 13 else 'CX').strip(),
+        'ask': parse_number(col_texts[6]),
+        'premio': parse_number(col_texts[8]),
+        'frequenza': col_texts[9],
+        'has_memory': '*' in col_texts[8],
+        'barr_premio': parse_number(col_texts[10]),
+        'barr_capitale': parse_number(col_texts[11]),
+        'divisa': col_texts[12].strip(),
+        'mercato': col_texts[13].strip(),
     }
 
 
-async def scrape_list_page(page, url: str, name: str) -> List[Dict]:
-    print(f"\n  Scraping: {name}")
+async def scrape_list_page(page) -> List[Dict]:
+    print(f"Scraping: {SOURCE_NAME}")
+    print(f"URL: {SOURCE_URL}")
 
-    if not await retry_goto(page, url):
-        print(f"  Failed to load {name}")
+    if not await retry_goto(page, SOURCE_URL):
+        print("Failed to load page!")
         return []
 
     html = await page.content()
@@ -293,17 +277,31 @@ async def scrape_list_page(page, url: str, name: str) -> List[Dict]:
     results = []
 
     for table in soup.find_all('table', class_=re.compile(r'table')):
+        # Verify this is the right table by checking header
+        thead = table.find('thead')
+        if not thead:
+            continue
+        header_text = thead.get_text().lower()
+        if 'isin' not in header_text:
+            continue
+
+        print(f"  Found target table with header containing 'isin'")
+
         for row in table.find_all('tr'):
             cols = row.find_all('td')
-            if len(cols) < 12:
+            if len(cols) < 14:
                 continue
             parsed = parse_table_row(cols)
             if parsed:
                 results.append(parsed)
 
-    print(f"  Found {len(results)} certificates from {name}")
+    print(f"  Found {len(results)} certificates")
     return results
 
+
+# ================================================================
+# STEP 2: Scrape detail page for enrichment
+# ================================================================
 
 async def scrape_detail(page, isin: str) -> Dict:
     url = f"https://www.certificatiederivati.it/db_bs_scheda_certificato.asp?isin={isin}"
@@ -315,12 +313,14 @@ async def scrape_detail(page, isin: str) -> Dict:
     html = await page.content()
     soup = BeautifulSoup(html, 'lxml')
 
+    # Tipo barriera (DISCRETA = European, CONTINUA = American)
     page_text = soup.get_text().lower()
     if 'continua' in page_text:
         extra['barrier_type'] = 'American'
     elif 'discreta' in page_text:
         extra['barrier_type'] = 'European'
 
+    # Data emissione dalla tabella dati
     for row in soup.find_all('tr'):
         cells = row.find_all(['th', 'td'])
         if len(cells) >= 2:
@@ -330,6 +330,7 @@ async def scrape_detail(page, isin: str) -> Dict:
                 extra['issue_date'] = parse_date(value)
                 break
 
+    # Sottostanti con strike dalla sezione "Scheda Sottostante"
     for heading in soup.find_all(['h4', 'h3', 'strong', 'b']):
         if 'sottostante' in heading.get_text().lower():
             table = heading.find_next('table')
@@ -348,6 +349,10 @@ async def scrape_detail(page, isin: str) -> Dict:
 
     return extra
 
+
+# ================================================================
+# STEP 3: Build output in frontend format
+# ================================================================
 
 def build_certificate(raw: Dict, detail: Optional[Dict] = None) -> Dict:
     freq_mult, freq_name = get_freq_multiplier(raw.get('frequenza', ''))
@@ -447,6 +452,10 @@ def build_certificate(raw: Dict, detail: Optional[Dict] = None) -> Dict:
     }
 
 
+# ================================================================
+# MAIN
+# ================================================================
+
 async def main():
     print("=" * 60)
     print("CED Scraper v15 - COMPLETO")
@@ -467,25 +476,34 @@ async def main():
         )
         page = await context.new_page()
 
-        # === 1. Scrape tutte le tabelle prodotti ===
-        all_raw = {}
-        for source in SCRAPE_PAGES:
-            try:
-                rows = await scrape_list_page(page, source['url'], source['name'])
-                for row in rows:
-                    if row['isin'] not in all_raw:
-                        all_raw[row['isin']] = row
-                await asyncio.sleep(REQUEST_DELAY)
-            except Exception as e:
-                print(f"  Error scraping {source['name']}: {str(e)[:60]}")
+        # === 1. Scrape la tabella prodotti ===
+        all_raw = await scrape_list_page(page)
 
-        print(f"\nTotal unique certificates: {len(all_raw)}")
+        if not all_raw:
+            print("No certificates found in table!")
+            await browser.close()
+            output = {
+                'success': False, 'count': 0, 'certificates': [],
+                'metadata': {'error': 'No certificates found', 'timestamp': datetime.now().isoformat()}
+            }
+            with open('certificates-data.json', 'w') as f:
+                json.dump(output, f, indent=2)
+            pd.DataFrame().to_json('certificates-recenti.json', orient='records')
+            pd.DataFrame().to_csv('certificates-recenti.csv', index=False)
+            return
+
+        # Deduplica per ISIN
+        by_isin = {}
+        for row in all_raw:
+            if row['isin'] not in by_isin:
+                by_isin[row['isin']] = row
+        print(f"Total unique certificates: {len(by_isin)}")
 
         # === 2. Filtra sottostanti validi ===
         filtered = {}
         skipped = 0
 
-        for isin, raw in all_raw.items():
+        for isin, raw in by_isin.items():
             sottostante = raw.get('sottostante', '')
             nome = raw.get('nome', '')
             full_text = f"{sottostante} {nome}".lower()
@@ -504,11 +522,11 @@ async def main():
         print(f"Skipped (stocks): {skipped}")
 
         if not filtered:
-            print("No valid certificates found!")
+            print("No valid certificates after filtering!")
             await browser.close()
             output = {
                 'success': False, 'count': 0, 'certificates': [],
-                'metadata': {'error': 'No valid certificates', 'timestamp': datetime.now().isoformat()}
+                'metadata': {'error': 'No valid certificates after filtering', 'timestamp': datetime.now().isoformat()}
             }
             with open('certificates-data.json', 'w') as f:
                 json.dump(output, f, indent=2)
@@ -556,7 +574,7 @@ async def main():
                 'source': 'certificatiederivati.it',
                 'criteria': 'Indici, Commodities, Valute, Tassi, Credit',
                 'recent_days': RECENT_DAYS,
-                'total_scraped': len(all_raw),
+                'total_scraped': len(by_isin),
                 'after_filter': len(filtered),
                 'detail_enriched': len(details),
                 'timestamp': datetime.now().isoformat(),
