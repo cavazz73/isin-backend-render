@@ -180,10 +180,19 @@ async def scrape_detail(page, cert: Dict) -> Optional[Dict]:
     
     if not await retry_goto(page, url):
         return None
-    
+
+    # Aspetta che div#rilevamento sia caricato via AJAX (non sia più "Caricamento")
+    try:
+        await page.wait_for_function(
+            "!document.getElementById('rilevamento').innerText.includes('Caricamento')",
+            timeout=15000
+        )
+    except:
+        pass  # Continua comunque
+
     html = await page.content()
     soup = BeautifulSoup(html, 'lxml')
-    
+
     result = {
         'isin': isin,
         'name': cert.get('name', ''),
@@ -197,102 +206,129 @@ async def scrape_detail(page, cert: Dict) -> Optional[Dict]:
         'maturity_date': None,
         'barrier': None,
         'barrier_down': None,
+        'barrier_type': None,
+        'coupon': None,
         'annual_coupon_yield': None,
-        'coupon_frequency': 'annual',
-        'reference_price': None,
+        'coupon_frequency': 'monthly',
+        'reference_price': 1000.0,
         'scenario_analysis': None,
         'source': 'CED_v22'
     }
-    
+
     # === 1. TIPO CERTIFICATO ===
-    h3_title = soup.find('h3', class_='panel-title')
-    if h3_title:
-        result['type'] = h3_title.get_text(strip=True)
-    
-    # === 2. SOTTOSTANTI ===
-    underlyings = []
-    for panel in soup.find_all('div', class_='panel'):
-        heading = panel.find(['h3', 'div'], class_=['panel-title', 'panel-heading'])
-        if heading and 'sottostante' in heading.get_text().lower():
-            table = panel.find('table')
-            if table:
-                for row in table.find_all('tr'):
-                    cells = row.find_all('td')
-                    if cells and len(cells) >= 1:
-                        name = cells[0].get_text(strip=True)
-                        if name and name.upper() not in ['', 'DESCRIZIONE', 'SOTTOSTANTE']:
-                            underlyings.append(name)
+    # Nella pagina reale è il primo <h3> senza classe (non h3.panel-title)
+    h3s = soup.find_all('h3')
+    if h3s:
+        result['type'] = h3s[0].get_text(strip=True)
+
+    # === 2. BARRIERA dallo script JS ===
+    # La barriera è passata come parametro JS prima del fetch AJAX:
+    # var params = new URLSearchParams({ barriera: "50&nbsp;%", tipo: "DISCRETA", ... })
+    for script in soup.find_all('script'):
+        t = script.get_text()
+        m = re.search(r'barriera:\s*["\']([^"\']+)["\']', t)
+        if m:
+            val_raw = m.group(1).replace('&nbsp;', '').replace('%', '').strip()
+            try:
+                val = float(val_raw.replace(',', '.'))
+                if 10 <= val <= 95:
+                    result['barrier'] = val
+                    result['barrier_down'] = val
+            except:
+                pass
+            # Tipo barriera (DISCRETA / CONTINUA / EUROPEA)
+            bt = re.search(r'tipo:\s*["\']([^"\']+)["\']', t)
+            if bt:
+                result['barrier_type'] = bt.group(1)
             break
-    
-    # Fallback: usa underlying dalla lista
-    if not underlyings and cert.get('underlying_raw'):
-        underlyings = [cert['underlying_raw']]
-    
-    # Converti in oggetti (il frontend si aspetta u.name, u.worst_of, ecc.)
-    underlyings_objects = [
-        {'name': u, 'strike': 0, 'spot': 0, 'barrier': 0,
-         'variation_pct': 0, 'variation_abs': 0,
-         'trigger_coupon': 0, 'trigger_autocall': 0,
-         'worst_of': (i == 0)}  # primo come worst_of di default
-        for i, u in enumerate(underlyings)
-    ]
+
+    # === 3. SCADENZA ed EMISSIONE dalla TABLE principale (TABLE 1) ===
+    # Struttura reale: TABLE 1 ha label/valore su ogni riga
+    # Labels: ISIN, ALPHA CODE, FASE, MERCATO, DATA EMISSIONE, DATA SCADENZA
+    tables = soup.find_all('table')
+    if len(tables) >= 2:
+        for row in tables[1].find_all('tr'):
+            cells = row.find_all(['th', 'td'])
+            if len(cells) >= 2:
+                label = cells[0].get_text(strip=True).upper()
+                value = cells[1].get_text(strip=True)
+                if 'DATA SCADENZA' in label or 'VALUTAZIONE FINALE' in label:
+                    d = parse_date(value)
+                    if d:
+                        result['maturity_date'] = d
+                elif 'DATA EMISSIONE' in label:
+                    d = parse_date(value)
+                    if d:
+                        result['issue_date'] = d
+                elif label == 'MERCATO':
+                    result['market'] = value
+
+    # === 4. EMITTENTE dalla TABLE emittente (TABLE 3) ===
+    if len(tables) >= 4:
+        first_row = tables[3].find('tr')
+        if first_row:
+            cells = first_row.find_all(['th', 'td'])
+            if cells:
+                issuer = cells[0].get_text(strip=True)
+                if issuer and len(issuer) < 60:
+                    result['issuer'] = issuer
+
+    # === 5. SOTTOSTANTI dalla TABLE sottostanti (TABLE 2) ===
+    # Colonne reali: DESCRIZIONE | STRIKE | PESO (no spot, no barrier in pagina)
+    underlyings_raw = []
+    underlyings_objects = []
+    if len(tables) >= 3:
+        for row in tables[2].find_all('tr')[1:]:  # salta header
+            cells = row.find_all('td')
+            if not cells:
+                continue
+            name = cells[0].get_text(strip=True)
+            if not name or name.upper() in ['DESCRIZIONE', 'SOTTOSTANTE', '']:
+                continue
+            strike_raw = cells[1].get_text(strip=True) if len(cells) > 1 else ''
+            strike = parse_number(strike_raw)
+            # Calcola barriera come prezzo assoluto: strike * barrier_down%
+            barrier_price = round(strike * result['barrier_down'] / 100, 4) if (strike and result['barrier_down']) else 0.0
+            underlyings_raw.append(name)
+            underlyings_objects.append({
+                'name': name,
+                'strike': strike or 0.0,
+                'spot': 0.0,          # non disponibile in pagina
+                'barrier': barrier_price,
+                'variation_pct': 0.0,
+                'variation_abs': 0.0,
+                'trigger_coupon': strike or 0.0,
+                'trigger_autocall': strike or 0.0,
+                'worst_of': False
+            })
+
+    # Fallback da listing
+    if not underlyings_objects and cert.get('underlying_raw'):
+        underlyings_raw = [cert['underlying_raw']]
+        underlyings_objects = [{
+            'name': cert['underlying_raw'],
+            'strike': 0.0, 'spot': 0.0, 'barrier': 0.0,
+            'variation_pct': 0.0, 'variation_abs': 0.0,
+            'trigger_coupon': 0.0, 'trigger_autocall': 0.0,
+            'worst_of': True
+        }]
+
+    # Marca primo come worst_of di default
+    if underlyings_objects:
+        underlyings_objects[0]['worst_of'] = True
+
     result['underlyings'] = underlyings_objects
-    result['underlying'] = underlyings[0] if underlyings else ''
-    
-    # === 3. FILTRO: Solo indici/commodities/valute/tassi ===
-    if has_only_stocks(underlyings):
-        return None  # Skip azioni singole
-    
-    if not any(is_valid_underlying(u) for u in underlyings):
+    result['underlying'] = underlyings_raw[0] if underlyings_raw else ''
+
+    # === 6. FILTRO: Solo indici/commodities/valute/tassi ===
+    if has_only_stocks(underlyings_raw):
+        return None
+    if not any(is_valid_underlying(u) for u in underlyings_raw):
         full_text = f"{result['name']} {result['underlying']}".lower()
         if not any(kw in full_text for kw in VALID_KEYWORDS):
             return None
-    
-    # === 4. SCADENZA ===
-    for row in soup.find_all('tr'):
-        cells = row.find_all(['th', 'td'])
-        if len(cells) >= 2:
-            label = cells[0].get_text(strip=True).lower()
-            value = cells[1].get_text(strip=True)
-            
-            if any(kw in label for kw in ['scadenza', 'valutazione finale', 'maturity']):
-                if value and value != '01/01/1900':
-                    result['maturity_date'] = parse_date(value)
-                    break
-    
-    # === 5. BARRIERA ===
-    barrier_found = False
-    
-    barriera_div = soup.find('div', id='barriera')
-    if barriera_div:
-        for cell in barriera_div.find_all(['td', 'span']):
-            text = cell.get_text(strip=True)
-            # Richiede % per evitare falsi positivi
-            match = re.search(r'(\d{2,3}(?:[.,]\d+)?)\s*%', text)
-            if match:
-                val = float(match.group(1).replace(',', '.'))
-                if 10 <= val <= 95:
-                    result['barrier'] = val
-                    result['barrier_down'] = val  # numero, non True
-                    barrier_found = True
-                    break
-    
-    if not barrier_found:
-        for panel in soup.find_all('div', class_='panel'):
-            heading = panel.find(['h3', 'div'], class_=['panel-title', 'panel-heading'])
-            if heading and 'barriera' in heading.get_text().lower():
-                for cell in panel.find_all('td'):
-                    text = cell.get_text(strip=True)
-                    match = re.search(r'(\d{2,3}(?:[.,]\d+)?)\s*%', text)
-                    if match:
-                        val = float(match.group(1).replace(',', '.'))
-                        if 10 <= val <= 95:
-                            result['barrier'] = val
-                            result['barrier_down'] = val  # numero, non True
-                            break
-                break
-    
-    # === 6. CEDOLA ===
+
+    # === 7. CEDOLA da div#rilevamento (caricato via AJAX) ===
     rilevamento_div = soup.find('div', id='rilevamento')
     if rilevamento_div:
         table = rilevamento_div.find('table')
@@ -300,89 +336,77 @@ async def scrape_detail(page, cert: Dict) -> Optional[Dict]:
             for row in table.find_all('tr'):
                 cells = row.find_all('td')
                 row_text = ' '.join([c.get_text(strip=True).lower() for c in cells])
-                
                 for cell in cells:
                     text = cell.get_text(strip=True)
-                    # Richiede % per evitare falsi positivi
+                    # % obbligatorio per evitare falsi positivi
                     match = re.search(r'(\d+(?:[.,]\d+)?)\s*%', text)
                     if match:
                         cedola = float(match.group(1).replace(',', '.'))
-                        if 0.1 <= cedola <= 50:
+                        if 0.05 <= cedola <= 30:
                             if 'trimestral' in row_text or 'quarterly' in row_text:
+                                result['coupon'] = cedola
                                 result['annual_coupon_yield'] = round(cedola * 4, 2)
                                 result['coupon_frequency'] = 'quarterly'
                             elif 'mensil' in row_text or 'monthly' in row_text:
+                                result['coupon'] = cedola
                                 result['annual_coupon_yield'] = round(cedola * 12, 2)
                                 result['coupon_frequency'] = 'monthly'
                             elif 'semestral' in row_text or 'semiannual' in row_text:
+                                result['coupon'] = cedola
                                 result['annual_coupon_yield'] = round(cedola * 2, 2)
                                 result['coupon_frequency'] = 'semiannual'
                             else:
+                                result['coupon'] = cedola
                                 result['annual_coupon_yield'] = cedola
                                 result['coupon_frequency'] = 'annual'
                             break
                 if result['annual_coupon_yield']:
                     break
-    
-    # === 7. COUPON PER PERIODO ===
-    result['coupon'] = result['annual_coupon_yield']  # fallback
-    freq = result.get('coupon_frequency', 'annual')
-    if result['annual_coupon_yield']:
-        if freq == 'monthly':
-            result['coupon'] = round(result['annual_coupon_yield'] / 12, 4)
-        elif freq == 'quarterly':
-            result['coupon'] = round(result['annual_coupon_yield'] / 4, 4)
-        elif freq == 'semiannual':
-            result['coupon'] = round(result['annual_coupon_yield'] / 2, 4)
 
     # === 8. SCENARIO ANALYSIS ===
     if result['annual_coupon_yield'] and result['barrier_down']:
-        ref_price = result.get('reference_price') or 1000.0
+        ref_price = result['reference_price']
         annual_yield = result['annual_coupon_yield']
         barrier_pct = result['barrier_down']
-        
-        # Calcola anni a scadenza
-        years = 3.0  # default
+        years = 3.0
         if result.get('maturity_date'):
             try:
                 mat = datetime.strptime(result['maturity_date'], '%Y-%m-%d')
                 years = max(0.1, round((mat - datetime.now()).days / 365.25, 2))
             except:
                 pass
-        
+
         total_coupons = (annual_yield / 100) * 1000 * years
         cert_type_low = result['type'].lower()
-        
         scenarios = []
+
         for var_pct in [-70, -60, -50, -40, -30, -20, -10, 0, 10, 20, 30, 40, 50, 60, 70]:
-            # Barriera violata se il sottostante scende sotto barrier_pct dello strike
             barrier_breached = var_pct < -(100 - barrier_pct)
-            
             if barrier_breached:
                 redemption = round(max(0, 1000 * (1 + var_pct / 100)), 2)
             elif 'twin win' in cert_type_low:
                 redemption = round(1000 * (1 + abs(var_pct) / 100), 2)
             else:
                 redemption = 1000.0
-            
+
             total_received = redemption + total_coupons
             pl_pct = round((total_received - ref_price) / ref_price * 100, 2)
             pl_annual = round(pl_pct / years, 2) if years > 0 else 0.0
-            
+
             scenarios.append({
-                'variation_pct':    var_pct,
+                'variation_pct': var_pct,
                 'underlying_price': round(1000 * (1 + var_pct / 100), 2),
                 'barrier_breached': barrier_breached,
-                'redemption':       redemption,
-                'pl_pct':           pl_pct,
-                'pl_annual':        pl_annual
+                'redemption': redemption,
+                'pl_pct': pl_pct,
+                'pl_annual': pl_annual
             })
-        
+
         result['scenario_analysis'] = {
-            'worst_underlying':  result['underlying'],
-            'purchase_price':    ref_price,
+            'worst_underlying': result['underlying'],
+            'purchase_price': ref_price,
             'years_to_maturity': years,
-            'scenarios':         scenarios
+            'scenarios': scenarios
         }
 
     return result
