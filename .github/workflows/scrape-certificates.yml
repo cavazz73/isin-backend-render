@@ -2,39 +2,41 @@ name: Scrape CED Certificates
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 9 * * 1-5'
+    - cron: '0 7 * * 1-5'  # 7:00 UTC = 8:00 CET, lun-ven (prima apertura mercati)
   push:
     paths:
       - 'certificates-scraper-ced-v15.py'
+
 jobs:
   scrape:
     runs-on: ubuntu-latest
     timeout-minutes: 30
+
     steps:
     - uses: actions/checkout@v4
-    
+
     - name: Set up Python 3.11
       uses: actions/setup-python@v4
       with:
         python-version: '3.11'
-    
+
     - name: Install Python dependencies
       run: |
         pip install playwright pandas beautifulsoup4 lxml
-    
+
     - name: Install Playwright Chromium
       run: |
         playwright install --with-deps chromium
-    
-    - name: Run CED scraper
+
+    - name: Run CED scraper v15
       env:
-        RECENT_DAYS: 30
-        MAX_DETAIL_ISIN: 100
+        MAX_DETAIL_ISIN: 80
+        REQUEST_DELAY: 1.5
       run: |
-        echo "🚀 Avvio scraper CED (recenti ultimi ${RECENT_DAYS}gg)"
-        ls -lh certificates-scraper-ced-v*.py
+        echo "🚀 Avvio scraper CED v15"
+        ls -lh certificates-scraper-ced-v15.py
         python certificates-scraper-ced-v15.py
-    
+
     - name: Verify output files
       run: |
         if [ ! -f "certificates-data.json" ]; then
@@ -42,10 +44,21 @@ jobs:
           exit 1
         fi
         echo "✅ File generato correttamente"
-        COUNT=$(jq '.count' certificates-data.json)
+        COUNT=$(python3 -c "import json; d=json.load(open('certificates-data.json')); print(d.get('count', 0))")
         echo "📊 Totale certificati validi: ${COUNT}"
-        jq '.metadata' certificates-data.json
-    
+        if [ "$COUNT" -eq "0" ]; then
+          echo "⚠️  WARNING: 0 certificati trovati, potrebbe esserci un problema"
+        fi
+        python3 -c "
+import json
+d = json.load(open('certificates-data.json'))
+m = d.get('metadata', {})
+print(f\"  Scraped: {m.get('total_scraped', 0)}\")
+print(f\"  Filtered: {m.get('after_filter', 0)}\")
+print(f\"  Enriched: {m.get('detail_pages_visited', 0)}\")
+print(f\"  Issuers: {', '.join(m.get('issuers', []))}\")
+"
+
     - name: Commit and push results
       run: |
         git config --local user.email "action@github.com"
