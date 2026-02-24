@@ -3,7 +3,7 @@
  * P.IVA: 04219740364
  * 
  * ISIN Research Backend - Multi-Source Financial Data API
- * Version: 4.3.0 - Complete with Bonds
+ * Version: 4.4.0 - Complete with Bonds + Keep-Alive
  */
 
 const express = require('express');
@@ -30,7 +30,7 @@ app.get('/health', (req, res) => {
         status: 'ok',
         timestamp: new Date().toISOString(),
         uptime: process.uptime(),
-        version: '4.3.0',
+        version: '4.4.0',
         endpoints: {
             financial: '/api/financial',
             certificates: '/api/certificates',
@@ -227,8 +227,8 @@ app.use((err, req, res, next) => {
 
 app.listen(PORT, () => {
     console.log('='.repeat(60));
-    console.log('ISIN Research Backend - Multi-Source v4.3.0');
-    console.log('Copyright (c) 2024-2025 Mutna S.R.L.S.');
+    console.log('ISIN Research Backend - Multi-Source v4.4.0');
+    console.log('Copyright (c) 2024-2026 Mutna S.R.L.S.');
     console.log('='.repeat(60));
     console.log(`Server running on port ${PORT}`);
     console.log(`Health check: http://localhost:${PORT}/health`);
@@ -241,6 +241,30 @@ app.listen(PORT, () => {
     console.log(`  Certificates: ${certificatesRoutes ? '✅ Active' : '⚠️  Not found'}`);
     console.log(`  Bonds: ${bondsRoutes ? '✅ Module mode' : '📦 JSON fallback'}`);
     console.log('='.repeat(60));
+
+    // ===================================
+    // SELF-PING KEEP-ALIVE (Render free tier)
+    // Pings /health every 10 minutes to prevent cold starts
+    // ===================================
+    const RENDER_URL = process.env.RENDER_EXTERNAL_URL || process.env.SERVICE_URL;
+    if (RENDER_URL) {
+        const https = require('https');
+        const http = require('http');
+        const pingUrl = `${RENDER_URL}/health`;
+        const client = pingUrl.startsWith('https') ? https : http;
+
+        setInterval(() => {
+            client.get(pingUrl, (res) => {
+                console.log(`[Keep-Alive] Ping -> ${res.statusCode}`);
+            }).on('error', (err) => {
+                console.log(`[Keep-Alive] Ping failed: ${err.message}`);
+            });
+        }, 10 * 60 * 1000); // every 10 minutes
+
+        console.log(`[Keep-Alive] ✅ Self-ping enabled -> ${pingUrl} every 10min`);
+    } else {
+        console.log('[Keep-Alive] ⚠️  No RENDER_EXTERNAL_URL set, self-ping disabled');
+    }
 });
 
 module.exports = app;
