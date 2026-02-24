@@ -57,7 +57,7 @@ VALID_KEYWORDS = [
     'euribor', 'libor', 'bund', 'btp', 'treasury', 'swap', 'yield', 'tasso',
     'estron',
     # Credit
-    'credit linked', 'credit', 'cln', 'cds',
+    'credit linked', 'credit link', 'cln', 'cds',
     # Generic
     'index', 'indice', 'basket di indici', 'paniere',
 ]
