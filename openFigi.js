@@ -254,6 +254,61 @@ class OpenFigiClient {
         // Keep max 10 results
         return sorted.slice(0, 10);
     }
+
+    /**
+     * Convert OpenFIGI exchange code to Yahoo Finance symbol suffix
+     * e.g. ENEL on IM → ENEL.MI, SHEL on LN → SHEL.L
+     */
+    static exchangeToYahooSuffix(exchCode) {
+        const map = {
+            // Italy
+            'IM': '.MI', 'MI': '.MI',
+            // US (no suffix needed)
+            'US': '', 'UN': '', 'UQ': '', 'UA': '', 'UP': '', 'UW': '',
+            // UK
+            'LN': '.L',
+            // Germany
+            'GR': '.DE', 'GF': '.F', 'GS': '.SG', 'GD': '.DU', 'GH': '.HM', 'GM': '.MU', 'GY': '.DE',
+            // France
+            'FP': '.PA',
+            // Netherlands
+            'NA': '.AS',
+            // Spain
+            'SM': '.MC',
+            // Switzerland
+            'SW': '.SW',
+            // Japan
+            'JP': '.T', 'TY': '.T',
+            // Hong Kong
+            'HK': '.HK',
+            // Canada
+            'CT': '.TO', 'CN': '.V',
+            // Australia
+            'AT': '.AX',
+            // Singapore
+            'SP': '.SI',
+            // Korea
+            'KS': '.KS', 'KQ': '.KQ',
+            // Brazil
+            'BZ': '.SA',
+            // India
+            'IB': '.BO', 'IN': '.NS',
+            // Mexico
+            'MM': '.MX',
+        };
+        return map[exchCode] || '';
+    }
+
+    /**
+     * Get the best Yahoo Finance symbol from OpenFIGI results
+     * Prioritizes the primary exchange listing
+     */
+    static getBestYahooSymbol(results) {
+        if (!results || results.length === 0) return null;
+        const best = results[0]; // Already sorted by priority
+        const suffix = OpenFigiClient.exchangeToYahooSuffix(best.exchange);
+        return best.symbol + suffix;
+    }
 }
 
 module.exports = OpenFigiClient;
