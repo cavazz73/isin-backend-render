@@ -178,6 +178,110 @@ class YahooFinanceClient {
         }
     }
 
+    /**
+     * Get fundamentals (marketCap, P/E, dividend, 52W, description) via Yahoo
+     * Uses v8 chart for 52W range + quoteSummary for fundamentals
+     */
+    async getFundamentals(symbol) {
+        const fundamentals = {
+            marketCap: null,
+            peRatio: null,
+            dividendYield: null,
+            week52High: null,
+            week52Low: null,
+            description: null,
+            industry: null,
+            sector: null
+        };
+
+        // 1. Get 52W High/Low from 1Y chart data
+        try {
+            const url = `${this.baseUrlV8}/finance/chart/${symbol}`;
+            const response = await axios.get(url, {
+                params: { range: '1y', interval: '1d' },
+                headers: {
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+                    'Accept': 'application/json',
+                    'Referer': 'https://finance.yahoo.com',
+                    'Origin': 'https://finance.yahoo.com'
+                },
+                timeout: 15000
+            });
+
+            const result = response.data?.chart?.result?.[0];
+            if (result) {
+                const meta = result.meta;
+                fundamentals.week52High = meta.fiftyTwoWeekHigh || null;
+                fundamentals.week52Low = meta.fiftyTwoWeekLow || null;
+
+                // Calculate from actual data if meta doesn't have it
+                if (!fundamentals.week52High && result.indicators?.quote?.[0]) {
+                    const highs = result.indicators.quote[0].high.filter(h => h != null);
+                    const lows = result.indicators.quote[0].low.filter(l => l != null);
+                    if (highs.length) fundamentals.week52High = Math.max(...highs);
+                    if (lows.length) fundamentals.week52Low = Math.min(...lows);
+                }
+            }
+        } catch (error) {
+            console.error('[Yahoo] 52W chart error:', error.message);
+        }
+
+        // 2. Try quoteSummary for fundamentals + description
+        try {
+            const url = `https://query2.finance.yahoo.com/v10/finance/quoteSummary/${symbol}`;
+            const response = await axios.get(url, {
+                params: {
+                    modules: 'summaryProfile,defaultKeyStatistics,financialData,price'
+                },
+                headers: {
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+                    'Accept': 'application/json',
+                    'Referer': 'https://finance.yahoo.com',
+                    'Origin': 'https://finance.yahoo.com'
+                },
+                timeout: 15000
+            });
+
+            const qr = response.data?.quoteSummary?.result?.[0];
+            if (qr) {
+                // Profile
+                if (qr.summaryProfile) {
+                    fundamentals.description = qr.summaryProfile.longBusinessSummary || null;
+                    fundamentals.industry = qr.summaryProfile.industry || null;
+                    fundamentals.sector = qr.summaryProfile.sector || null;
+                }
+                // Key Statistics
+                if (qr.defaultKeyStatistics) {
+                    const ks = qr.defaultKeyStatistics;
+                    fundamentals.peRatio = ks.forwardPE?.raw || ks.trailingPE?.raw || null;
+                }
+                // Financial Data
+                if (qr.financialData) {
+                    const fd = qr.financialData;
+                    fundamentals.marketCap = fd.marketCap?.raw || null;
+                }
+                // Price module (backup for marketCap, PE)
+                if (qr.price) {
+                    const p = qr.price;
+                    if (!fundamentals.marketCap) fundamentals.marketCap = p.marketCap?.raw || null;
+                    if (!fundamentals.peRatio) fundamentals.peRatio = p.trailingPE?.raw || null;
+                    fundamentals.dividendYield = p.dividendYield?.raw 
+                        ? +(p.dividendYield.raw * 100).toFixed(2) 
+                        : null;
+                }
+            }
+        } catch (error) {
+            console.error('[Yahoo] QuoteSummary error:', error.message);
+        }
+
+        const hasData = Object.values(fundamentals).some(v => v != null);
+        return {
+            success: hasData,
+            data: fundamentals,
+            source: 'yahoo'
+        };
+    }
+
     async getHistoricalData(symbol, period = '1M') {
         try {
             const periodMap = {
