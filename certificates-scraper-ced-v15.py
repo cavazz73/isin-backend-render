@@ -480,16 +480,8 @@ async def main():
         all_raw = await scrape_list_page(page)
 
         if not all_raw:
-            print("No certificates found in table!")
+            print("No certificates found in table! Keeping existing data.")
             await browser.close()
-            output = {
-                'success': False, 'count': 0, 'certificates': [],
-                'metadata': {'error': 'No certificates found', 'timestamp': datetime.now().isoformat()}
-            }
-            with open('certificates-data.json', 'w') as f:
-                json.dump(output, f, indent=2)
-            pd.DataFrame().to_json('certificates-recenti.json', orient='records')
-            pd.DataFrame().to_csv('certificates-recenti.csv', index=False)
             return
 
         # Deduplica per ISIN
@@ -522,61 +514,113 @@ async def main():
         print(f"Skipped (stocks): {skipped}")
 
         if not filtered:
-            print("No valid certificates after filtering!")
+            print("No valid certificates after filtering! Keeping existing data.")
             await browser.close()
-            output = {
-                'success': False, 'count': 0, 'certificates': [],
-                'metadata': {'error': 'No valid certificates after filtering', 'timestamp': datetime.now().isoformat()}
-            }
-            with open('certificates-data.json', 'w') as f:
-                json.dump(output, f, indent=2)
-            pd.DataFrame().to_json('certificates-recenti.json', orient='records')
-            pd.DataFrame().to_csv('certificates-recenti.csv', index=False)
             return
 
-        # === 3. Visita pagine dettaglio ===
-        detail_count = min(len(filtered), MAX_CERTIFICATES)
+        # === 3. Visita pagine dettaglio (solo NUOVI ISIN) ===
+        # Carica ISIN esistenti per evitare di rivisitare pagine già note
+        existing_isins = set()
+        if os.path.exists('certificates-data.json'):
+            try:
+                with open('certificates-data.json', 'r', encoding='utf-8') as f:
+                    old_data = json.load(f)
+                if old_data.get('certificates'):
+                    existing_isins = {c['isin'] for c in old_data['certificates']}
+            except:
+                pass
+
+        new_isins = [isin for isin in filtered if isin not in existing_isins]
+        detail_count = min(len(new_isins), MAX_CERTIFICATES)
         details = {}
 
-        print(f"\nVisiting {detail_count} detail pages...\n")
+        if new_isins:
+            print(f"\nVisiting {detail_count} NEW detail pages (skipping {len(filtered) - len(new_isins)} already known)...\n")
 
-        for i, (isin, raw) in enumerate(list(filtered.items())[:MAX_CERTIFICATES], 1):
-            print(f"[{i}/{detail_count}] {isin}...", end=" ", flush=True)
-            try:
-                detail = await scrape_detail(page, isin)
-                details[isin] = detail
-                bt = detail.get('barrier_type', '?')
-                nu = len(detail.get('underlyings_detail', []))
-                print(f"OK barrier:{bt} und:{nu}")
-            except Exception as e:
-                print(f"ERR {str(e)[:40]}")
-                details[isin] = {}
-            await asyncio.sleep(REQUEST_DELAY)
+            for i, isin in enumerate(new_isins[:MAX_CERTIFICATES], 1):
+                print(f"[{i}/{detail_count}] {isin}...", end=" ", flush=True)
+                try:
+                    detail = await scrape_detail(page, isin)
+                    details[isin] = detail
+                    bt = detail.get('barrier_type', '?')
+                    nu = len(detail.get('underlyings_detail', []))
+                    print(f"OK barrier:{bt} und:{nu}")
+                except Exception as e:
+                    print(f"ERR {str(e)[:40]}")
+                    details[isin] = {}
+                await asyncio.sleep(REQUEST_DELAY)
+        else:
+            print(f"\nNo new ISINs to enrich (all {len(filtered)} already in database)")
 
         await browser.close()
 
-        # === 4. Costruisci output finale ===
-        certificates = []
+        # === 4. Carica certificati esistenti (ACCUMULO) ===
+        existing_certs = {}
+        max_age = datetime.now() - timedelta(days=730)  # 2 anni
+
+        if os.path.exists('certificates-data.json'):
+            try:
+                with open('certificates-data.json', 'r', encoding='utf-8') as f:
+                    old_data = json.load(f)
+                if old_data.get('certificates'):
+                    for c in old_data['certificates']:
+                        existing_certs[c['isin']] = c
+                    print(f"\nLoaded {len(existing_certs)} existing certificates from previous runs")
+            except Exception as e:
+                print(f"Could not load existing data: {e}")
+
+        # === 5. Costruisci nuovi certificati ===
+        new_count = 0
+        updated_count = 0
         for isin, raw in filtered.items():
             detail = details.get(isin, {})
             cert = build_certificate(raw, detail)
-            certificates.append(cert)
+            if isin in existing_certs:
+                updated_count += 1
+            else:
+                new_count += 1
+            existing_certs[isin] = cert  # new/updated overwrite old
 
+        print(f"New certificates added: {new_count}")
+        print(f"Existing certificates updated: {updated_count}")
+
+        # === 6. Rimuovi certificati scaduti da oltre 2 anni ===
+        purged = 0
+        final_certs = {}
+        for isin, cert in existing_certs.items():
+            mat = cert.get('maturity_date')
+            if mat:
+                try:
+                    mat_dt = datetime.strptime(mat, '%Y-%m-%d')
+                    if mat_dt < max_age:
+                        purged += 1
+                        continue
+                except:
+                    pass
+            final_certs[isin] = cert
+
+        if purged:
+            print(f"Purged {purged} certificates (maturity > 2 years ago)")
+
+        certificates = list(final_certs.values())
         certificates.sort(key=lambda c: c.get('annual_coupon_yield', 0), reverse=True)
 
-        # === 5. Salva files ===
+        # === 7. Salva files ===
         output = {
             'success': True,
             'count': len(certificates),
             'certificates': certificates,
             'metadata': {
-                'version': 'v15',
+                'version': 'v15-accumulative',
                 'source': 'certificatiederivati.it',
-                'criteria': 'Indici, Commodities, Valute, Tassi, Credit',
-                'recent_days': RECENT_DAYS,
-                'total_scraped': len(by_isin),
-                'after_filter': len(filtered),
-                'detail_enriched': len(details),
+                'criteria': 'Indici, Commodities, Valute, Tassi, Credit Linked',
+                'max_history_years': 2,
+                'new_this_run': new_count,
+                'updated_this_run': updated_count,
+                'purged_expired': purged,
+                'total_scraped_this_run': len(by_isin),
+                'after_filter_this_run': len(filtered),
+                'detail_enriched_this_run': len(details),
                 'timestamp': datetime.now().isoformat(),
                 'scrape_date': datetime.now().strftime('%Y-%m-%d'),
                 'categories': len(set(c['type'] for c in certificates)),
@@ -594,10 +638,13 @@ async def main():
         df.to_csv('certificates-recenti.csv', index=False)
 
         print("\n" + "=" * 60)
-        print("COMPLETED")
-        print(f"  Valid certificates: {len(certificates)}")
+        print("COMPLETED (ACCUMULATIVE)")
+        print(f"  Total certificates in database: {len(certificates)}")
+        print(f"  New added this run: {new_count}")
+        print(f"  Updated this run: {updated_count}")
+        print(f"  Purged (expired >2y): {purged}")
         print(f"  Skipped (stocks): {skipped}")
-        print(f"  Detail enriched: {len(details)}")
+        print(f"  Detail pages visited: {len(details)}")
         print(f"  Saved: certificates-data.json, certificates-recenti.json, certificates-recenti.csv")
         print("=" * 60)
 
