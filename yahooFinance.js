@@ -15,11 +15,10 @@ class YahooFinanceClient {
 
     async search(query) {
         try {
-            // Yahoo supporta azioni italiane con suffisso .MI (Milano)
-            // ENEL → ENEL.MI, ENI → ENI.MI
             const searchQuery = this.normalizeItalianSymbol(query);
             
-            const url = `${this.baseUrlV7}/finance/search`;
+            // Use v1 search endpoint (more reliable than v7)
+            const url = `https://query2.finance.yahoo.com/v1/finance/search`;
             const response = await axios.get(url, {
                 params: {
                     q: searchQuery,
@@ -27,13 +26,12 @@ class YahooFinanceClient {
                     region: 'US',
                     quotesCount: 10,
                     newsCount: 0,
+                    listsCount: 0,
                     enableFuzzyQuery: false
                 },
                 headers: {
                     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
                     'Accept': 'application/json',
-                    'Accept-Language': 'en-US,en;q=0.9',
-                    'Accept-Encoding': 'gzip, deflate, br',
                     'Referer': 'https://finance.yahoo.com',
                     'Origin': 'https://finance.yahoo.com'
                 },
@@ -45,12 +43,12 @@ class YahooFinanceClient {
             }
 
             const results = response.data.quotes
-                .filter(q => q.symbol && q.quoteType === 'EQUITY')
+                .filter(q => q.symbol)
                 .map(quote => ({
                     symbol: quote.symbol,
-                    name: quote.shortname || quote.longname,
-                    description: quote.longname || quote.shortname,
-                    type: 'Stock',
+                    name: quote.shortname || quote.longname || quote.symbol,
+                    description: quote.longname || quote.shortname || '',
+                    type: this._mapQuoteType(quote.quoteType),
                     exchange: quote.exchange,
                     currency: quote.currency || 'USD',
                     isin: quote.isin || null,
@@ -68,20 +66,86 @@ class YahooFinanceClient {
         }
     }
 
+    /**
+     * Map Yahoo quoteType to standard types
+     */
+    _mapQuoteType(quoteType) {
+        const map = {
+            'EQUITY': 'Stock',
+            'ETF': 'ETF',
+            'MUTUALFUND': 'Fund',
+            'INDEX': 'Index',
+            'CURRENCY': 'Currency',
+            'CRYPTOCURRENCY': 'Crypto',
+            'FUTURE': 'Future',
+            'OPTION': 'Option',
+        };
+        return map[quoteType] || quoteType || 'Unknown';
+    }
+
     async getQuote(symbol) {
+        // PRIMARY: Use v8 chart endpoint (free, unlimited, global)
+        try {
+            const url = `${this.baseUrlV8}/finance/chart/${symbol}`;
+            const response = await axios.get(url, {
+                params: { range: '1d', interval: '1m' },
+                headers: {
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                    'Accept': 'application/json',
+                    'Referer': 'https://finance.yahoo.com',
+                    'Origin': 'https://finance.yahoo.com'
+                },
+                timeout: 15000
+            });
+
+            const result = response.data?.chart?.result?.[0];
+            if (!result) return { success: false };
+
+            const meta = result.meta;
+            const price = meta.regularMarketPrice;
+            const prevClose = meta.chartPreviousClose || meta.previousClose;
+
+            if (!price) return { success: false };
+
+            const change = prevClose ? +(price - prevClose).toFixed(4) : null;
+            const changePercent = prevClose ? +((change / prevClose) * 100).toFixed(2) : null;
+
+            return {
+                success: true,
+                data: {
+                    symbol: meta.symbol || symbol,
+                    name: meta.shortName || meta.longName || symbol,
+                    description: meta.longName || meta.shortName || symbol,
+                    price: price,
+                    change: change,
+                    changePercent: changePercent,
+                    currency: meta.currency || 'USD',
+                    exchange: meta.exchangeName || meta.exchange || '',
+                    marketCap: null,
+                    previousClose: prevClose,
+                    dayHigh: meta.regularMarketDayHigh || null,
+                    dayLow: meta.regularMarketDayLow || null,
+                    volume: meta.regularMarketVolume || null,
+                    timestamp: new Date().toISOString()
+                },
+                source: 'yahoo-chart'
+            };
+
+        } catch (error) {
+            console.error('[Yahoo] Chart-quote error:', error.message);
+        }
+
+        // FALLBACK: Try v7 quote (may still work for some regions)
         try {
             const url = `${this.baseUrlV7}/finance/quote`;
             const response = await axios.get(url, {
                 params: {
                     symbols: symbol,
-                    // ✅ SIMPLIFIED: Only request essential fields to avoid rate limiting
                     fields: 'symbol,regularMarketPrice,regularMarketChange,regularMarketChangePercent,currency,shortName,longName,exchange,marketCap'
                 },
                 headers: {
                     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
                     'Accept': 'application/json',
-                    'Accept-Language': 'en-US,en;q=0.9',
-                    'Accept-Encoding': 'gzip, deflate, br',
                     'Referer': 'https://finance.yahoo.com',
                     'Origin': 'https://finance.yahoo.com'
                 },
@@ -96,13 +160,12 @@ class YahooFinanceClient {
                 data: {
                     symbol: quote.symbol,
                     name: quote.shortName || quote.longName,
-                    description: quote.longName || quote.shortName,  // ✅ DESCRIPTION RESTORED
+                    description: quote.longName || quote.shortName,
                     price: quote.regularMarketPrice,
                     change: quote.regularMarketChange,
                     changePercent: quote.regularMarketChangePercent,
                     currency: quote.currency || 'USD',
                     exchange: quote.exchange,
-                    // ✅ ONLY BASIC FIELDS (fundamentals from TwelveData)
                     marketCap: quote.marketCap || null,
                     timestamp: new Date().toISOString()
                 },
@@ -110,7 +173,7 @@ class YahooFinanceClient {
             };
 
         } catch (error) {
-            console.error('[Yahoo] Quote error:', error.message);
+            console.error('[Yahoo] V7 quote error:', error.message);
             return { success: false, error: error.message };
         }
     }
