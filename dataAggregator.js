@@ -2,7 +2,7 @@
  * Copyright (c) 2024-2025 Mutna S.R.L.S. - All Rights Reserved
  * P.IVA: 04219740364
  * 
- * Multi-Source Data Aggregator V4.2 FINAL
+ * Multi-Source Data Aggregator V4.3 + OpenFIGI
  * SEARCH: TwelveData primary for EU markets
  * QUOTE: Yahoo primary (complete data), TwelveData fallback + separate fundamentals call
  * CACHE: Redis/Upstash for intelligent caching
@@ -15,6 +15,7 @@ const FinnhubClient = require('./finnhub');
 const AlphaVantageClient = require('./alphaVantage');
 const FinancialModelingPrepClient = require('./financialModelingPrep');
 const RedisCache = require('./redisCache');
+const OpenFigiClient = require('./openFigi');
 
 class DataAggregatorV4 {
     constructor(config = {}) {
@@ -28,10 +29,13 @@ class DataAggregatorV4 {
         // Initialize Redis Cache
         this.cache = new RedisCache(config.redisUrl || process.env.REDIS_URL);
         
+        // Initialize OpenFIGI (universal ISIN resolver - covers all instrument types globally)
+        this.openfigi = new OpenFigiClient(config.openfigiKey || process.env.OPENFIGI_API_KEY);
+        
         // Priority for SEARCH: TwelveData > FMP > Yahoo > Finnhub > AlphaVantage
         this.sources = ['twelvedata', 'fmp', 'yahoo', 'finnhub', 'alphavantage'];
         
-        console.log('[DataAggregatorV4] Initialized with FMP (complete fundamentals) + Redis caching');
+        console.log('[DataAggregator] Initialized with FMP + OpenFIGI (universal ISIN) + Redis caching');
     }
 
     /**
@@ -425,6 +429,18 @@ class DataAggregatorV4 {
                 ...cached,
                 fromCache: true
             };
+        }
+
+        // Try OpenFIGI FIRST (universal - covers stocks, bonds, ETFs, funds/OICR, certificates, all exchanges)
+        try {
+            const figiResult = await this.openfigi.mapISIN(isin);
+            if (figiResult.success && figiResult.results.length > 0) {
+                // SAVE TO CACHE (ISIN mapping is stable, 30 days)
+                await this.cache.set('isin', isin, figiResult);
+                return figiResult;
+            }
+        } catch (error) {
+            console.error(`[openfigi] ISIN search error: ${error.message}`);
         }
 
         // Try TwelveData
