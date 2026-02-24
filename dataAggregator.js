@@ -511,26 +511,25 @@ class DataAggregatorV4 {
 
     /**
      * Get complete instrument details with fundamentals (description, marketCap, PE, etc)
-     * PRIMARY: Financial Modeling Prep (complete data)
-     * FALLBACK: Quote data
+     * STRATEGY: Get quote first, then enrich with fundamentals from Yahoo/TwelveData
      */
     async getInstrumentDetails(symbol) {
-        console.log(`[DataAggregatorV4] Getting instrument details for: ${symbol}`);
+        console.log(`[DataAggregator] Getting instrument details for: ${symbol}`);
         
-        // 1. CHECK CACHE FIRST
+        // 1. CHECK CACHE FIRST (skip if cached with no fundamentals)
         const cached = await this.cache.get('details', symbol);
-        if (cached) {
-            console.log(`[DataAggregatorV4] 🚀 CACHE HIT! Returning cached details`);
+        if (cached && cached.data && (cached.data.marketCap || cached.data.description)) {
+            console.log(`[DataAggregator] DETAILS CACHE HIT: ${symbol}`);
             return {
                 ...cached,
                 fromCache: true
             };
         }
         
-        // 2. Try Financial Modeling Prep (complete fundamentals)
+        // 2. Try Financial Modeling Prep (complete fundamentals) - may fail if 402
         try {
             const fmpResult = await this.fmp.getQuote(symbol);
-            if (fmpResult.success) {
+            if (fmpResult.success && fmpResult.data && fmpResult.data.price) {
                 console.log(`[FMP] Complete details for ${symbol}: ${fmpResult.data.price} ${fmpResult.data.currency}`);
                 
                 const response = {
@@ -540,50 +539,81 @@ class DataAggregatorV4 {
                     fromCache: false
                 };
                 
-                // SAVE TO CACHE (longer TTL for details: 1 hour)
                 await this.cache.set('details', symbol, response, 3600);
-                
                 return response;
             }
         } catch (error) {
             console.error(`[FMP] Details error: ${error.message}`);
         }
         
-        // 3. Fallback: Try to get quote data (less complete but better than nothing)
+        // 3. Get base quote data (price, change, etc.)
+        let baseData = null;
         try {
             const quoteResult = await this.getQuote(symbol);
-            if (quoteResult.success) {
-                console.log(`[DataAggregatorV4] Using quote data as fallback for details`);
-                
-                const response = {
-                    success: true,
-                    data: {
-                        ...quoteResult.data,
-                        description: quoteResult.data.name || `${symbol} stock`,
-                        // Add placeholder fundamentals if missing
-                        marketCap: quoteResult.data.marketCap || null,
-                        peRatio: quoteResult.data.peRatio || null,
-                        dividendYield: quoteResult.data.dividendYield || null,
-                        week52High: quoteResult.data.week52High || null,
-                        week52Low: quoteResult.data.week52Low || null
-                    },
-                    source: quoteResult.source,
-                    fromCache: false
-                };
-                
-                // SAVE TO CACHE
-                await this.cache.set('details', symbol, response, 3600);
-                
-                return response;
+            if (quoteResult.success && quoteResult.data) {
+                baseData = { ...quoteResult.data };
             }
         } catch (error) {
-            console.error(`[DataAggregatorV4] Fallback details error: ${error.message}`);
+            console.error(`[DataAggregator] Quote for details error: ${error.message}`);
         }
-        
-        return {
-            success: false,
-            error: 'Could not fetch instrument details from any source'
+
+        if (!baseData) {
+            return { success: false, error: 'Could not fetch instrument details' };
+        }
+
+        // 4. Enrich with fundamentals from Yahoo
+        try {
+            console.log(`[DataAggregator] Fetching Yahoo fundamentals for ${symbol}...`);
+            const yahooFund = await this.yahoo.getFundamentals(symbol);
+            if (yahooFund.success && yahooFund.data) {
+                const f = yahooFund.data;
+                baseData.marketCap = baseData.marketCap || f.marketCap;
+                baseData.peRatio = baseData.peRatio || f.peRatio;
+                baseData.dividendYield = baseData.dividendYield || f.dividendYield;
+                baseData.week52High = baseData.week52High || f.week52High;
+                baseData.week52Low = baseData.week52Low || f.week52Low;
+                baseData.description = f.description || baseData.description || baseData.name;
+                baseData.industry = f.industry || baseData.industry;
+                baseData.sector = f.sector || baseData.sector;
+                console.log(`[yahoo] Fundamentals enriched: marketCap=${f.marketCap}, PE=${f.peRatio}, 52W=${f.week52Low}-${f.week52High}`);
+            }
+        } catch (error) {
+            console.error(`[yahoo] Fundamentals error: ${error.message}`);
+        }
+
+        // 5. If Yahoo fundamentals failed, try TwelveData
+        if (!baseData.marketCap && !baseData.peRatio) {
+            try {
+                console.log(`[DataAggregator] Trying TwelveData fundamentals for ${symbol}...`);
+                const tdFund = await this.twelvedata.getFundamentals(symbol);
+                if (tdFund.success && tdFund.data) {
+                    baseData.marketCap = baseData.marketCap || tdFund.data.marketCap;
+                    baseData.peRatio = baseData.peRatio || tdFund.data.peRatio;
+                    baseData.dividendYield = baseData.dividendYield || tdFund.data.dividendYield;
+                    baseData.week52High = baseData.week52High || tdFund.data.week52High;
+                    baseData.week52Low = baseData.week52Low || tdFund.data.week52Low;
+                    console.log(`[twelvedata] Fundamentals added for ${symbol}`);
+                }
+            } catch (error) {
+                console.error(`[twelvedata] Fundamentals error: ${error.message}`);
+            }
+        }
+
+        // Ensure description is meaningful
+        if (!baseData.description || baseData.description === symbol) {
+            baseData.description = baseData.name || `${symbol} stock`;
+        }
+
+        const response = {
+            success: true,
+            data: baseData,
+            source: 'multi',
+            fromCache: false
         };
+        
+        // SAVE TO CACHE (1 hour)
+        await this.cache.set('details', symbol, response, 3600);
+        return response;
     }
 
     /**
