@@ -435,9 +435,34 @@ class DataAggregatorV4 {
         try {
             const figiResult = await this.openfigi.mapISIN(isin);
             if (figiResult.success && figiResult.results.length > 0) {
-                // SAVE TO CACHE (ISIN mapping is stable, 30 days)
-                await this.cache.set('isin', isin, figiResult);
-                return figiResult;
+                console.log(`[openfigi] Found ${figiResult.results.length} results, enriching with quotes...`);
+                
+                // Convert OpenFIGI results to Yahoo-compatible symbols and enrich with prices
+                const OpenFigiClient = require('./openFigi');
+                const enrichable = figiResult.results.slice(0, 3).map(r => {
+                    const yahooSuffix = OpenFigiClient.exchangeToYahooSuffix(r.exchange);
+                    return {
+                        ...r,
+                        symbol: r.symbol + yahooSuffix,  // e.g. ENEL → ENEL.MI
+                        originalSymbol: r.symbol,
+                        yahooSymbol: r.symbol + yahooSuffix
+                    };
+                });
+
+                const enriched = await this.enrichWithQuotes(enrichable);
+                
+                const enrichedResult = {
+                    success: true,
+                    results: enriched,
+                    metadata: {
+                        ...figiResult.metadata,
+                        enrichedWithQuotes: true
+                    }
+                };
+
+                // SAVE TO CACHE (ISIN mapping + quotes)
+                await this.cache.set('isin', isin, enrichedResult);
+                return enrichedResult;
             }
         } catch (error) {
             console.error(`[openfigi] ISIN search error: ${error.message}`);
