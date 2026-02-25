@@ -290,7 +290,7 @@ class YahooFinanceClient {
         try {
             const url = `https://query2.finance.yahoo.com/v10/finance/quoteSummary/${symbol}`;
             const response = await this._authGet(url, {
-                modules: 'summaryProfile,defaultKeyStatistics,financialData,price'
+                modules: 'summaryProfile,summaryDetail,defaultKeyStatistics,financialData,price'
             });
 
             const qr = response.data?.quoteSummary?.result?.[0];
@@ -304,7 +304,8 @@ class YahooFinanceClient {
                 // Key Statistics
                 if (qr.defaultKeyStatistics) {
                     const ks = qr.defaultKeyStatistics;
-                    fundamentals.peRatio = ks.forwardPE?.raw || ks.trailingPE?.raw || null;
+                    fundamentals.peRatio = ks.forwardPE?.raw ? +ks.forwardPE.raw.toFixed(2) : 
+                                          (ks.trailingPE?.raw ? +ks.trailingPE.raw.toFixed(2) : null);
                 }
                 // Financial Data
                 if (qr.financialData) {
@@ -315,10 +316,27 @@ class YahooFinanceClient {
                 if (qr.price) {
                     const p = qr.price;
                     if (!fundamentals.marketCap) fundamentals.marketCap = p.marketCap?.raw || null;
-                    if (!fundamentals.peRatio) fundamentals.peRatio = p.trailingPE?.raw || null;
-                    fundamentals.dividendYield = p.dividendYield?.raw 
-                        ? +(p.dividendYield.raw * 100).toFixed(2) 
-                        : null;
+                    if (!fundamentals.peRatio) fundamentals.peRatio = p.trailingPE?.raw ? +p.trailingPE.raw.toFixed(2) : null;
+                    if (p.dividendYield?.raw) {
+                        fundamentals.dividendYield = +(p.dividendYield.raw * 100).toFixed(2);
+                    }
+                }
+                // SummaryDetail (best source for dividend yield)
+                if (qr.summaryDetail) {
+                    const sd = qr.summaryDetail;
+                    if (!fundamentals.dividendYield) {
+                        const dy = sd.dividendYield?.raw || sd.trailingAnnualDividendYield?.raw || null;
+                        if (dy) {
+                            fundamentals.dividendYield = +(dy * 100).toFixed(2);
+                        }
+                    }
+                    if (!fundamentals.peRatio) {
+                        const pe = sd.trailingPE?.raw || sd.forwardPE?.raw || null;
+                        fundamentals.peRatio = pe ? +pe.toFixed(2) : null;
+                    }
+                    if (!fundamentals.week52High) fundamentals.week52High = sd.fiftyTwoWeekHigh?.raw || null;
+                    if (!fundamentals.week52Low) fundamentals.week52Low = sd.fiftyTwoWeekLow?.raw || null;
+                    if (!fundamentals.marketCap) fundamentals.marketCap = sd.marketCap?.raw || null;
                 }
             }
         } catch (error) {
