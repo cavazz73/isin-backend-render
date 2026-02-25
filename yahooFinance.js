@@ -11,31 +11,100 @@ class YahooFinanceClient {
         this.baseUrl = 'https://query1.finance.yahoo.com';
         this.baseUrlV7 = 'https://query1.finance.yahoo.com/v7';
         this.baseUrlV8 = 'https://query2.finance.yahoo.com/v8';
+        
+        // Cookie/crumb authentication for v7/v10 endpoints
+        this._crumb = null;
+        this._cookie = null;
+        this._crumbExpiry = 0;
+    }
+
+    /**
+     * Get Yahoo authentication cookie + crumb (required for v7/v10 endpoints)
+     * Crumb is cached for 30 minutes
+     */
+    async _ensureAuth() {
+        if (this._crumb && this._cookie && Date.now() < this._crumbExpiry) {
+            return true;
+        }
+
+        try {
+            // Step 1: Get consent cookie by visiting Yahoo Finance
+            const initResp = await axios.get('https://fc.yahoo.com', {
+                headers: {
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+                },
+                timeout: 10000,
+                maxRedirects: 5,
+                validateStatus: () => true  // Accept any status
+            });
+
+            // Extract cookies from response
+            const setCookies = initResp.headers['set-cookie'];
+            if (setCookies) {
+                this._cookie = setCookies.map(c => c.split(';')[0]).join('; ');
+            }
+
+            // Step 2: Get crumb using the cookie
+            const crumbResp = await axios.get('https://query2.finance.yahoo.com/v1/test/getcrumb', {
+                headers: {
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+                    'Cookie': this._cookie || ''
+                },
+                timeout: 10000
+            });
+
+            if (crumbResp.data && typeof crumbResp.data === 'string') {
+                this._crumb = crumbResp.data;
+                this._crumbExpiry = Date.now() + 30 * 60 * 1000; // 30 min
+                console.log('[Yahoo] Auth: crumb obtained successfully');
+                return true;
+            }
+        } catch (error) {
+            console.error('[Yahoo] Auth error:', error.message);
+        }
+
+        this._crumb = null;
+        this._cookie = null;
+        return false;
+    }
+
+    /**
+     * Make authenticated request to Yahoo API
+     */
+    async _authGet(url, params = {}) {
+        await this._ensureAuth();
+        
+        if (this._crumb) {
+            params.crumb = this._crumb;
+        }
+
+        return axios.get(url, {
+            params,
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                'Accept': 'application/json',
+                'Referer': 'https://finance.yahoo.com',
+                'Origin': 'https://finance.yahoo.com',
+                'Cookie': this._cookie || ''
+            },
+            timeout: 15000
+        });
     }
 
     async search(query) {
         try {
             const searchQuery = this.normalizeItalianSymbol(query);
             
-            // Use v1 search endpoint (more reliable than v7)
+            // Use v1 search endpoint with auth
             const url = `https://query2.finance.yahoo.com/v1/finance/search`;
-            const response = await axios.get(url, {
-                params: {
-                    q: searchQuery,
-                    lang: 'en-US',
-                    region: 'US',
-                    quotesCount: 10,
-                    newsCount: 0,
-                    listsCount: 0,
-                    enableFuzzyQuery: false
-                },
-                headers: {
-                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-                    'Accept': 'application/json',
-                    'Referer': 'https://finance.yahoo.com',
-                    'Origin': 'https://finance.yahoo.com'
-                },
-                timeout: 15000
+            const response = await this._authGet(url, {
+                q: searchQuery,
+                lang: 'en-US',
+                region: 'US',
+                quotesCount: 10,
+                newsCount: 0,
+                listsCount: 0,
+                enableFuzzyQuery: false
             });
 
             if (!response.data?.quotes) {
@@ -135,21 +204,12 @@ class YahooFinanceClient {
             console.error('[Yahoo] Chart-quote error:', error.message);
         }
 
-        // FALLBACK: Try v7 quote (may still work for some regions)
+        // FALLBACK: Try v7 quote with auth
         try {
             const url = `${this.baseUrlV7}/finance/quote`;
-            const response = await axios.get(url, {
-                params: {
-                    symbols: symbol,
-                    fields: 'symbol,regularMarketPrice,regularMarketChange,regularMarketChangePercent,currency,shortName,longName,exchange,marketCap'
-                },
-                headers: {
-                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-                    'Accept': 'application/json',
-                    'Referer': 'https://finance.yahoo.com',
-                    'Origin': 'https://finance.yahoo.com'
-                },
-                timeout: 15000
+            const response = await this._authGet(url, {
+                symbols: symbol,
+                fields: 'symbol,regularMarketPrice,regularMarketChange,regularMarketChangePercent,currency,shortName,longName,exchange,marketCap'
             });
 
             const quote = response.data?.quoteResponse?.result?.[0];
@@ -226,20 +286,11 @@ class YahooFinanceClient {
             console.error('[Yahoo] 52W chart error:', error.message);
         }
 
-        // 2. Try quoteSummary for fundamentals + description
+        // 2. Try quoteSummary for fundamentals + description (requires auth)
         try {
             const url = `https://query2.finance.yahoo.com/v10/finance/quoteSummary/${symbol}`;
-            const response = await axios.get(url, {
-                params: {
-                    modules: 'summaryProfile,defaultKeyStatistics,financialData,price'
-                },
-                headers: {
-                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-                    'Accept': 'application/json',
-                    'Referer': 'https://finance.yahoo.com',
-                    'Origin': 'https://finance.yahoo.com'
-                },
-                timeout: 15000
+            const response = await this._authGet(url, {
+                modules: 'summaryProfile,defaultKeyStatistics,financialData,price'
             });
 
             const qr = response.data?.quoteSummary?.result?.[0];
