@@ -318,7 +318,8 @@ class YahooFinanceClient {
                     if (!fundamentals.marketCap) fundamentals.marketCap = p.marketCap?.raw || null;
                     if (!fundamentals.peRatio) fundamentals.peRatio = p.trailingPE?.raw ? +p.trailingPE.raw.toFixed(2) : null;
                     if (p.dividendYield?.raw) {
-                        fundamentals.dividendYield = +(p.dividendYield.raw * 100).toFixed(2);
+                        const dy = p.dividendYield.raw;
+                        fundamentals.dividendYield = dy > 1 ? +dy.toFixed(2) : +(dy * 100).toFixed(2);
                     }
                 }
                 // SummaryDetail (best source for dividend yield)
@@ -327,7 +328,7 @@ class YahooFinanceClient {
                     if (!fundamentals.dividendYield) {
                         const dy = sd.dividendYield?.raw || sd.trailingAnnualDividendYield?.raw || null;
                         if (dy) {
-                            fundamentals.dividendYield = +(dy * 100).toFixed(2);
+                            fundamentals.dividendYield = dy > 1 ? +dy.toFixed(2) : +(dy * 100).toFixed(2);
                         }
                     }
                     if (!fundamentals.peRatio) {
