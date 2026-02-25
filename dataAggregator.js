@@ -516,9 +516,10 @@ class DataAggregatorV4 {
     async getInstrumentDetails(symbol) {
         console.log(`[DataAggregator] Getting instrument details for: ${symbol}`);
         
-        // 1. CHECK CACHE FIRST (skip if cached with no fundamentals)
+        // 1. CHECK CACHE FIRST (skip if cached without real fundamentals)
         const cached = await this.cache.get('details', symbol);
-        if (cached && cached.data && (cached.data.marketCap || cached.data.description)) {
+        if (cached && cached.data && (cached.data.marketCap || cached.data.peRatio || 
+            (cached.data.description && cached.data.description.length > 50))) {
             console.log(`[DataAggregator] DETAILS CACHE HIT: ${symbol}`);
             return {
                 ...cached,
