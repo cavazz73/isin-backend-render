@@ -576,6 +576,7 @@ class DataAggregatorV4 {
                 baseData.description = f.description || baseData.description || baseData.name;
                 baseData.industry = f.industry || baseData.industry;
                 baseData.sector = f.sector || baseData.sector;
+                baseData.website = f.website || baseData.website;
                 console.log(`[yahoo] Fundamentals enriched: marketCap=${f.marketCap}, PE=${f.peRatio}, 52W=${f.week52Low}-${f.week52High}`);
             }
         } catch (error) {
