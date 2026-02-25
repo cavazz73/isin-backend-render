@@ -300,6 +300,7 @@ class YahooFinanceClient {
                     fundamentals.description = qr.summaryProfile.longBusinessSummary || null;
                     fundamentals.industry = qr.summaryProfile.industry || null;
                     fundamentals.sector = qr.summaryProfile.sector || null;
+                    fundamentals.website = qr.summaryProfile.website || null;
                 }
                 // Key Statistics
                 if (qr.defaultKeyStatistics) {
