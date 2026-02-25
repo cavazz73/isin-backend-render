@@ -318,18 +318,14 @@ class YahooFinanceClient {
                     if (!fundamentals.marketCap) fundamentals.marketCap = p.marketCap?.raw || null;
                     if (!fundamentals.peRatio) fundamentals.peRatio = p.trailingPE?.raw ? +p.trailingPE.raw.toFixed(2) : null;
                     if (p.dividendYield?.raw) {
-                        const dy = p.dividendYield.raw;
-                        fundamentals.dividendYield = dy > 1 ? +dy.toFixed(2) : +(dy * 100).toFixed(2);
+                        fundamentals.dividendYield = p.dividendYield.raw;
                     }
                 }
                 // SummaryDetail (best source for dividend yield)
                 if (qr.summaryDetail) {
                     const sd = qr.summaryDetail;
                     if (!fundamentals.dividendYield) {
-                        const dy = sd.dividendYield?.raw || sd.trailingAnnualDividendYield?.raw || null;
-                        if (dy) {
-                            fundamentals.dividendYield = dy > 1 ? +dy.toFixed(2) : +(dy * 100).toFixed(2);
-                        }
+                        fundamentals.dividendYield = sd.dividendYield?.raw || sd.trailingAnnualDividendYield?.raw || null;
                     }
                     if (!fundamentals.peRatio) {
                         const pe = sd.trailingPE?.raw || sd.forwardPE?.raw || null;
