@@ -76,23 +76,15 @@ Sei un analista finanziario senior specializzato nei mercati europei e italiani.
 - **Mercati**: Borsa Italiana (FTSE MIB, STAR), mercati EU (DAX, CAC40, IBEX), US (S&P500, Nasdaq), materie prime, forex
 - **Normativa**: Tassazione italiana su capital gain (26%), titoli di stato (12.5%), regime dichiarativo vs amministrato, KIID/KID
 
-## Regole CRITICHE sui Dati
-1. Usa SOLO i dati forniti dalla piattaforma - non calcolare performance YTD, rendimenti storici o metriche derivate
-2. NON inventare MAI numeri, prezzi, performance o statistiche
-3. Il 52W Range NON e' la performance YTD - non usarlo per calcolare rendimenti
-4. Se un dato non e' disponibile nei dati forniti, dillo chiaramente: "Questo dato non e' disponibile nei dati della piattaforma"
-5. Distingui chiaramente tra dati fattuali (dalla piattaforma) e tue considerazioni/opinioni generali
-
-## Formato Risposte
-- NO disclaimer nelle risposte (c'e' gia' un avviso fisso nella piattaforma, non ripeterlo MAI)
-- Usa markdown per formattare le risposte
-- Usa tabelle per confronti
-- Sii conciso ma completo, max 300-400 parole per analisi
-- Presenta pro E contro di ogni strumento
-- Non consigliare mai di comprare o vendere
+## Regole Importanti
+1. **Disclaimer**: Ricorda SEMPRE che non sei un consulente finanziario abilitato. Le tue analisi sono a scopo informativo/educativo. Per decisioni di investimento consiglia sempre di rivolgersi a un consulente autorizzato.
+2. **Oggettività**: Presenta pro E contro di ogni strumento. Non consigliare mai di comprare o vendere.
+3. **Dati**: Quando ti vengono forniti dati di uno strumento dalla piattaforma, usali per l'analisi. Se non hai dati sufficienti, dillo chiaramente.
+4. **Precisione**: Se non sei sicuro di un dato, dillo. Non inventare numeri o performance.
+5. **Formato**: Usa markdown per formattare le risposte. Usa tabelle per confronti. Sii conciso ma completo.
 
 ## Contesto Piattaforma
-ISIN Research & Compare e' una piattaforma di ricerca finanziaria che aggrega dati da Yahoo Finance, Finnhub, Alpha Vantage e TwelveData. Copre azioni, bond, certificati, ETF e fondi.`;
+ISIN Research & Compare è una piattaforma di ricerca finanziaria che aggrega dati da Yahoo Finance, Finnhub, Alpha Vantage e TwelveData. Copre azioni, bond, certificati, ETF e fondi. L'utente potrebbe chiederti di analizzare strumenti che ha cercato sulla piattaforma.`;
 
 // ===================================
 // MULTER CONFIG for file uploads
@@ -110,6 +102,7 @@ const upload = multer({
             'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
             'application/msword'
         ];
+        // Also check extension
         const ext = file.originalname.split('.').pop().toLowerCase();
         const allowedExt = ['pdf', 'txt', 'csv', 'doc', 'docx'];
         
@@ -143,10 +136,12 @@ async function extractText(file) {
     }
     
     if (ext === 'docx') {
+        // Basic DOCX text extraction (XML-based)
         try {
             const AdmZip = require('adm-zip');
             const zip = new AdmZip(file.buffer);
             const content = zip.readAsText('word/document.xml');
+            // Strip XML tags, keep text
             return content.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
         } catch (error) {
             console.error('DOCX parse error:', error.message);
@@ -178,19 +173,13 @@ function buildMessages(userMessage, options = {}) {
     let content = '';
     
     if (instrumentData) {
-        content += `\n[DATI STRUMENTO DALLA PIATTAFORMA - Usa SOLO questi dati, non inventarne altri]\n`;
-        // Filter out null/N/A values
-        const cleanData = {};
-        for (const [key, value] of Object.entries(instrumentData)) {
-            if (value !== null && value !== undefined && value !== 'N/A' && value !== '') {
-                cleanData[key] = value;
-            }
-        }
-        content += JSON.stringify(cleanData, null, 2);
-        content += `\n[FINE DATI STRUMENTO - Campi non presenti NON sono disponibili. Non calcolarli.]\n\n`;
+        content += `\n[DATI STRUMENTO DALLA PIATTAFORMA]\n`;
+        content += JSON.stringify(instrumentData, null, 2);
+        content += `\n[FINE DATI STRUMENTO]\n\n`;
     }
     
     if (documentText) {
+        // Truncate to ~30k chars to leave room for response
         const truncated = documentText.substring(0, 30000);
         content += `\n[DOCUMENTO CARICATO]\n`;
         content += truncated;
@@ -397,7 +386,7 @@ router.post('/analyze', async (req, res) => {
     
     const analysisPrompts = {
         general: `Analizza questo strumento finanziario in modo sintetico. Fornisci:
-1. **Overview**: Cos'e' e in che settore opera
+1. **Overview**: Cos'è e in che settore opera
 2. **Punti di forza**: 2-3 aspetti positivi basati sui dati
 3. **Rischi**: 2-3 aspetti critici o di attenzione
 4. **Valutazione**: Come si posiziona rispetto ai comparabili del settore (se possibile)
@@ -405,16 +394,16 @@ Sii conciso, max 300 parole.`,
         
         dividend: `Analizza questo strumento dal punto di vista dei dividendi:
 1. **Dividend Yield attuale** e confronto con media settore
-2. **Sostenibilita'** del dividendo (payout ratio se disponibile)
+2. **Sostenibilità** del dividendo (payout ratio se disponibile)
 3. **Storico** e trend
 4. **Tassazione** italiana applicabile
 Sii conciso, max 200 parole.`,
         
         risk: `Analizza il profilo di rischio di questo strumento:
-1. **Volatilita'** e beta (se disponibili)
+1. **Volatilità** e beta (se disponibili)
 2. **Rischi specifici** (settore, paese, valuta)
 3. **Livello di rischio** su scala 1-5
-4. **Per chi e' adatto** questo strumento
+4. **Per chi è adatto** questo strumento
 Sii conciso, max 200 parole.`,
         
         comparison: `Basandoti sui dati forniti, suggerisci:
