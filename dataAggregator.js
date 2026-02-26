@@ -2,7 +2,7 @@
  * Copyright (c) 2024-2025 Mutna S.R.L.S. - All Rights Reserved
  * P.IVA: 04219740364
  * 
- * Multi-Source Data Aggregator V4.3 + OpenFIGI
+ * Multi-Source Data Aggregator V4.2 FINAL
  * SEARCH: TwelveData primary for EU markets
  * QUOTE: Yahoo primary (complete data), TwelveData fallback + separate fundamentals call
  * CACHE: Redis/Upstash for intelligent caching
@@ -14,13 +14,13 @@ const YahooFinanceClient = require('./yahooFinance');
 const FinnhubClient = require('./finnhub');
 const AlphaVantageClient = require('./alphaVantage');
 const FinancialModelingPrepClient = require('./financialModelingPrep');
-const RedisCache = require('./redisCache');
 const OpenFigiClient = require('./openFigi');
+const RedisCache = require('./redisCache');
 
 class DataAggregatorV4 {
     constructor(config = {}) {
         // Initialize all data sources
-        this.fmp = new FinancialModelingPrepClient(config.fmpKey || process.env.FMP_API_KEY);  // ✅ PRIMARY SOURCE
+        this.fmp = new FinancialModelingPrepClient(config.fmpKey || process.env.FMP_API_KEY);  // âœ… PRIMARY SOURCE
         this.twelvedata = new TwelveDataClient(config.twelveDataKey || process.env.TWELVE_DATA_API_KEY);
         this.yahoo = new YahooFinanceClient();
         this.finnhub = new FinnhubClient(config.finnhubKey || process.env.FINNHUB_API_KEY);
@@ -29,13 +29,13 @@ class DataAggregatorV4 {
         // Initialize Redis Cache
         this.cache = new RedisCache(config.redisUrl || process.env.REDIS_URL);
         
-        // Initialize OpenFIGI (universal ISIN resolver - covers all instrument types globally)
-        this.openfigi = new OpenFigiClient(config.openfigiKey || process.env.OPENFIGI_API_KEY);
+        // Initialize OpenFIGI (Bloomberg ISIN resolver)
+        this.openfigi = new OpenFigiClient(config.openFigiKey || process.env.OPENFIGI_API_KEY);
         
         // Priority for SEARCH: TwelveData > FMP > Yahoo > Finnhub > AlphaVantage
         this.sources = ['twelvedata', 'fmp', 'yahoo', 'finnhub', 'alphavantage'];
         
-        console.log('[DataAggregator] Initialized with FMP + OpenFIGI (universal ISIN) + Redis caching');
+        console.log('[DataAggregatorV4] Initialized with FMP (complete fundamentals) + OpenFIGI (ISIN resolver) + Redis caching');
     }
 
     /**
@@ -65,7 +65,7 @@ class DataAggregatorV4 {
         // 1. CHECK CACHE FIRST
         const cached = await this.cache.get('search', query);
         if (cached) {
-            console.log(`[DataAggregatorV4] 🚀 CACHE HIT! Returning cached results`);
+            console.log(`[DataAggregatorV4] ðŸš€ CACHE HIT! Returning cached results`);
             return {
                 ...cached,
                 fromCache: true,
@@ -150,7 +150,7 @@ class DataAggregatorV4 {
             results: enrichedResults,
             metadata: {
                 totalResults: enrichedResults.length,
-                sources: this.sources.filter((_, i) => results[i] && results[i].success),  // ✅ NULL-SAFE
+                sources: this.sources.filter((_, i) => results[i] && results[i].success),  // âœ… NULL-SAFE
                 timestamp: new Date().toISOString(),
                 fromCache: false
             }
@@ -208,13 +208,13 @@ class DataAggregatorV4 {
      * FIXED: Limit to 3 results + sequential with delay to avoid rate limiting
      */
     async enrichWithQuotes(results) {
-        // ✅ LIMIT TO 3 RESULTS (like before!)
+        // âœ… LIMIT TO 3 RESULTS (like before!)
         const limitedResults = results.slice(0, 3);
         const enrichedResults = [];
 
         console.log(`[DataAggregatorV4] Enriching ${limitedResults.length} results (limited from ${results.length})`);
 
-        // ✅ SEQUENTIAL (not parallel) to avoid rate limiting
+        // âœ… SEQUENTIAL (not parallel) to avoid rate limiting
         for (const item of limitedResults) {
             // If we already have price data, skip
             if (item.price != null && typeof item.price === 'number') {
@@ -227,12 +227,12 @@ class DataAggregatorV4 {
             if (quote.success && quote.data) {
                 enrichedResults.push({
                     ...item,
-                    description: quote.data.description || item.description,  // ✅ KEEP DESCRIPTION
+                    description: quote.data.description || item.description,  // âœ… KEEP DESCRIPTION
                     price: quote.data.price,
                     change: quote.data.change,
                     changePercent: quote.data.changePercent,
                     currency: quote.data.currency || item.currency,
-                    // ✅ FUNDAMENTAL DATA MAPPING
+                    // âœ… FUNDAMENTAL DATA MAPPING
                     marketCap: quote.data.marketCap || null,
                     peRatio: quote.data.peRatio || null,
                     dividendYield: quote.data.dividendYield || null,
@@ -244,7 +244,7 @@ class DataAggregatorV4 {
                 enrichedResults.push(item);
             }
 
-            // ✅ SMALL DELAY to avoid rate limiting (like before!)
+            // âœ… SMALL DELAY to avoid rate limiting (like before!)
             await new Promise(resolve => setTimeout(resolve, 100));
         }
 
@@ -253,25 +253,40 @@ class DataAggregatorV4 {
 
     /**
      * Get quote with intelligent routing + CACHE
-     * STRATEGY: Yahoo v8 chart first (free, global), then FMP, then TwelveData, then Finnhub
+     * STRATEGY: FMP first (complete fundamentals + description), then Yahoo, then TwelveData
      */
     async getQuote(symbol) {
-        console.log(`[DataAggregator] Getting quote for: ${symbol}`);
+        console.log(`[DataAggregatorV4] Getting quote for: ${symbol}`);
 
-        // 1. CHECK CACHE FIRST (but skip cached failures with null price)
+        // 1. CHECK CACHE FIRST
         const cached = await this.cache.get('quote', symbol);
-        if (cached && cached.data && cached.data.price != null) {
-            console.log(`[DataAggregator] QUOTE CACHE HIT: ${symbol} = ${cached.data.price}`);
+        if (cached) {
+            console.log(`[DataAggregatorV4] ðŸš€ QUOTE CACHE HIT: ${symbol}`);
             return {
                 ...cached,
                 fromCache: true
             };
         }
 
-        // ✅ TRY YAHOO FIRST (v8 chart - free, unlimited, global coverage)
+        // âœ… TRY FINANCIAL MODELING PREP FIRST (complete fundamentals + description!)
+        try {
+            const fmpQuote = await this.fmp.getQuote(symbol);
+            if (fmpQuote.success && fmpQuote.data) {
+                console.log(`[fmp] Quote found: ${fmpQuote.data.price} USD (complete fundamentals + description)`);
+                
+                // SAVE TO CACHE
+                await this.cache.set('quote', symbol, fmpQuote);
+                
+                return fmpQuote;
+            }
+        } catch (error) {
+            console.error(`[fmp] Quote error: ${error.message}`);
+        }
+
+        // âœ… FALLBACK: Yahoo (if available)
         try {
             const yahooQuote = await this.yahoo.getQuote(symbol);
-            if (yahooQuote.success && yahooQuote.data && yahooQuote.data.price) {
+            if (yahooQuote.success && yahooQuote.data) {
                 console.log(`[yahoo] Quote found: ${yahooQuote.data.price} ${yahooQuote.data.currency}`);
                 
                 // SAVE TO CACHE
@@ -283,26 +298,13 @@ class DataAggregatorV4 {
             console.error(`[yahoo] Quote error: ${error.message}`);
         }
 
-        // FALLBACK: FMP (if available/paid)
-        try {
-            const fmpQuote = await this.fmp.getQuote(symbol);
-            if (fmpQuote.success && fmpQuote.data && fmpQuote.data.price) {
-                console.log(`[fmp] Quote found: ${fmpQuote.data.price} USD`);
-                
-                await this.cache.set('quote', symbol, fmpQuote);
-                return fmpQuote;
-            }
-        } catch (error) {
-            console.error(`[fmp] Quote error: ${error.message}`);
-        }
-
-        // ✅ FALLBACK: TwelveData for price + separate fundamentals call
+        // âœ… FALLBACK: TwelveData for price + separate fundamentals call
         try {
             const twelveQuote = await this.twelvedata.getQuote(symbol);
             if (twelveQuote.success && twelveQuote.data) {
                 console.log(`[twelvedata] Quote found: ${twelveQuote.data.price} ${twelveQuote.data.currency}`);
                 
-                // 🆕 GET FUNDAMENTALS from TwelveData
+                // ðŸ†• GET FUNDAMENTALS from TwelveData
                 console.log(`[DataAggregatorV4] Fetching fundamentals from TwelveData for ${symbol}...`);
                 const fundamentals = await this.twelvedata.getFundamentals(symbol);
                 
@@ -415,6 +417,8 @@ class DataAggregatorV4 {
 
     /**
      * Search by ISIN with fallback + CACHE
+     * STRATEGY: Cache → OpenFIGI (ISIN→ticker) → TwelveData → Yahoo → Finnhub
+     * Then enrich with quotes for price data
      */
     async searchByISIN(isin) {
         console.log(`[DataAggregatorV4] Searching by ISIN: ${isin}`);
@@ -429,74 +433,122 @@ class DataAggregatorV4 {
             };
         }
 
-        // Try OpenFIGI FIRST (universal - covers stocks, bonds, ETFs, funds/OICR, certificates, all exchanges)
+        // 2. Try OpenFIGI FIRST (Bloomberg ISIN resolver - best for funds/ETF/bonds)
         try {
             const figiResult = await this.openfigi.mapISIN(isin);
             if (figiResult.success && figiResult.results.length > 0) {
-                console.log(`[openfigi] Found ${figiResult.results.length} results, enriching with quotes...`);
+                console.log(`[OpenFIGI] Resolved ISIN ${isin} → ${figiResult.results.length} instrument(s)`);
                 
-                // Convert OpenFIGI results to Yahoo-compatible symbols and enrich with prices
-                const OpenFigiClient = require('./openFigi');
-                const enrichable = figiResult.results.slice(0, 3).map(r => {
-                    const yahooSuffix = OpenFigiClient.exchangeToYahooSuffix(r.exchange);
+                // Get the best Yahoo-compatible symbol
+                const bestSymbol = OpenFigiClient.getBestYahooSymbol(figiResult.results);
+                const bestResult = figiResult.results[0];
+                
+                // Build search results from OpenFIGI data
+                const results = figiResult.results.slice(0, 3).map(r => {
+                    const suffix = OpenFigiClient.exchangeToYahooSuffix(r.exchange);
                     return {
-                        ...r,
-                        symbol: r.symbol + yahooSuffix,  // e.g. ENEL → ENEL.MI
-                        originalSymbol: r.symbol,
-                        yahooSymbol: r.symbol + yahooSuffix
+                        symbol: r.symbol + suffix,
+                        name: r.name,
+                        type: r.type,
+                        exchange: r.exchange,
+                        currency: r.currency || '',
+                        isin: isin.toUpperCase(),
+                        source: 'openfigi',
+                        figi: r.figi
                     };
-                });
+                }).filter(r => r.symbol); // Remove entries without ticker
 
-                const enriched = await this.enrichWithQuotes(enrichable);
-                
-                const enrichedResult = {
-                    success: true,
-                    results: enriched,
-                    metadata: {
-                        ...figiResult.metadata,
-                        enrichedWithQuotes: true
-                    }
-                };
-
-                // SAVE TO CACHE (ISIN mapping + quotes)
-                await this.cache.set('isin', isin, enrichedResult);
-                return enrichedResult;
+                if (results.length > 0) {
+                    // Enrich with real-time quotes (price, P/E, etc.)
+                    const enriched = await this.enrichWithQuotes(results);
+                    
+                    const response = {
+                        success: true,
+                        results: enriched,
+                        metadata: {
+                            totalResults: enriched.length,
+                            sources: ['openfigi'],
+                            primarySource: 'openfigi',
+                            isin: isin.toUpperCase(),
+                            timestamp: new Date().toISOString(),
+                            fromCache: false
+                        }
+                    };
+                    
+                    // SAVE TO CACHE (ISIN mapping is stable, long TTL)
+                    await this.cache.set('isin', isin, response, 86400); // 24h
+                    return response;
+                }
             }
         } catch (error) {
-            console.error(`[openfigi] ISIN search error: ${error.message}`);
+            console.error(`[OpenFIGI] ISIN search error: ${error.message}`);
         }
 
-        // Try TwelveData
+        // 3. Fallback: Try TwelveData
         try {
             const twelveResult = await this.twelvedata.searchByISIN(isin);
             if (twelveResult.success && twelveResult.results.length > 0) {
-                // SAVE TO CACHE (ISIN never changes, 30 days)
-                await this.cache.set('isin', isin, twelveResult);
-                return twelveResult;
+                // Enrich with quotes
+                const enriched = await this.enrichWithQuotes(twelveResult.results);
+                const response = {
+                    success: true,
+                    results: enriched,
+                    metadata: {
+                        totalResults: enriched.length,
+                        sources: ['twelvedata'],
+                        isin: isin.toUpperCase(),
+                        timestamp: new Date().toISOString(),
+                        fromCache: false
+                    }
+                };
+                await this.cache.set('isin', isin, response, 86400);
+                return response;
             }
         } catch (error) {
             console.error(`[twelvedata] ISIN search error: ${error.message}`);
         }
 
-        // Try Yahoo
+        // 4. Fallback: Try Yahoo
         try {
             const yahooResult = await this.yahoo.searchByISIN(isin);
             if (yahooResult.success && yahooResult.results.length > 0) {
-                // SAVE TO CACHE
-                await this.cache.set('isin', isin, yahooResult);
-                return yahooResult;
+                const enriched = await this.enrichWithQuotes(yahooResult.results);
+                const response = {
+                    success: true,
+                    results: enriched,
+                    metadata: {
+                        totalResults: enriched.length,
+                        sources: ['yahoo'],
+                        isin: isin.toUpperCase(),
+                        timestamp: new Date().toISOString(),
+                        fromCache: false
+                    }
+                };
+                await this.cache.set('isin', isin, response, 86400);
+                return response;
             }
         } catch (error) {
             console.error(`[yahoo] ISIN search error: ${error.message}`);
         }
 
-        // Try Finnhub
+        // 5. Fallback: Try Finnhub
         try {
             const finnhubResult = await this.finnhub.searchByISIN(isin);
             if (finnhubResult.success && finnhubResult.results.length > 0) {
-                // SAVE TO CACHE
-                await this.cache.set('isin', isin, finnhubResult);
-                return finnhubResult;
+                const enriched = await this.enrichWithQuotes(finnhubResult.results);
+                const response = {
+                    success: true,
+                    results: enriched,
+                    metadata: {
+                        totalResults: enriched.length,
+                        sources: ['finnhub'],
+                        isin: isin.toUpperCase(),
+                        timestamp: new Date().toISOString(),
+                        fromCache: false
+                    }
+                };
+                await this.cache.set('isin', isin, response, 86400);
+                return response;
             }
         } catch (error) {
             console.error(`[finnhub] ISIN search error: ${error.message}`);
@@ -511,26 +563,26 @@ class DataAggregatorV4 {
 
     /**
      * Get complete instrument details with fundamentals (description, marketCap, PE, etc)
-     * STRATEGY: Get quote first, then enrich with fundamentals from Yahoo/TwelveData
+     * PRIMARY: Financial Modeling Prep (complete data)
+     * FALLBACK: Quote data
      */
     async getInstrumentDetails(symbol) {
-        console.log(`[DataAggregator] Getting instrument details for: ${symbol}`);
+        console.log(`[DataAggregatorV4] Getting instrument details for: ${symbol}`);
         
-        // 1. CHECK CACHE FIRST (skip if cached without real fundamentals)
+        // 1. CHECK CACHE FIRST
         const cached = await this.cache.get('details', symbol);
-        if (cached && cached.data && (cached.data.marketCap || cached.data.peRatio || 
-            (cached.data.description && cached.data.description.length > 50))) {
-            console.log(`[DataAggregator] DETAILS CACHE HIT: ${symbol}`);
+        if (cached) {
+            console.log(`[DataAggregatorV4] ðŸš€ CACHE HIT! Returning cached details`);
             return {
                 ...cached,
                 fromCache: true
             };
         }
         
-        // 2. Try Financial Modeling Prep (complete fundamentals) - may fail if 402
+        // 2. Try Financial Modeling Prep (complete fundamentals)
         try {
             const fmpResult = await this.fmp.getQuote(symbol);
-            if (fmpResult.success && fmpResult.data && fmpResult.data.price) {
+            if (fmpResult.success) {
                 console.log(`[FMP] Complete details for ${symbol}: ${fmpResult.data.price} ${fmpResult.data.currency}`);
                 
                 const response = {
@@ -540,82 +592,50 @@ class DataAggregatorV4 {
                     fromCache: false
                 };
                 
+                // SAVE TO CACHE (longer TTL for details: 1 hour)
                 await this.cache.set('details', symbol, response, 3600);
+                
                 return response;
             }
         } catch (error) {
             console.error(`[FMP] Details error: ${error.message}`);
         }
         
-        // 3. Get base quote data (price, change, etc.)
-        let baseData = null;
+        // 3. Fallback: Try to get quote data (less complete but better than nothing)
         try {
             const quoteResult = await this.getQuote(symbol);
-            if (quoteResult.success && quoteResult.data) {
-                baseData = { ...quoteResult.data };
+            if (quoteResult.success) {
+                console.log(`[DataAggregatorV4] Using quote data as fallback for details`);
+                
+                const response = {
+                    success: true,
+                    data: {
+                        ...quoteResult.data,
+                        description: quoteResult.data.name || `${symbol} stock`,
+                        // Add placeholder fundamentals if missing
+                        marketCap: quoteResult.data.marketCap || null,
+                        peRatio: quoteResult.data.peRatio || null,
+                        dividendYield: quoteResult.data.dividendYield || null,
+                        week52High: quoteResult.data.week52High || null,
+                        week52Low: quoteResult.data.week52Low || null
+                    },
+                    source: quoteResult.source,
+                    fromCache: false
+                };
+                
+                // SAVE TO CACHE
+                await this.cache.set('details', symbol, response, 3600);
+                
+                return response;
             }
         } catch (error) {
-            console.error(`[DataAggregator] Quote for details error: ${error.message}`);
+            console.error(`[DataAggregatorV4] Fallback details error: ${error.message}`);
         }
-
-        if (!baseData) {
-            return { success: false, error: 'Could not fetch instrument details' };
-        }
-
-        // 4. Enrich with fundamentals from Yahoo
-        try {
-            console.log(`[DataAggregator] Fetching Yahoo fundamentals for ${symbol}...`);
-            const yahooFund = await this.yahoo.getFundamentals(symbol);
-            if (yahooFund.success && yahooFund.data) {
-                const f = yahooFund.data;
-                baseData.marketCap = baseData.marketCap || f.marketCap;
-                baseData.peRatio = baseData.peRatio || f.peRatio;
-                baseData.dividendYield = baseData.dividendYield || f.dividendYield;
-                baseData.week52High = baseData.week52High || f.week52High;
-                baseData.week52Low = baseData.week52Low || f.week52Low;
-                baseData.description = f.description || baseData.description || baseData.name;
-                baseData.industry = f.industry || baseData.industry;
-                baseData.sector = f.sector || baseData.sector;
-                baseData.website = f.website || baseData.website;
-                console.log(`[yahoo] Fundamentals enriched: marketCap=${f.marketCap}, PE=${f.peRatio}, 52W=${f.week52Low}-${f.week52High}`);
-            }
-        } catch (error) {
-            console.error(`[yahoo] Fundamentals error: ${error.message}`);
-        }
-
-        // 5. If Yahoo fundamentals failed, try TwelveData
-        if (!baseData.marketCap && !baseData.peRatio) {
-            try {
-                console.log(`[DataAggregator] Trying TwelveData fundamentals for ${symbol}...`);
-                const tdFund = await this.twelvedata.getFundamentals(symbol);
-                if (tdFund.success && tdFund.data) {
-                    baseData.marketCap = baseData.marketCap || tdFund.data.marketCap;
-                    baseData.peRatio = baseData.peRatio || tdFund.data.peRatio;
-                    baseData.dividendYield = baseData.dividendYield || tdFund.data.dividendYield;
-                    baseData.week52High = baseData.week52High || tdFund.data.week52High;
-                    baseData.week52Low = baseData.week52Low || tdFund.data.week52Low;
-                    console.log(`[twelvedata] Fundamentals added for ${symbol}`);
-                }
-            } catch (error) {
-                console.error(`[twelvedata] Fundamentals error: ${error.message}`);
-            }
-        }
-
-        // Ensure description is meaningful
-        if (!baseData.description || baseData.description === symbol) {
-            baseData.description = baseData.name || `${symbol} stock`;
-        }
-
-        const response = {
-            success: true,
-            data: baseData,
-            source: 'multi',
-            fromCache: false
-        };
         
-        // SAVE TO CACHE (1 hour)
-        await this.cache.set('details', symbol, response, 3600);
-        return response;
+        return {
+            success: false,
+            error: 'Could not fetch instrument details from any source'
+        };
     }
 
     /**
@@ -636,7 +656,10 @@ class DataAggregatorV4 {
                 .catch(() => ({ finnhub: 'FAIL' })),
             this.alphavantage.search('IBM')
                 .then(() => ({ alphavantage: 'OK' }))
-                .catch(() => ({ alphavantage: 'FAIL' }))
+                .catch(() => ({ alphavantage: 'FAIL' })),
+            this.openfigi.mapISIN('US0378331005')
+                .then(r => ({ openfigi: r.success ? 'OK' : 'FAIL' }))
+                .catch(() => ({ openfigi: 'FAIL' }))
         ]);
 
         const sources = Object.assign({}, ...checks);
