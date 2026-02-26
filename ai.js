@@ -112,12 +112,28 @@ router.post('/chat', async (req, res) => {
     res.setHeader('Cache-Control', 'no-cache');
     res.setHeader('Connection', 'keep-alive');
     res.setHeader('X-Accel-Buffering', 'no');
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.flushHeaders(); // CRITICAL: force headers to be sent immediately
+
+    // Send initial heartbeat to keep connection alive
+    res.write(`data: ${JSON.stringify({ type: 'status', status: 'thinking' })}\n\n`);
 
     let aborted = false;
-    req.on('close', () => { aborted = true; });
+
+    // Keep-alive heartbeat every 15s to prevent Render proxy timeout
+    const heartbeat = setInterval(() => {
+        if (!aborted) {
+            try { res.write(': heartbeat\n\n'); } catch(e) {}
+        }
+    }, 15000);
+
+    req.on('close', () => { aborted = true; clearInterval(heartbeat); });
 
     try {
-        const stream = await client.messages.stream({
+        console.log('[AI] Starting stream, message length:', content.length);
+        
+        const stream = client.messages.stream({
             model: 'claude-sonnet-4-20250514',
             max_tokens: 2048,
             system: SYSTEM_PROMPT,
@@ -133,6 +149,7 @@ router.post('/chat', async (req, res) => {
         });
 
         stream.on('end', () => {
+            clearInterval(heartbeat);
             if (!aborted) {
                 res.write(`data: ${JSON.stringify({ type: 'done', fullText })}\n\n`);
                 res.end();
@@ -140,20 +157,27 @@ router.post('/chat', async (req, res) => {
         });
 
         stream.on('error', (error) => {
-            console.error('[AI] Stream error:', error.message);
+            clearInterval(heartbeat);
+            console.error('[AI] Stream error:', error.message, error.status || '');
             if (!aborted) {
-                res.write(`data: ${JSON.stringify({ type: 'error', error: 'Errore nella risposta AI.' })}\n\n`);
+                res.write(`data: ${JSON.stringify({ type: 'error', error: 'Errore nella risposta AI: ' + (error.message || 'unknown') })}\n\n`);
                 res.end();
             }
         });
 
+        // Abort stream if client disconnects
+        req.on('close', () => { 
+            try { stream.abort(); } catch(e) {} 
+        });
+
     } catch (error) {
+        clearInterval(heartbeat);
         console.error('[AI] Error:', error.message);
-        if (!aborted && !res.headersSent) {
-            res.status(500).json({ success: false, error: 'Errore AI.' });
-        } else if (!aborted) {
-            res.write(`data: ${JSON.stringify({ type: 'error', error: 'Errore.' })}\n\n`);
-            res.end();
+        if (!aborted) {
+            try {
+                res.write(`data: ${JSON.stringify({ type: 'error', error: error.message || 'Errore AI.' })}\n\n`);
+                res.end();
+            } catch(e) { /* response already ended */ }
         }
     }
 });
@@ -168,6 +192,34 @@ router.post('/upload', upload.single('file'), async (req, res) => {
         const text = await extractText(req.file);
         res.json({ success: true, fileName: req.file.originalname, fileSize: req.file.size, textLength: text.length, text, preview: text.substring(0, 500) });
     } catch (error) { res.status(400).json({ success: false, error: error.message }); }
+});
+
+// ===================================
+// GET /api/ai/test-stream - Test SSE connection
+// ===================================
+
+router.get('/test-stream', (req, res) => {
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Connection', 'keep-alive');
+    res.setHeader('X-Accel-Buffering', 'no');
+    res.flushHeaders();
+    
+    res.write(`data: ${JSON.stringify({ type: 'text', text: 'Test SSE funziona! ' })}\n\n`);
+    
+    let count = 0;
+    const interval = setInterval(() => {
+        count++;
+        if (count <= 5) {
+            res.write(`data: ${JSON.stringify({ type: 'text', text: `Chunk ${count}... ` })}\n\n`);
+        } else {
+            clearInterval(interval);
+            res.write(`data: ${JSON.stringify({ type: 'done', fullText: 'Test completato!' })}\n\n`);
+            res.end();
+        }
+    }, 500);
+    
+    req.on('close', () => clearInterval(interval));
 });
 
 // ===================================
