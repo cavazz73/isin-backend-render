@@ -3,7 +3,7 @@
  * P.IVA: 04219740364
  * 
  * ISIN Research Backend - Multi-Source Financial Data API
- * Version: 4.4.0 - Complete with Bonds + Keep-Alive
+ * Version: 5.0.0 - Complete with AI Financial Assistant
  */
 
 const express = require('express');
@@ -16,7 +16,7 @@ const PORT = process.env.PORT || 10000;
 
 // Middleware
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '5mb' })); // Increased for AI document context
 
 // Request logging
 app.use((req, res, next) => {
@@ -30,15 +30,29 @@ app.get('/health', (req, res) => {
         status: 'ok',
         timestamp: new Date().toISOString(),
         uptime: process.uptime(),
-        version: '4.4.0',
+        version: '5.0.0',
         endpoints: {
             financial: '/api/financial',
             certificates: '/api/certificates',
             bonds: '/api/bonds',
+            ai: '/api/ai',
             health: '/health'
         }
     });
 });
+
+// ===================================
+// LOAD AI MODULE
+// ===================================
+
+let aiRoutes;
+try {
+    aiRoutes = require('./ai');
+    app.use('/api/ai', aiRoutes);
+    console.log('✅ AI module loaded');
+} catch (error) {
+    console.warn('⚠️  AI module not found:', error.message);
+}
 
 // ===================================
 // LOAD FINANCIAL MODULE
@@ -48,9 +62,9 @@ let financialRoutes;
 try {
     financialRoutes = require('./financial');
     app.use('/api/financial', financialRoutes);
-    console.log('✅ Financial module loaded from root');
+    console.log('âœ… Financial module loaded from root');
 } catch (error) {
-    console.warn('⚠️  Financial module not found:', error.message);
+    console.warn('âš ï¸  Financial module not found:', error.message);
 }
 
 // ===================================
@@ -61,9 +75,9 @@ let certificatesRoutes;
 try {
     certificatesRoutes = require('./certificates');
     app.use('/api/certificates', certificatesRoutes);
-    console.log('✅ Certificates module loaded from root');
+    console.log('âœ… Certificates module loaded from root');
 } catch (error) {
-    console.warn('⚠️  Certificates module not found:', error.message);
+    console.warn('âš ï¸  Certificates module not found:', error.message);
 }
 
 // ===================================
@@ -74,9 +88,10 @@ let bondsRoutes;
 try {
     bondsRoutes = require('./bonds');
     app.use('/api/bonds', bondsRoutes);
-    console.log('✅ Bonds module loaded from root');
+    console.log('âœ… Bonds module loaded from root');
 } catch (error) {
-    console.log('📦 Bonds module not found, using JSON fallback');
+    console.log('ðŸ“¦ Bonds module not found, using JSON fallback');
+    console.log(`  AI: ${aiRoutes ? "Active" : "Not found"}`);
     
     // Create bonds routes from JSON
     const bondsRouter = express.Router();
@@ -93,7 +108,7 @@ try {
             if (data.bonds) {
                 // Simple structure
                 bondsData = data.bonds;
-                console.log(`✅ Loaded ${bondsData.length} bonds from JSON`);
+                console.log(`âœ… Loaded ${bondsData.length} bonds from JSON`);
             } else if (data.categories) {
                 // Categories structure
                 categoriesData = data.categories;
@@ -103,13 +118,13 @@ try {
                         bondsData = bondsData.concat(category.bonds);
                     }
                 });
-                console.log(`✅ Loaded ${bondsData.length} bonds from ${Object.keys(categoriesData).length} categories`);
+                console.log(`âœ… Loaded ${bondsData.length} bonds from ${Object.keys(categoriesData).length} categories`);
             }
         } else {
-            console.warn('⚠️  bonds-data.json not found');
+            console.warn('âš ï¸  bonds-data.json not found');
         }
     } catch (error) {
-        console.error('❌ Error loading bonds data:', error.message);
+        console.error('âŒ Error loading bonds data:', error.message);
     }
     
     // GET /api/bonds
@@ -227,44 +242,22 @@ app.use((err, req, res, next) => {
 
 app.listen(PORT, () => {
     console.log('='.repeat(60));
-    console.log('ISIN Research Backend - Multi-Source v4.4.0');
-    console.log('Copyright (c) 2024-2026 Mutna S.R.L.S.');
+    console.log('ISIN Research Backend - Multi-Source v5.0.0');
+    console.log('Copyright (c) 2024-2025 Mutna S.R.L.S.');
     console.log('='.repeat(60));
     console.log(`Server running on port ${PORT}`);
     console.log(`Health check: http://localhost:${PORT}/health`);
     console.log(`API Financial: http://localhost:${PORT}/api/financial`);
     console.log(`API Certificates: http://localhost:${PORT}/api/certificates`);
     console.log(`API Bonds: http://localhost:${PORT}/api/bonds`);
+    console.log(`API AI: http://localhost:${PORT}/api/ai`);
     console.log('='.repeat(60));
     console.log('Modules loaded:');
-    console.log(`  Financial: ${financialRoutes ? '✅ Active' : '⚠️  Not found'}`);
-    console.log(`  Certificates: ${certificatesRoutes ? '✅ Active' : '⚠️  Not found'}`);
-    console.log(`  Bonds: ${bondsRoutes ? '✅ Module mode' : '📦 JSON fallback'}`);
+    console.log(`  Financial: ${financialRoutes ? 'âœ… Active' : 'âš ï¸  Not found'}`);
+    console.log(`  Certificates: ${certificatesRoutes ? 'âœ… Active' : 'âš ï¸  Not found'}`);
+    console.log(`  Bonds: ${bondsRoutes ? 'âœ… Module mode' : 'ðŸ“¦ JSON fallback'}`);
+    console.log(`  AI: ${aiRoutes ? "Active" : "Not found"}`);
     console.log('='.repeat(60));
-
-    // ===================================
-    // SELF-PING KEEP-ALIVE (Render free tier)
-    // Pings /health every 10 minutes to prevent cold starts
-    // ===================================
-    const RENDER_URL = process.env.RENDER_EXTERNAL_URL || process.env.SERVICE_URL;
-    if (RENDER_URL) {
-        const https = require('https');
-        const http = require('http');
-        const pingUrl = `${RENDER_URL}/health`;
-        const client = pingUrl.startsWith('https') ? https : http;
-
-        setInterval(() => {
-            client.get(pingUrl, (res) => {
-                console.log(`[Keep-Alive] Ping -> ${res.statusCode}`);
-            }).on('error', (err) => {
-                console.log(`[Keep-Alive] Ping failed: ${err.message}`);
-            });
-        }, 10 * 60 * 1000); // every 10 minutes
-
-        console.log(`[Keep-Alive] ✅ Self-ping enabled -> ${pingUrl} every 10min`);
-    } else {
-        console.log('[Keep-Alive] ⚠️  No RENDER_EXTERNAL_URL set, self-ping disabled');
-    }
 });
 
 module.exports = app;
