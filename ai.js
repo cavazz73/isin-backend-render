@@ -1,6 +1,9 @@
 /**
  * Copyright (c) 2024-2025 Mutna S.R.L.S. - All Rights Reserved
- * AI Financial Assistant - Powered by Claude (Anthropic)
+ * P.IVA: 04219740364
+ * 
+ * AI Financial Assistant Module
+ * Powered by Claude (Anthropic) - Specialized in Italian/EU Finance
  */
 
 const express = require('express');
@@ -9,225 +12,482 @@ const Anthropic = require('@anthropic-ai/sdk');
 const multer = require('multer');
 const pdfParse = require('pdf-parse');
 
+// ===================================
+// CONFIGURATION
+// ===================================
+
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
-if (!ANTHROPIC_API_KEY) console.error('[AI] ANTHROPIC_API_KEY not set!');
+if (!ANTHROPIC_API_KEY) {
+    console.error('❌ ANTHROPIC_API_KEY not set! AI module will not work.');
+}
+
 const client = ANTHROPIC_API_KEY ? new Anthropic({ apiKey: ANTHROPIC_API_KEY }) : null;
 
-// Rate limiting
+// Rate limiting simple (in-memory)
 const rateLimits = new Map();
+const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
+const RATE_LIMIT_MAX = 15; // 15 messages per minute
+
 function checkRateLimit(ip) {
     const now = Date.now();
     const key = ip || 'unknown';
-    if (!rateLimits.has(key)) { rateLimits.set(key, { count: 1, resetAt: now + 60000 }); return true; }
+    
+    if (!rateLimits.has(key)) {
+        rateLimits.set(key, { count: 1, resetAt: now + RATE_LIMIT_WINDOW });
+        return true;
+    }
+    
     const limit = rateLimits.get(key);
-    if (now > limit.resetAt) { rateLimits.set(key, { count: 1, resetAt: now + 60000 }); return true; }
-    if (limit.count >= 15) return false;
+    if (now > limit.resetAt) {
+        rateLimits.set(key, { count: 1, resetAt: now + RATE_LIMIT_WINDOW });
+        return true;
+    }
+    
+    if (limit.count >= RATE_LIMIT_MAX) {
+        return false;
+    }
+    
     limit.count++;
     return true;
 }
-setInterval(() => { const now = Date.now(); for (const [k, v] of rateLimits) { if (now > v.resetAt) rateLimits.delete(k); } }, 300000);
+
+// Clean up rate limits every 5 minutes
+setInterval(() => {
+    const now = Date.now();
+    for (const [key, val] of rateLimits) {
+        if (now > val.resetAt) rateLimits.delete(key);
+    }
+}, 5 * 60 * 1000);
 
 // ===================================
-// SYSTEM PROMPT
+// SYSTEM PROMPT - Financial Expert
 // ===================================
 
 const SYSTEM_PROMPT = `Sei un consulente finanziario AI esperto, integrato nella piattaforma ISIN Research & Compare di Mutna S.R.L.S.
 
-Analista finanziario senior specializzato in mercati europei e italiani. Rispondi sempre in italiano.
+## Il Tuo Ruolo
+Sei un analista finanziario senior specializzato nei mercati europei e italiani. Fornisci analisi professionali, oggettive e dettagliate. Parli in italiano a meno che l'utente non scriva in un'altra lingua.
 
-Competenze: azioni, obbligazioni, certificati (Cash Collect, Phoenix, Bonus Cap, Express), ETF, fondi, mercati (FTSE MIB, DAX, S&P500), tassazione italiana (26% capital gain, 12.5% titoli di stato), normativa KIID/KID.
+## Le Tue Competenze
+- **Azioni**: Analisi fondamentale e tecnica, multipli (P/E, EV/EBITDA, PEG), dividend yield, settori e comparabili
+- **Obbligazioni/Bond**: Duration, yield to maturity, credit spread, rating, curva dei rendimenti, BTP/BOT italiani, bond corporate
+- **Certificati di investimento**: Cash Collect, Phoenix, Bonus Cap, Express, Barrier — comprendi barriere, cedole, sottostanti, scenari a scadenza, rischio emittente
+- **ETF e Fondi**: Expense ratio (TER), tracking error, diversificazione, confronto benchmark, categorie Morningstar
+- **Mercati**: Borsa Italiana (FTSE MIB, STAR), mercati EU (DAX, CAC40, IBEX), US (S&P500, Nasdaq), materie prime, forex
+- **Normativa**: Tassazione italiana su capital gain (26%), titoli di stato (12.5%), regime dichiarativo vs amministrato, KIID/KID
 
-Regole:
-- Usa i dati dalla piattaforma come base. NON inventare numeri.
-- 52W Range NON e la performance YTD. Non calcolare dati che non hai.
-- Distingui tra dati forniti e tue considerazioni generali.
-- NO disclaimer nelle risposte (ce gia fisso nella piattaforma).
-- Markdown per formattare, tabelle per confronti.
-- Conciso e diretto, max 300-400 parole.
-- Presenta pro e contro, mai consigliare comprare/vendere.`;
+## Regole CRITICHE sui Dati
+1. Usa SOLO i dati forniti dalla piattaforma - non calcolare performance YTD, rendimenti storici o metriche derivate
+2. NON inventare MAI numeri, prezzi, performance o statistiche
+3. Il 52W Range NON e' la performance YTD - non usarlo per calcolare rendimenti
+4. Se un dato non e' disponibile nei dati forniti, dillo chiaramente: "Questo dato non e' disponibile nei dati della piattaforma"
+5. Distingui chiaramente tra dati fattuali (dalla piattaforma) e tue considerazioni/opinioni generali
+
+## Formato Risposte
+- NO disclaimer nelle risposte (c'e' gia' un avviso fisso nella piattaforma, non ripeterlo MAI)
+- Usa markdown per formattare le risposte
+- Usa tabelle per confronti
+- Sii conciso ma completo, max 300-400 parole per analisi
+- Presenta pro E contro di ogni strumento
+- Non consigliare mai di comprare o vendere
+
+## Contesto Piattaforma
+ISIN Research & Compare e' una piattaforma di ricerca finanziaria che aggrega dati da Yahoo Finance, Finnhub, Alpha Vantage e TwelveData. Copre azioni, bond, certificati, ETF e fondi.`;
 
 // ===================================
-// FILE UPLOAD
+// MULTER CONFIG for file uploads
 // ===================================
 
-const upload = multer({
-    storage: multer.memoryStorage(),
-    limits: { fileSize: 10 * 1024 * 1024 },
+const storage = multer.memoryStorage();
+const upload = multer({ 
+    storage,
+    limits: { fileSize: 10 * 1024 * 1024 }, // 10MB max
     fileFilter: (req, file, cb) => {
+        const allowed = [
+            'application/pdf',
+            'text/plain',
+            'text/csv',
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            'application/msword'
+        ];
         const ext = file.originalname.split('.').pop().toLowerCase();
-        cb(null, ['pdf', 'txt', 'csv', 'doc', 'docx'].includes(ext));
+        const allowedExt = ['pdf', 'txt', 'csv', 'doc', 'docx'];
+        
+        if (allowed.includes(file.mimetype) || allowedExt.includes(ext)) {
+            cb(null, true);
+        } else {
+            cb(new Error('Tipo file non supportato. Usa: PDF, TXT, CSV, DOCX'));
+        }
     }
 });
+
+// ===================================
+// HELPER: Extract text from uploaded file
+// ===================================
 
 async function extractText(file) {
     const ext = file.originalname.split('.').pop().toLowerCase();
-    if (ext === 'txt' || ext === 'csv') return file.buffer.toString('utf-8');
-    if (ext === 'pdf') { const data = await pdfParse(file.buffer); return data.text; }
-    if (ext === 'docx') {
-        const AdmZip = require('adm-zip');
-        const zip = new AdmZip(file.buffer);
-        return zip.readAsText('word/document.xml').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+    
+    if (ext === 'txt' || ext === 'csv') {
+        return file.buffer.toString('utf-8');
     }
-    throw new Error('Formato non supportato');
+    
+    if (ext === 'pdf') {
+        try {
+            const data = await pdfParse(file.buffer);
+            return data.text;
+        } catch (error) {
+            console.error('PDF parse error:', error.message);
+            throw new Error('Impossibile estrarre testo dal PDF. Il file potrebbe essere protetto o scansionato.');
+        }
+    }
+    
+    if (ext === 'docx') {
+        try {
+            const AdmZip = require('adm-zip');
+            const zip = new AdmZip(file.buffer);
+            const content = zip.readAsText('word/document.xml');
+            return content.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+        } catch (error) {
+            console.error('DOCX parse error:', error.message);
+            throw new Error('Impossibile estrarre testo dal DOCX.');
+        }
+    }
+    
+    throw new Error('Formato file non supportato');
 }
 
 // ===================================
-// POST /api/ai/chat - Pure fast streaming
+// HELPER: Build messages with context
+// ===================================
+
+function buildMessages(userMessage, options = {}) {
+    const { history = [], documentText = null, instrumentData = null } = options;
+    
+    const messages = [];
+    
+    // Add conversation history (last 20 messages max to save tokens)
+    const recentHistory = history.slice(-20);
+    for (const msg of recentHistory) {
+        if (msg.role === 'user' || msg.role === 'assistant') {
+            messages.push({ role: msg.role, content: msg.content });
+        }
+    }
+    
+    // Build current user message with context
+    let content = '';
+    
+    if (instrumentData) {
+        content += `\n[DATI STRUMENTO DALLA PIATTAFORMA - Usa SOLO questi dati, non inventarne altri]\n`;
+        // Filter out null/N/A values
+        const cleanData = {};
+        for (const [key, value] of Object.entries(instrumentData)) {
+            if (value !== null && value !== undefined && value !== 'N/A' && value !== '') {
+                cleanData[key] = value;
+            }
+        }
+        content += JSON.stringify(cleanData, null, 2);
+        content += `\n[FINE DATI STRUMENTO - Campi non presenti NON sono disponibili. Non calcolarli.]\n\n`;
+    }
+    
+    if (documentText) {
+        const truncated = documentText.substring(0, 30000);
+        content += `\n[DOCUMENTO CARICATO]\n`;
+        content += truncated;
+        if (documentText.length > 30000) {
+            content += `\n... (documento troncato, ${documentText.length} caratteri totali)`;
+        }
+        content += `\n[FINE DOCUMENTO]\n\n`;
+    }
+    
+    content += userMessage;
+    
+    messages.push({ role: 'user', content });
+    
+    return messages;
+}
+
+// ===================================
+// POST /api/ai/chat - Main chat endpoint (streaming SSE)
 // ===================================
 
 router.post('/chat', async (req, res) => {
-    if (!client) return res.status(503).json({ success: false, error: 'AI not configured.' });
-    if (!checkRateLimit(req.ip)) return res.status(429).json({ success: false, error: 'Troppi messaggi. Riprova tra un minuto.' });
-
-    const { message, history, documentText, instrumentData } = req.body;
-    if (!message || typeof message !== 'string' || !message.trim()) return res.status(400).json({ success: false, error: 'Message is required' });
-    if (message.length > 5000) return res.status(400).json({ success: false, error: 'Messaggio troppo lungo (max 5000).' });
-
-    // Build messages array
-    const messages = [];
-    if (history && Array.isArray(history)) {
-        for (const msg of history.slice(-20)) {
-            if (msg.role === 'user' || msg.role === 'assistant') {
-                messages.push({ role: msg.role, content: msg.content });
-            }
-        }
+    if (!client) {
+        return res.status(503).json({ 
+            success: false, 
+            error: 'AI service not configured. ANTHROPIC_API_KEY missing.' 
+        });
     }
-
-    let content = '';
-    if (instrumentData) {
-        const cleanData = {};
-        for (const [key, value] of Object.entries(instrumentData)) {
-            if (value !== null && value !== undefined && value !== 'N/A' && value !== '') cleanData[key] = value;
-        }
-        content += `[DATI STRUMENTO DALLA PIATTAFORMA]\n${JSON.stringify(cleanData, null, 2)}\n[FINE DATI]\n\n`;
+    
+    // Rate limit
+    if (!checkRateLimit(req.ip)) {
+        return res.status(429).json({ 
+            success: false, 
+            error: 'Troppi messaggi. Riprova tra un minuto.' 
+        });
     }
-    if (documentText) {
-        content += `[DOCUMENTO]\n${documentText.substring(0, 30000)}\n[FINE DOCUMENTO]\n\n`;
+    
+    const { message, history, documentText, instrumentData, stream = true } = req.body;
+    
+    if (!message || typeof message !== 'string' || message.trim().length === 0) {
+        return res.status(400).json({ 
+            success: false, 
+            error: 'Message is required' 
+        });
     }
-    content += message.trim();
-    messages.push({ role: 'user', content });
-
-    // SSE streaming
-    res.setHeader('Content-Type', 'text/event-stream');
-    res.setHeader('Cache-Control', 'no-cache');
-    res.setHeader('Connection', 'keep-alive');
-    res.setHeader('X-Accel-Buffering', 'no');
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-    res.flushHeaders(); // CRITICAL: force headers to be sent immediately
-
-    // Send initial heartbeat to keep connection alive
-    res.write(`data: ${JSON.stringify({ type: 'status', status: 'thinking' })}\n\n`);
-
-    let aborted = false;
-
-    // Keep-alive heartbeat every 15s to prevent Render proxy timeout
-    const heartbeat = setInterval(() => {
-        if (!aborted) {
-            try { res.write(': heartbeat\n\n'); } catch(e) {}
-        }
-    }, 15000);
-
-    req.on('close', () => { aborted = true; clearInterval(heartbeat); });
-
+    
+    // Limit message length
+    if (message.length > 5000) {
+        return res.status(400).json({ 
+            success: false, 
+            error: 'Messaggio troppo lungo. Massimo 5000 caratteri.' 
+        });
+    }
+    
     try {
-        console.log('[AI] Starting stream, message length:', content.length);
+        const messages = buildMessages(message.trim(), {
+            history: history || [],
+            documentText: documentText || null,
+            instrumentData: instrumentData || null
+        });
         
-        const stream = client.messages.stream({
-            model: 'claude-sonnet-4-20250514',
-            max_tokens: 2048,
-            system: SYSTEM_PROMPT,
-            messages: messages
-        });
-
-        let fullText = '';
-
-        stream.on('text', (text) => {
-            if (aborted) return;
-            fullText += text;
-            res.write(`data: ${JSON.stringify({ type: 'text', text })}\n\n`);
-        });
-
-        stream.on('end', () => {
-            clearInterval(heartbeat);
-            if (!aborted) {
+        if (stream) {
+            // SSE streaming response
+            res.setHeader('Content-Type', 'text/event-stream');
+            res.setHeader('Cache-Control', 'no-cache');
+            res.setHeader('Connection', 'keep-alive');
+            res.setHeader('X-Accel-Buffering', 'no');
+            
+            const streamResponse = await client.messages.stream({
+                model: 'claude-sonnet-4-20250514',
+                max_tokens: 2048,
+                system: SYSTEM_PROMPT,
+                messages: messages
+            });
+            
+            let fullText = '';
+            
+            streamResponse.on('text', (text) => {
+                fullText += text;
+                res.write(`data: ${JSON.stringify({ type: 'text', text })}\n\n`);
+            });
+            
+            streamResponse.on('end', () => {
                 res.write(`data: ${JSON.stringify({ type: 'done', fullText })}\n\n`);
                 res.end();
-            }
-        });
-
-        stream.on('error', (error) => {
-            clearInterval(heartbeat);
-            console.error('[AI] Stream error:', error.message, error.status || '');
-            if (!aborted) {
-                res.write(`data: ${JSON.stringify({ type: 'error', error: 'Errore nella risposta AI: ' + (error.message || 'unknown') })}\n\n`);
+            });
+            
+            streamResponse.on('error', (error) => {
+                console.error('Stream error:', error);
+                res.write(`data: ${JSON.stringify({ type: 'error', error: 'Errore durante la generazione della risposta.' })}\n\n`);
                 res.end();
-            }
-        });
-
-        // Abort stream if client disconnects
-        req.on('close', () => { 
-            try { stream.abort(); } catch(e) {} 
-        });
-
-    } catch (error) {
-        clearInterval(heartbeat);
-        console.error('[AI] Error:', error.message);
-        if (!aborted) {
-            try {
-                res.write(`data: ${JSON.stringify({ type: 'error', error: error.message || 'Errore AI.' })}\n\n`);
-                res.end();
-            } catch(e) { /* response already ended */ }
+            });
+            
+            // Handle client disconnect
+            req.on('close', () => {
+                streamResponse.abort();
+            });
+            
+        } else {
+            // Non-streaming response
+            const response = await client.messages.create({
+                model: 'claude-sonnet-4-20250514',
+                max_tokens: 2048,
+                system: SYSTEM_PROMPT,
+                messages: messages
+            });
+            
+            const aiText = response.content
+                .filter(block => block.type === 'text')
+                .map(block => block.text)
+                .join('');
+            
+            res.json({
+                success: true,
+                response: aiText,
+                usage: {
+                    inputTokens: response.usage.input_tokens,
+                    outputTokens: response.usage.output_tokens
+                }
+            });
         }
+        
+    } catch (error) {
+        console.error('AI chat error:', error);
+        
+        if (error.status === 401) {
+            return res.status(500).json({ success: false, error: 'API key non valida.' });
+        }
+        if (error.status === 429) {
+            return res.status(429).json({ success: false, error: 'Rate limit API raggiunto. Riprova tra poco.' });
+        }
+        if (error.status === 529) {
+            return res.status(503).json({ success: false, error: 'Servizio AI temporaneamente sovraccarico. Riprova tra poco.' });
+        }
+        
+        res.status(500).json({ 
+            success: false, 
+            error: 'Errore nella generazione della risposta AI.' 
+        });
     }
 });
 
 // ===================================
-// POST /api/ai/upload
+// POST /api/ai/upload - Upload & extract document text
 // ===================================
 
 router.post('/upload', upload.single('file'), async (req, res) => {
     try {
-        if (!req.file) return res.status(400).json({ success: false, error: 'Nessun file' });
-        const text = await extractText(req.file);
-        res.json({ success: true, fileName: req.file.originalname, fileSize: req.file.size, textLength: text.length, text, preview: text.substring(0, 500) });
-    } catch (error) { res.status(400).json({ success: false, error: error.message }); }
-});
-
-// ===================================
-// GET /api/ai/test-stream - Test SSE connection
-// ===================================
-
-router.get('/test-stream', (req, res) => {
-    res.setHeader('Content-Type', 'text/event-stream');
-    res.setHeader('Cache-Control', 'no-cache');
-    res.setHeader('Connection', 'keep-alive');
-    res.setHeader('X-Accel-Buffering', 'no');
-    res.flushHeaders();
-    
-    res.write(`data: ${JSON.stringify({ type: 'text', text: 'Test SSE funziona! ' })}\n\n`);
-    
-    let count = 0;
-    const interval = setInterval(() => {
-        count++;
-        if (count <= 5) {
-            res.write(`data: ${JSON.stringify({ type: 'text', text: `Chunk ${count}... ` })}\n\n`);
-        } else {
-            clearInterval(interval);
-            res.write(`data: ${JSON.stringify({ type: 'done', fullText: 'Test completato!' })}\n\n`);
-            res.end();
+        if (!req.file) {
+            return res.status(400).json({ 
+                success: false, 
+                error: 'Nessun file caricato' 
+            });
         }
-    }, 500);
-    
-    req.on('close', () => clearInterval(interval));
+        
+        console.log(`📄 AI Upload: ${req.file.originalname} (${(req.file.size / 1024).toFixed(1)} KB)`);
+        
+        const text = await extractText(req.file);
+        
+        res.json({
+            success: true,
+            fileName: req.file.originalname,
+            fileSize: req.file.size,
+            textLength: text.length,
+            text: text,
+            preview: text.substring(0, 500)
+        });
+        
+    } catch (error) {
+        console.error('Upload error:', error);
+        res.status(400).json({ 
+            success: false, 
+            error: error.message || 'Errore nell\'elaborazione del file' 
+        });
+    }
 });
 
 // ===================================
-// GET /api/ai/status
+// POST /api/ai/analyze - Quick analyze instrument
+// ===================================
+
+router.post('/analyze', async (req, res) => {
+    if (!client) {
+        return res.status(503).json({ 
+            success: false, 
+            error: 'AI service not configured.' 
+        });
+    }
+    
+    if (!checkRateLimit(req.ip)) {
+        return res.status(429).json({ 
+            success: false, 
+            error: 'Troppi messaggi. Riprova tra un minuto.' 
+        });
+    }
+    
+    const { instrumentData, analysisType = 'general' } = req.body;
+    
+    if (!instrumentData) {
+        return res.status(400).json({ 
+            success: false, 
+            error: 'instrumentData is required' 
+        });
+    }
+    
+    const analysisPrompts = {
+        general: `Analizza questo strumento finanziario in modo sintetico. Fornisci:
+1. **Overview**: Cos'e' e in che settore opera
+2. **Punti di forza**: 2-3 aspetti positivi basati sui dati
+3. **Rischi**: 2-3 aspetti critici o di attenzione
+4. **Valutazione**: Come si posiziona rispetto ai comparabili del settore (se possibile)
+Sii conciso, max 300 parole.`,
+        
+        dividend: `Analizza questo strumento dal punto di vista dei dividendi:
+1. **Dividend Yield attuale** e confronto con media settore
+2. **Sostenibilita'** del dividendo (payout ratio se disponibile)
+3. **Storico** e trend
+4. **Tassazione** italiana applicabile
+Sii conciso, max 200 parole.`,
+        
+        risk: `Analizza il profilo di rischio di questo strumento:
+1. **Volatilita'** e beta (se disponibili)
+2. **Rischi specifici** (settore, paese, valuta)
+3. **Livello di rischio** su scala 1-5
+4. **Per chi e' adatto** questo strumento
+Sii conciso, max 200 parole.`,
+        
+        comparison: `Basandoti sui dati forniti, suggerisci:
+1. **Comparabili**: 3-5 strumenti simili da confrontare
+2. **Benchmark** appropriato
+3. **Posizionamento**: Come si colloca rispetto alla media del settore
+Sii conciso, max 200 parole.`
+    };
+    
+    const prompt = analysisPrompts[analysisType] || analysisPrompts.general;
+    
+    try {
+        // SSE streaming
+        res.setHeader('Content-Type', 'text/event-stream');
+        res.setHeader('Cache-Control', 'no-cache');
+        res.setHeader('Connection', 'keep-alive');
+        res.setHeader('X-Accel-Buffering', 'no');
+        
+        const messages = [{
+            role: 'user',
+            content: `[DATI STRUMENTO]\n${JSON.stringify(instrumentData, null, 2)}\n[FINE DATI]\n\n${prompt}`
+        }];
+        
+        const streamResponse = await client.messages.stream({
+            model: 'claude-sonnet-4-20250514',
+            max_tokens: 1024,
+            system: SYSTEM_PROMPT,
+            messages
+        });
+        
+        streamResponse.on('text', (text) => {
+            res.write(`data: ${JSON.stringify({ type: 'text', text })}\n\n`);
+        });
+        
+        streamResponse.on('end', () => {
+            res.write(`data: ${JSON.stringify({ type: 'done' })}\n\n`);
+            res.end();
+        });
+        
+        streamResponse.on('error', (error) => {
+            console.error('Analyze stream error:', error);
+            res.write(`data: ${JSON.stringify({ type: 'error', error: 'Errore durante l\'analisi.' })}\n\n`);
+            res.end();
+        });
+        
+        req.on('close', () => {
+            streamResponse.abort();
+        });
+        
+    } catch (error) {
+        console.error('Analyze error:', error);
+        res.status(500).json({ 
+            success: false, 
+            error: 'Errore nell\'analisi dello strumento.' 
+        });
+    }
+});
+
+// ===================================
+// GET /api/ai/status - Check AI service status
 // ===================================
 
 router.get('/status', (req, res) => {
-    res.json({ success: true, configured: !!client, model: 'claude-sonnet-4-20250514', features: ['chat', 'streaming', 'document-upload'] });
+    res.json({
+        success: true,
+        configured: !!client,
+        model: 'claude-sonnet-4-20250514',
+        features: ['chat', 'streaming', 'document-upload', 'instrument-analysis'],
+        rateLimits: {
+            maxPerMinute: RATE_LIMIT_MAX,
+            windowMs: RATE_LIMIT_WINDOW
+        }
+    });
 });
 
 module.exports = router;
