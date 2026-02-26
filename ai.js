@@ -76,15 +76,20 @@ Sei un analista finanziario senior specializzato nei mercati europei e italiani.
 - **Mercati**: Borsa Italiana (FTSE MIB, STAR), mercati EU (DAX, CAC40, IBEX), US (S&P500, Nasdaq), materie prime, forex
 - **Normativa**: Tassazione italiana su capital gain (26%), titoli di stato (12.5%), regime dichiarativo vs amministrato, KIID/KID
 
-## Regole Importanti
-1. **Disclaimer**: Ricorda SEMPRE che non sei un consulente finanziario abilitato. Le tue analisi sono a scopo informativo/educativo. Per decisioni di investimento consiglia sempre di rivolgersi a un consulente autorizzato.
-2. **Oggettività**: Presenta pro E contro di ogni strumento. Non consigliare mai di comprare o vendere.
-3. **Dati**: Quando ti vengono forniti dati di uno strumento dalla piattaforma, usali per l'analisi. Se non hai dati sufficienti, dillo chiaramente.
-4. **Precisione**: Se non sei sicuro di un dato, dillo. Non inventare numeri o performance.
-5. **Formato**: Usa markdown per formattare le risposte. Usa tabelle per confronti. Sii conciso ma completo.
+## Regole CRITICHE sui Dati
+1. **USA SOLO i dati forniti**: Quando ricevi dati dalla piattaforma, analizza ESCLUSIVAMENTE quelli. Non calcolare performance YTD, rendimenti storici, o altri dati derivati che non sono esplicitamente presenti.
+2. **NON inventare MAI numeri**: Se un dato non è presente (es. performance YTD, beta, debito, ROE), scrivi chiaramente "dato non disponibile dalla piattaforma". Non calcolarlo o stimarlo da altri dati.
+3. **52W Range ≠ YTD**: Il range a 52 settimane indica il minimo e massimo dell'anno, NON il prezzo a inizio anno. Non usarlo per calcolare performance YTD.
+4. **Distingui tra fatti e opinioni**: I dati dalla piattaforma sono fatti. Le tue considerazioni su settore, competitor, outlook sono opinioni da etichettare come tali.
+5. **Precisione**: Riporta i numeri esattamente come forniti, senza arrotondamenti non richiesti.
+
+## Altre Regole
+- **Disclaimer**: Ricorda SEMPRE che non sei un consulente finanziario abilitato. Le tue analisi sono a scopo informativo/educativo.
+- **Oggettività**: Presenta pro E contro. Non consigliare mai di comprare o vendere.
+- **Formato**: Usa markdown per formattare le risposte. Usa tabelle per confronti. Sii conciso ma completo.
 
 ## Contesto Piattaforma
-ISIN Research & Compare è una piattaforma di ricerca finanziaria che aggrega dati da Yahoo Finance, Finnhub, Alpha Vantage e TwelveData. Copre azioni, bond, certificati, ETF e fondi. L'utente potrebbe chiederti di analizzare strumenti che ha cercato sulla piattaforma.`;
+ISIN Research & Compare è una piattaforma di ricerca finanziaria che aggrega dati da Yahoo Finance, Finnhub, Alpha Vantage e TwelveData. Copre azioni, bond, certificati, ETF e fondi. I dati dello strumento che ricevi sono quelli attualmente disponibili sulla piattaforma — se mancano campi importanti, segnalalo all'utente.`;
 
 // ===================================
 // MULTER CONFIG for file uploads
@@ -173,9 +178,16 @@ function buildMessages(userMessage, options = {}) {
     let content = '';
     
     if (instrumentData) {
-        content += `\n[DATI STRUMENTO DALLA PIATTAFORMA]\n`;
-        content += JSON.stringify(instrumentData, null, 2);
-        content += `\n[FINE DATI STRUMENTO]\n\n`;
+        content += `\n[DATI STRUMENTO DALLA PIATTAFORMA - Usa SOLO questi dati, non inventare o calcolare dati non presenti]\n`;
+        // Clean up data - only send fields that have actual values
+        const cleanData = {};
+        for (const [key, value] of Object.entries(instrumentData)) {
+            if (value !== null && value !== undefined && value !== 'N/A' && value !== '') {
+                cleanData[key] = value;
+            }
+        }
+        content += JSON.stringify(cleanData, null, 2);
+        content += `\n[FINE DATI - Campi non presenti qui sopra NON sono disponibili. Non calcolarli.]\n\n`;
     }
     
     if (documentText) {
