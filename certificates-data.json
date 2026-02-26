@@ -78,80 +78,80 @@
             "underlying_price": 11.09,
             "redemption": 300.0,
             "pl_pct": -70.0,
-            "pl_annual": -22.97
+            "pl_annual": -22.99
           },
           {
             "variation_pct": -60,
             "underlying_price": 14.79,
             "redemption": 400.0,
             "pl_pct": -60.0,
-            "pl_annual": -19.69
+            "pl_annual": -19.71
           },
           {
             "variation_pct": -50,
             "underlying_price": 18.48,
             "redemption": 500.0,
             "pl_pct": -50.0,
-            "pl_annual": -16.41
+            "pl_annual": -16.42
           },
           {
             "variation_pct": -40,
             "underlying_price": 22.18,
-            "redemption": 1257.19,
-            "pl_pct": 25.72,
+            "redemption": 1256.95,
+            "pl_pct": 25.7,
             "pl_annual": 8.44
           },
           {
             "variation_pct": -30,
             "underlying_price": 25.88,
-            "redemption": 1257.19,
-            "pl_pct": 25.72,
+            "redemption": 1256.95,
+            "pl_pct": 25.7,
             "pl_annual": 8.44
           },
           {
             "variation_pct": -20,
             "underlying_price": 29.58,
-            "redemption": 1257.19,
-            "pl_pct": 25.72,
+            "redemption": 1256.95,
+            "pl_pct": 25.7,
             "pl_annual": 8.44
           },
           {
             "variation_pct": -10,
             "underlying_price": 33.27,
-            "redemption": 1257.19,
-            "pl_pct": 25.72,
+            "redemption": 1256.95,
+            "pl_pct": 25.7,
             "pl_annual": 8.44
           },
           {
             "variation_pct": 0,
             "underlying_price": 36.97,
-            "redemption": 1257.19,
-            "pl_pct": 25.72,
+            "redemption": 1256.95,
+            "pl_pct": 25.7,
             "pl_annual": 8.44
           },
           {
             "variation_pct": 10,
             "underlying_price": 40.67,
-            "redemption": 1257.19,
-            "pl_pct": 25.72,
+            "redemption": 1256.95,
+            "pl_pct": 25.7,
             "pl_annual": 8.44
           },
           {
             "variation_pct": 20,
             "underlying_price": 44.36,
-            "redemption": 1257.19,
-            "pl_pct": 25.72,
+            "redemption": 1256.95,
+            "pl_pct": 25.7,
             "pl_annual": 8.44
           },
           {
             "variation_pct": 30,
             "underlying_price": 48.06,
-            "redemption": 1257.19,
-            "pl_pct": 25.72,
+            "redemption": 1256.95,
+            "pl_pct": 25.7,
             "pl_annual": 8.44
           }
         ],
-        "years_to_maturity": 3.05
+        "years_to_maturity": 3.04
       },
       "source": "CED"
     },
@@ -163,8 +163,8 @@
       "market": "CERT-X",
       "currency": "EUR",
       "bid_price": 0,
-      "ask_price": 994.12,
-      "reference_price": 994.12,
+      "ask_price": 995.67,
+      "reference_price": 995.67,
       "issue_date": "2029-07-16",
       "maturity_date": "2029-07-16",
       "strike_date": null,
@@ -241,78 +241,78 @@
             "variation_pct": -70,
             "underlying_price": 153.34,
             "redemption": 300.0,
-            "pl_pct": -69.82,
-            "pl_annual": -20.63
+            "pl_pct": -69.87,
+            "pl_annual": -20.66
           },
           {
             "variation_pct": -60,
             "underlying_price": 204.45,
             "redemption": 400.0,
-            "pl_pct": -59.76,
-            "pl_annual": -17.66
+            "pl_pct": -59.83,
+            "pl_annual": -17.69
           },
           {
             "variation_pct": -50,
             "underlying_price": 255.56,
             "redemption": 500.0,
-            "pl_pct": -49.7,
-            "pl_annual": -14.69
+            "pl_pct": -49.78,
+            "pl_annual": -14.72
           },
           {
             "variation_pct": -40,
             "underlying_price": 306.68,
-            "redemption": 1276.13,
-            "pl_pct": 28.37,
-            "pl_annual": 8.38
+            "redemption": 1275.91,
+            "pl_pct": 28.15,
+            "pl_annual": 8.33
           },
           {
             "variation_pct": -30,
             "underlying_price": 357.79,
-            "redemption": 1276.13,
-            "pl_pct": 28.37,
-            "pl_annual": 8.38
+            "redemption": 1275.91,
+            "pl_pct": 28.15,
+            "pl_annual": 8.33
           },
           {
             "variation_pct": -20,
             "underlying_price": 408.9,
-            "redemption": 1276.13,
-            "pl_pct": 28.37,
-            "pl_annual": 8.38
+            "redemption": 1275.91,
+            "pl_pct": 28.15,
+            "pl_annual": 8.33
           },
           {
             "variation_pct": -10,
             "underlying_price": 460.02,
-            "redemption": 1276.13,
-            "pl_pct": 28.37,
-            "pl_annual": 8.38
+            "redemption": 1275.91,
+            "pl_pct": 28.15,
+            "pl_annual": 8.33
           },
           {
             "variation_pct": 0,
             "underlying_price": 511.13,
-            "redemption": 1276.13,
-            "pl_pct": 28.37,
-            "pl_annual": 8.38
+            "redemption": 1275.91,
+            "pl_pct": 28.15,
+            "pl_annual": 8.33
           },
           {
             "variation_pct": 10,
             "underlying_price": 562.24,
-            "redemption": 1276.13,
-            "pl_pct": 28.37,
-            "pl_annual": 8.38
+            "redemption": 1275.91,
+            "pl_pct": 28.15,
+            "pl_annual": 8.33
           },
           {
             "variation_pct": 20,
             "underlying_price": 613.36,
-            "redemption": 1276.13,
-            "pl_pct": 28.37,
-            "pl_annual": 8.38
+            "redemption": 1275.91,
+            "pl_pct": 28.15,
+            "pl_annual": 8.33
           },
           {
             "variation_pct": 30,
             "underlying_price": 664.47,
-            "redemption": 1276.13,
-            "pl_pct": 28.37,
-            "pl_annual": 8.38
+            "redemption": 1275.91,
+            "pl_pct": 28.15,
+            "pl_annual": 8.33
           }
         ],
         "years_to_maturity": 3.38
@@ -327,8 +327,8 @@
       "market": "CERT-X",
       "currency": "EUR",
       "bid_price": 0,
-      "ask_price": 1071.92,
-      "reference_price": 1071.92,
+      "ask_price": 1071.42,
+      "reference_price": 1071.42,
       "issue_date": "2029-04-04",
       "maturity_date": "2029-04-04",
       "strike_date": null,
@@ -394,78 +394,78 @@
             "variation_pct": -70,
             "underlying_price": 580.37,
             "redemption": 300.0,
-            "pl_pct": -72.01,
-            "pl_annual": -23.21
+            "pl_pct": -72.0,
+            "pl_annual": -23.23
           },
           {
             "variation_pct": -60,
             "underlying_price": 773.83,
             "redemption": 400.0,
-            "pl_pct": -62.68,
-            "pl_annual": -20.21
+            "pl_pct": -62.67,
+            "pl_annual": -20.22
           },
           {
             "variation_pct": -50,
             "underlying_price": 967.28,
             "redemption": 500.0,
-            "pl_pct": -53.35,
-            "pl_annual": -17.2
+            "pl_pct": -53.33,
+            "pl_annual": -17.21
           },
           {
             "variation_pct": -40,
             "underlying_price": 1160.74,
-            "redemption": 1249.4,
-            "pl_pct": 16.56,
-            "pl_annual": 5.34
+            "redemption": 1249.18,
+            "pl_pct": 16.59,
+            "pl_annual": 5.35
           },
           {
             "variation_pct": -30,
             "underlying_price": 1354.2,
-            "redemption": 1249.4,
-            "pl_pct": 16.56,
-            "pl_annual": 5.34
+            "redemption": 1249.18,
+            "pl_pct": 16.59,
+            "pl_annual": 5.35
           },
           {
             "variation_pct": -20,
             "underlying_price": 1547.66,
-            "redemption": 1249.4,
-            "pl_pct": 16.56,
-            "pl_annual": 5.34
+            "redemption": 1249.18,
+            "pl_pct": 16.59,
+            "pl_annual": 5.35
           },
           {
             "variation_pct": -10,
             "underlying_price": 1741.11,
-            "redemption": 1249.4,
-            "pl_pct": 16.56,
-            "pl_annual": 5.34
+            "redemption": 1249.18,
+            "pl_pct": 16.59,
+            "pl_annual": 5.35
           },
           {
             "variation_pct": 0,
             "underlying_price": 1934.57,
-            "redemption": 1249.4,
-            "pl_pct": 16.56,
-            "pl_annual": 5.34
+            "redemption": 1249.18,
+            "pl_pct": 16.59,
+            "pl_annual": 5.35
           },
           {
             "variation_pct": 10,
             "underlying_price": 2128.03,
-            "redemption": 1249.4,
-            "pl_pct": 16.56,
-            "pl_annual": 5.34
+            "redemption": 1249.18,
+            "pl_pct": 16.59,
+            "pl_annual": 5.35
           },
           {
             "variation_pct": 20,
             "underlying_price": 2321.48,
-            "redemption": 1249.4,
-            "pl_pct": 16.56,
-            "pl_annual": 5.34
+            "redemption": 1249.18,
+            "pl_pct": 16.59,
+            "pl_annual": 5.35
           },
           {
             "variation_pct": 30,
             "underlying_price": 2514.94,
-            "redemption": 1249.4,
-            "pl_pct": 16.56,
-            "pl_annual": 5.34
+            "redemption": 1249.18,
+            "pl_pct": 16.59,
+            "pl_annual": 5.35
           }
         ],
         "years_to_maturity": 3.1
@@ -537,76 +537,76 @@
             "underlying_price": 159.83,
             "redemption": 300.0,
             "pl_pct": -70.0,
-            "pl_annual": -33.03
+            "pl_annual": -33.08
           },
           {
             "variation_pct": -60,
             "underlying_price": 213.11,
             "redemption": 400.0,
             "pl_pct": -60.0,
-            "pl_annual": -28.31
+            "pl_annual": -28.35
           },
           {
             "variation_pct": -50,
             "underlying_price": 266.39,
             "redemption": 500.0,
             "pl_pct": -50.0,
-            "pl_annual": -23.59
+            "pl_annual": -23.63
           },
           {
             "variation_pct": -40,
             "underlying_price": 319.67,
-            "redemption": 1162.75,
-            "pl_pct": 16.28,
+            "redemption": 1162.54,
+            "pl_pct": 16.25,
             "pl_annual": 7.68
           },
           {
             "variation_pct": -30,
             "underlying_price": 372.95,
-            "redemption": 1162.75,
-            "pl_pct": 16.28,
+            "redemption": 1162.54,
+            "pl_pct": 16.25,
             "pl_annual": 7.68
           },
           {
             "variation_pct": -20,
             "underlying_price": 426.22,
-            "redemption": 1162.75,
-            "pl_pct": 16.28,
+            "redemption": 1162.54,
+            "pl_pct": 16.25,
             "pl_annual": 7.68
           },
           {
             "variation_pct": -10,
             "underlying_price": 479.5,
-            "redemption": 1162.75,
-            "pl_pct": 16.28,
+            "redemption": 1162.54,
+            "pl_pct": 16.25,
             "pl_annual": 7.68
           },
           {
             "variation_pct": 0,
             "underlying_price": 532.78,
-            "redemption": 1162.75,
-            "pl_pct": 16.28,
+            "redemption": 1162.54,
+            "pl_pct": 16.25,
             "pl_annual": 7.68
           },
           {
             "variation_pct": 10,
             "underlying_price": 586.06,
-            "redemption": 1162.75,
-            "pl_pct": 16.28,
+            "redemption": 1162.54,
+            "pl_pct": 16.25,
             "pl_annual": 7.68
           },
           {
             "variation_pct": 20,
             "underlying_price": 639.34,
-            "redemption": 1162.75,
-            "pl_pct": 16.28,
+            "redemption": 1162.54,
+            "pl_pct": 16.25,
             "pl_annual": 7.68
           },
           {
             "variation_pct": 30,
             "underlying_price": 692.61,
-            "redemption": 1162.75,
-            "pl_pct": 16.28,
+            "redemption": 1162.54,
+            "pl_pct": 16.25,
             "pl_annual": 7.68
           }
         ],
@@ -622,8 +622,8 @@
       "market": "CERT-X",
       "currency": "EUR",
       "bid_price": 0,
-      "ask_price": 1012.07,
-      "reference_price": 1012.07,
+      "ask_price": 1012.25,
+      "reference_price": 1012.25,
       "issue_date": "2028-04-21",
       "maturity_date": "2028-04-21",
       "strike_date": null,
@@ -668,77 +668,77 @@
             "underlying_price": 90.15,
             "redemption": 300.0,
             "pl_pct": -70.36,
-            "pl_annual": -32.74
+            "pl_annual": -32.78
           },
           {
             "variation_pct": -60,
             "underlying_price": 120.2,
             "redemption": 400.0,
             "pl_pct": -60.48,
-            "pl_annual": -28.14
+            "pl_annual": -28.18
           },
           {
             "variation_pct": -50,
             "underlying_price": 150.25,
             "redemption": 500.0,
-            "pl_pct": -50.6,
-            "pl_annual": -23.54
+            "pl_pct": -50.61,
+            "pl_annual": -23.58
           },
           {
             "variation_pct": -40,
             "underlying_price": 180.29,
-            "redemption": 1162.48,
-            "pl_pct": 14.86,
-            "pl_annual": 6.91
+            "redemption": 1162.27,
+            "pl_pct": 14.82,
+            "pl_annual": 6.9
           },
           {
             "variation_pct": -30,
             "underlying_price": 210.34,
-            "redemption": 1162.48,
-            "pl_pct": 14.86,
-            "pl_annual": 6.91
+            "redemption": 1162.27,
+            "pl_pct": 14.82,
+            "pl_annual": 6.9
           },
           {
             "variation_pct": -20,
             "underlying_price": 240.39,
-            "redemption": 1162.48,
-            "pl_pct": 14.86,
-            "pl_annual": 6.91
+            "redemption": 1162.27,
+            "pl_pct": 14.82,
+            "pl_annual": 6.9
           },
           {
             "variation_pct": -10,
             "underlying_price": 270.44,
-            "redemption": 1162.48,
-            "pl_pct": 14.86,
-            "pl_annual": 6.91
+            "redemption": 1162.27,
+            "pl_pct": 14.82,
+            "pl_annual": 6.9
           },
           {
             "variation_pct": 0,
             "underlying_price": 300.49,
-            "redemption": 1162.48,
-            "pl_pct": 14.86,
-            "pl_annual": 6.91
+            "redemption": 1162.27,
+            "pl_pct": 14.82,
+            "pl_annual": 6.9
           },
           {
             "variation_pct": 10,
             "underlying_price": 330.54,
-            "redemption": 1162.48,
-            "pl_pct": 14.86,
-            "pl_annual": 6.91
+            "redemption": 1162.27,
+            "pl_pct": 14.82,
+            "pl_annual": 6.9
           },
           {
             "variation_pct": 20,
             "underlying_price": 360.59,
-            "redemption": 1162.48,
-            "pl_pct": 14.86,
-            "pl_annual": 6.91
+            "redemption": 1162.27,
+            "pl_pct": 14.82,
+            "pl_annual": 6.9
           },
           {
             "variation_pct": 30,
             "underlying_price": 390.64,
-            "redemption": 1162.48,
-            "pl_pct": 14.86,
-            "pl_annual": 6.91
+            "redemption": 1162.27,
+            "pl_pct": 14.82,
+            "pl_annual": 6.9
           }
         ],
         "years_to_maturity": 2.15
@@ -821,80 +821,80 @@
             "underlying_price": 1256.73,
             "redemption": 300.0,
             "pl_pct": -70.0,
-            "pl_annual": -27.29
+            "pl_annual": -27.32
           },
           {
             "variation_pct": -60,
             "underlying_price": 1675.64,
             "redemption": 400.0,
             "pl_pct": -60.0,
-            "pl_annual": -23.39
+            "pl_annual": -23.41
           },
           {
             "variation_pct": -50,
             "underlying_price": 2094.55,
             "redemption": 500.0,
             "pl_pct": -50.0,
-            "pl_annual": -19.49
+            "pl_annual": -19.51
           },
           {
             "variation_pct": -40,
             "underlying_price": 2513.46,
-            "redemption": 1187.78,
-            "pl_pct": 18.78,
+            "redemption": 1187.58,
+            "pl_pct": 18.76,
             "pl_annual": 7.32
           },
           {
             "variation_pct": -30,
             "underlying_price": 2932.37,
-            "redemption": 1187.78,
-            "pl_pct": 18.78,
+            "redemption": 1187.58,
+            "pl_pct": 18.76,
             "pl_annual": 7.32
           },
           {
             "variation_pct": -20,
             "underlying_price": 3351.28,
-            "redemption": 1187.78,
-            "pl_pct": 18.78,
+            "redemption": 1187.58,
+            "pl_pct": 18.76,
             "pl_annual": 7.32
           },
           {
             "variation_pct": -10,
             "underlying_price": 3770.19,
-            "redemption": 1187.78,
-            "pl_pct": 18.78,
+            "redemption": 1187.58,
+            "pl_pct": 18.76,
             "pl_annual": 7.32
           },
           {
             "variation_pct": 0,
             "underlying_price": 4189.1,
-            "redemption": 1187.78,
-            "pl_pct": 18.78,
+            "redemption": 1187.58,
+            "pl_pct": 18.76,
             "pl_annual": 7.32
           },
           {
             "variation_pct": 10,
             "underlying_price": 4608.01,
-            "redemption": 1187.78,
-            "pl_pct": 18.78,
+            "redemption": 1187.58,
+            "pl_pct": 18.76,
             "pl_annual": 7.32
           },
           {
             "variation_pct": 20,
             "underlying_price": 5026.92,
-            "redemption": 1187.78,
-            "pl_pct": 18.78,
+            "redemption": 1187.58,
+            "pl_pct": 18.76,
             "pl_annual": 7.32
           },
           {
             "variation_pct": 30,
             "underlying_price": 5445.83,
-            "redemption": 1187.78,
-            "pl_pct": 18.78,
+            "redemption": 1187.58,
+            "pl_pct": 18.76,
             "pl_annual": 7.32
           }
         ],
-        "years_to_maturity": 2.57
+        "years_to_maturity": 2.56
       },
       "source": "CED"
     },
@@ -906,8 +906,8 @@
       "market": "CERT-X",
       "currency": "EUR",
       "bid_price": 0,
-      "ask_price": 1008.69,
-      "reference_price": 1008.69,
+      "ask_price": 1006.77,
+      "reference_price": 1006.77,
       "issue_date": "2029-07-30",
       "maturity_date": "2029-07-30",
       "strike_date": null,
@@ -962,78 +962,78 @@
             "variation_pct": -70,
             "underlying_price": 319.87,
             "redemption": 300.0,
-            "pl_pct": -70.26,
+            "pl_pct": -70.2,
             "pl_annual": -20.53
           },
           {
             "variation_pct": -60,
             "underlying_price": 426.5,
             "redemption": 400.0,
-            "pl_pct": -60.34,
-            "pl_annual": -17.63
+            "pl_pct": -60.27,
+            "pl_annual": -17.62
           },
           {
             "variation_pct": -50,
             "underlying_price": 533.12,
             "redemption": 500.0,
-            "pl_pct": -50.43,
-            "pl_annual": -14.74
+            "pl_pct": -50.34,
+            "pl_annual": -14.72
           },
           {
             "variation_pct": -40,
             "underlying_price": 639.74,
-            "redemption": 1238.19,
-            "pl_pct": 22.75,
-            "pl_annual": 6.65
+            "redemption": 1238.0,
+            "pl_pct": 22.97,
+            "pl_annual": 6.72
           },
           {
             "variation_pct": -30,
             "underlying_price": 746.37,
-            "redemption": 1238.19,
-            "pl_pct": 22.75,
-            "pl_annual": 6.65
+            "redemption": 1238.0,
+            "pl_pct": 22.97,
+            "pl_annual": 6.72
           },
           {
             "variation_pct": -20,
             "underlying_price": 852.99,
-            "redemption": 1238.19,
-            "pl_pct": 22.75,
-            "pl_annual": 6.65
+            "redemption": 1238.0,
+            "pl_pct": 22.97,
+            "pl_annual": 6.72
           },
           {
             "variation_pct": -10,
             "underlying_price": 959.62,
-            "redemption": 1238.19,
-            "pl_pct": 22.75,
-            "pl_annual": 6.65
+            "redemption": 1238.0,
+            "pl_pct": 22.97,
+            "pl_annual": 6.72
           },
           {
             "variation_pct": 0,
             "underlying_price": 1066.24,
-            "redemption": 1238.19,
-            "pl_pct": 22.75,
-            "pl_annual": 6.65
+            "redemption": 1238.0,
+            "pl_pct": 22.97,
+            "pl_annual": 6.72
           },
           {
             "variation_pct": 10,
             "underlying_price": 1172.86,
-            "redemption": 1238.19,
-            "pl_pct": 22.75,
-            "pl_annual": 6.65
+            "redemption": 1238.0,
+            "pl_pct": 22.97,
+            "pl_annual": 6.72
           },
           {
             "variation_pct": 20,
             "underlying_price": 1279.49,
-            "redemption": 1238.19,
-            "pl_pct": 22.75,
-            "pl_annual": 6.65
+            "redemption": 1238.0,
+            "pl_pct": 22.97,
+            "pl_annual": 6.72
           },
           {
             "variation_pct": 30,
             "underlying_price": 1386.11,
-            "redemption": 1238.19,
-            "pl_pct": 22.75,
-            "pl_annual": 6.65
+            "redemption": 1238.0,
+            "pl_pct": 22.97,
+            "pl_annual": 6.72
           }
         ],
         "years_to_maturity": 3.42
@@ -1116,76 +1116,76 @@
             "underlying_price": 11492.13,
             "redemption": 300.0,
             "pl_pct": -70.0,
-            "pl_annual": -33.95
+            "pl_annual": -34.0
           },
           {
             "variation_pct": -60,
             "underlying_price": 15322.84,
             "redemption": 400.0,
             "pl_pct": -60.0,
-            "pl_annual": -29.1
+            "pl_annual": -29.14
           },
           {
             "variation_pct": -50,
             "underlying_price": 19153.56,
             "redemption": 500.0,
             "pl_pct": -50.0,
-            "pl_annual": -24.25
+            "pl_annual": -24.29
           },
           {
             "variation_pct": -40,
             "underlying_price": 22984.27,
-            "redemption": 1143.49,
-            "pl_pct": 14.35,
+            "redemption": 1143.3,
+            "pl_pct": 14.33,
             "pl_annual": 6.96
           },
           {
             "variation_pct": -30,
             "underlying_price": 26814.98,
-            "redemption": 1143.49,
-            "pl_pct": 14.35,
+            "redemption": 1143.3,
+            "pl_pct": 14.33,
             "pl_annual": 6.96
           },
           {
             "variation_pct": -20,
             "underlying_price": 30645.69,
-            "redemption": 1143.49,
-            "pl_pct": 14.35,
+            "redemption": 1143.3,
+            "pl_pct": 14.33,
             "pl_annual": 6.96
           },
           {
             "variation_pct": -10,
             "underlying_price": 34476.4,
-            "redemption": 1143.49,
-            "pl_pct": 14.35,
+            "redemption": 1143.3,
+            "pl_pct": 14.33,
             "pl_annual": 6.96
           },
           {
             "variation_pct": 0,
             "underlying_price": 38307.11,
-            "redemption": 1143.49,
-            "pl_pct": 14.35,
+            "redemption": 1143.3,
+            "pl_pct": 14.33,
             "pl_annual": 6.96
           },
           {
             "variation_pct": 10,
             "underlying_price": 42137.82,
-            "redemption": 1143.49,
-            "pl_pct": 14.35,
+            "redemption": 1143.3,
+            "pl_pct": 14.33,
             "pl_annual": 6.96
           },
           {
             "variation_pct": 20,
             "underlying_price": 45968.53,
-            "redemption": 1143.49,
-            "pl_pct": 14.35,
+            "redemption": 1143.3,
+            "pl_pct": 14.33,
             "pl_annual": 6.96
           },
           {
             "variation_pct": 30,
             "underlying_price": 49799.24,
-            "redemption": 1143.49,
-            "pl_pct": 14.35,
+            "redemption": 1143.3,
+            "pl_pct": 14.33,
             "pl_annual": 6.96
           }
         ],
@@ -1201,8 +1201,8 @@
       "market": "CERT-X",
       "currency": "EUR",
       "bid_price": 0,
-      "ask_price": 965.46,
-      "reference_price": 965.46,
+      "ask_price": 963.11,
+      "reference_price": 963.11,
       "issue_date": "2029-08-20",
       "maturity_date": "2029-08-20",
       "strike_date": null,
@@ -1216,14 +1216,14 @@
       "underlyings": [
         {
           "name": "Eurostoxx Insurance",
-          "strike": 0,
+          "strike": 523.34,
           "spot": 0,
-          "barrier": 0,
+          "barrier": 314.004,
           "variation_pct": 0,
           "variation_abs": 0,
-          "trigger_coupon": 0,
-          "trigger_autocall": 0,
-          "worst_of": false
+          "trigger_coupon": 523.34,
+          "trigger_autocall": 523.34,
+          "worst_of": true
         },
         {
           "name": "Eurostoxx Technology",
@@ -1238,14 +1238,14 @@
         },
         {
           "name": "iShares MSCI China ETF",
-          "strike": 60.56,
+          "strike": 0,
           "spot": 0,
-          "barrier": 36.336,
+          "barrier": 0,
           "variation_pct": 0,
           "variation_abs": 0,
-          "trigger_coupon": 60.56,
-          "trigger_autocall": 60.56,
-          "worst_of": true
+          "trigger_coupon": 0,
+          "trigger_autocall": 0,
+          "worst_of": false
         },
         {
           "name": "Russell 2000",
@@ -1266,80 +1266,80 @@
         "scenarios": [
           {
             "variation_pct": -70,
-            "underlying_price": 18.17,
+            "underlying_price": 157.0,
             "redemption": 300.0,
-            "pl_pct": -68.93,
-            "pl_annual": -19.81
+            "pl_pct": -68.85,
+            "pl_annual": -19.8
           },
           {
             "variation_pct": -60,
-            "underlying_price": 24.22,
+            "underlying_price": 209.34,
             "redemption": 400.0,
-            "pl_pct": -58.57,
-            "pl_annual": -16.83
+            "pl_pct": -58.47,
+            "pl_annual": -16.82
           },
           {
             "variation_pct": -50,
-            "underlying_price": 30.28,
+            "underlying_price": 261.67,
             "redemption": 500.0,
-            "pl_pct": -48.21,
-            "pl_annual": -13.85
+            "pl_pct": -48.08,
+            "pl_annual": -13.83
           },
           {
             "variation_pct": -40,
-            "underlying_price": 36.34,
-            "redemption": 1235.93,
-            "pl_pct": 28.01,
-            "pl_annual": 8.05
+            "underlying_price": 314.0,
+            "redemption": 1235.75,
+            "pl_pct": 28.31,
+            "pl_annual": 8.14
           },
           {
             "variation_pct": -30,
-            "underlying_price": 42.39,
-            "redemption": 1235.93,
-            "pl_pct": 28.01,
-            "pl_annual": 8.05
+            "underlying_price": 366.34,
+            "redemption": 1235.75,
+            "pl_pct": 28.31,
+            "pl_annual": 8.14
           },
           {
             "variation_pct": -20,
-            "underlying_price": 48.45,
-            "redemption": 1235.93,
-            "pl_pct": 28.01,
-            "pl_annual": 8.05
+            "underlying_price": 418.67,
+            "redemption": 1235.75,
+            "pl_pct": 28.31,
+            "pl_annual": 8.14
           },
           {
             "variation_pct": -10,
-            "underlying_price": 54.5,
-            "redemption": 1235.93,
-            "pl_pct": 28.01,
-            "pl_annual": 8.05
+            "underlying_price": 471.01,
+            "redemption": 1235.75,
+            "pl_pct": 28.31,
+            "pl_annual": 8.14
           },
           {
             "variation_pct": 0,
-            "underlying_price": 60.56,
-            "redemption": 1235.93,
-            "pl_pct": 28.01,
-            "pl_annual": 8.05
+            "underlying_price": 523.34,
+            "redemption": 1235.75,
+            "pl_pct": 28.31,
+            "pl_annual": 8.14
           },
           {
             "variation_pct": 10,
-            "underlying_price": 66.62,
-            "redemption": 1235.93,
-            "pl_pct": 28.01,
-            "pl_annual": 8.05
+            "underlying_price": 575.67,
+            "redemption": 1235.75,
+            "pl_pct": 28.31,
+            "pl_annual": 8.14
           },
           {
             "variation_pct": 20,
-            "underlying_price": 72.67,
-            "redemption": 1235.93,
-            "pl_pct": 28.01,
-            "pl_annual": 8.05
+            "underlying_price": 628.01,
+            "redemption": 1235.75,
+            "pl_pct": 28.31,
+            "pl_annual": 8.14
           },
           {
             "variation_pct": 30,
-            "underlying_price": 78.73,
-            "redemption": 1235.93,
-            "pl_pct": 28.01,
-            "pl_annual": 8.05
+            "underlying_price": 680.34,
+            "redemption": 1235.75,
+            "pl_pct": 28.31,
+            "pl_annual": 8.14
           }
         ],
         "years_to_maturity": 3.48
@@ -1354,8 +1354,8 @@
       "market": "CERT-X",
       "currency": "EUR",
       "bid_price": 0,
-      "ask_price": 1008.91,
-      "reference_price": 1008.91,
+      "ask_price": 999.72,
+      "reference_price": 999.72,
       "issue_date": "2028-07-31",
       "maturity_date": "2028-07-31",
       "strike_date": null,
@@ -1410,81 +1410,81 @@
             "variation_pct": -70,
             "underlying_price": 1877.93,
             "redemption": 300.0,
-            "pl_pct": -70.26,
-            "pl_annual": -28.96
+            "pl_pct": -69.99,
+            "pl_annual": -28.89
           },
           {
             "variation_pct": -60,
             "underlying_price": 2503.9,
             "redemption": 400.0,
-            "pl_pct": -60.35,
-            "pl_annual": -24.88
+            "pl_pct": -59.99,
+            "pl_annual": -24.76
           },
           {
             "variation_pct": -50,
             "underlying_price": 3129.88,
             "redemption": 500.0,
-            "pl_pct": -50.44,
-            "pl_annual": -20.79
+            "pl_pct": -49.99,
+            "pl_annual": -20.63
           },
           {
             "variation_pct": -40,
             "underlying_price": 3755.85,
-            "redemption": 1151.37,
-            "pl_pct": 14.12,
-            "pl_annual": 5.82
+            "redemption": 1151.2,
+            "pl_pct": 15.15,
+            "pl_annual": 6.25
           },
           {
             "variation_pct": -30,
             "underlying_price": 4381.82,
-            "redemption": 1151.37,
-            "pl_pct": 14.12,
-            "pl_annual": 5.82
+            "redemption": 1151.2,
+            "pl_pct": 15.15,
+            "pl_annual": 6.25
           },
           {
             "variation_pct": -20,
             "underlying_price": 5007.8,
-            "redemption": 1151.37,
-            "pl_pct": 14.12,
-            "pl_annual": 5.82
+            "redemption": 1151.2,
+            "pl_pct": 15.15,
+            "pl_annual": 6.25
           },
           {
             "variation_pct": -10,
             "underlying_price": 5633.78,
-            "redemption": 1151.37,
-            "pl_pct": 14.12,
-            "pl_annual": 5.82
+            "redemption": 1151.2,
+            "pl_pct": 15.15,
+            "pl_annual": 6.25
           },
           {
             "variation_pct": 0,
             "underlying_price": 6259.75,
-            "redemption": 1151.37,
-            "pl_pct": 14.12,
-            "pl_annual": 5.82
+            "redemption": 1151.2,
+            "pl_pct": 15.15,
+            "pl_annual": 6.25
           },
           {
             "variation_pct": 10,
             "underlying_price": 6885.73,
-            "redemption": 1151.37,
-            "pl_pct": 14.12,
-            "pl_annual": 5.82
+            "redemption": 1151.2,
+            "pl_pct": 15.15,
+            "pl_annual": 6.25
           },
           {
             "variation_pct": 20,
             "underlying_price": 7511.7,
-            "redemption": 1151.37,
-            "pl_pct": 14.12,
-            "pl_annual": 5.82
+            "redemption": 1151.2,
+            "pl_pct": 15.15,
+            "pl_annual": 6.25
           },
           {
             "variation_pct": 30,
             "underlying_price": 8137.68,
-            "redemption": 1151.37,
-            "pl_pct": 14.12,
-            "pl_annual": 5.82
+            "redemption": 1151.2,
+            "pl_pct": 15.15,
+            "pl_annual": 6.25
           }
         ],
-        "years_to_maturity": 2.43
+        "years_to_maturity": 2.42
       },
       "source": "CED"
     },
@@ -1496,8 +1496,8 @@
       "market": "CERT-X",
       "currency": "EUR",
       "bid_price": 0,
-      "ask_price": 1011.49,
-      "reference_price": 1011.49,
+      "ask_price": 1011.5,
+      "reference_price": 1011.5,
       "issue_date": "2028-03-20",
       "maturity_date": "2028-03-20",
       "strike_date": null,
@@ -1553,77 +1553,77 @@
             "underlying_price": 1640.52,
             "redemption": 300.0,
             "pl_pct": -70.34,
-            "pl_annual": -34.12
+            "pl_annual": -34.16
           },
           {
             "variation_pct": -60,
             "underlying_price": 2187.36,
             "redemption": 400.0,
             "pl_pct": -60.45,
-            "pl_annual": -29.32
+            "pl_annual": -29.36
           },
           {
             "variation_pct": -50,
             "underlying_price": 2734.2,
             "redemption": 500.0,
             "pl_pct": -50.57,
-            "pl_annual": -24.53
+            "pl_annual": -24.56
           },
           {
             "variation_pct": -40,
             "underlying_price": 3281.05,
-            "redemption": 1113.8,
-            "pl_pct": 10.11,
-            "pl_annual": 4.9
+            "redemption": 1113.65,
+            "pl_pct": 10.1,
+            "pl_annual": 4.91
           },
           {
             "variation_pct": -30,
             "underlying_price": 3827.89,
-            "redemption": 1113.8,
-            "pl_pct": 10.11,
-            "pl_annual": 4.9
+            "redemption": 1113.65,
+            "pl_pct": 10.1,
+            "pl_annual": 4.91
           },
           {
             "variation_pct": -20,
             "underlying_price": 4374.73,
-            "redemption": 1113.8,
-            "pl_pct": 10.11,
-            "pl_annual": 4.9
+            "redemption": 1113.65,
+            "pl_pct": 10.1,
+            "pl_annual": 4.91
           },
           {
             "variation_pct": -10,
             "underlying_price": 4921.57,
-            "redemption": 1113.8,
-            "pl_pct": 10.11,
-            "pl_annual": 4.9
+            "redemption": 1113.65,
+            "pl_pct": 10.1,
+            "pl_annual": 4.91
           },
           {
             "variation_pct": 0,
             "underlying_price": 5468.41,
-            "redemption": 1113.8,
-            "pl_pct": 10.11,
-            "pl_annual": 4.9
+            "redemption": 1113.65,
+            "pl_pct": 10.1,
+            "pl_annual": 4.91
           },
           {
             "variation_pct": 10,
             "underlying_price": 6015.25,
-            "redemption": 1113.8,
-            "pl_pct": 10.11,
-            "pl_annual": 4.9
+            "redemption": 1113.65,
+            "pl_pct": 10.1,
+            "pl_annual": 4.91
           },
           {
             "variation_pct": 20,
             "underlying_price": 6562.09,
-            "redemption": 1113.8,
-            "pl_pct": 10.11,
-            "pl_annual": 4.9
+            "redemption": 1113.65,
+            "pl_pct": 10.1,
+            "pl_annual": 4.91
           },
           {
             "variation_pct": 30,
             "underlying_price": 7108.93,
-            "redemption": 1113.8,
-            "pl_pct": 10.11,
-            "pl_annual": 4.9
+            "redemption": 1113.65,
+            "pl_pct": 10.1,
+            "pl_annual": 4.91
           }
         ],
         "years_to_maturity": 2.06
@@ -1677,8 +1677,8 @@
       "market": "CERT-X",
       "currency": "USD",
       "bid_price": 0,
-      "ask_price": 1143.54,
-      "reference_price": 1143.54,
+      "ask_price": 1147.8,
+      "reference_price": 1147.8,
       "issue_date": "2028-02-15",
       "maturity_date": "2028-02-15",
       "strike_date": null,
@@ -1794,8 +1794,8 @@
       "market": "CERT-X",
       "currency": "EUR",
       "bid_price": 0,
-      "ask_price": 1065.0,
-      "reference_price": 1065.0,
+      "ask_price": 1063.0,
+      "reference_price": 1063.0,
       "issue_date": "2029-06-06",
       "maturity_date": "2029-06-06",
       "strike_date": null,
@@ -1833,8 +1833,8 @@
       "market": "CERT-X",
       "currency": "USD",
       "bid_price": 0,
-      "ask_price": 1051.69,
-      "reference_price": 1051.69,
+      "ask_price": 1053.01,
+      "reference_price": 1053.01,
       "issue_date": "2029-06-29",
       "maturity_date": "2029-06-29",
       "strike_date": null,
@@ -1911,8 +1911,8 @@
       "market": "CERT-X",
       "currency": "EUR",
       "bid_price": 0,
-      "ask_price": 1071.55,
-      "reference_price": 1071.55,
+      "ask_price": 1074.9,
+      "reference_price": 1074.9,
       "issue_date": "2029-06-20",
       "maturity_date": "2029-06-20",
       "strike_date": null,
@@ -1950,8 +1950,8 @@
       "market": "CERT-X",
       "currency": "EUR",
       "bid_price": 0,
-      "ask_price": 1026.08,
-      "reference_price": 1026.08,
+      "ask_price": 1026.94,
+      "reference_price": 1026.94,
       "issue_date": "2028-04-24",
       "maturity_date": "2028-04-24",
       "strike_date": null,
@@ -1989,8 +1989,8 @@
       "market": "CERT-X",
       "currency": "USD",
       "bid_price": 0,
-      "ask_price": 1078.55,
-      "reference_price": 1078.55,
+      "ask_price": 1079.6,
+      "reference_price": 1079.6,
       "issue_date": "2029-05-31",
       "maturity_date": "2029-05-31",
       "strike_date": null,
@@ -2028,8 +2028,8 @@
       "market": "CERT-X",
       "currency": "USD",
       "bid_price": 0,
-      "ask_price": 1192.82,
-      "reference_price": 1192.82,
+      "ask_price": 1200.56,
+      "reference_price": 1200.56,
       "issue_date": "2028-02-09",
       "maturity_date": "2028-02-09",
       "strike_date": null,
@@ -2067,8 +2067,8 @@
       "market": "CERT-X",
       "currency": "EUR",
       "bid_price": 0,
-      "ask_price": 1121.0,
-      "reference_price": 1121.0,
+      "ask_price": 1123.58,
+      "reference_price": 1123.58,
       "issue_date": "2028-03-10",
       "maturity_date": "2028-03-10",
       "strike_date": null,
@@ -2106,8 +2106,8 @@
       "market": "CERT-X",
       "currency": "USD",
       "bid_price": 0,
-      "ask_price": 1095.2,
-      "reference_price": 1095.2,
+      "ask_price": 1100.25,
+      "reference_price": 1100.25,
       "issue_date": "2028-03-03",
       "maturity_date": "2028-03-03",
       "strike_date": null,
@@ -2145,8 +2145,8 @@
       "market": "CERT-X",
       "currency": "EUR",
       "bid_price": 0,
-      "ask_price": 1060.9,
-      "reference_price": 1060.9,
+      "ask_price": 1064.4,
+      "reference_price": 1064.4,
       "issue_date": "2028-03-21",
       "maturity_date": "2028-03-21",
       "strike_date": null,
@@ -2184,8 +2184,8 @@
       "market": "CERT-X",
       "currency": "EUR",
       "bid_price": 0,
-      "ask_price": 1227.36,
-      "reference_price": 1227.36,
+      "ask_price": 1222.48,
+      "reference_price": 1222.48,
       "issue_date": "2028-03-21",
       "maturity_date": "2028-03-21",
       "strike_date": null,
@@ -2273,8 +2273,8 @@
       "market": "CERT-X",
       "currency": "EUR",
       "bid_price": 0,
-      "ask_price": 1048.4,
-      "reference_price": 1048.4,
+      "ask_price": 1049.15,
+      "reference_price": 1049.15,
       "issue_date": "2028-03-31",
       "maturity_date": "2028-03-31",
       "strike_date": null,
@@ -2312,8 +2312,8 @@
       "market": "CERT-X",
       "currency": "EUR",
       "bid_price": 0,
-      "ask_price": 1051.0,
-      "reference_price": 1051.0,
+      "ask_price": 1053.05,
+      "reference_price": 1053.05,
       "issue_date": "2028-04-04",
       "maturity_date": "2028-04-04",
       "strike_date": null,
@@ -2351,8 +2351,8 @@
       "market": "CERT-X",
       "currency": "EUR",
       "bid_price": 0,
-      "ask_price": 1102.52,
-      "reference_price": 1102.52,
+      "ask_price": 1108.7,
+      "reference_price": 1108.7,
       "issue_date": "2028-03-28",
       "maturity_date": "2028-03-28",
       "strike_date": null,
@@ -2390,8 +2390,8 @@
       "market": "CERT-X",
       "currency": "USD",
       "bid_price": 0,
-      "ask_price": 1105.49,
-      "reference_price": 1105.49,
+      "ask_price": 1108.05,
+      "reference_price": 1108.05,
       "issue_date": "2028-04-06",
       "maturity_date": "2028-04-06",
       "strike_date": null,
@@ -2429,8 +2429,8 @@
       "market": "CERT-X",
       "currency": "USD",
       "bid_price": 0,
-      "ask_price": 1179.45,
-      "reference_price": 1179.45,
+      "ask_price": 1188.75,
+      "reference_price": 1188.75,
       "issue_date": "2030-03-26",
       "maturity_date": "2030-03-26",
       "strike_date": null,
@@ -2469,11 +2469,11 @@
     "new_this_run": 0,
     "updated_this_run": 32,
     "purged_expired": 0,
-    "total_scraped_this_run": 159,
+    "total_scraped_this_run": 157,
     "after_filter_this_run": 32,
     "detail_enriched_this_run": 0,
-    "timestamp": "2026-02-25T09:52:13.837341",
-    "scrape_date": "2026-02-25",
+    "timestamp": "2026-02-26T09:45:09.799834",
+    "scrape_date": "2026-02-26",
     "categories": 10,
     "underlyings_db": 27
   }
