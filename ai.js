@@ -1,14 +1,14 @@
 /**
- * Copyright (c) 2024-2025 Mutna S.R.L.S. - All Rights Reserved
+ * Copyright (c) 2024-2026 Mutna S.R.L.S. - All Rights Reserved
  * P.IVA: 04219740364
  * 
  * AI Financial Assistant Module
- * Powered by Claude (Anthropic) - Specialized in Italian/EU Finance
+ * Powered by Perplexity Sonar - Built-in Web Search + Finance Analysis
  */
 
 const express = require('express');
 const router = express.Router();
-const Anthropic = require('@anthropic-ai/sdk');
+const axios = require('axios');
 const multer = require('multer');
 const pdfParse = require('pdf-parse');
 
@@ -16,12 +16,13 @@ const pdfParse = require('pdf-parse');
 // CONFIGURATION
 // ===================================
 
-const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
-if (!ANTHROPIC_API_KEY) {
-    console.error('❌ ANTHROPIC_API_KEY not set! AI module will not work.');
+const PERPLEXITY_API_KEY = process.env.PERPLEXITY_API_KEY;
+if (!PERPLEXITY_API_KEY) {
+    console.error('❌ PERPLEXITY_API_KEY not set! AI module will not work.');
 }
 
-const client = ANTHROPIC_API_KEY ? new Anthropic({ apiKey: ANTHROPIC_API_KEY }) : null;
+const PERPLEXITY_API_URL = 'https://api.perplexity.ai/chat/completions';
+const AI_MODEL = 'sonar'; // sonar = cheapest with web search ($1/$1 per 1M tokens)
 
 // Rate limiting simple (in-memory)
 const rateLimits = new Map();
@@ -79,21 +80,16 @@ Sei un analista finanziario senior specializzato nei mercati europei e italiani.
 ## Regole Importanti
 1. **NO Disclaimer**: NON aggiungere MAI disclaimer, avvertenze o note legali nelle risposte. C'è già un avviso fisso nella piattaforma.
 2. **Oggettività**: Presenta pro E contro di ogni strumento. Non consigliare mai di comprare o vendere.
-3. **Dati**: Quando ti vengono forniti dati di uno strumento dalla piattaforma, usali per l'analisi. Se non hai dati sufficienti, dillo chiaramente.
+3. **Dati**: Quando ti vengono forniti dati di uno strumento dalla piattaforma, usali per l'analisi. Se non hai dati sufficienti, cerca informazioni aggiornate sul web.
 4. **Precisione**: Se non sei sicuro di un dato, dillo. Non inventare numeri o performance.
 5. **Formato**: Usa markdown per formattare le risposte. Usa tabelle per confronti. Sii conciso ma completo.
+6. **Citazioni**: Quando usi dati dal web, indica la fonte in modo naturale nel testo.
 
-## Fondi ed ETF con dati limitati
-Quando ricevi dati limitati su un fondo/ETF (solo prezzo e nome, senza TER, categoria, composizione), usa le tue conoscenze generali per arricchire l'analisi:
-- Identifica il fondo dal nome/ISIN e spiega cosa fa (asset class, area geografica, strategia)
-- Indica la categoria Morningstar probabile e il benchmark di riferimento
-- Spiega i fattori chiave da valutare: TER, tracking error, dimensione del fondo, liquidità
-- Suggerisci dove trovare dati completi (Morningstar, JustETF, KIID del fondo)
-- Confronta con alternative note nella stessa categoria
-Specifica chiaramente quando usi conoscenze generali vs dati dalla piattaforma.
+## Fondi ed ETF
+Quando analizzi fondi/ETF, cerca attivamente sul web: TER, categoria Morningstar, benchmark, composizione, performance recenti, dimensione del fondo. Confronta con alternative nella stessa categoria.
 
 ## Contesto Piattaforma
-ISIN Research & Compare è una piattaforma di ricerca finanziaria che aggrega dati da Yahoo Finance, Finnhub, Alpha Vantage e TwelveData. Copre azioni, bond, certificati, ETF e fondi. L'utente potrebbe chiederti di analizzare strumenti che ha cercato sulla piattaforma.`;
+ISIN Research & Compare è una piattaforma di ricerca finanziaria che aggrega dati da Yahoo Finance, Finnhub, Alpha Vantage, TwelveData e OpenFIGI. Copre azioni, bond, certificati, ETF e fondi. L'utente potrebbe chiederti di analizzare strumenti che ha cercato sulla piattaforma.`;
 
 // ===================================
 // MULTER CONFIG for file uploads
@@ -111,7 +107,6 @@ const upload = multer({
             'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
             'application/msword'
         ];
-        // Also check extension
         const ext = file.originalname.split('.').pop().toLowerCase();
         const allowedExt = ['pdf', 'txt', 'csv', 'doc', 'docx'];
         
@@ -145,12 +140,10 @@ async function extractText(file) {
     }
     
     if (ext === 'docx') {
-        // Basic DOCX text extraction (XML-based)
         try {
             const AdmZip = require('adm-zip');
             const zip = new AdmZip(file.buffer);
             const content = zip.readAsText('word/document.xml');
-            // Strip XML tags, keep text
             return content.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
         } catch (error) {
             console.error('DOCX parse error:', error.message);
@@ -170,7 +163,10 @@ function buildMessages(userMessage, options = {}) {
     
     const messages = [];
     
-    // Add conversation history (last 20 messages max to save tokens)
+    // System prompt (Perplexity uses OpenAI format)
+    messages.push({ role: 'system', content: SYSTEM_PROMPT });
+    
+    // Add conversation history (last 20 messages max)
     const recentHistory = history.slice(-20);
     for (const msg of recentHistory) {
         if (msg.role === 'user' || msg.role === 'assistant') {
@@ -188,7 +184,6 @@ function buildMessages(userMessage, options = {}) {
     }
     
     if (documentText) {
-        // Truncate to ~30k chars to leave room for response
         const truncated = documentText.substring(0, 30000);
         content += `\n[DOCUMENTO CARICATO]\n`;
         content += truncated;
@@ -206,14 +201,112 @@ function buildMessages(userMessage, options = {}) {
 }
 
 // ===================================
+// HELPER: Stream Perplexity response to client
+// ===================================
+
+async function streamPerplexityResponse(messages, res, maxTokens = 2048) {
+    const response = await axios({
+        method: 'post',
+        url: PERPLEXITY_API_URL,
+        headers: {
+            'Authorization': `Bearer ${PERPLEXITY_API_KEY}`,
+            'Content-Type': 'application/json'
+        },
+        data: {
+            model: AI_MODEL,
+            messages: messages,
+            max_tokens: maxTokens,
+            temperature: 0.2,
+            stream: true,
+            return_citations: true,
+            search_recency_filter: 'month'
+        },
+        responseType: 'stream',
+        timeout: 60000
+    });
+
+    let fullText = '';
+    let citations = [];
+    let buffer = '';
+
+    return new Promise((resolve, reject) => {
+        response.data.on('data', (chunk) => {
+            buffer += chunk.toString();
+            const lines = buffer.split('\n');
+            buffer = lines.pop(); // Keep incomplete line in buffer
+
+            for (const line of lines) {
+                const trimmed = line.trim();
+                if (!trimmed || !trimmed.startsWith('data: ')) continue;
+
+                const data = trimmed.substring(6);
+                if (data === '[DONE]') {
+                    // Append citations if available
+                    if (citations.length > 0) {
+                        const citationText = '\n\n---\n**Fonti:** ' + 
+                            citations.map((url, i) => `[${i + 1}](${url})`).join(' · ');
+                        fullText += citationText;
+                        res.write(`data: ${JSON.stringify({ type: 'text', text: citationText })}\n\n`);
+                    }
+                    res.write(`data: ${JSON.stringify({ type: 'done', fullText })}\n\n`);
+                    res.end();
+                    resolve(fullText);
+                    return;
+                }
+
+                try {
+                    const parsed = JSON.parse(data);
+                    
+                    // Extract citations from the response
+                    if (parsed.citations && parsed.citations.length > 0) {
+                        citations = parsed.citations;
+                    }
+
+                    const delta = parsed.choices?.[0]?.delta;
+                    if (delta && delta.content) {
+                        fullText += delta.content;
+                        res.write(`data: ${JSON.stringify({ type: 'text', text: delta.content })}\n\n`);
+                    }
+                } catch (e) {
+                    // Skip unparseable chunks
+                }
+            }
+        });
+
+        response.data.on('end', () => {
+            if (!res.writableEnded) {
+                if (citations.length > 0) {
+                    const citationText = '\n\n---\n**Fonti:** ' + 
+                        citations.map((url, i) => `[${i + 1}](${url})`).join(' · ');
+                    fullText += citationText;
+                    res.write(`data: ${JSON.stringify({ type: 'text', text: citationText })}\n\n`);
+                }
+                res.write(`data: ${JSON.stringify({ type: 'done', fullText })}\n\n`);
+                res.end();
+                resolve(fullText);
+            }
+        });
+
+        response.data.on('error', (error) => {
+            console.error('Perplexity stream error:', error);
+            if (!res.writableEnded) {
+                res.write(`data: ${JSON.stringify({ type: 'error', error: 'Errore durante la generazione della risposta.' })}\n\n`);
+                res.end();
+            }
+            reject(error);
+        });
+    });
+}
+
+// ===================================
 // POST /api/ai/chat - Main chat endpoint (streaming SSE)
 // ===================================
 
 router.post('/chat', async (req, res) => {
-    if (!client) {
+    if (!PERPLEXITY_API_KEY) {
         return res.status(503).json({ 
             success: false, 
-            error: 'AI service not configured. ANTHROPIC_API_KEY missing.' 
+            error: 'AI service not configured. PERPLEXITY_API_KEY missing.' 
         });
     }
     
@@ -234,7 +327,6 @@ router.post('/chat', async (req, res) => {
         });
     }
     
-    // Limit message length
     if (message.length > 5000) {
         return res.status(400).json({ 
             success: false, 
@@ -256,71 +348,56 @@ router.post('/chat', async (req, res) => {
             res.setHeader('Connection', 'keep-alive');
             res.setHeader('X-Accel-Buffering', 'no');
             
-            const streamResponse = await client.messages.stream({
-                model: 'claude-sonnet-4-20250514',
-                max_tokens: 2048,
-                system: SYSTEM_PROMPT,
-                messages: messages
-            });
+            req.on('close', () => { /* client disconnected */ });
             
-            let fullText = '';
-            
-            streamResponse.on('text', (text) => {
-                fullText += text;
-                res.write(`data: ${JSON.stringify({ type: 'text', text })}\n\n`);
-            });
-            
-            streamResponse.on('end', () => {
-                res.write(`data: ${JSON.stringify({ type: 'done', fullText })}\n\n`);
-                res.end();
-            });
-            
-            streamResponse.on('error', (error) => {
-                console.error('Stream error:', error);
-                res.write(`data: ${JSON.stringify({ type: 'error', error: 'Errore durante la generazione della risposta.' })}\n\n`);
-                res.end();
-            });
-            
-            // Handle client disconnect
-            req.on('close', () => {
-                streamResponse.abort();
-            });
+            await streamPerplexityResponse(messages, res);
             
         } else {
             // Non-streaming response
-            const response = await client.messages.create({
-                model: 'claude-sonnet-4-20250514',
-                max_tokens: 2048,
-                system: SYSTEM_PROMPT,
-                messages: messages
-            });
+            const response = await axios.post(
+                PERPLEXITY_API_URL,
+                {
+                    model: AI_MODEL,
+                    messages: messages,
+                    max_tokens: 2048,
+                    temperature: 0.2,
+                    return_citations: true,
+                    search_recency_filter: 'month'
+                },
+                {
+                    headers: {
+                        'Authorization': `Bearer ${PERPLEXITY_API_KEY}`,
+                        'Content-Type': 'application/json'
+                    },
+                    timeout: 60000
+                }
+            );
             
-            const aiText = response.content
-                .filter(block => block.type === 'text')
-                .map(block => block.text)
-                .join('');
+            const aiText = response.data.choices?.[0]?.message?.content || '';
+            const citations = response.data.citations || [];
             
             res.json({
                 success: true,
                 response: aiText,
+                citations: citations,
                 usage: {
-                    inputTokens: response.usage.input_tokens,
-                    outputTokens: response.usage.output_tokens
+                    inputTokens: response.data.usage?.prompt_tokens || 0,
+                    outputTokens: response.data.usage?.completion_tokens || 0
                 }
             });
         }
         
     } catch (error) {
-        console.error('AI chat error:', error);
+        console.error('AI chat error:', error.message);
         
-        if (error.status === 401) {
+        if (error.response?.status === 401) {
             return res.status(500).json({ success: false, error: 'API key non valida.' });
         }
-        if (error.status === 429) {
+        if (error.response?.status === 429) {
             return res.status(429).json({ success: false, error: 'Rate limit API raggiunto. Riprova tra poco.' });
         }
-        if (error.status === 529) {
-            return res.status(503).json({ success: false, error: 'Servizio AI temporaneamente sovraccarico. Riprova tra poco.' });
+        if (error.response?.status === 402) {
+            return res.status(402).json({ success: false, error: 'Crediti API esauriti. Ricarica su perplexity.ai/settings/api' });
         }
         
         res.status(500).json({ 
@@ -370,7 +447,7 @@ router.post('/upload', upload.single('file'), async (req, res) => {
 // ===================================
 
 router.post('/analyze', async (req, res) => {
-    if (!client) {
+    if (!PERPLEXITY_API_KEY) {
         return res.status(503).json({ 
             success: false, 
             error: 'AI service not configured.' 
@@ -394,28 +471,28 @@ router.post('/analyze', async (req, res) => {
     }
     
     const analysisPrompts = {
-        general: `Analizza questo strumento finanziario in modo sintetico. Fornisci:
+        general: `Analizza questo strumento finanziario in modo sintetico. Cerca informazioni aggiornate sul web se necessario. Fornisci:
 1. **Overview**: Cos'è e in che settore opera
 2. **Punti di forza**: 2-3 aspetti positivi basati sui dati
 3. **Rischi**: 2-3 aspetti critici o di attenzione
-4. **Valutazione**: Come si posiziona rispetto ai comparabili del settore (se possibile)
+4. **Valutazione**: Come si posiziona rispetto ai comparabili del settore
 Sii conciso, max 300 parole.`,
         
-        dividend: `Analizza questo strumento dal punto di vista dei dividendi:
+        dividend: `Analizza questo strumento dal punto di vista dei dividendi. Cerca dati aggiornati sul web:
 1. **Dividend Yield attuale** e confronto con media settore
 2. **Sostenibilità** del dividendo (payout ratio se disponibile)
 3. **Storico** e trend
 4. **Tassazione** italiana applicabile
 Sii conciso, max 200 parole.`,
         
-        risk: `Analizza il profilo di rischio di questo strumento:
+        risk: `Analizza il profilo di rischio di questo strumento. Cerca dati aggiornati:
 1. **Volatilità** e beta (se disponibili)
 2. **Rischi specifici** (settore, paese, valuta)
 3. **Livello di rischio** su scala 1-5
 4. **Per chi è adatto** questo strumento
 Sii conciso, max 200 parole.`,
         
-        comparison: `Basandoti sui dati forniti, suggerisci:
+        comparison: `Basandoti sui dati forniti e cercando informazioni aggiornate, suggerisci:
 1. **Comparabili**: 3-5 strumenti simili da confrontare
 2. **Benchmark** appropriato
 3. **Posizionamento**: Come si colloca rispetto alla media del settore
@@ -431,43 +508,23 @@ Sii conciso, max 200 parole.`
         res.setHeader('Connection', 'keep-alive');
         res.setHeader('X-Accel-Buffering', 'no');
         
-        const messages = [{
-            role: 'user',
-            content: `[DATI STRUMENTO]\n${JSON.stringify(instrumentData, null, 2)}\n[FINE DATI]\n\n${prompt}`
-        }];
+        const messages = [
+            { role: 'system', content: SYSTEM_PROMPT },
+            { role: 'user', content: `[DATI STRUMENTO]\n${JSON.stringify(instrumentData, null, 2)}\n[FINE DATI]\n\n${prompt}` }
+        ];
         
-        const streamResponse = await client.messages.stream({
-            model: 'claude-sonnet-4-20250514',
-            max_tokens: 1024,
-            system: SYSTEM_PROMPT,
-            messages
-        });
+        req.on('close', () => { /* client disconnected */ });
         
-        streamResponse.on('text', (text) => {
-            res.write(`data: ${JSON.stringify({ type: 'text', text })}\n\n`);
-        });
-        
-        streamResponse.on('end', () => {
-            res.write(`data: ${JSON.stringify({ type: 'done' })}\n\n`);
-            res.end();
-        });
-        
-        streamResponse.on('error', (error) => {
-            console.error('Analyze stream error:', error);
-            res.write(`data: ${JSON.stringify({ type: 'error', error: 'Errore durante l\'analisi.' })}\n\n`);
-            res.end();
-        });
-        
-        req.on('close', () => {
-            streamResponse.abort();
-        });
+        await streamPerplexityResponse(messages, res, 1024);
         
     } catch (error) {
         console.error('Analyze error:', error);
-        res.status(500).json({ 
-            success: false, 
-            error: 'Errore nell\'analisi dello strumento.' 
-        });
+        if (!res.writableEnded) {
+            res.status(500).json({ 
+                success: false, 
+                error: 'Errore nell\'analisi dello strumento.' 
+            });
+        }
     }
 });
 
@@ -478,9 +535,10 @@ Sii conciso, max 200 parole.`
 router.get('/status', (req, res) => {
     res.json({
         success: true,
-        configured: !!client,
-        model: 'claude-sonnet-4-20250514',
-        features: ['chat', 'streaming', 'document-upload', 'instrument-analysis'],
+        configured: !!PERPLEXITY_API_KEY,
+        model: AI_MODEL,
+        provider: 'perplexity',
+        features: ['chat', 'streaming', 'web-search', 'citations', 'document-upload', 'instrument-analysis'],
         rateLimits: {
             maxPerMinute: RATE_LIMIT_MAX,
             windowMs: RATE_LIMIT_WINDOW
