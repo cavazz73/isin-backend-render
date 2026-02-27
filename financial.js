@@ -199,33 +199,6 @@ router.get('/historical/:symbol', async (req, res) => {
 });
 
 // ===================================
-// CACHE FLUSH (clear stale data)
-// ===================================
-router.get('/cache/flush', async (req, res) => {
-    try {
-        console.log('[API] Cache flush requested');
-        
-        // Try flush method if exists, otherwise try flushdb on Redis client directly
-        if (aggregator.cache && typeof aggregator.cache.flush === 'function') {
-            await aggregator.cache.flush();
-        } else if (aggregator.cache && aggregator.cache.client) {
-            await aggregator.cache.client.flushdb();
-        } else {
-            return res.json({ success: false, error: 'No cache client available' });
-        }
-        
-        res.json({
-            success: true,
-            message: 'Cache flushed successfully',
-            timestamp: new Date().toISOString()
-        });
-    } catch (error) {
-        console.error('[API] Cache flush error:', error);
-        res.json({ success: false, error: error.message });
-    }
-});
-
-// ===================================
 // TEST ENDPOINT
 // ===================================
 router.get('/test', async (req, res) => {
@@ -296,6 +269,20 @@ router.get('/test', async (req, res) => {
         res.status(500).json({
             error: error.message
         });
+    }
+});
+
+// ===================================
+// CLEAR CACHE
+// ===================================
+router.delete('/cache', async (req, res) => {
+    try {
+        const result = await aggregator.clearCache();
+        console.log('[API] Cache cleared');
+        res.json({ success: true, message: 'Cache cleared', result });
+    } catch (error) {
+        console.error('[API] Cache clear error:', error);
+        res.status(500).json({ success: false, error: error.message });
     }
 });
 
