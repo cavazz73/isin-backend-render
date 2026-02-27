@@ -286,16 +286,40 @@ class DataAggregatorV4 {
             console.error(`[fmp] Quote error: ${error.message}`);
         }
 
-        // âœ… FALLBACK: Yahoo (if available)
+        // FALLBACK: Yahoo (if available)
         try {
             const yahooQuote = await this.yahoo.getQuote(symbol);
             if (yahooQuote.success && yahooQuote.data) {
                 console.log(`[yahoo] Quote found: ${yahooQuote.data.price} ${yahooQuote.data.currency}`);
                 
-                // SAVE TO CACHE
-                await this.cache.set('quote', symbol, yahooQuote);
+                // GET FUNDAMENTALS from Yahoo (getQuote only returns price from chart endpoint)
+                console.log(`[DataAggregatorV4] Fetching fundamentals from Yahoo for ${symbol}...`);
+                const fundamentals = await this.yahoo.getFundamentals(symbol);
                 
-                return yahooQuote;
+                // Combine price data with fundamentals
+                const combinedQuote = {
+                    ...yahooQuote,
+                    data: {
+                        ...yahooQuote.data,
+                        description: (fundamentals.success && fundamentals.data.description) || yahooQuote.data.description,
+                        marketCap: fundamentals.success ? fundamentals.data.marketCap : null,
+                        peRatio: fundamentals.success ? fundamentals.data.peRatio : null,
+                        dividendYield: fundamentals.success ? fundamentals.data.dividendYield : null,
+                        week52High: fundamentals.success ? fundamentals.data.week52High : null,
+                        week52Low: fundamentals.success ? fundamentals.data.week52Low : null,
+                        sector: fundamentals.success ? fundamentals.data.sector : null,
+                        industry: fundamentals.success ? fundamentals.data.industry : null
+                    }
+                };
+                
+                if (fundamentals.success) {
+                    console.log(`[yahoo] Added fundamentals for ${symbol}`);
+                }
+                
+                // SAVE TO CACHE
+                await this.cache.set('quote', symbol, combinedQuote);
+                
+                return combinedQuote;
             }
         } catch (error) {
             console.error(`[yahoo] Quote error: ${error.message}`);
