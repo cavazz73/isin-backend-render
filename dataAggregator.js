@@ -461,6 +461,7 @@ class DataAggregatorV4 {
         }
 
         // 2. Try OpenFIGI FIRST (Bloomberg ISIN resolver - best for funds/ETF/bonds)
+        let openFigiData = null; // Keep FIGI data for ISIN mapping even if price not found
         try {
             const figiResult = await this.openfigi.mapISIN(isin);
             if (figiResult.success && figiResult.results.length > 0) {
@@ -483,28 +484,35 @@ class DataAggregatorV4 {
                         source: 'openfigi',
                         figi: r.figi
                     };
-                }).filter(r => r.symbol); // Remove entries without ticker
+                }).filter(r => r.symbol);
 
                 if (results.length > 0) {
                     // Enrich with real-time quotes (price, P/E, etc.)
                     const enriched = await this.enrichWithQuotes(results);
                     
-                    const response = {
-                        success: true,
-                        results: enriched,
-                        metadata: {
-                            totalResults: enriched.length,
-                            sources: ['openfigi'],
-                            primarySource: 'openfigi',
-                            isin: isin.toUpperCase(),
-                            timestamp: new Date().toISOString(),
-                            fromCache: false
-                        }
-                    };
-                    
-                    // SAVE TO CACHE (ISIN mapping is stable, long TTL)
-                    await this.cache.set('isin', isin, response, 86400); // 24h
-                    return response;
+                    // Only return if we actually got a price
+                    const hasPrice = enriched.some(r => r.price != null);
+                    if (hasPrice) {
+                        const response = {
+                            success: true,
+                            results: enriched,
+                            metadata: {
+                                totalResults: enriched.length,
+                                sources: ['openfigi'],
+                                primarySource: 'openfigi',
+                                isin: isin.toUpperCase(),
+                                timestamp: new Date().toISOString(),
+                                fromCache: false
+                            }
+                        };
+                        
+                        await this.cache.set('isin', isin, response, 86400);
+                        return response;
+                    } else {
+                        // Save FIGI data for later (name, type) but continue to other sources for price
+                        openFigiData = results[0];
+                        console.log(`[OpenFIGI] No price for ${results[0].symbol}, trying other sources...`);
+                    }
                 }
             }
         } catch (error) {
@@ -515,8 +523,13 @@ class DataAggregatorV4 {
         try {
             const twelveResult = await this.twelvedata.searchByISIN(isin);
             if (twelveResult.success && twelveResult.results.length > 0) {
-                // Enrich with quotes
-                const enriched = await this.enrichWithQuotes(twelveResult.results);
+                // Ensure ISIN is preserved in results
+                const resultsWithISIN = twelveResult.results.map(r => ({
+                    ...r,
+                    isin: r.isin || isin.toUpperCase(),
+                    name: r.name || (openFigiData && openFigiData.name) || r.symbol
+                }));
+                const enriched = await this.enrichWithQuotes(resultsWithISIN);
                 const response = {
                     success: true,
                     results: enriched,
@@ -539,7 +552,12 @@ class DataAggregatorV4 {
         try {
             const yahooResult = await this.yahoo.searchByISIN(isin);
             if (yahooResult.success && yahooResult.results.length > 0) {
-                const enriched = await this.enrichWithQuotes(yahooResult.results);
+                const resultsWithISIN = yahooResult.results.map(r => ({
+                    ...r,
+                    isin: r.isin || isin.toUpperCase(),
+                    name: r.name || (openFigiData && openFigiData.name) || r.symbol
+                }));
+                const enriched = await this.enrichWithQuotes(resultsWithISIN);
                 const response = {
                     success: true,
                     results: enriched,
@@ -562,7 +580,12 @@ class DataAggregatorV4 {
         try {
             const finnhubResult = await this.finnhub.searchByISIN(isin);
             if (finnhubResult.success && finnhubResult.results.length > 0) {
-                const enriched = await this.enrichWithQuotes(finnhubResult.results);
+                const resultsWithISIN = finnhubResult.results.map(r => ({
+                    ...r,
+                    isin: r.isin || isin.toUpperCase(),
+                    name: r.name || (openFigiData && openFigiData.name) || r.symbol
+                }));
+                const enriched = await this.enrichWithQuotes(resultsWithISIN);
                 const response = {
                     success: true,
                     results: enriched,
@@ -579,6 +602,29 @@ class DataAggregatorV4 {
             }
         } catch (error) {
             console.error(`[finnhub] ISIN search error: ${error.message}`);
+        }
+
+        // 6. Last resort: return OpenFIGI data without price (at least show name + external links)
+        if (openFigiData) {
+            console.log(`[DataAggregatorV4] Returning OpenFIGI data without price for ${isin}`);
+            const response = {
+                success: true,
+                results: [{
+                    ...openFigiData,
+                    isin: isin.toUpperCase()
+                }],
+                metadata: {
+                    totalResults: 1,
+                    sources: ['openfigi'],
+                    primarySource: 'openfigi',
+                    isin: isin.toUpperCase(),
+                    timestamp: new Date().toISOString(),
+                    fromCache: false,
+                    note: 'No price available from any source'
+                }
+            };
+            await this.cache.set('isin', isin, response, 3600); // shorter TTL since no price
+            return response;
         }
 
         return {
