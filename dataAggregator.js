@@ -208,16 +208,19 @@ class DataAggregatorV4 {
      * FIXED: Limit to 3 results + sequential with delay to avoid rate limiting
      */
     async enrichWithQuotes(results) {
-        // âœ… LIMIT TO 3 RESULTS (like before!)
+        // LIMIT TO 3 RESULTS
         const limitedResults = results.slice(0, 3);
         const enrichedResults = [];
 
         console.log(`[DataAggregatorV4] Enriching ${limitedResults.length} results (limited from ${results.length})`);
 
-        // âœ… SEQUENTIAL (not parallel) to avoid rate limiting
+        // SEQUENTIAL (not parallel) to avoid rate limiting
         for (const item of limitedResults) {
-            // If we already have price data, skip
-            if (item.price != null && typeof item.price === 'number') {
+            // Check if we already have BOTH price AND fundamentals
+            const hasFundamentals = item.marketCap || item.peRatio || item.dividendYield || item.week52High;
+            
+            if (item.price != null && typeof item.price === 'number' && hasFundamentals) {
+                // Already complete, skip
                 enrichedResults.push(item);
                 continue;
             }
@@ -227,24 +230,24 @@ class DataAggregatorV4 {
             if (quote.success && quote.data) {
                 enrichedResults.push({
                     ...item,
-                    description: quote.data.description || item.description,  // âœ… KEEP DESCRIPTION
-                    price: quote.data.price,
-                    change: quote.data.change,
-                    changePercent: quote.data.changePercent,
+                    description: quote.data.description || item.description,
+                    price: item.price || quote.data.price,
+                    change: item.change ?? quote.data.change,
+                    changePercent: item.changePercent ?? quote.data.changePercent,
                     currency: quote.data.currency || item.currency,
-                    // âœ… FUNDAMENTAL DATA MAPPING
-                    marketCap: quote.data.marketCap || null,
-                    peRatio: quote.data.peRatio || null,
-                    dividendYield: quote.data.dividendYield || null,
-                    week52High: quote.data.week52High || null,
-                    week52Low: quote.data.week52Low || null,
+                    // FUNDAMENTAL DATA - use quote data if item doesn't have it
+                    marketCap: item.marketCap || quote.data.marketCap || null,
+                    peRatio: item.peRatio || quote.data.peRatio || null,
+                    dividendYield: item.dividendYield || quote.data.dividendYield || null,
+                    week52High: item.week52High || quote.data.week52High || null,
+                    week52Low: item.week52Low || quote.data.week52Low || null,
                     quoteSources: [quote.source]
                 });
             } else {
                 enrichedResults.push(item);
             }
 
-            // âœ… SMALL DELAY to avoid rate limiting (like before!)
+            // SMALL DELAY to avoid rate limiting
             await new Promise(resolve => setTimeout(resolve, 100));
         }
 
