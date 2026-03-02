@@ -1,57 +1,87 @@
-name: Scrape CED Certificates
+name: Scrape Certificates Daily
+
 on:
-  workflow_dispatch:
+  # Run every day at 18:30 UTC (19:30 CET / 20:30 CEST)
   schedule:
-    - cron: '0 9 * * 1-5'
-  push:
-    paths:
-      - 'certificates-scraper-ced-v15.py'
+    - cron: '30 18 * * *'
+  
+  # Allow manual trigger
+  workflow_dispatch:
+
 jobs:
-  scrape:
+  scrape-certificates:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Set up Python 3.11
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.11'
-    
-    - name: Install Python dependencies
-      run: |
-        pip install playwright pandas beautifulsoup4 lxml
-    
-    - name: Install Playwright Chromium
-      run: |
-        playwright install --with-deps chromium
-    
-    - name: Run CED scraper
-      env:
-        RECENT_DAYS: 30
-        MAX_DETAIL_ISIN: 100
-      run: |
-        echo "🚀 Avvio scraper CED (recenti ultimi ${RECENT_DAYS}gg)"
-        ls -lh certificates-scraper-ced-v*.py
-        python certificates-scraper-ced-v15.py
-    
-    - name: Verify output files
-      run: |
-        if [ ! -f "certificates-data.json" ]; then
-          echo "❌ ERRORE: certificates-data.json NON generato!"
-          exit 1
-        fi
-        echo "✅ File generato correttamente"
-        COUNT=$(jq '.count' certificates-data.json)
-        echo "📊 Totale certificati validi: ${COUNT}"
-        jq '.metadata' certificates-data.json
-    
-    - name: Commit and push results
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action Bot"
-        git add certificates-data.json certificates-recenti.json certificates-recenti.csv
-        git diff --staged --quiet || git commit -m "🤖 Update certificates data $(date +%Y-%m-%d-%H%M)"
-        git push
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          pip install playwright beautifulsoup4 pandas lxml
+          python -m playwright install chromium
+          python -m playwright install-deps
+          echo "✅ Python dependencies + Playwright installed"
+      
+      - name: Run CED certificates scraper
+        env:
+          RECENT_DAYS: '60'
+          MAX_DETAIL_ISIN: '100'
+        run: |
+          echo "🚀 Starting CED certificates scraper v15..."
+          python certificates-scraper-ced-v15.py
+          echo "✅ Scraper completed"
+      
+      - name: Check for changes
+        id: check_changes
+        run: |
+          if git diff --quiet certificates-data.json 2>/dev/null; then
+            echo "No changes detected"
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "Changes detected in certificates-data.json"
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Commit and push changes
+        if: steps.check_changes.outputs.has_changes == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "GitHub Actions Bot"
+          git add certificates-data.json
+          git add certificates-recenti.json 2>/dev/null || true
+          git add certificates-recenti.csv 2>/dev/null || true
+          git commit -m "🔄 Auto-update certificates data - $(date +'%Y-%m-%d %H:%M')"
+          git push
+          echo "✅ Changes committed and pushed"
+      
+      - name: No changes
+        if: steps.check_changes.outputs.has_changes == 'false'
+        run: |
+          echo "ℹ️ No changes to commit"
+      
+      - name: Workflow summary
+        run: |
+          echo "## 📊 CED Certificates Scraper Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Date:** $(date +'%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
+          echo "- **Source:** certificatiederivati.it" >> $GITHUB_STEP_SUMMARY
+          echo "- **Status:** ✅ Completed" >> $GITHUB_STEP_SUMMARY
+          echo "- **Changes:** ${{ steps.check_changes.outputs.has_changes }}" >> $GITHUB_STEP_SUMMARY
+          
+          if [ -f certificates-data.json ]; then
+            CERT_COUNT=$(python3 -c "import json; d=json.load(open('certificates-data.json')); print(d.get('count', len(d.get('certificates',[]))))")
+            echo "- **Total certificates in DB:** ${CERT_COUNT}" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 🔗 Next Steps" >> $GITHUB_STEP_SUMMARY
+          echo "- Render will auto-deploy with new data" >> $GITHUB_STEP_SUMMARY
+          echo "- Frontend will load updated certificates" >> $GITHUB_STEP_SUMMARY
