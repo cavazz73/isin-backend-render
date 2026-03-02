@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
 """
-CED Scraper v15 - COMPLETO
+CED Scraper v16 - FIXED
 Scrapes certificates from CED "Tabella Prodotti Banca Generali"
-which has a rich 14-column table with all needed data.
 
-Strategy:
-1. Scrape the CED Banca Generali table (14 columns, ~120+ certificates)
-2. Filter: only indices, commodities, forex, rates, credit (NO single stocks)
-3. For filtered certs, visit detail page for enrichment (barrier type, issue date)
-4. Output in EXACT format the frontend expects
+FIXES in v16 vs v15:
+- Type detection from certificate name (not copying full name as type)
+- Detail page scrapes ALL columns: name, strike, spot, barrier, distance
+- Re-enrich ISINs that have incomplete data (underlyings with spot=0)
+- Preserve old detail data when merging
+- Scenario analysis includes worst_underlying name and purchase_price
+- Proper spot prices from detail page
 """
 
 import asyncio
@@ -31,13 +32,11 @@ RETRY_COUNT = 3
 
 cutoff_date = datetime.now() - timedelta(days=RECENT_DAYS)
 
-# The ONE verified source page with 14-column table
 SOURCE_URL = 'https://www.certificatiederivati.it/bs_promo_bgenerali.asp?t=redazione'
 SOURCE_NAME = 'CED Banca Generali'
 
 # ============ FILTRI ============
 VALID_KEYWORDS = [
-    # Indici
     'ftse', 'mib', 'stoxx', 'eurostoxx', 'euro stoxx', 'dax', 'cac', 'ibex',
     's&p', 'sp500', 'sp 500', 'nasdaq', 'dow jones', 'nikkei', 'hang seng',
     'russell', 'msci', 'smi', 'topix', 'kospi', 'sensex',
@@ -45,20 +44,14 @@ VALID_KEYWORDS = [
     'eurostoxx insurance', 'eurostoxx utilit', 'eurostoxx oil',
     'eurostoxx basic', 'eurostoxx healthcare', 'eurostoxx health',
     'stoxx europe', 'select dividend',
-    # ETF su indici
     'ishares msci', 'ishares china', 'spdr', 'etf',
-    # Commodities
     'oro', 'gold', 'silver', 'argento', 'petrolio', 'oil', 'brent', 'wti',
     'gas naturale', 'natural gas', 'copper', 'rame', 'platinum', 'platino',
     'palladium', 'palladio', 'crude', 'commodity',
-    # Forex
     'eur/usd', 'usd/jpy', 'gbp/usd', 'forex', 'currency', 'valuta', 'cambio',
-    # Tassi
     'euribor', 'libor', 'bund', 'btp', 'treasury', 'swap', 'yield', 'tasso',
     'estron',
-    # Credit
     'credit linked', 'credit link', 'cln', 'cds',
-    # Generic
     'index', 'indice', 'basket di indici', 'paniere',
 ]
 
@@ -86,21 +79,44 @@ STOCK_KEYWORDS = [
     'worldline', 'diageo',
 ]
 
+# ============ CERTIFICATE TYPE DETECTION ============
+CERT_TYPE_PATTERNS = [
+    ('phoenix memory step down', 'Phoenix Memory Step Down'),
+    ('phoenix memory', 'Phoenix Memory'),
+    ('phoenix', 'Phoenix'),
+    ('cash collect memory', 'Cash Collect Memory'),
+    ('cash collect', 'Cash Collect'),
+    ('bonus cap', 'Bonus Cap'),
+    ('bonus', 'Bonus'),
+    ('express', 'Express'),
+    ('twin win', 'Twin Win'),
+    ('airbag', 'Airbag'),
+    ('autocallable', 'Autocallable'),
+    ('reverse convertible', 'Reverse Convertible'),
+    ('reverse', 'Reverse'),
+    ('digital', 'Digital'),
+    ('credit linked', 'Credit Linked'),
+    ('outperformance', 'Outperformance'),
+    ('tracker', 'Tracker'),
+    ('capital protected', 'Capital Protected'),
+    ('protection', 'Protection'),
+]
+
+
+def detect_certificate_type(name: str) -> str:
+    if not name:
+        return 'Certificato'
+    n = name.lower().strip()
+    for pattern, cert_type in CERT_TYPE_PATTERNS:
+        if pattern in n:
+            return cert_type
+    return 'Certificato'
+
 
 def is_valid_underlying(name: str) -> bool:
     if not name:
         return False
-    n = name.lower().strip()
-    return any(kw in n for kw in VALID_KEYWORDS)
-
-
-def has_only_stocks(underlyings: List[str]) -> bool:
-    if not underlyings:
-        return False
-    all_text = ' '.join(underlyings).lower()
-    if any(kw in all_text for kw in VALID_KEYWORDS):
-        return False
-    return any(stock in all_text for stock in STOCK_KEYWORDS)
+    return any(kw in name.lower().strip() for kw in VALID_KEYWORDS)
 
 
 def parse_number(text: str) -> Optional[float]:
@@ -170,7 +186,7 @@ def barrier_as_pct(barrier_abs: Optional[float], strike: Optional[float]) -> Opt
     return None
 
 
-def generate_scenarios(barrier_pct, ask_price, annual_yield, years_to_mat, wo_strike):
+def generate_scenarios(barrier_pct, ask_price, annual_yield, years_to_mat, wo_strike, wo_name=''):
     if not all([barrier_pct, ask_price, years_to_mat, wo_strike]):
         return None
     if ask_price <= 0 or years_to_mat <= 0:
@@ -179,6 +195,7 @@ def generate_scenarios(barrier_pct, ask_price, annual_yield, years_to_mat, wo_st
     scenarios = []
     for var in [-70, -60, -50, -40, -30, -20, -10, 0, 10, 20, 30]:
         u_price = round(wo_strike * (1 + var / 100), 2)
+        level = round(100 + var, 2)
         if var >= -(100 - barrier_pct):
             total_c = annual_yield * years_to_mat / 100 * nominal
             redemption = round(nominal + total_c, 2)
@@ -189,11 +206,19 @@ def generate_scenarios(barrier_pct, ask_price, annual_yield, years_to_mat, wo_st
         scenarios.append({
             'variation_pct': var,
             'underlying_price': u_price,
+            'underlying_level': level,
             'redemption': redemption,
             'pl_pct': pl_pct,
             'pl_annual': pl_annual
         })
-    return {'scenarios': scenarios, 'years_to_maturity': round(years_to_mat, 2)}
+    return {
+        'scenarios': scenarios,
+        'years_to_maturity': round(years_to_mat, 2),
+        'worst_underlying': wo_name or 'N/A',
+        'purchase_price': round(ask_price, 2),
+        'barrier_pct': barrier_pct,
+        'nominal': nominal
+    }
 
 
 async def retry_goto(page, url: str, retries: int = RETRY_COUNT) -> bool:
@@ -212,10 +237,6 @@ async def retry_goto(page, url: str, retries: int = RETRY_COUNT) -> bool:
 # ================================================================
 # STEP 1: Parse the 14-column table
 # ================================================================
-# Columns from the HTML source:
-# 0:isin  1:nome  2:emittente  3:scadenza  4:sottostante/basket
-# 5:worst_of(strike)  6:ask  7:prossima_rilevazione  8:premio%
-# 9:frequenza  10:barriera_premio  11:barriera_capitale  12:divisa  13:mercato
 
 def parse_table_row(cols) -> Optional[Dict]:
     if len(cols) < 14:
@@ -227,7 +248,6 @@ def parse_table_row(cols) -> Optional[Dict]:
 
     col_texts = [col.get_text(strip=True) for col in cols]
 
-    # ISIN dal link <a href="db_bs_scheda_certificato.asp?isin=XXX">
     isin = ''
     a_tag = cols[0].find('a')
     if a_tag:
@@ -277,7 +297,6 @@ async def scrape_list_page(page) -> List[Dict]:
     results = []
 
     for table in soup.find_all('table', class_=re.compile(r'table')):
-        # Verify this is the right table by checking header
         thead = table.find('thead')
         if not thead:
             continue
@@ -300,10 +319,12 @@ async def scrape_list_page(page) -> List[Dict]:
 
 
 # ================================================================
-# STEP 2: Scrape detail page for enrichment
+# STEP 2: Scrape detail page for enrichment (FIXED)
 # ================================================================
 
 async def scrape_detail(page, isin: str) -> Dict:
+    """Scrape certificate detail page for barrier type, issue date, and
+    full underlyings table with strike, spot, barrier values."""
     url = f"https://www.certificatiederivati.it/db_bs_scheda_certificato.asp?isin={isin}"
     extra = {'barrier_type': 'European', 'issue_date': None, 'underlyings_detail': []}
 
@@ -313,14 +334,14 @@ async def scrape_detail(page, isin: str) -> Dict:
     html = await page.content()
     soup = BeautifulSoup(html, 'lxml')
 
-    # Tipo barriera (DISCRETA = European, CONTINUA = American)
+    # Tipo barriera
     page_text = soup.get_text().lower()
     if 'continua' in page_text:
         extra['barrier_type'] = 'American'
     elif 'discreta' in page_text:
         extra['barrier_type'] = 'European'
 
-    # Data emissione dalla tabella dati
+    # Data emissione
     for row in soup.find_all('tr'):
         cells = row.find_all(['th', 'td'])
         if len(cells) >= 2:
@@ -330,28 +351,101 @@ async def scrape_detail(page, isin: str) -> Dict:
                 extra['issue_date'] = parse_date(value)
                 break
 
-    # Sottostanti con strike dalla sezione "Scheda Sottostante"
-    for heading in soup.find_all(['h4', 'h3', 'strong', 'b']):
-        if 'sottostante' in heading.get_text().lower():
+    # =============================================
+    # Sottostanti - FIXED: extract ALL columns
+    # =============================================
+    found_underlyings = False
+
+    # Strategy 1: Find table with matching headers
+    for table in soup.find_all('table'):
+        header_row = table.find('tr')
+        if not header_row:
+            continue
+        headers = [cell.get_text(strip=True).lower() for cell in header_row.find_all(['th', 'td'])]
+        header_text = ' '.join(headers)
+
+        if not any(kw in header_text for kw in ['sottostante', 'strike', 'valore iniziale', 'ultimo', 'spot']):
+            continue
+
+        col_map = {}
+        for i, h in enumerate(headers):
+            hl = h.lower()
+            if any(kw in hl for kw in ['sottostante', 'nome', 'descrizione']):
+                col_map['name'] = i
+            elif any(kw in hl for kw in ['valore iniziale', 'strike', 'val. iniz', 'val.iniz']):
+                col_map['strike'] = i
+            elif any(kw in hl for kw in ['ultimo', 'spot', 'prezzo', 'valore attuale', 'val. att', 'val.att']):
+                col_map['spot'] = i
+            elif 'barriera' in hl or 'barrier' in hl:
+                if 'distanza' not in hl and 'dist' not in hl:
+                    col_map['barrier'] = i
+            elif 'distanza' in hl or 'dist' in hl:
+                col_map['distance'] = i
+
+        if 'name' not in col_map:
+            continue
+
+        print(f"    Underlyings table columns: {col_map}")
+
+        for row in table.find_all('tr')[1:]:
+            cells = row.find_all(['td', 'th'])
+            if len(cells) < 2:
+                continue
+
+            name_idx = col_map.get('name', 0)
+            if name_idx >= len(cells):
+                continue
+
+            name = cells[name_idx].get_text(strip=True)
+            if not name or name.lower() in ['sottostante', 'nome', 'descrizione', '']:
+                continue
+
+            def safe_get(idx_key):
+                idx = col_map.get(idx_key)
+                if idx is not None and idx < len(cells):
+                    return parse_number(cells[idx].get_text(strip=True))
+                return None
+
+            extra['underlyings_detail'].append({
+                'name': name,
+                'strike': safe_get('strike') or 0,
+                'spot': safe_get('spot') or 0,
+                'barrier': safe_get('barrier') or 0,
+            })
+            found_underlyings = True
+
+        if found_underlyings:
+            break
+
+    # Strategy 2: Fallback - heading + table
+    if not found_underlyings:
+        for heading in soup.find_all(['h4', 'h3', 'h5', 'strong', 'b', 'div']):
+            if 'sottostant' not in heading.get_text(strip=True).lower():
+                continue
             table = heading.find_next('table')
-            if table:
-                for row in table.find_all('tr'):
-                    cells = row.find_all('td')
-                    if len(cells) >= 2:
-                        name = cells[0].get_text(strip=True)
-                        strike_text = cells[1].get_text(strip=True)
-                        if name and name.upper() not in ['DESCRIZIONE', 'SOTTOSTANTE', '']:
-                            strike = parse_number(strike_text)
-                            extra['underlyings_detail'].append({
-                                'name': name, 'strike': strike or 0
-                            })
+            if not table:
+                continue
+            for row in table.find_all('tr'):
+                cells = row.find_all('td')
+                if len(cells) < 2:
+                    continue
+                name = cells[0].get_text(strip=True)
+                if not name or name.upper() in ['DESCRIZIONE', 'SOTTOSTANTE', 'NOME', '']:
+                    continue
+                extra['underlyings_detail'].append({
+                    'name': name,
+                    'strike': parse_number(cells[1].get_text(strip=True)) if len(cells) > 1 else 0,
+                    'spot': parse_number(cells[2].get_text(strip=True)) if len(cells) > 2 else 0,
+                    'barrier': parse_number(cells[3].get_text(strip=True)) if len(cells) > 3 else 0,
+                })
+                found_underlyings = True
             break
 
     return extra
 
 
 # ================================================================
-# STEP 3: Build output in frontend format
+# STEP 3: Build output in frontend format (FIXED)
 # ================================================================
 
 def build_certificate(raw: Dict, detail: Optional[Dict] = None) -> Dict:
@@ -383,22 +477,47 @@ def build_certificate(raw: Dict, detail: Optional[Dict] = None) -> Dict:
     sotto_names = [n.strip() for n in raw.get('sottostante', '').split(';') if n.strip()]
     detail_und = detail.get('underlyings_detail', []) if detail else []
 
+    # --- FIX: Detect certificate type properly ---
+    cert_type = detect_certificate_type(raw.get('nome', ''))
+
+    # --- Build underlyings list ---
     underlyings = []
     if detail_und:
         for u in detail_und:
             is_worst = wo_name and wo_name.lower().strip() == u['name'].lower().strip()
-            u_barrier = round(u['strike'] * barrier_pct / 100, 2) if barrier_pct and u.get('strike') else 0
+            u_strike = u.get('strike', 0)
+            u_spot = u.get('spot', 0)
+            u_barrier = u.get('barrier', 0)
+
+            if not u_barrier and u_strike and barrier_pct:
+                u_barrier = round(u_strike * barrier_pct / 100, 2)
+
+            var_pct = 0
+            var_abs = 0
+            if u_strike and u_spot:
+                var_pct = round((u_spot - u_strike) / u_strike * 100, 2)
+                var_abs = round(u_spot - u_strike, 2)
+
             underlyings.append({
-                'name': u['name'], 'strike': u.get('strike', 0), 'spot': 0,
-                'barrier': u_barrier, 'variation_pct': 0, 'variation_abs': 0,
-                'trigger_coupon': u.get('strike', 0), 'trigger_autocall': u.get('strike', 0),
+                'name': u['name'],
+                'strike': u_strike,
+                'spot': u_spot,
+                'barrier': u_barrier,
+                'variation_pct': var_pct,
+                'variation_abs': var_abs,
+                'trigger_coupon': u_strike if u_strike else 0,
+                'trigger_autocall': u_strike if u_strike else 0,
                 'worst_of': is_worst
             })
     else:
         for name in sotto_names:
             is_worst = wo_name and wo_name.lower().strip() == name.lower().strip()
             u_strike = wo_strike if is_worst else 0
-            u_barrier = raw.get('barr_capitale') if is_worst else 0
+            u_barrier = 0
+            if is_worst and raw.get('barr_capitale'):
+                u_barrier = raw.get('barr_capitale')
+            elif is_worst and u_strike and barrier_pct:
+                u_barrier = round(u_strike * barrier_pct / 100, 2)
             underlyings.append({
                 'name': name, 'strike': u_strike or 0, 'spot': 0,
                 'barrier': u_barrier or 0, 'variation_pct': 0, 'variation_abs': 0,
@@ -421,12 +540,13 @@ def build_certificate(raw: Dict, detail: Optional[Dict] = None) -> Dict:
 
     buffer_from_barrier = round(100 - barrier_pct, 2) if barrier_pct else 0
 
-    scenario = generate_scenarios(barrier_pct, ask_price, annual_yield, years_to_mat, wo_strike or 0)
+    # --- FIX: Pass wo_name to scenario ---
+    scenario = generate_scenarios(barrier_pct, ask_price, annual_yield, years_to_mat, wo_strike or 0, wo_name)
 
     return {
         'isin': raw['isin'],
         'name': raw.get('nome', ''),
-        'type': raw.get('nome', 'Certificato'),
+        'type': cert_type,
         'issuer': raw.get('emittente', ''),
         'market': market,
         'currency': raw.get('divisa', 'EUR'),
@@ -452,13 +572,23 @@ def build_certificate(raw: Dict, detail: Optional[Dict] = None) -> Dict:
     }
 
 
+def cert_needs_enrichment(cert: Dict) -> bool:
+    """Check if a certificate has incomplete data and needs re-enrichment."""
+    underlyings = cert.get('underlyings', [])
+    if not underlyings:
+        return True
+    all_spots_zero = all(u.get('spot', 0) == 0 for u in underlyings)
+    all_strikes_zero = all(u.get('strike', 0) == 0 for u in underlyings)
+    return all_spots_zero or all_strikes_zero
+
+
 # ================================================================
 # MAIN
 # ================================================================
 
 async def main():
     print("=" * 60)
-    print("CED Scraper v15 - COMPLETO")
+    print("CED Scraper v16 - FIXED")
     print(f"Filtri: Indici, Commodities, Valute, Tassi, Credit")
     print(f"Ultimi {RECENT_DAYS} giorni, max {MAX_CERTIFICATES} dettagli")
     print(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
@@ -484,7 +614,6 @@ async def main():
             await browser.close()
             return
 
-        # Deduplica per ISIN
         by_isin = {}
         for row in all_raw:
             if row['isin'] not in by_isin:
@@ -518,46 +647,8 @@ async def main():
             await browser.close()
             return
 
-        # === 3. Visita pagine dettaglio (solo NUOVI ISIN) ===
-        # Carica ISIN esistenti per evitare di rivisitare pagine già note
-        existing_isins = set()
-        if os.path.exists('certificates-data.json'):
-            try:
-                with open('certificates-data.json', 'r', encoding='utf-8') as f:
-                    old_data = json.load(f)
-                if old_data.get('certificates'):
-                    existing_isins = {c['isin'] for c in old_data['certificates']}
-            except:
-                pass
-
-        new_isins = [isin for isin in filtered if isin not in existing_isins]
-        detail_count = min(len(new_isins), MAX_CERTIFICATES)
-        details = {}
-
-        if new_isins:
-            print(f"\nVisiting {detail_count} NEW detail pages (skipping {len(filtered) - len(new_isins)} already known)...\n")
-
-            for i, isin in enumerate(new_isins[:MAX_CERTIFICATES], 1):
-                print(f"[{i}/{detail_count}] {isin}...", end=" ", flush=True)
-                try:
-                    detail = await scrape_detail(page, isin)
-                    details[isin] = detail
-                    bt = detail.get('barrier_type', '?')
-                    nu = len(detail.get('underlyings_detail', []))
-                    print(f"OK barrier:{bt} und:{nu}")
-                except Exception as e:
-                    print(f"ERR {str(e)[:40]}")
-                    details[isin] = {}
-                await asyncio.sleep(REQUEST_DELAY)
-        else:
-            print(f"\nNo new ISINs to enrich (all {len(filtered)} already in database)")
-
-        await browser.close()
-
-        # === 4. Carica certificati esistenti (ACCUMULO) ===
+        # === 3. Determine which ISINs need detail enrichment ===
         existing_certs = {}
-        max_age = datetime.now() - timedelta(days=730)  # 2 anni
-
         if os.path.exists('certificates-data.json'):
             try:
                 with open('certificates-data.json', 'r', encoding='utf-8') as f:
@@ -565,26 +656,80 @@ async def main():
                 if old_data.get('certificates'):
                     for c in old_data['certificates']:
                         existing_certs[c['isin']] = c
-                    print(f"\nLoaded {len(existing_certs)} existing certificates from previous runs")
-            except Exception as e:
-                print(f"Could not load existing data: {e}")
+            except:
+                pass
 
-        # === 5. Costruisci nuovi certificati ===
+        # FIX: Enrich NEW ISINs AND ISINs with incomplete data
+        isins_to_enrich = []
+        for isin in filtered:
+            if isin not in existing_certs:
+                isins_to_enrich.append(isin)
+            elif cert_needs_enrichment(existing_certs[isin]):
+                isins_to_enrich.append(isin)
+
+        detail_count = min(len(isins_to_enrich), MAX_CERTIFICATES)
+        details = {}
+
+        # Preserve good detail data from previous runs
+        saved_details = {}
+        for isin, cert in existing_certs.items():
+            if cert.get('underlyings') and any(u.get('spot', 0) > 0 for u in cert['underlyings']):
+                saved_details[isin] = {
+                    'barrier_type': cert.get('barrier_type', 'European'),
+                    'issue_date': cert.get('issue_date'),
+                    'underlyings_detail': [
+                        {'name': u.get('name', ''), 'strike': u.get('strike', 0),
+                         'spot': u.get('spot', 0), 'barrier': u.get('barrier', 0)}
+                        for u in cert['underlyings']
+                    ]
+                }
+
+        if isins_to_enrich:
+            new_enrich = sum(1 for i in isins_to_enrich if i not in existing_certs)
+            re_enrich = len(isins_to_enrich) - new_enrich
+            print(f"\nDetail enrichment: {detail_count} ISINs ({new_enrich} new, {re_enrich} re-enriching incomplete)...\n")
+
+            for i, isin in enumerate(isins_to_enrich[:MAX_CERTIFICATES], 1):
+                print(f"[{i}/{detail_count}] {isin}...", end=" ", flush=True)
+                try:
+                    detail = await scrape_detail(page, isin)
+                    details[isin] = detail
+                    bt = detail.get('barrier_type', '?')
+                    nu = len(detail.get('underlyings_detail', []))
+                    has_spots = any(u.get('spot', 0) > 0 for u in detail.get('underlyings_detail', []))
+                    print(f"OK barrier:{bt} und:{nu} spots:{'yes' if has_spots else 'no'}")
+                except Exception as e:
+                    print(f"ERR {str(e)[:40]}")
+                    details[isin] = {}
+                await asyncio.sleep(REQUEST_DELAY)
+        else:
+            print(f"\nAll {len(filtered)} ISINs have complete data, skipping detail enrichment")
+
+        await browser.close()
+
+        # === 4. Load existing certificates (ACCUMULATIVE) ===
+        max_age = datetime.now() - timedelta(days=730)
+
+        if existing_certs:
+            print(f"\nLoaded {len(existing_certs)} existing certificates from previous runs")
+
+        # === 5. Build certificates ===
         new_count = 0
         updated_count = 0
         for isin, raw in filtered.items():
-            detail = details.get(isin, {})
+            # FIX: Use fresh detail > saved detail > empty
+            detail = details.get(isin) or saved_details.get(isin) or {}
             cert = build_certificate(raw, detail)
             if isin in existing_certs:
                 updated_count += 1
             else:
                 new_count += 1
-            existing_certs[isin] = cert  # new/updated overwrite old
+            existing_certs[isin] = cert
 
         print(f"New certificates added: {new_count}")
         print(f"Existing certificates updated: {updated_count}")
 
-        # === 6. Rimuovi certificati scaduti da oltre 2 anni ===
+        # === 6. Remove expired certificates ===
         purged = 0
         final_certs = {}
         for isin, cert in existing_certs.items():
@@ -605,13 +750,13 @@ async def main():
         certificates = list(final_certs.values())
         certificates.sort(key=lambda c: c.get('annual_coupon_yield', 0), reverse=True)
 
-        # === 7. Salva files ===
+        # === 7. Save files ===
         output = {
             'success': True,
             'count': len(certificates),
             'certificates': certificates,
             'metadata': {
-                'version': 'v15-accumulative',
+                'version': 'v16-fixed',
                 'source': 'certificatiederivati.it',
                 'criteria': 'Indici, Commodities, Valute, Tassi, Credit Linked',
                 'max_history_years': 2,
@@ -638,7 +783,7 @@ async def main():
         df.to_csv('certificates-recenti.csv', index=False)
 
         print("\n" + "=" * 60)
-        print("COMPLETED (ACCUMULATIVE)")
+        print("COMPLETED (v16 FIXED)")
         print(f"  Total certificates in database: {len(certificates)}")
         print(f"  New added this run: {new_count}")
         print(f"  Updated this run: {updated_count}")
