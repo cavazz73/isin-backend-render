@@ -326,7 +326,8 @@ async def scrape_detail(page, isin: str) -> Dict:
     """Scrape certificate detail page for barrier type, issue date, and
     full underlyings table with strike, spot, barrier values."""
     url = f"https://www.certificatiederivati.it/db_bs_scheda_certificato.asp?isin={isin}"
-    extra = {'barrier_type': 'European', 'issue_date': None, 'underlyings_detail': []}
+    extra = {'barrier_type': 'European', 'issue_date': None, 'nominal': 1000,
+             'strike_date': None, 'final_valuation_date': None, 'underlyings_detail': []}
 
     if not await retry_goto(page, url):
         return extra
@@ -341,7 +342,41 @@ async def scrape_detail(page, isin: str) -> Dict:
     elif 'discreta' in page_text:
         extra['barrier_type'] = 'European'
 
-    # Data emissione
+    # Extract barrier data from AJAX script params
+    # The page has: barriera: "55 %", livello: "622,732", tipo: "DISCRETA", raggiunta: "false"
+    for script in soup.find_all('script'):
+        script_text = script.get_text()
+        if 'barriera' in script_text and 'livello' in script_text:
+            # Extract barrier percentage
+            barr_match = re.search(r'barriera:\s*"([^"]+)"', script_text)
+            if barr_match:
+                barr_val = parse_number(barr_match.group(1))
+                if barr_val:
+                    extra['barrier_pct_from_page'] = barr_val
+
+            # Extract barrier absolute level (for worst-of)
+            liv_match = re.search(r'livello:\s*"([^"]+)"', script_text)
+            if liv_match:
+                liv_val = parse_number(liv_match.group(1))
+                if liv_val:
+                    extra['barrier_level_abs'] = liv_val
+
+            # Extract barrier type
+            tipo_match = re.search(r'tipo:\s*"([^"]+)"', script_text)
+            if tipo_match:
+                tipo = tipo_match.group(1).strip().upper()
+                if 'DISCRETA' in tipo:
+                    extra['barrier_type'] = 'European'
+                elif 'CONTINUA' in tipo:
+                    extra['barrier_type'] = 'American'
+
+            # Extract if barrier was reached
+            ragg_match = re.search(r'raggiunta:\s*"([^"]+)"', script_text)
+            if ragg_match:
+                extra['barrier_reached'] = ragg_match.group(1).strip().lower() == 'true'
+            break
+
+    # Data emissione + altri campi dalla tabella dati
     for row in soup.find_all('tr'):
         cells = row.find_all(['th', 'td'])
         if len(cells) >= 2:
@@ -349,7 +384,14 @@ async def scrape_detail(page, isin: str) -> Dict:
             value = cells[1].get_text(strip=True)
             if 'data emissione' in label:
                 extra['issue_date'] = parse_date(value)
-                break
+            elif 'nominale' in label and 'prezzo' not in label:
+                nom = parse_number(value)
+                if nom:
+                    extra['nominal'] = nom
+            elif 'data strike' in label:
+                extra['strike_date'] = parse_date(value)
+            elif 'data valutazione finale' in label or 'valutazione finale' in label:
+                extra['final_valuation_date'] = parse_date(value)
 
     # =============================================
     # Sottostanti - FIXED: extract ALL columns
@@ -486,27 +528,15 @@ def build_certificate(raw: Dict, detail: Optional[Dict] = None) -> Dict:
         for u in detail_und:
             is_worst = wo_name and wo_name.lower().strip() == u['name'].lower().strip()
             u_strike = u.get('strike', 0)
-            u_spot = u.get('spot', 0)
             u_barrier = u.get('barrier', 0)
 
             if not u_barrier and u_strike and barrier_pct:
                 u_barrier = round(u_strike * barrier_pct / 100, 2)
 
-            var_pct = 0
-            var_abs = 0
-            if u_strike and u_spot:
-                var_pct = round((u_spot - u_strike) / u_strike * 100, 2)
-                var_abs = round(u_spot - u_strike, 2)
-
             underlyings.append({
                 'name': u['name'],
                 'strike': u_strike,
-                'spot': u_spot,
                 'barrier': u_barrier,
-                'variation_pct': var_pct,
-                'variation_abs': var_abs,
-                'trigger_coupon': u_strike if u_strike else 0,
-                'trigger_autocall': u_strike if u_strike else 0,
                 'worst_of': is_worst
             })
     else:
@@ -519,18 +549,15 @@ def build_certificate(raw: Dict, detail: Optional[Dict] = None) -> Dict:
             elif is_worst and u_strike and barrier_pct:
                 u_barrier = round(u_strike * barrier_pct / 100, 2)
             underlyings.append({
-                'name': name, 'strike': u_strike or 0, 'spot': 0,
-                'barrier': u_barrier or 0, 'variation_pct': 0, 'variation_abs': 0,
-                'trigger_coupon': u_strike or 0, 'trigger_autocall': u_strike or 0,
+                'name': name, 'strike': u_strike or 0,
+                'barrier': u_barrier or 0,
                 'worst_of': is_worst
             })
 
     if not underlyings and wo_name:
         underlyings.append({
-            'name': wo_name, 'strike': wo_strike or 0, 'spot': 0,
+            'name': wo_name, 'strike': wo_strike or 0,
             'barrier': raw.get('barr_capitale') or 0,
-            'variation_pct': 0, 'variation_abs': 0,
-            'trigger_coupon': wo_strike or 0, 'trigger_autocall': wo_strike or 0,
             'worst_of': True
         })
 
@@ -550,13 +577,12 @@ def build_certificate(raw: Dict, detail: Optional[Dict] = None) -> Dict:
         'issuer': raw.get('emittente', ''),
         'market': market,
         'currency': raw.get('divisa', 'EUR'),
-        'bid_price': 0,
         'ask_price': ask_price,
-        'reference_price': ask_price,
+        'nominal': detail.get('nominal', 1000) if detail else 1000,
         'issue_date': issue_date or maturity_date,
         'maturity_date': maturity_date,
-        'strike_date': None,
-        'final_valuation_date': maturity_date,
+        'strike_date': detail.get('strike_date') if detail else None,
+        'final_valuation_date': detail.get('final_valuation_date') or maturity_date if detail else maturity_date,
         'barrier_down': barrier_pct,
         'barrier_type': detail.get('barrier_type', 'European') if detail else 'European',
         'coupon': premio,
@@ -565,8 +591,6 @@ def build_certificate(raw: Dict, detail: Optional[Dict] = None) -> Dict:
         'annual_coupon_yield': annual_yield,
         'underlyings': underlyings,
         'buffer_from_barrier': buffer_from_barrier,
-        'buffer_from_trigger': 0,
-        'effective_annual_yield': annual_yield,
         'scenario_analysis': scenario,
         'source': 'CED'
     }
@@ -577,9 +601,9 @@ def cert_needs_enrichment(cert: Dict) -> bool:
     underlyings = cert.get('underlyings', [])
     if not underlyings:
         return True
-    all_spots_zero = all(u.get('spot', 0) == 0 for u in underlyings)
+    # If all strikes are 0, data was never properly scraped from detail page
     all_strikes_zero = all(u.get('strike', 0) == 0 for u in underlyings)
-    return all_spots_zero or all_strikes_zero
+    return all_strikes_zero
 
 
 # ================================================================
@@ -673,13 +697,16 @@ async def main():
         # Preserve good detail data from previous runs
         saved_details = {}
         for isin, cert in existing_certs.items():
-            if cert.get('underlyings') and any(u.get('spot', 0) > 0 for u in cert['underlyings']):
+            if cert.get('underlyings') and any(u.get('strike', 0) > 0 for u in cert['underlyings']):
                 saved_details[isin] = {
                     'barrier_type': cert.get('barrier_type', 'European'),
                     'issue_date': cert.get('issue_date'),
+                    'nominal': cert.get('nominal', 1000),
+                    'strike_date': cert.get('strike_date'),
+                    'final_valuation_date': cert.get('final_valuation_date'),
                     'underlyings_detail': [
                         {'name': u.get('name', ''), 'strike': u.get('strike', 0),
-                         'spot': u.get('spot', 0), 'barrier': u.get('barrier', 0)}
+                         'barrier': u.get('barrier', 0)}
                         for u in cert['underlyings']
                     ]
                 }
@@ -696,8 +723,8 @@ async def main():
                     details[isin] = detail
                     bt = detail.get('barrier_type', '?')
                     nu = len(detail.get('underlyings_detail', []))
-                    has_spots = any(u.get('spot', 0) > 0 for u in detail.get('underlyings_detail', []))
-                    print(f"OK barrier:{bt} und:{nu} spots:{'yes' if has_spots else 'no'}")
+                    has_strikes = any(u.get('strike', 0) > 0 for u in detail.get('underlyings_detail', []))
+                    print(f"OK barrier:{bt} und:{nu} strikes:{'yes' if has_strikes else 'no'}")
                 except Exception as e:
                     print(f"ERR {str(e)[:40]}")
                     details[isin] = {}
