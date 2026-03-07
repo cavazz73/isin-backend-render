@@ -56,7 +56,7 @@
             "underlying_level": 30,
             "redemption": 300.0,
             "pl_pct": -70.0,
-            "pl_annual": -23.16
+            "pl_annual": -23.18
           },
           {
             "variation_pct": -60,
@@ -64,7 +64,7 @@
             "underlying_level": 40,
             "redemption": 400.0,
             "pl_pct": -60.0,
-            "pl_annual": -19.85
+            "pl_annual": -19.87
           },
           {
             "variation_pct": -50,
@@ -72,70 +72,70 @@
             "underlying_level": 50,
             "redemption": 500.0,
             "pl_pct": -50.0,
-            "pl_annual": -16.54
+            "pl_annual": -16.56
           },
           {
             "variation_pct": -40,
             "underlying_price": 22.18,
             "underlying_level": 60,
-            "redemption": 1255.11,
-            "pl_pct": 25.51,
+            "redemption": 1254.88,
+            "pl_pct": 25.49,
             "pl_annual": 8.44
           },
           {
             "variation_pct": -30,
             "underlying_price": 25.88,
             "underlying_level": 70,
-            "redemption": 1255.11,
-            "pl_pct": 25.51,
+            "redemption": 1254.88,
+            "pl_pct": 25.49,
             "pl_annual": 8.44
           },
           {
             "variation_pct": -20,
             "underlying_price": 29.58,
             "underlying_level": 80,
-            "redemption": 1255.11,
-            "pl_pct": 25.51,
+            "redemption": 1254.88,
+            "pl_pct": 25.49,
             "pl_annual": 8.44
           },
           {
             "variation_pct": -10,
             "underlying_price": 33.27,
             "underlying_level": 90,
-            "redemption": 1255.11,
-            "pl_pct": 25.51,
+            "redemption": 1254.88,
+            "pl_pct": 25.49,
             "pl_annual": 8.44
           },
           {
             "variation_pct": 0,
             "underlying_price": 36.97,
             "underlying_level": 100,
-            "redemption": 1255.11,
-            "pl_pct": 25.51,
+            "redemption": 1254.88,
+            "pl_pct": 25.49,
             "pl_annual": 8.44
           },
           {
             "variation_pct": 10,
             "underlying_price": 40.67,
             "underlying_level": 110,
-            "redemption": 1255.11,
-            "pl_pct": 25.51,
+            "redemption": 1254.88,
+            "pl_pct": 25.49,
             "pl_annual": 8.44
           },
           {
             "variation_pct": 20,
             "underlying_price": 44.36,
             "underlying_level": 120,
-            "redemption": 1255.11,
-            "pl_pct": 25.51,
+            "redemption": 1254.88,
+            "pl_pct": 25.49,
             "pl_annual": 8.44
           },
           {
             "variation_pct": 30,
             "underlying_price": 48.06,
             "underlying_level": 130,
-            "redemption": 1255.11,
-            "pl_pct": 25.51,
+            "redemption": 1254.88,
+            "pl_pct": 25.49,
             "pl_annual": 8.44
           }
         ],
@@ -207,7 +207,7 @@
             "underlying_level": 30,
             "redemption": 300.0,
             "pl_pct": -69.47,
-            "pl_annual": -20.68
+            "pl_annual": -20.7
           },
           {
             "variation_pct": -60,
@@ -215,7 +215,7 @@
             "underlying_level": 40,
             "redemption": 400.0,
             "pl_pct": -59.3,
-            "pl_annual": -17.65
+            "pl_annual": -17.67
           },
           {
             "variation_pct": -50,
@@ -223,70 +223,70 @@
             "underlying_level": 50,
             "redemption": 500.0,
             "pl_pct": -49.12,
-            "pl_annual": -14.62
+            "pl_annual": -14.63
           },
           {
             "variation_pct": -40,
             "underlying_price": 306.68,
             "underlying_level": 60,
-            "redemption": 1274.12,
-            "pl_pct": 29.65,
+            "redemption": 1273.9,
+            "pl_pct": 29.63,
             "pl_annual": 8.83
           },
           {
             "variation_pct": -30,
             "underlying_price": 357.79,
             "underlying_level": 70,
-            "redemption": 1274.12,
-            "pl_pct": 29.65,
+            "redemption": 1273.9,
+            "pl_pct": 29.63,
             "pl_annual": 8.83
           },
           {
             "variation_pct": -20,
             "underlying_price": 408.9,
             "underlying_level": 80,
-            "redemption": 1274.12,
-            "pl_pct": 29.65,
+            "redemption": 1273.9,
+            "pl_pct": 29.63,
             "pl_annual": 8.83
           },
           {
             "variation_pct": -10,
             "underlying_price": 460.02,
             "underlying_level": 90,
-            "redemption": 1274.12,
-            "pl_pct": 29.65,
+            "redemption": 1273.9,
+            "pl_pct": 29.63,
             "pl_annual": 8.83
           },
           {
             "variation_pct": 0,
             "underlying_price": 511.13,
             "underlying_level": 100,
-            "redemption": 1274.12,
-            "pl_pct": 29.65,
+            "redemption": 1273.9,
+            "pl_pct": 29.63,
             "pl_annual": 8.83
           },
           {
             "variation_pct": 10,
             "underlying_price": 562.24,
             "underlying_level": 110,
-            "redemption": 1274.12,
-            "pl_pct": 29.65,
+            "redemption": 1273.9,
+            "pl_pct": 29.63,
             "pl_annual": 8.83
           },
           {
             "variation_pct": 20,
             "underlying_price": 613.36,
             "underlying_level": 120,
-            "redemption": 1274.12,
-            "pl_pct": 29.65,
+            "redemption": 1273.9,
+            "pl_pct": 29.63,
             "pl_annual": 8.83
           },
           {
             "variation_pct": 30,
             "underlying_price": 664.47,
             "underlying_level": 130,
-            "redemption": 1274.12,
-            "pl_pct": 29.65,
+            "redemption": 1273.9,
+            "pl_pct": 29.63,
             "pl_annual": 8.83
           }
         ],
@@ -352,7 +352,7 @@
             "underlying_level": 30,
             "redemption": 300.0,
             "pl_pct": -70.3,
-            "pl_annual": -22.84
+            "pl_annual": -22.86
           },
           {
             "variation_pct": -60,
@@ -360,7 +360,7 @@
             "underlying_level": 40,
             "redemption": 400.0,
             "pl_pct": -60.4,
-            "pl_annual": -19.63
+            "pl_annual": -19.64
           },
           {
             "variation_pct": -50,
@@ -368,74 +368,74 @@
             "underlying_level": 50,
             "redemption": 500.0,
             "pl_pct": -50.49,
-            "pl_annual": -16.41
+            "pl_annual": -16.42
           },
           {
             "variation_pct": -40,
             "underlying_price": 1160.74,
             "underlying_level": 60,
-            "redemption": 1247.42,
-            "pl_pct": 23.51,
+            "redemption": 1247.2,
+            "pl_pct": 23.49,
             "pl_annual": 7.64
           },
           {
             "variation_pct": -30,
             "underlying_price": 1354.2,
             "underlying_level": 70,
-            "redemption": 1247.42,
-            "pl_pct": 23.51,
+            "redemption": 1247.2,
+            "pl_pct": 23.49,
             "pl_annual": 7.64
           },
           {
             "variation_pct": -20,
             "underlying_price": 1547.66,
             "underlying_level": 80,
-            "redemption": 1247.42,
-            "pl_pct": 23.51,
+            "redemption": 1247.2,
+            "pl_pct": 23.49,
             "pl_annual": 7.64
           },
           {
             "variation_pct": -10,
             "underlying_price": 1741.11,
             "underlying_level": 90,
-            "redemption": 1247.42,
-            "pl_pct": 23.51,
+            "redemption": 1247.2,
+            "pl_pct": 23.49,
             "pl_annual": 7.64
           },
           {
             "variation_pct": 0,
             "underlying_price": 1934.57,
             "underlying_level": 100,
-            "redemption": 1247.42,
-            "pl_pct": 23.51,
+            "redemption": 1247.2,
+            "pl_pct": 23.49,
             "pl_annual": 7.64
           },
           {
             "variation_pct": 10,
             "underlying_price": 2128.03,
             "underlying_level": 110,
-            "redemption": 1247.42,
-            "pl_pct": 23.51,
+            "redemption": 1247.2,
+            "pl_pct": 23.49,
             "pl_annual": 7.64
           },
           {
             "variation_pct": 20,
             "underlying_price": 2321.48,
             "underlying_level": 120,
-            "redemption": 1247.42,
-            "pl_pct": 23.51,
+            "redemption": 1247.2,
+            "pl_pct": 23.49,
             "pl_annual": 7.64
           },
           {
             "variation_pct": 30,
             "underlying_price": 2514.94,
             "underlying_level": 130,
-            "redemption": 1247.42,
-            "pl_pct": 23.51,
+            "redemption": 1247.2,
+            "pl_pct": 23.49,
             "pl_annual": 7.64
           }
         ],
-        "years_to_maturity": 3.08,
+        "years_to_maturity": 3.07,
         "worst_underlying": "Eurostoxx Select Dividend 30",
         "purchase_price": 1009.99,
         "barrier_pct": 60.0,
@@ -491,7 +491,7 @@
             "underlying_level": 30,
             "redemption": 300.0,
             "pl_pct": -69.7,
-            "pl_annual": -33.28
+            "pl_annual": -33.32
           },
           {
             "variation_pct": -60,
@@ -499,7 +499,7 @@
             "underlying_level": 40,
             "redemption": 400.0,
             "pl_pct": -59.6,
-            "pl_annual": -28.46
+            "pl_annual": -28.49
           },
           {
             "variation_pct": -50,
@@ -507,70 +507,70 @@
             "underlying_level": 50,
             "redemption": 500.0,
             "pl_pct": -49.49,
-            "pl_annual": -23.63
+            "pl_annual": -23.66
           },
           {
             "variation_pct": -40,
             "underlying_price": 319.67,
             "underlying_level": 60,
-            "redemption": 1160.85,
-            "pl_pct": 17.26,
+            "redemption": 1160.64,
+            "pl_pct": 17.24,
             "pl_annual": 8.24
           },
           {
             "variation_pct": -30,
             "underlying_price": 372.95,
             "underlying_level": 70,
-            "redemption": 1160.85,
-            "pl_pct": 17.26,
+            "redemption": 1160.64,
+            "pl_pct": 17.24,
             "pl_annual": 8.24
           },
           {
             "variation_pct": -20,
             "underlying_price": 426.22,
             "underlying_level": 80,
-            "redemption": 1160.85,
-            "pl_pct": 17.26,
+            "redemption": 1160.64,
+            "pl_pct": 17.24,
             "pl_annual": 8.24
           },
           {
             "variation_pct": -10,
             "underlying_price": 479.5,
             "underlying_level": 90,
-            "redemption": 1160.85,
-            "pl_pct": 17.26,
+            "redemption": 1160.64,
+            "pl_pct": 17.24,
             "pl_annual": 8.24
           },
           {
             "variation_pct": 0,
             "underlying_price": 532.78,
             "underlying_level": 100,
-            "redemption": 1160.85,
-            "pl_pct": 17.26,
+            "redemption": 1160.64,
+            "pl_pct": 17.24,
             "pl_annual": 8.24
           },
           {
             "variation_pct": 10,
             "underlying_price": 586.06,
             "underlying_level": 110,
-            "redemption": 1160.85,
-            "pl_pct": 17.26,
+            "redemption": 1160.64,
+            "pl_pct": 17.24,
             "pl_annual": 8.24
           },
           {
             "variation_pct": 20,
             "underlying_price": 639.34,
             "underlying_level": 120,
-            "redemption": 1160.85,
-            "pl_pct": 17.26,
+            "redemption": 1160.64,
+            "pl_pct": 17.24,
             "pl_annual": 8.24
           },
           {
             "variation_pct": 30,
             "underlying_price": 692.61,
             "underlying_level": 130,
-            "redemption": 1160.85,
-            "pl_pct": 17.26,
+            "redemption": 1160.64,
+            "pl_pct": 17.24,
             "pl_annual": 8.24
           }
         ],
@@ -624,7 +624,7 @@
             "underlying_level": 30,
             "redemption": 300.0,
             "pl_pct": -70.6,
-            "pl_annual": -33.23
+            "pl_annual": -33.27
           },
           {
             "variation_pct": -60,
@@ -632,7 +632,7 @@
             "underlying_level": 40,
             "redemption": 400.0,
             "pl_pct": -60.8,
-            "pl_annual": -28.62
+            "pl_annual": -28.65
           },
           {
             "variation_pct": -50,
@@ -640,70 +640,70 @@
             "underlying_level": 50,
             "redemption": 500.0,
             "pl_pct": -51.0,
-            "pl_annual": -24.0
+            "pl_annual": -24.04
           },
           {
             "variation_pct": -40,
             "underlying_price": 99.93,
             "underlying_level": 60,
-            "redemption": 1160.62,
-            "pl_pct": 13.74,
+            "redemption": 1160.41,
+            "pl_pct": 13.72,
             "pl_annual": 6.47
           },
           {
             "variation_pct": -30,
             "underlying_price": 116.58,
             "underlying_level": 70,
-            "redemption": 1160.62,
-            "pl_pct": 13.74,
+            "redemption": 1160.41,
+            "pl_pct": 13.72,
             "pl_annual": 6.47
           },
           {
             "variation_pct": -20,
             "underlying_price": 133.24,
             "underlying_level": 80,
-            "redemption": 1160.62,
-            "pl_pct": 13.74,
+            "redemption": 1160.41,
+            "pl_pct": 13.72,
             "pl_annual": 6.47
           },
           {
             "variation_pct": -10,
             "underlying_price": 149.9,
             "underlying_level": 90,
-            "redemption": 1160.62,
-            "pl_pct": 13.74,
+            "redemption": 1160.41,
+            "pl_pct": 13.72,
             "pl_annual": 6.47
           },
           {
             "variation_pct": 0,
             "underlying_price": 166.55,
             "underlying_level": 100,
-            "redemption": 1160.62,
-            "pl_pct": 13.74,
+            "redemption": 1160.41,
+            "pl_pct": 13.72,
             "pl_annual": 6.47
           },
           {
             "variation_pct": 10,
             "underlying_price": 183.21,
             "underlying_level": 110,
-            "redemption": 1160.62,
-            "pl_pct": 13.74,
+            "redemption": 1160.41,
+            "pl_pct": 13.72,
             "pl_annual": 6.47
           },
           {
             "variation_pct": 20,
             "underlying_price": 199.86,
             "underlying_level": 120,
-            "redemption": 1160.62,
-            "pl_pct": 13.74,
+            "redemption": 1160.41,
+            "pl_pct": 13.72,
             "pl_annual": 6.47
           },
           {
             "variation_pct": 30,
             "underlying_price": 216.52,
             "underlying_level": 130,
-            "redemption": 1160.62,
-            "pl_pct": 13.74,
+            "redemption": 1160.41,
+            "pl_pct": 13.72,
             "pl_annual": 6.47
           }
         ],
@@ -769,7 +769,7 @@
             "underlying_level": 30,
             "redemption": 300.0,
             "pl_pct": -70.0,
-            "pl_annual": -27.55
+            "pl_annual": -27.58
           },
           {
             "variation_pct": -60,
@@ -777,7 +777,7 @@
             "underlying_level": 40,
             "redemption": 400.0,
             "pl_pct": -60.0,
-            "pl_annual": -23.62
+            "pl_annual": -23.64
           },
           {
             "variation_pct": -50,
@@ -785,70 +785,70 @@
             "underlying_level": 50,
             "redemption": 500.0,
             "pl_pct": -50.0,
-            "pl_annual": -19.68
+            "pl_annual": -19.7
           },
           {
             "variation_pct": -40,
             "underlying_price": 2513.46,
             "underlying_level": 60,
-            "redemption": 1185.98,
-            "pl_pct": 18.6,
+            "redemption": 1185.78,
+            "pl_pct": 18.58,
             "pl_annual": 7.32
           },
           {
             "variation_pct": -30,
             "underlying_price": 2932.37,
             "underlying_level": 70,
-            "redemption": 1185.98,
-            "pl_pct": 18.6,
+            "redemption": 1185.78,
+            "pl_pct": 18.58,
             "pl_annual": 7.32
           },
           {
             "variation_pct": -20,
             "underlying_price": 3351.28,
             "underlying_level": 80,
-            "redemption": 1185.98,
-            "pl_pct": 18.6,
+            "redemption": 1185.78,
+            "pl_pct": 18.58,
             "pl_annual": 7.32
           },
           {
             "variation_pct": -10,
             "underlying_price": 3770.19,
             "underlying_level": 90,
-            "redemption": 1185.98,
-            "pl_pct": 18.6,
+            "redemption": 1185.78,
+            "pl_pct": 18.58,
             "pl_annual": 7.32
           },
           {
             "variation_pct": 0,
             "underlying_price": 4189.1,
             "underlying_level": 100,
-            "redemption": 1185.98,
-            "pl_pct": 18.6,
+            "redemption": 1185.78,
+            "pl_pct": 18.58,
             "pl_annual": 7.32
           },
           {
             "variation_pct": 10,
             "underlying_price": 4608.01,
             "underlying_level": 110,
-            "redemption": 1185.98,
-            "pl_pct": 18.6,
+            "redemption": 1185.78,
+            "pl_pct": 18.58,
             "pl_annual": 7.32
           },
           {
             "variation_pct": 20,
             "underlying_price": 5026.92,
             "underlying_level": 120,
-            "redemption": 1185.98,
-            "pl_pct": 18.6,
+            "redemption": 1185.78,
+            "pl_pct": 18.58,
             "pl_annual": 7.32
           },
           {
             "variation_pct": 30,
             "underlying_price": 5445.83,
             "underlying_level": 130,
-            "redemption": 1185.98,
-            "pl_pct": 18.6,
+            "redemption": 1185.78,
+            "pl_pct": 18.58,
             "pl_annual": 7.32
           }
         ],
@@ -908,7 +908,7 @@
             "underlying_level": 30,
             "redemption": 300.0,
             "pl_pct": -69.92,
-            "pl_annual": -20.58
+            "pl_annual": -20.6
           },
           {
             "variation_pct": -60,
@@ -916,7 +916,7 @@
             "underlying_level": 40,
             "redemption": 400.0,
             "pl_pct": -59.9,
-            "pl_annual": -17.63
+            "pl_annual": -17.64
           },
           {
             "variation_pct": -50,
@@ -924,74 +924,74 @@
             "underlying_level": 50,
             "redemption": 500.0,
             "pl_pct": -49.87,
-            "pl_annual": -14.68
+            "pl_annual": -14.69
           },
           {
             "variation_pct": -40,
             "underlying_price": 639.74,
             "underlying_level": 60,
-            "redemption": 1236.48,
-            "pl_pct": 23.97,
+            "redemption": 1236.29,
+            "pl_pct": 23.95,
             "pl_annual": 7.05
           },
           {
             "variation_pct": -30,
             "underlying_price": 746.37,
             "underlying_level": 70,
-            "redemption": 1236.48,
-            "pl_pct": 23.97,
+            "redemption": 1236.29,
+            "pl_pct": 23.95,
             "pl_annual": 7.05
           },
           {
             "variation_pct": -20,
             "underlying_price": 852.99,
             "underlying_level": 80,
-            "redemption": 1236.48,
-            "pl_pct": 23.97,
+            "redemption": 1236.29,
+            "pl_pct": 23.95,
             "pl_annual": 7.05
           },
           {
             "variation_pct": -10,
             "underlying_price": 959.62,
             "underlying_level": 90,
-            "redemption": 1236.48,
-            "pl_pct": 23.97,
+            "redemption": 1236.29,
+            "pl_pct": 23.95,
             "pl_annual": 7.05
           },
           {
             "variation_pct": 0,
             "underlying_price": 1066.24,
             "underlying_level": 100,
-            "redemption": 1236.48,
-            "pl_pct": 23.97,
+            "redemption": 1236.29,
+            "pl_pct": 23.95,
             "pl_annual": 7.05
           },
           {
             "variation_pct": 10,
             "underlying_price": 1172.86,
             "underlying_level": 110,
-            "redemption": 1236.48,
-            "pl_pct": 23.97,
+            "redemption": 1236.29,
+            "pl_pct": 23.95,
             "pl_annual": 7.05
           },
           {
             "variation_pct": 20,
             "underlying_price": 1279.49,
             "underlying_level": 120,
-            "redemption": 1236.48,
-            "pl_pct": 23.97,
+            "redemption": 1236.29,
+            "pl_pct": 23.95,
             "pl_annual": 7.05
           },
           {
             "variation_pct": 30,
             "underlying_price": 1386.11,
             "underlying_level": 130,
-            "redemption": 1236.48,
-            "pl_pct": 23.97,
+            "redemption": 1236.29,
+            "pl_pct": 23.95,
             "pl_annual": 7.05
           }
         ],
-        "years_to_maturity": 3.4,
+        "years_to_maturity": 3.39,
         "worst_underlying": "Eurostoxx Technology",
         "purchase_price": 997.43,
         "barrier_pct": 60.0,
@@ -1053,7 +1053,7 @@
             "underlying_level": 30,
             "redemption": 300.0,
             "pl_pct": -70.0,
-            "pl_annual": -34.36
+            "pl_annual": -34.41
           },
           {
             "variation_pct": -60,
@@ -1061,7 +1061,7 @@
             "underlying_level": 40,
             "redemption": 400.0,
             "pl_pct": -60.0,
-            "pl_annual": -29.46
+            "pl_annual": -29.5
           },
           {
             "variation_pct": -50,
@@ -1069,74 +1069,74 @@
             "underlying_level": 50,
             "redemption": 500.0,
             "pl_pct": -50.0,
-            "pl_annual": -24.55
+            "pl_annual": -24.58
           },
           {
             "variation_pct": -40,
             "underlying_price": 22984.27,
             "underlying_level": 60,
-            "redemption": 1141.77,
-            "pl_pct": 14.18,
+            "redemption": 1141.58,
+            "pl_pct": 14.16,
             "pl_annual": 6.96
           },
           {
             "variation_pct": -30,
             "underlying_price": 26814.98,
             "underlying_level": 70,
-            "redemption": 1141.77,
-            "pl_pct": 14.18,
+            "redemption": 1141.58,
+            "pl_pct": 14.16,
             "pl_annual": 6.96
           },
           {
             "variation_pct": -20,
             "underlying_price": 30645.69,
             "underlying_level": 80,
-            "redemption": 1141.77,
-            "pl_pct": 14.18,
+            "redemption": 1141.58,
+            "pl_pct": 14.16,
             "pl_annual": 6.96
           },
           {
             "variation_pct": -10,
             "underlying_price": 34476.4,
             "underlying_level": 90,
-            "redemption": 1141.77,
-            "pl_pct": 14.18,
+            "redemption": 1141.58,
+            "pl_pct": 14.16,
             "pl_annual": 6.96
           },
           {
             "variation_pct": 0,
             "underlying_price": 38307.11,
             "underlying_level": 100,
-            "redemption": 1141.77,
-            "pl_pct": 14.18,
+            "redemption": 1141.58,
+            "pl_pct": 14.16,
             "pl_annual": 6.96
           },
           {
             "variation_pct": 10,
             "underlying_price": 42137.82,
             "underlying_level": 110,
-            "redemption": 1141.77,
-            "pl_pct": 14.18,
+            "redemption": 1141.58,
+            "pl_pct": 14.16,
             "pl_annual": 6.96
           },
           {
             "variation_pct": 20,
             "underlying_price": 45968.53,
             "underlying_level": 120,
-            "redemption": 1141.77,
-            "pl_pct": 14.18,
+            "redemption": 1141.58,
+            "pl_pct": 14.16,
             "pl_annual": 6.96
           },
           {
             "variation_pct": 30,
             "underlying_price": 49799.24,
             "underlying_level": 130,
-            "redemption": 1141.77,
-            "pl_pct": 14.18,
+            "redemption": 1141.58,
+            "pl_pct": 14.16,
             "pl_annual": 6.96
           }
         ],
-        "years_to_maturity": 2.04,
+        "years_to_maturity": 2.03,
         "worst_underlying": "FTSE Mib",
         "purchase_price": 1000.0,
         "barrier_pct": 60.0,
@@ -1198,7 +1198,7 @@
             "underlying_level": 30,
             "redemption": 300.0,
             "pl_pct": -68.16,
-            "pl_annual": -19.73
+            "pl_annual": -19.74
           },
           {
             "variation_pct": -60,
@@ -1206,7 +1206,7 @@
             "underlying_level": 40,
             "redemption": 400.0,
             "pl_pct": -57.55,
-            "pl_annual": -16.66
+            "pl_annual": -16.67
           },
           {
             "variation_pct": -50,
@@ -1214,74 +1214,74 @@
             "underlying_level": 50,
             "redemption": 500.0,
             "pl_pct": -46.94,
-            "pl_annual": -13.59
+            "pl_annual": -13.6
           },
           {
             "variation_pct": -40,
             "underlying_price": 36.34,
             "underlying_level": 60,
-            "redemption": 1234.26,
-            "pl_pct": 30.99,
+            "redemption": 1234.07,
+            "pl_pct": 30.97,
             "pl_annual": 8.97
           },
           {
             "variation_pct": -30,
             "underlying_price": 42.39,
             "underlying_level": 70,
-            "redemption": 1234.26,
-            "pl_pct": 30.99,
+            "redemption": 1234.07,
+            "pl_pct": 30.97,
             "pl_annual": 8.97
           },
           {
             "variation_pct": -20,
             "underlying_price": 48.45,
             "underlying_level": 80,
-            "redemption": 1234.26,
-            "pl_pct": 30.99,
+            "redemption": 1234.07,
+            "pl_pct": 30.97,
             "pl_annual": 8.97
           },
           {
             "variation_pct": -10,
             "underlying_price": 54.5,
             "underlying_level": 90,
-            "redemption": 1234.26,
-            "pl_pct": 30.99,
+            "redemption": 1234.07,
+            "pl_pct": 30.97,
             "pl_annual": 8.97
           },
           {
             "variation_pct": 0,
             "underlying_price": 60.56,
             "underlying_level": 100,
-            "redemption": 1234.26,
-            "pl_pct": 30.99,
+            "redemption": 1234.07,
+            "pl_pct": 30.97,
             "pl_annual": 8.97
           },
           {
             "variation_pct": 10,
             "underlying_price": 66.62,
             "underlying_level": 110,
-            "redemption": 1234.26,
-            "pl_pct": 30.99,
+            "redemption": 1234.07,
+            "pl_pct": 30.97,
             "pl_annual": 8.97
           },
           {
             "variation_pct": 20,
             "underlying_price": 72.67,
             "underlying_level": 120,
-            "redemption": 1234.26,
-            "pl_pct": 30.99,
+            "redemption": 1234.07,
+            "pl_pct": 30.97,
             "pl_annual": 8.97
           },
           {
             "variation_pct": 30,
             "underlying_price": 78.73,
             "underlying_level": 130,
-            "redemption": 1234.26,
-            "pl_pct": 30.99,
+            "redemption": 1234.07,
+            "pl_pct": 30.97,
             "pl_annual": 8.97
           }
         ],
-        "years_to_maturity": 3.46,
+        "years_to_maturity": 3.45,
         "worst_underlying": "iShares MSCI China ETF",
         "purchase_price": 942.25,
         "barrier_pct": 60.0,
@@ -1337,7 +1337,7 @@
             "underlying_level": 30,
             "redemption": 300.0,
             "pl_pct": -70.17,
-            "pl_annual": -29.22
+            "pl_annual": -29.26
           },
           {
             "variation_pct": -60,
@@ -1345,7 +1345,7 @@
             "underlying_level": 40,
             "redemption": 400.0,
             "pl_pct": -60.23,
-            "pl_annual": -25.08
+            "pl_annual": -25.11
           },
           {
             "variation_pct": -50,
@@ -1353,70 +1353,70 @@
             "underlying_level": 50,
             "redemption": 500.0,
             "pl_pct": -50.29,
-            "pl_annual": -20.94
+            "pl_annual": -20.97
           },
           {
             "variation_pct": -40,
             "underlying_price": 3230.09,
             "underlying_level": 60,
-            "redemption": 1149.83,
-            "pl_pct": 14.32,
+            "redemption": 1149.66,
+            "pl_pct": 14.3,
             "pl_annual": 5.96
           },
           {
             "variation_pct": -30,
             "underlying_price": 3768.44,
             "underlying_level": 70,
-            "redemption": 1149.83,
-            "pl_pct": 14.32,
+            "redemption": 1149.66,
+            "pl_pct": 14.3,
             "pl_annual": 5.96
           },
           {
             "variation_pct": -20,
             "underlying_price": 4306.78,
             "underlying_level": 80,
-            "redemption": 1149.83,
-            "pl_pct": 14.32,
+            "redemption": 1149.66,
+            "pl_pct": 14.3,
             "pl_annual": 5.96
           },
           {
             "variation_pct": -10,
             "underlying_price": 4845.13,
             "underlying_level": 90,
-            "redemption": 1149.83,
-            "pl_pct": 14.32,
+            "redemption": 1149.66,
+            "pl_pct": 14.3,
             "pl_annual": 5.96
           },
           {
             "variation_pct": 0,
             "underlying_price": 5383.48,
             "underlying_level": 100,
-            "redemption": 1149.83,
-            "pl_pct": 14.32,
+            "redemption": 1149.66,
+            "pl_pct": 14.3,
             "pl_annual": 5.96
           },
           {
             "variation_pct": 10,
             "underlying_price": 5921.83,
             "underlying_level": 110,
-            "redemption": 1149.83,
-            "pl_pct": 14.32,
+            "redemption": 1149.66,
+            "pl_pct": 14.3,
             "pl_annual": 5.96
           },
           {
             "variation_pct": 20,
             "underlying_price": 6460.18,
             "underlying_level": 120,
-            "redemption": 1149.83,
-            "pl_pct": 14.32,
+            "redemption": 1149.66,
+            "pl_pct": 14.3,
             "pl_annual": 5.96
           },
           {
             "variation_pct": 30,
             "underlying_price": 6998.52,
             "underlying_level": 130,
-            "redemption": 1149.83,
-            "pl_pct": 14.32,
+            "redemption": 1149.66,
+            "pl_pct": 14.3,
             "pl_annual": 5.96
           }
         ],
@@ -1476,7 +1476,7 @@
             "underlying_level": 30,
             "redemption": 300.0,
             "pl_pct": -70.28,
-            "pl_annual": -34.5
+            "pl_annual": -34.55
           },
           {
             "variation_pct": -60,
@@ -1484,7 +1484,7 @@
             "underlying_level": 40,
             "redemption": 400.0,
             "pl_pct": -60.38,
-            "pl_annual": -29.64
+            "pl_annual": -29.68
           },
           {
             "variation_pct": -50,
@@ -1492,74 +1492,74 @@
             "underlying_level": 50,
             "redemption": 500.0,
             "pl_pct": -50.47,
-            "pl_annual": -24.78
+            "pl_annual": -24.81
           },
           {
             "variation_pct": -40,
             "underlying_price": 3281.05,
             "underlying_level": 60,
-            "redemption": 1112.44,
-            "pl_pct": 10.2,
-            "pl_annual": 5.01
+            "redemption": 1112.29,
+            "pl_pct": 10.18,
+            "pl_annual": 5.0
           },
           {
             "variation_pct": -30,
             "underlying_price": 3827.89,
             "underlying_level": 70,
-            "redemption": 1112.44,
-            "pl_pct": 10.2,
-            "pl_annual": 5.01
+            "redemption": 1112.29,
+            "pl_pct": 10.18,
+            "pl_annual": 5.0
           },
           {
             "variation_pct": -20,
             "underlying_price": 4374.73,
             "underlying_level": 80,
-            "redemption": 1112.44,
-            "pl_pct": 10.2,
-            "pl_annual": 5.01
+            "redemption": 1112.29,
+            "pl_pct": 10.18,
+            "pl_annual": 5.0
           },
           {
             "variation_pct": -10,
             "underlying_price": 4921.57,
             "underlying_level": 90,
-            "redemption": 1112.44,
-            "pl_pct": 10.2,
-            "pl_annual": 5.01
+            "redemption": 1112.29,
+            "pl_pct": 10.18,
+            "pl_annual": 5.0
           },
           {
             "variation_pct": 0,
             "underlying_price": 5468.41,
             "underlying_level": 100,
-            "redemption": 1112.44,
-            "pl_pct": 10.2,
-            "pl_annual": 5.01
+            "redemption": 1112.29,
+            "pl_pct": 10.18,
+            "pl_annual": 5.0
           },
           {
             "variation_pct": 10,
             "underlying_price": 6015.25,
             "underlying_level": 110,
-            "redemption": 1112.44,
-            "pl_pct": 10.2,
-            "pl_annual": 5.01
+            "redemption": 1112.29,
+            "pl_pct": 10.18,
+            "pl_annual": 5.0
           },
           {
             "variation_pct": 20,
             "underlying_price": 6562.09,
             "underlying_level": 120,
-            "redemption": 1112.44,
-            "pl_pct": 10.2,
-            "pl_annual": 5.01
+            "redemption": 1112.29,
+            "pl_pct": 10.18,
+            "pl_annual": 5.0
           },
           {
             "variation_pct": 30,
             "underlying_price": 7108.93,
             "underlying_level": 130,
-            "redemption": 1112.44,
-            "pl_pct": 10.2,
-            "pl_annual": 5.01
+            "redemption": 1112.29,
+            "pl_pct": 10.18,
+            "pl_annual": 5.0
           }
         ],
-        "years_to_maturity": 2.04,
+        "years_to_maturity": 2.03,
         "worst_underlying": "Euro Stoxx 50",
         "purchase_price": 1009.5,
         "barrier_pct": 60.0,
@@ -2236,8 +2236,8 @@
     "total_scraped_this_run": 153,
     "after_filter_this_run": 32,
     "detail_enriched_this_run": 0,
-    "timestamp": "2026-03-06T19:08:00.012194",
-    "scrape_date": "2026-03-06",
+    "timestamp": "2026-03-07T18:54:19.162141",
+    "scrape_date": "2026-03-07",
     "categories": 7,
     "underlyings_db": 27
   }
