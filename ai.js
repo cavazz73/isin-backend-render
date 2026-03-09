@@ -22,7 +22,7 @@ if (!PERPLEXITY_API_KEY) {
 }
 
 const PERPLEXITY_API_URL = 'https://api.perplexity.ai/chat/completions';
-const AI_MODEL = 'sonar-pro'; // sonar = cheapest with web search ($1/$1 per 1M tokens)
+const AI_MODEL = 'sonar-pro'; // sonar-pro = advanced with deep web search ($3/$15 per 1M tokens)
 
 // Rate limiting simple (in-memory)
 const rateLimits = new Map();
@@ -219,7 +219,9 @@ async function streamPerplexityResponse(messages, res, maxTokens = 2048) {
             temperature: 0.2,
             stream: true,
             return_citations: true,
-            search_recency_filter: 'month'
+            web_search_options: {
+                search_context_size: 'high'
+            }
         },
         responseType: 'stream',
         timeout: 60000
@@ -362,7 +364,9 @@ router.post('/chat', async (req, res) => {
                     max_tokens: 2048,
                     temperature: 0.2,
                     return_citations: true,
-                    search_recency_filter: 'month'
+                    web_search_options: {
+                        search_context_size: 'high'
+                    }
                 },
                 {
                     headers: {
