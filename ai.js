@@ -22,7 +22,7 @@ if (!PERPLEXITY_API_KEY) {
 }
 
 const PERPLEXITY_API_URL = 'https://api.perplexity.ai/chat/completions';
-const AI_MODEL = 'sonar'; // sonar = cheapest with web search ($1/$1 per 1M tokens)
+const AI_MODEL = 'sonar-pro'; // sonar = cheapest with web search ($1/$1 per 1M tokens)
 
 // Rate limiting simple (in-memory)
 const rateLimits = new Map();
