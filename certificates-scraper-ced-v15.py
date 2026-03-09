@@ -117,6 +117,66 @@ def detect_certificate_type(name: str) -> str:
     return 'Certificato'
 
 
+# ============ UNDERLYING FILTER (BG source) ============
+# CED Search is already pre-filtered by TARGET_SOTTOSTANTI (server-side).
+# BG Promo page returns ALL certificates including single stocks - we filter locally.
+
+VALID_KEYWORDS = [
+    # Indices
+    'ftse', 'mib', 'stoxx', 'eurostoxx', 'euro stoxx', 'dax', 'cac', 'ibex',
+    's&p', 'sp500', 'sp 500', 'nasdaq', 'dow jones', 'nikkei', 'hang seng',
+    'russell', 'msci', 'smi', 'topix', 'kospi', 'sensex',
+    'stoxx europe 600', 'eurostoxx bank', 'eurostoxx technolog',
+    'eurostoxx insurance', 'eurostoxx utilit', 'eurostoxx oil',
+    'eurostoxx basic', 'eurostoxx healthcare', 'eurostoxx health',
+    'stoxx europe', 'select dividend',
+    # ETF su indici
+    'ishares msci', 'ishares china', 'spdr', 'etf',
+    # Commodities
+    'oro', 'gold', 'silver', 'argento', 'petrolio', 'oil', 'brent', 'wti',
+    'gas naturale', 'natural gas', 'copper', 'rame', 'platinum', 'platino',
+    'palladium', 'palladio', 'crude', 'commodity',
+    # Forex
+    'eur/usd', 'usd/jpy', 'gbp/usd', 'forex', 'currency', 'valuta', 'cambio',
+    # Tassi
+    'euribor', 'libor', 'bund', 'btp', 'treasury', 'swap', 'yield', 'tasso',
+    'estron',
+    # Credit (no 'credit' generico - matcha Unicredit/Credit Agricole!)
+    'credit linked', 'credit link', 'cln', 'cds',
+    # Generic
+    'index', 'indice', 'basket di indici', 'paniere',
+]
+
+
+def is_valid_underlying(name: str) -> bool:
+    """Check if underlying matches indices/commodities/rates/credit linked."""
+    if not name:
+        return False
+    return any(kw in name.lower().strip() for kw in VALID_KEYWORDS)
+
+
+def filter_bg_by_underlying(bg_raw: Dict[str, Dict]) -> Tuple[Dict[str, Dict], int]:
+    """Filter BG results to keep only valid underlyings (indices, commodities, etc.)."""
+    filtered = {}
+    skipped = 0
+    for isin, raw in bg_raw.items():
+        sottostante = raw.get('sottostante', '')
+        nome = raw.get('nome', '')
+        full_text = f"{sottostante} {nome}".lower()
+
+        sotto_list = [n.strip() for n in sottostante.split(';') if n.strip()]
+        has_valid = any(is_valid_underlying(n) for n in sotto_list)
+
+        if has_valid:
+            filtered[isin] = raw
+        elif any(kw in full_text for kw in VALID_KEYWORDS):
+            filtered[isin] = raw
+        else:
+            skipped += 1
+
+    return filtered, skipped
+
+
 # ============ HELPER FUNCTIONS ============
 
 def parse_number(text: str) -> Optional[float]:
@@ -456,11 +516,14 @@ async def scrape_detail(page, isin: str) -> Dict:
     if not await retry_goto(page, url):
         return extra
 
-    # Wait for AJAX content
+    # Wait for AJAX content (barrier + underlyings load asynchronously)
     try:
-        await page.wait_for_timeout(2000)
+        # Wait for barrier div to populate
+        await page.wait_for_selector('div#barriera, table:has(th:has-text("Strike")), table:has(td:has-text("Valore Iniziale"))', timeout=8000)
     except:
         pass
+    # Additional settle time for all AJAX calls
+    await page.wait_for_timeout(3000)
 
     html = await page.content()
     soup = BeautifulSoup(html, 'lxml')
@@ -537,9 +600,9 @@ async def scrape_detail(page, isin: str) -> Dict:
         for i, hl in enumerate(header_labels):
             if any(kw in hl for kw in ['sottostante', 'nome', 'descrizione', 'underlying']):
                 col_map['name'] = i
-            elif any(kw in hl for kw in ['strike', 'val. iniz', 'val.iniz']):
+            elif any(kw in hl for kw in ['strike', 'valore iniziale', 'val. iniz', 'val.iniz', 'val iniz']):
                 col_map['strike'] = i
-            elif any(kw in hl for kw in ['ultimo', 'spot', 'prezzo', 'val. att', 'val.att']):
+            elif any(kw in hl for kw in ['ultimo', 'spot', 'prezzo', 'valore attuale', 'val. att', 'val.att', 'val att']):
                 col_map['spot'] = i
             elif ('barriera' in hl or 'barrier' in hl) and 'distanza' not in hl:
                 col_map['barrier'] = i
@@ -810,7 +873,11 @@ async def main():
         page = await context.new_page()
 
         # === 1. Scrape BG promo (existing source) ===
-        bg_results = await scrape_bg_promo(page)
+        bg_raw = await scrape_bg_promo(page)
+
+        # === 1b. Filter BG by underlying type ===
+        bg_results, bg_skipped = filter_bg_by_underlying(bg_raw)
+        print(f"  After filter: {len(bg_results)} valid, {bg_skipped} stocks skipped")
 
         # === 2. Scrape CED advanced search (new source) ===
         ced_results = await scrape_ced_search(page)
