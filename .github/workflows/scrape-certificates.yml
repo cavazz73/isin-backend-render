@@ -1,4 +1,4 @@
-name: Scrape Certificates Daily
+name: Scrape Certificates Daily (v17)
 
 on:
   # Run every day at 18:30 UTC (19:30 CET / 20:30 CEST)
@@ -11,6 +11,7 @@ on:
 jobs:
   scrape-certificates:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     
     steps:
       - name: Checkout repository
@@ -30,13 +31,12 @@ jobs:
           python -m playwright install-deps
           echo "✅ Python dependencies + Playwright installed"
       
-      - name: Run CED certificates scraper
+      - name: Run CED certificates scraper v17
         env:
-          RECENT_DAYS: '60'
-          MAX_DETAIL_ISIN: '100'
+          MAX_DETAIL_ISIN: '200'
         run: |
-          echo "🚀 Starting CED certificates scraper v15..."
-          python certificates-scraper-ced-v15.py
+          echo "🚀 Starting CED certificates scraper v17 (multi-source)..."
+          python certificates-scraper-ced-v17.py
           echo "✅ Scraper completed"
       
       - name: Check for changes
@@ -56,9 +56,7 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "GitHub Actions Bot"
           git add certificates-data.json
-          git add certificates-recenti.json 2>/dev/null || true
-          git add certificates-recenti.csv 2>/dev/null || true
-          git commit -m "🔄 Auto-update certificates data - $(date +'%Y-%m-%d %H:%M')"
+          git commit -m "🔄 Auto-update certificates data v17 - $(date +'%Y-%m-%d %H:%M')"
           git push
           echo "✅ Changes committed and pushed"
       
@@ -66,22 +64,3 @@ jobs:
         if: steps.check_changes.outputs.has_changes == 'false'
         run: |
           echo "ℹ️ No changes to commit"
-      
-      - name: Workflow summary
-        run: |
-          echo "## 📊 CED Certificates Scraper Summary" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "- **Date:** $(date +'%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
-          echo "- **Source:** certificatiederivati.it" >> $GITHUB_STEP_SUMMARY
-          echo "- **Status:** ✅ Completed" >> $GITHUB_STEP_SUMMARY
-          echo "- **Changes:** ${{ steps.check_changes.outputs.has_changes }}" >> $GITHUB_STEP_SUMMARY
-          
-          if [ -f certificates-data.json ]; then
-            CERT_COUNT=$(python3 -c "import json; d=json.load(open('certificates-data.json')); print(d.get('count', len(d.get('certificates',[]))))")
-            echo "- **Total certificates in DB:** ${CERT_COUNT}" >> $GITHUB_STEP_SUMMARY
-          fi
-          
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### 🔗 Next Steps" >> $GITHUB_STEP_SUMMARY
-          echo "- Render will auto-deploy with new data" >> $GITHUB_STEP_SUMMARY
-          echo "- Frontend will load updated certificates" >> $GITHUB_STEP_SUMMARY
