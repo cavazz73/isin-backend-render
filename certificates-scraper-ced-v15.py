@@ -32,8 +32,9 @@ BG_PROMO_URL = 'https://www.certificatiederivati.it/bs_promo_bgenerali.asp?t=red
 DETAIL_URL = 'https://www.certificatiederivati.it/db_bs_scheda_certificato.asp?isin='
 
 # Target indices/sottostanti to search in CED advanced search
-# These must match (partially) the dropdown option text
+# Must match dropdown options; matching uses word boundaries
 TARGET_SOTTOSTANTI = [
+    # Major indices
     'Euro Stoxx 50',
     'FTSE Mib',
     'Dax',
@@ -43,31 +44,36 @@ TARGET_SOTTOSTANTI = [
     'SPDR S&P 500',
     'Russell 2000',
     'MSCI World',
-    'Msci World',
     'SMI Swiss',
     'Hang Seng',
+    'Hang Seng China',
+    'CAC 40',
+    'IBEX 35',
+    # Sector indices
     'Eurostoxx Banks',
-    'Eurostoxx Technology',
     'Eurostoxx Insurance',
     'Eurostoxx Utilities',
     'Eurostoxx Oil',
-    'Eurostoxx Basic Resources',
     'Eurostoxx HealthCare',
-    'Stoxx Europe 600',
-    'Stoxx Europe 600 Oil',
-    'Stoxx Europe 600 Basic',
+    'Eurostoxx Select Dividend',
     'Stoxx Europe 600 Health',
     'Stoxx Europe 600 Auto',
-    'Eurostoxx Select Dividend',
-    'iShares MSCI China',
+    # China
     'iShares China Large',
+    # Rates
     'Euribor',
     'ESTRON',
+    # Commodities - use precise names
     'Oro',
-    'Gold',
-    'Petrolio',
-    'Brent',
-    'WTI',
+    'Gold Spot',
+    'Petrolio WTI',
+    'Brent Crude',
+    'WTI Crude',
+    'Argento',
+    'Silver Spot',
+    'Natural Gas',
+    'Rame',
+    'Copper',
 ]
 
 # ============ CERTIFICATE TYPE DETECTION ============
@@ -407,26 +413,62 @@ async def scrape_ced_search(page) -> Dict[str, Dict]:
     print(f"  Total sottostante options: {len(all_options)}")
 
     # Step 3: Match our targets against actual options
+    # Skip derivatives (Call/Put), ETFs (Amundi/iShares/SPDR), and FBK products
+    SKIP_PREFIXES = ['call ', 'put ', 'fbk ', 'amundi ', 'xtrackers ', 'global x ']
+
     matched = []
     for target in TARGET_SOTTOSTANTI:
         target_lower = target.lower().strip()
         target_words = target_lower.split()
 
+        best_match = None
+
         for opt in all_options:
-            opt_lower = opt['text'].lower()
-            # Exact substring match
-            if target_lower in opt_lower:
-                matched.append({'target': target, 'value': opt['value'], 'label': opt['text']})
+            opt_lower = opt['text'].lower().strip()
+
+            # Skip obvious derivatives and ETFs
+            if any(opt_lower.startswith(skip) for skip in SKIP_PREFIXES):
+                continue
+            # Skip options with dates (likely derivatives): contain patterns like 19DEC25, MAR26
+            if re.search(r'\d{2}[A-Z]{3}\d{2}', opt['text']):
+                continue
+            # Skip options with strike prices like B40000, B3500
+            if re.search(r'\bB\d{3,}', opt['text']):
+                continue
+
+            # Exact match (case insensitive)
+            if opt_lower == target_lower:
+                best_match = {'target': target, 'value': opt['value'], 'label': opt['text']}
                 break
-        else:
-            # Try word-by-word match
+
+            # Option starts with target (e.g. "Euro Stoxx 50" matches "Euro Stoxx 50 ...")
+            if opt_lower.startswith(target_lower + ' ') or opt_lower.startswith(target_lower):
+                if not best_match or len(opt_lower) < len(best_match['label']):
+                    best_match = {'target': target, 'value': opt['value'], 'label': opt['text']}
+                continue
+
+            # Word-boundary match (prevents "oro" matching "clorox", "gold" matching "anglogold")
+            if re.search(r'\b' + re.escape(target_lower) + r'\b', opt_lower):
+                if not best_match:
+                    best_match = {'target': target, 'value': opt['value'], 'label': opt['text']}
+                continue
+
+        if not best_match:
+            # Last resort: word-by-word match (all words present)
             for opt in all_options:
-                opt_lower = opt['text'].lower()
+                opt_lower = opt['text'].lower().strip()
+                if any(opt_lower.startswith(skip) for skip in SKIP_PREFIXES):
+                    continue
+                if re.search(r'\d{2}[A-Z]{3}\d{2}', opt['text']):
+                    continue
                 if all(w in opt_lower for w in target_words):
-                    matched.append({'target': target, 'value': opt['value'], 'label': opt['text']})
+                    best_match = {'target': target, 'value': opt['value'], 'label': opt['text']}
                     break
-            else:
-                print(f"  [{target}] No match in dropdown options")
+
+        if best_match:
+            matched.append(best_match)
+        else:
+            print(f"  [{target}] No match in dropdown options")
 
     print(f"  Matched {len(matched)}/{len(TARGET_SOTTOSTANTI)} targets")
 
@@ -604,7 +646,7 @@ async def scrape_ced_search(page) -> Dict[str, Dict]:
 # DETAIL PAGE ENRICHMENT (enhanced)
 # ================================================================
 
-async def scrape_detail(page, isin: str) -> Dict:
+async def scrape_detail(page, isin: str, debug: bool = False) -> Dict:
     """Scrape certificate detail page for full data."""
     url = DETAIL_URL + isin
     extra = {
@@ -618,18 +660,22 @@ async def scrape_detail(page, isin: str) -> Dict:
     if not await retry_goto(page, url):
         return extra
 
-    # Wait for AJAX content (barrier + underlyings load asynchronously)
-    try:
-        # Wait for barrier div to populate
-        await page.wait_for_selector('div#barriera, table:has(th:has-text("Strike")), table:has(td:has-text("Valore Iniziale"))', timeout=8000)
-    except:
-        pass
-    # Additional settle time for all AJAX calls
+    # Wait for page to settle (AJAX content)
     await page.wait_for_timeout(3000)
 
     html = await page.content()
     soup = BeautifulSoup(html, 'lxml')
     page_text = soup.get_text().lower()
+
+    if debug:
+        tables = soup.find_all('table')
+        print(f"\n    DEBUG {isin}: {len(tables)} tables found")
+        for i, t in enumerate(tables[:8]):
+            rows = t.find_all('tr')
+            first_cells = []
+            if rows:
+                first_cells = [c.get_text(strip=True)[:30] for c in rows[0].find_all(['th', 'td'])[:4]]
+            print(f"    Table[{i}]: {len(rows)} rows, headers: {first_cells}")
 
     # Barrier type
     if 'continua' in page_text:
@@ -653,7 +699,7 @@ async def scrape_detail(page, isin: str) -> Dict:
                     extra['barrier_type'] = 'American'
             break
 
-    # Extract from data tables
+    # Extract key fields from data tables (ISIN, dates, nominal, etc.)
     for row in soup.find_all('tr'):
         cells = row.find_all(['th', 'td'])
         if len(cells) >= 2:
@@ -685,34 +731,45 @@ async def scrape_detail(page, isin: str) -> Dict:
                 if 'cert' in value.lower() or 'sedex' in value.lower():
                     extra['mercato'] = value.strip()
 
-    # Underlyings table - Strategy 1: tables with sottostante header
+    # =============================================
+    # UNDERLYINGS EXTRACTION
+    # =============================================
     found_underlyings = False
+
+    # Strategy 0 (NEW): Find table by DESCRIZIONE+STRIKE header pattern
+    # CED detail pages use: DESCRIZIONE | STRIKE | PESO (not "sottostante")
     for table in soup.find_all('table'):
-        header_text = table.get_text().lower()
-        if 'sottostant' not in header_text and 'underlying' not in header_text:
+        first_row = table.find('tr')
+        if not first_row:
+            continue
+        header_cells = first_row.find_all(['th', 'td'])
+        header_texts = [c.get_text(strip=True).lower() for c in header_cells]
+
+        has_desc = any('descrizione' in h or 'sottostante' in h for h in header_texts)
+        has_strike = any('strike' in h or 'valore iniziale' in h or 'val. iniz' in h for h in header_texts)
+
+        if not (has_desc and has_strike):
             continue
 
-        header_row = table.find('tr')
-        if not header_row:
-            continue
-        headers = header_row.find_all(['th', 'td'])
-        header_labels = [h.get_text(strip=True).lower() for h in headers]
+        if debug:
+            print(f"    Strategy 0 MATCH: headers={header_texts}")
 
+        # Map columns
         col_map = {}
-        for i, hl in enumerate(header_labels):
-            if any(kw in hl for kw in ['sottostante', 'nome', 'descrizione', 'underlying']):
+        for i, hl in enumerate(header_texts):
+            if 'descrizione' in hl or 'sottostante' in hl or 'nome' in hl:
                 col_map['name'] = i
-            elif any(kw in hl for kw in ['strike', 'valore iniziale', 'val. iniz', 'val.iniz', 'val iniz']):
+            elif 'strike' in hl or 'valore iniziale' in hl or 'val. iniz' in hl or 'val.iniz' in hl:
                 col_map['strike'] = i
-            elif any(kw in hl for kw in ['ultimo', 'spot', 'prezzo', 'valore attuale', 'val. att', 'val.att', 'val att']):
-                col_map['spot'] = i
+            elif 'peso' in hl:
+                col_map['peso'] = i
             elif ('barriera' in hl or 'barrier' in hl) and 'distanza' not in hl:
                 col_map['barrier'] = i
 
         if 'name' not in col_map:
             continue
 
-        for row in table.find_all('tr')[1:]:
+        for row in table.find_all('tr')[1:]:  # skip header
             cells = row.find_all(['td', 'th'])
             if len(cells) < 2:
                 continue
@@ -720,7 +777,7 @@ async def scrape_detail(page, isin: str) -> Dict:
             if name_idx >= len(cells):
                 continue
             name = cells[name_idx].get_text(strip=True)
-            if not name or name.lower() in ['sottostante', 'nome', 'descrizione', '']:
+            if not name or name.lower() in ['descrizione', 'sottostante', 'nome', '']:
                 continue
 
             def safe_get(idx_key):
@@ -732,36 +789,109 @@ async def scrape_detail(page, isin: str) -> Dict:
             extra['underlyings_detail'].append({
                 'name': name,
                 'strike': safe_get('strike') or 0,
-                'spot': safe_get('spot') or 0,
+                'spot': 0,
                 'barrier': safe_get('barrier') or 0,
             })
             found_underlyings = True
+
         if found_underlyings:
+            if debug:
+                print(f"    Strategy 0: found {len(extra['underlyings_detail'])} underlyings")
             break
 
-    # Strategy 2: Fallback - heading + table
+    # Strategy 1: table where the FULL text contains 'sottostant'
     if not found_underlyings:
-        for heading in soup.find_all(['h4', 'h3', 'h5', 'strong', 'b', 'div']):
-            if 'sottostant' not in heading.get_text(strip=True).lower():
+        for table in soup.find_all('table'):
+            full_text = table.get_text().lower()
+            if 'sottostant' not in full_text and 'underlying' not in full_text:
                 continue
-            table = heading.find_next('table')
-            if not table:
+            header_row = table.find('tr')
+            if not header_row:
                 continue
-            for row in table.find_all('tr'):
-                cells = row.find_all('td')
+            headers = header_row.find_all(['th', 'td'])
+            header_labels = [h.get_text(strip=True).lower() for h in headers]
+
+            col_map = {}
+            for i, hl in enumerate(header_labels):
+                if any(kw in hl for kw in ['sottostante', 'nome', 'descrizione', 'underlying']):
+                    col_map['name'] = i
+                elif any(kw in hl for kw in ['strike', 'valore iniziale', 'val. iniz', 'val.iniz']):
+                    col_map['strike'] = i
+                elif any(kw in hl for kw in ['ultimo', 'spot', 'prezzo', 'valore attuale', 'val. att']):
+                    col_map['spot'] = i
+                elif ('barriera' in hl or 'barrier' in hl) and 'distanza' not in hl:
+                    col_map['barrier'] = i
+
+            if 'name' not in col_map:
+                continue
+
+            for row in table.find_all('tr')[1:]:
+                cells = row.find_all(['td', 'th'])
                 if len(cells) < 2:
                     continue
-                name = cells[0].get_text(strip=True)
-                if not name or name.upper() in ['DESCRIZIONE', 'SOTTOSTANTE', 'NOME', '']:
+                name_idx = col_map.get('name', 0)
+                if name_idx >= len(cells):
                     continue
+                name = cells[name_idx].get_text(strip=True)
+                if not name or name.lower() in ['sottostante', 'nome', 'descrizione', '']:
+                    continue
+
+                def safe_get2(idx_key):
+                    idx = col_map.get(idx_key)
+                    if idx is not None and idx < len(cells):
+                        return parse_number(cells[idx].get_text(strip=True))
+                    return None
+
                 extra['underlyings_detail'].append({
                     'name': name,
-                    'strike': parse_number(cells[1].get_text(strip=True)) if len(cells) > 1 else 0,
-                    'spot': parse_number(cells[2].get_text(strip=True)) if len(cells) > 2 else 0,
-                    'barrier': parse_number(cells[3].get_text(strip=True)) if len(cells) > 3 else 0,
+                    'strike': safe_get2('strike') or 0,
+                    'spot': safe_get2('spot') or 0,
+                    'barrier': safe_get2('barrier') or 0,
                 })
                 found_underlyings = True
+            if found_underlyings:
+                break
+
+    # Strategy 2: heading with 'sottostant' then find next table
+    if not found_underlyings:
+        for heading in soup.find_all(['h3', 'h4', 'h5', 'strong', 'b']):
+            heading_text = heading.get_text(strip=True).lower()
+            if 'sottostant' not in heading_text:
+                continue
+            if debug:
+                print(f"    Strategy 2: found heading '{heading_text}'")
+
+            # Find next table, skipping ad/layout tables
+            for sibling_table in heading.find_all_next('table'):
+                rows = sibling_table.find_all('tr')
+                if len(rows) < 2:
+                    continue  # skip tiny/ad tables
+
+                first_cells = sibling_table.find('tr').find_all(['th', 'td'])
+                if len(first_cells) < 2:
+                    continue  # not a data table
+
+                for row in rows:
+                    cells = row.find_all('td')
+                    if len(cells) < 2:
+                        continue
+                    name = cells[0].get_text(strip=True)
+                    if not name or name.upper() in ['DESCRIZIONE', 'SOTTOSTANTE', 'NOME', '']:
+                        continue
+                    extra['underlyings_detail'].append({
+                        'name': name,
+                        'strike': parse_number(cells[1].get_text(strip=True)) if len(cells) > 1 else 0,
+                        'spot': 0,
+                        'barrier': parse_number(cells[3].get_text(strip=True)) if len(cells) > 3 else 0,
+                    })
+                    found_underlyings = True
+
+                if found_underlyings:
+                    break
             break
+
+    if debug and not found_underlyings:
+        print(f"    DEBUG: No underlyings found for {isin}")
 
     return extra
 
@@ -1076,7 +1206,7 @@ async def main():
             for i, isin in enumerate(isins_to_enrich[:MAX_DETAIL_ISIN], 1):
                 print(f"[{i}/{detail_count}] {isin}...", end=" ", flush=True)
                 try:
-                    detail = await scrape_detail(page, isin)
+                    detail = await scrape_detail(page, isin, debug=(i <= 3))
                     details[isin] = detail
                     nu = len(detail.get('underlyings_detail', []))
                     has_strikes = any(u.get('strike', 0) > 0 for u in detail.get('underlyings_detail', []))
