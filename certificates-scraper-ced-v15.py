@@ -1017,7 +1017,29 @@ async def main():
                     pass
             final_certs[isin] = cert
 
-        certificates = list(final_certs.values())
+        # === 8b. Filter ALL certificates by valid underlyings ===
+        # This cleans up stock-only certs from previous unfiltered runs
+        cleaned_certs = {}
+        stocks_removed = 0
+        for isin, cert in final_certs.items():
+            underlyings = cert.get('underlyings', [])
+            cert_name = cert.get('name', '')
+            und_names = [u.get('name', '') for u in underlyings]
+            # Check if any underlying or the cert name matches valid keywords
+            full_text = f"{cert_name} {' '.join(und_names)}".lower()
+            has_valid = any(is_valid_underlying(n) for n in und_names)
+            if not has_valid:
+                has_valid = any(kw in full_text for kw in VALID_KEYWORDS)
+            if has_valid or not underlyings:
+                # Keep: has valid underlying OR no underlyings yet (will be enriched)
+                cleaned_certs[isin] = cert
+            else:
+                stocks_removed += 1
+
+        if stocks_removed:
+            print(f"  Cleaned {stocks_removed} stock-only certificates from database")
+
+        certificates = list(cleaned_certs.values())
         certificates.sort(key=lambda c: c.get('annual_coupon_yield', 0), reverse=True)
 
         # === 9. Save ===
@@ -1031,6 +1053,7 @@ async def main():
                 'new_this_run': new_count,
                 'updated_this_run': updated_count,
                 'purged_expired': purged,
+                'stocks_cleaned': stocks_removed,
                 'total_from_bg': len(bg_results),
                 'total_from_ced_search': len(ced_results),
                 'total_merged': len(filtered),
@@ -1051,6 +1074,7 @@ async def main():
         print(f"  New: {new_count}")
         print(f"  Updated: {updated_count}")
         print(f"  Purged: {purged}")
+        print(f"  Stocks cleaned: {stocks_removed}")
         print(f"  TOTAL: {len(certificates)} certificates saved")
         print(f"{'=' * 60}")
 
