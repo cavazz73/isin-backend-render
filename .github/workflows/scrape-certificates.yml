@@ -36,7 +36,7 @@ jobs:
           MAX_DETAIL_ISIN: '200'
         run: |
           echo "🚀 Starting CED certificates scraper v17 (multi-source)..."
-          python certificates-scraper-ced-v17.py
+          python certificates-scraper-ced-v15.py
           echo "✅ Scraper completed"
       
       - name: Check for changes
