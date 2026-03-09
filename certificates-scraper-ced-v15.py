@@ -1,15 +1,12 @@
 #!/usr/bin/env python3
 """
-CED Scraper v16 - FIXED
-Scrapes certificates from CED "Tabella Prodotti Banca Generali"
+CED Scraper v17 - MULTI-SOURCE
+Scrapes certificates from:
+1. CED Advanced Search (db_bs_ricerca_avanzata.asp) - per each target index
+2. CED Banca Generali promo page (bs_promo_bgenerali.asp) - existing source
+3. Detail page enrichment for premio, ask, frequenza, underlyings
 
-FIXES in v16 vs v15:
-- Type detection from certificate name (not copying full name as type)
-- Detail page scrapes ALL columns: name, strike, spot, barrier, distance
-- Re-enrich ISINs that have incomplete data (underlyings with spot=0)
-- Preserve old detail data when merging
-- Scenario analysis includes worst_underlying name and purchase_price
-- Proper spot prices from detail page
+Copyright (c) 2024-2026 Mutna S.R.L.S. - All Rights Reserved
 """
 
 import asyncio
@@ -24,81 +21,88 @@ from playwright.async_api import async_playwright
 from bs4 import BeautifulSoup
 
 # ============ CONFIG ============
-RECENT_DAYS = int(os.getenv('RECENT_DAYS', '60'))
-MAX_CERTIFICATES = int(os.getenv('MAX_DETAIL_ISIN', '100'))
+MAX_DETAIL_ISIN = int(os.getenv('MAX_DETAIL_ISIN', '200'))
 REQUEST_DELAY = 2.0
 PAGE_TIMEOUT = 60000
 RETRY_COUNT = 3
 
-cutoff_date = datetime.now() - timedelta(days=RECENT_DAYS)
+SEARCH_URL = 'https://www.certificatiederivati.it/db_bs_ricerca_avanzata.asp?db=2'
+BG_PROMO_URL = 'https://www.certificatiederivati.it/bs_promo_bgenerali.asp?t=redazione'
+DETAIL_URL = 'https://www.certificatiederivati.it/db_bs_scheda_certificato.asp?isin='
 
-SOURCE_URL = 'https://www.certificatiederivati.it/bs_promo_bgenerali.asp?t=redazione'
-SOURCE_NAME = 'CED Banca Generali'
-
-# ============ FILTRI ============
-VALID_KEYWORDS = [
-    'ftse', 'mib', 'stoxx', 'eurostoxx', 'euro stoxx', 'dax', 'cac', 'ibex',
-    's&p', 'sp500', 'sp 500', 'nasdaq', 'dow jones', 'nikkei', 'hang seng',
-    'russell', 'msci', 'smi', 'topix', 'kospi', 'sensex',
-    'stoxx europe 600', 'eurostoxx bank', 'eurostoxx technolog',
-    'eurostoxx insurance', 'eurostoxx utilit', 'eurostoxx oil',
-    'eurostoxx basic', 'eurostoxx healthcare', 'eurostoxx health',
-    'stoxx europe', 'select dividend',
-    'ishares msci', 'ishares china', 'spdr', 'etf',
-    'oro', 'gold', 'silver', 'argento', 'petrolio', 'oil', 'brent', 'wti',
-    'gas naturale', 'natural gas', 'copper', 'rame', 'platinum', 'platino',
-    'palladium', 'palladio', 'crude', 'commodity',
-    'eur/usd', 'usd/jpy', 'gbp/usd', 'forex', 'currency', 'valuta', 'cambio',
-    'euribor', 'libor', 'bund', 'btp', 'treasury', 'swap', 'yield', 'tasso',
-    'estron',
-    'credit linked', 'credit link', 'cln', 'cds',
-    'index', 'indice', 'basket di indici', 'paniere',
-]
-
-STOCK_KEYWORDS = [
-    'enel', 'eni', 'intesa sanpaolo', 'unicredit', 'generali', 'ferrari',
-    'stellantis', 'stmicroelectronics', 'telecom italia', 'tim', 'leonardo',
-    'pirelli', 'moncler', 'campari', 'a2a', 'snam', 'terna', 'poste italiane',
-    'mediobanca', 'banco bpm', 'bper banca', 'banca mps', 'saipem',
-    'amplifon', 'brunello cucinelli', 'diasorin', 'recordati', 'italgas',
-    'nexi', 'prysmian', 'tenaris', 'hera', 'buzzi',
-    'tesla', 'apple', 'amazon', 'nvidia', 'microsoft', 'alphabet', 'google',
-    'meta', 'netflix', 'amd', 'intel', 'adobe', 'oracle', 'salesforce',
-    'paypal', 'qualcomm', 'uber', 'airbnb',
-    'lvmh', 'asml', 'sap', 'siemens', 'allianz', 'basf', 'bayer',
-    'adidas', 'bmw', 'mercedes', 'volkswagen',
-    'axa', 'bnp paribas', 'societe generale', 'credit agricole', 'total',
-    'engie', 'danone', 'sanofi', 'kering', 'hermes',
-    'shell', 'unilever', 'vodafone', 'barclays', 'hsbc',
-    'british petroleum', 'rio tinto', 'anglo american', 'glencore',
-    'nestle', 'novartis', 'roche', 'zurich', 'ubs',
-    'bbva', 'banco santander', 'iberdrola', 'telefonica',
-    'novo nordisk', 'maersk', 'aegon', 'renault',
-    'arcelor mittal', 'nike', 'kraft heinz', 'coca cola', 'commerzbank',
-    'deutsche bank', 'morgan stanley', 'citigroup', 'goldman sachs',
-    'worldline', 'diageo',
+# Target indices/sottostanti to search in CED advanced search
+# These must match (partially) the dropdown option text
+TARGET_SOTTOSTANTI = [
+    'Euro Stoxx 50',
+    'FTSE Mib',
+    'Dax',
+    'Nasdaq 100',
+    'Nikkei 225',
+    'S&P 500',
+    'SPDR S&P 500',
+    'Russell 2000',
+    'MSCI World',
+    'Msci World',
+    'SMI Swiss',
+    'Hang Seng',
+    'Eurostoxx Banks',
+    'Eurostoxx Technology',
+    'Eurostoxx Insurance',
+    'Eurostoxx Utilities',
+    'Eurostoxx Oil',
+    'Eurostoxx Basic Resources',
+    'Eurostoxx HealthCare',
+    'Stoxx Europe 600',
+    'Stoxx Europe 600 Oil',
+    'Stoxx Europe 600 Basic',
+    'Stoxx Europe 600 Health',
+    'Stoxx Europe 600 Auto',
+    'Eurostoxx Select Dividend',
+    'iShares MSCI China',
+    'iShares China Large',
+    'Euribor',
+    'ESTRON',
+    'Oro',
+    'Gold',
+    'Petrolio',
+    'Brent',
+    'WTI',
 ]
 
 # ============ CERTIFICATE TYPE DETECTION ============
 CERT_TYPE_PATTERNS = [
     ('phoenix memory step down', 'Phoenix Memory Step Down'),
+    ('phoenix memory airbag', 'Phoenix Memory Airbag'),
+    ('phoenix memory darwin', 'Phoenix Memory Darwin'),
+    ('phoenix memory convertible', 'Phoenix Memory Convertible'),
+    ('phoenix memory maxi coupon', 'Phoenix Memory Maxi Coupon'),
     ('phoenix memory', 'Phoenix Memory'),
     ('phoenix', 'Phoenix'),
+    ('cash collect memory basket star', 'Cash Collect Memory Basket Star'),
+    ('cash collect memory airbag', 'Cash Collect Memory Airbag'),
+    ('cash collect memory callable', 'Cash Collect Memory Callable'),
     ('cash collect memory', 'Cash Collect Memory'),
     ('cash collect', 'Cash Collect'),
+    ('fixed cash collect', 'Fixed Cash Collect'),
+    ('all coupon cash collect', 'All Coupon Cash Collect'),
+    ('bonus outperformance', 'Bonus Outperformance'),
     ('bonus cap', 'Bonus Cap'),
     ('bonus', 'Bonus'),
+    ('express maxi coupon', 'Express Maxi Coupon'),
     ('express', 'Express'),
+    ('equity protection', 'Equity Protection'),
+    ('equity premium', 'Equity Premium'),
+    ('buy on dips', 'Buy On Dips'),
+    ('butterfly', 'Butterfly'),
     ('twin win', 'Twin Win'),
     ('airbag', 'Airbag'),
     ('autocallable', 'Autocallable'),
     ('reverse convertible', 'Reverse Convertible'),
-    ('reverse', 'Reverse'),
     ('digital', 'Digital'),
     ('credit linked', 'Credit Linked'),
     ('outperformance', 'Outperformance'),
+    ('protect outperformance', 'Protect Outperformance'),
     ('tracker', 'Tracker'),
-    ('capital protected', 'Capital Protected'),
     ('protection', 'Protection'),
 ]
 
@@ -113,14 +117,10 @@ def detect_certificate_type(name: str) -> str:
     return 'Certificato'
 
 
-def is_valid_underlying(name: str) -> bool:
-    if not name:
-        return False
-    return any(kw in name.lower().strip() for kw in VALID_KEYWORDS)
-
+# ============ HELPER FUNCTIONS ============
 
 def parse_number(text: str) -> Optional[float]:
-    if not text or text.strip().upper() in ['N.A.', 'N.D.', '-', '', 'N/A']:
+    if not text or text.strip().upper() in ['N.A.', 'N.D.', '-', '', 'N/A', '0']:
         return None
     try:
         cleaned = re.sub(r'[EUR\u20ac%\s\xa0]', '', text.strip())
@@ -153,99 +153,60 @@ def parse_date(text: str) -> Optional[str]:
 def parse_worst_of(text: str) -> Tuple[str, Optional[float]]:
     if not text:
         return '', None
-    match = re.match(r'^(.+?)\s*\(([0-9.,]+)\)\s*$', text.strip(), re.DOTALL)
+    match = re.match(r'^(.+?)\(([0-9.,]+)\)\s*$', text.strip())
     if match:
-        return match.group(1).strip(), parse_number(match.group(2))
-    lines = text.strip().split('\n')
-    if len(lines) >= 2:
-        name = lines[0].strip()
-        strike_match = re.search(r'\(([0-9.,]+)\)', lines[-1])
-        if strike_match:
-            return name, parse_number(strike_match.group(1))
+        name = match.group(1).strip()
+        strike = parse_number(match.group(2))
+        return name, strike
     return text.strip(), None
 
 
-def get_freq_multiplier(freq: str) -> Tuple[float, str]:
-    f = freq.lower().strip() if freq else ''
-    if 'mensil' in f or 'monthly' in f:
+def get_freq_multiplier(freq_text: str) -> Tuple[float, str]:
+    f = freq_text.lower().strip() if freq_text else ''
+    if 'mensil' in f or 'month' in f:
         return 12.0, 'monthly'
-    elif 'trimestral' in f or 'quarterly' in f:
+    elif 'trimest' in f or 'quarter' in f:
         return 4.0, 'quarterly'
-    elif 'semestral' in f or 'semiannual' in f:
+    elif 'semest' in f or 'semi' in f:
         return 2.0, 'semiannual'
-    elif 'annual' in f or 'annuale' in f:
+    elif 'annual' in f or 'year' in f or 'ann' in f:
         return 1.0, 'annual'
     return 12.0, 'monthly'
 
 
-def barrier_as_pct(barrier_abs: Optional[float], strike: Optional[float]) -> Optional[float]:
+def barrier_as_pct(barrier_abs, strike) -> Optional[float]:
     if barrier_abs and strike and strike > 0:
-        pct = (barrier_abs / strike) * 100
-        if 5 <= pct <= 100:
-            return round(pct, 2)
+        pct = round((barrier_abs / strike) * 100, 2)
+        if 1 <= pct <= 100:
+            return pct
     return None
 
 
-def generate_scenarios(barrier_pct, ask_price, annual_yield, years_to_mat, wo_strike, wo_name=''):
-    if not all([barrier_pct, ask_price, years_to_mat, wo_strike]):
-        return None
-    if ask_price <= 0 or years_to_mat <= 0:
-        return None
-    nominal = 1000.0
-    scenarios = []
-    for var in [-70, -60, -50, -40, -30, -20, -10, 0, 10, 20, 30]:
-        u_price = round(wo_strike * (1 + var / 100), 2)
-        level = round(100 + var, 2)
-        if var >= -(100 - barrier_pct):
-            total_c = annual_yield * years_to_mat / 100 * nominal
-            redemption = round(nominal + total_c, 2)
-        else:
-            redemption = round(nominal * (1 + var / 100), 2)
-        pl_pct = round((redemption - ask_price) / ask_price * 100, 2)
-        pl_annual = round(pl_pct / years_to_mat, 2) if years_to_mat > 0 else 0
-        scenarios.append({
-            'variation_pct': var,
-            'underlying_price': u_price,
-            'underlying_level': level,
-            'redemption': redemption,
-            'pl_pct': pl_pct,
-            'pl_annual': pl_annual
-        })
-    return {
-        'scenarios': scenarios,
-        'years_to_maturity': round(years_to_mat, 2),
-        'worst_underlying': wo_name or 'N/A',
-        'purchase_price': round(ask_price, 2),
-        'barrier_pct': barrier_pct,
-        'nominal': nominal
-    }
-
-
-async def retry_goto(page, url: str, retries: int = RETRY_COUNT) -> bool:
+async def retry_goto(page, url, retries=RETRY_COUNT):
     for attempt in range(retries):
         try:
             await page.goto(url, wait_until='domcontentloaded', timeout=PAGE_TIMEOUT)
-            await page.wait_for_timeout(2000)
             return True
         except Exception as e:
-            print(f"  Attempt {attempt+1}/{retries} failed: {str(e)[:50]}")
             if attempt < retries - 1:
-                await asyncio.sleep(3)
-    return False
+                print(f"  Retry {attempt+1}/{retries} for {url[:60]}...")
+                await asyncio.sleep(2)
+            else:
+                print(f"  FAILED after {retries} attempts: {str(e)[:50]}")
+                return False
 
 
 # ================================================================
-# STEP 1: Parse the 14-column table
+# SOURCE 1: BG Promo Page (existing, proven)
 # ================================================================
 
-def parse_table_row(cols) -> Optional[Dict]:
+def parse_bg_table_row(cols) -> Optional[Dict]:
+    """Parse a row from the BG promo table (14 columns)."""
     if len(cols) < 14:
         return None
-
     for col in cols:
         for br in col.find_all('br'):
             br.replace_with('\n')
-
     col_texts = [col.get_text(strip=True) for col in cols]
 
     isin = ''
@@ -281,87 +242,243 @@ def parse_table_row(cols) -> Optional[Dict]:
         'barr_capitale': parse_number(col_texts[11]),
         'divisa': col_texts[12].strip(),
         'mercato': col_texts[13].strip(),
+        'source': 'BG_PROMO',
     }
 
 
-async def scrape_list_page(page) -> List[Dict]:
-    print(f"Scraping: {SOURCE_NAME}")
-    print(f"URL: {SOURCE_URL}")
-
-    if not await retry_goto(page, SOURCE_URL):
-        print("Failed to load page!")
-        return []
+async def scrape_bg_promo(page) -> Dict[str, Dict]:
+    """Scrape BG promo page - returns dict of ISIN -> raw data."""
+    print(f"\n--- Source 1: BG Promo Page ---")
+    if not await retry_goto(page, BG_PROMO_URL):
+        print("  Failed to load BG page!")
+        return {}
 
     html = await page.content()
     soup = BeautifulSoup(html, 'lxml')
-    results = []
+    results = {}
 
     for table in soup.find_all('table', class_=re.compile(r'table')):
         thead = table.find('thead')
         if not thead:
             continue
-        header_text = thead.get_text().lower()
-        if 'isin' not in header_text:
+        if 'isin' not in thead.get_text().lower():
             continue
-
-        print(f"  Found target table with header containing 'isin'")
-
         for row in table.find_all('tr'):
             cols = row.find_all('td')
             if len(cols) < 14:
                 continue
-            parsed = parse_table_row(cols)
-            if parsed:
-                results.append(parsed)
+            parsed = parse_bg_table_row(cols)
+            if parsed and parsed['isin'] not in results:
+                results[parsed['isin']] = parsed
 
-    print(f"  Found {len(results)} certificates")
+    print(f"  Found {len(results)} certificates from BG promo")
     return results
 
 
 # ================================================================
-# STEP 2: Scrape detail page for enrichment (FIXED)
+# SOURCE 2: CED Advanced Search (NEW)
+# ================================================================
+
+async def scrape_ced_search(page) -> Dict[str, Dict]:
+    """Search CED advanced search for each target index."""
+    print(f"\n--- Source 2: CED Advanced Search ---")
+    all_results = {}
+
+    for target in TARGET_SOTTOSTANTI:
+        try:
+            # Go to search page
+            if not await retry_goto(page, SEARCH_URL):
+                print(f"  Failed to load search page for {target}")
+                continue
+
+            await asyncio.sleep(1)
+
+            # Find the sottostante dropdown and look for matching option
+            options = await page.query_selector_all('select[name="sottostante"] option, select:has(option) option')
+            
+            # Try to find the right select - look for one with many options (the sottostante one)
+            selects = await page.query_selector_all('select')
+            sotto_select = None
+            for sel in selects:
+                opts = await sel.query_selector_all('option')
+                if len(opts) > 50:  # sottostante dropdown has many options
+                    sotto_select = sel
+                    break
+
+            if not sotto_select:
+                # Fallback: try by position (sottostante is usually the 4th select)
+                if len(selects) >= 4:
+                    sotto_select = selects[3]
+
+            if not sotto_select:
+                print(f"  Could not find sottostante dropdown for {target}")
+                continue
+
+            # Find matching option
+            options = await sotto_select.query_selector_all('option')
+            matched_value = None
+            matched_label = None
+            
+            for opt in options:
+                label = await opt.text_content()
+                if label and target.lower() in label.lower():
+                    matched_value = await opt.get_attribute('value')
+                    matched_label = label.strip()
+                    break
+
+            if not matched_value:
+                # Try partial match
+                for opt in options:
+                    label = await opt.text_content()
+                    if label:
+                        label_lower = label.lower()
+                        target_words = target.lower().split()
+                        if all(w in label_lower for w in target_words):
+                            matched_value = await opt.get_attribute('value')
+                            matched_label = label.strip()
+                            break
+
+            if not matched_value:
+                print(f"  [{target}] Not found in dropdown, skipping")
+                continue
+
+            # Select the option
+            select_name = await sotto_select.get_attribute('name') or 'sottostante'
+            await page.select_option(f'select[name="{select_name}"]', value=matched_value)
+            await asyncio.sleep(0.5)
+
+            # Click search button
+            submit_btn = await page.query_selector('input[value="Avvia Ricerca"], button:has-text("Avvia Ricerca")')
+            if submit_btn:
+                await submit_btn.click()
+            else:
+                # Try form submit
+                await page.evaluate('document.querySelector("form").submit()')
+
+            await page.wait_for_load_state('networkidle', timeout=30000)
+            await asyncio.sleep(1)
+
+            # Parse results table
+            html = await page.content()
+            soup = BeautifulSoup(html, 'lxml')
+
+            # Find result count
+            count_text = soup.get_text()
+            count_match = re.search(r'(\d+)\s*Certificate', count_text)
+            total = int(count_match.group(1)) if count_match else 0
+
+            # Parse table
+            found = 0
+            for table in soup.find_all('table'):
+                header = table.get_text().lower()
+                if 'isin' not in header or 'nome' not in header:
+                    continue
+
+                rows = table.find_all('tr')
+                for row in rows[1:]:  # skip header
+                    cells = row.find_all('td')
+                    if len(cells) < 6:
+                        continue
+
+                    cell_texts = [c.get_text(strip=True) for c in cells]
+                    isin = cell_texts[0].strip()
+
+                    if not re.match(r'^[A-Z]{2}[A-Z0-9]{9,11}$', isin):
+                        continue
+
+                    # Get ISIN link if available
+                    a_tag = cells[0].find('a')
+                    if a_tag:
+                        href = a_tag.get('href', '')
+                        m = re.search(r'isin=([A-Z0-9]+)', href)
+                        if m:
+                            isin = m.group(1)
+
+                    nome = cell_texts[1] if len(cell_texts) > 1 else ''
+                    emittente = cell_texts[2] if len(cell_texts) > 2 else ''
+                    sottostante = cell_texts[3] if len(cell_texts) > 3 else ''
+                    strike = parse_number(cell_texts[4]) if len(cell_texts) > 4 else None
+                    barriera = parse_number(cell_texts[5]) if len(cell_texts) > 5 else None
+                    protezione = cell_texts[6] if len(cell_texts) > 6 else ''
+                    scadenza = cell_texts[7] if len(cell_texts) > 7 else ''
+
+                    if isin not in all_results:
+                        all_results[isin] = {
+                            'isin': isin,
+                            'nome': nome,
+                            'emittente': emittente,
+                            'scadenza': scadenza,
+                            'sottostante': matched_label or target,
+                            'wo_name': '',
+                            'wo_strike': strike,
+                            'ask': None,  # will come from detail page
+                            'premio': None,  # will come from detail page
+                            'frequenza': '',  # will come from detail page
+                            'has_memory': 'memory' in nome.lower(),
+                            'barr_premio': barriera,
+                            'barr_capitale': barriera,
+                            'divisa': 'EUR',
+                            'mercato': 'CERT-X',
+                            'source': 'CED_SEARCH',
+                            'search_strike': strike,
+                            'search_barrier': barriera,
+                        }
+                        found += 1
+
+                break  # found the right table
+
+            print(f"  [{matched_label or target}] {found} new (total results: {total})")
+
+        except Exception as e:
+            print(f"  [{target}] Error: {str(e)[:60]}")
+
+        await asyncio.sleep(REQUEST_DELAY)
+
+    print(f"\n  Total from CED search: {len(all_results)} unique certificates")
+    return all_results
+
+
+# ================================================================
+# DETAIL PAGE ENRICHMENT (enhanced)
 # ================================================================
 
 async def scrape_detail(page, isin: str) -> Dict:
-    """Scrape certificate detail page for barrier type, issue date, and
-    full underlyings table with strike, spot, barrier values."""
-    url = f"https://www.certificatiederivati.it/db_bs_scheda_certificato.asp?isin={isin}"
-    extra = {'barrier_type': 'European', 'issue_date': None, 'nominal': 1000,
-             'strike_date': None, 'final_valuation_date': None, 'underlyings_detail': []}
+    """Scrape certificate detail page for full data."""
+    url = DETAIL_URL + isin
+    extra = {
+        'barrier_type': 'European', 'issue_date': None, 'nominal': 1000,
+        'strike_date': None, 'final_valuation_date': None,
+        'underlyings_detail': [],
+        'ask_price': None, 'premio': None, 'frequenza': None,
+        'divisa': 'EUR', 'mercato': 'CERT-X',
+    }
 
     if not await retry_goto(page, url):
         return extra
 
+    # Wait for AJAX content
+    try:
+        await page.wait_for_timeout(2000)
+    except:
+        pass
+
     html = await page.content()
     soup = BeautifulSoup(html, 'lxml')
-
-    # Tipo barriera
     page_text = soup.get_text().lower()
+
+    # Barrier type
     if 'continua' in page_text:
         extra['barrier_type'] = 'American'
     elif 'discreta' in page_text:
         extra['barrier_type'] = 'European'
 
-    # Extract barrier data from AJAX script params
-    # The page has: barriera: "55 %", livello: "622,732", tipo: "DISCRETA", raggiunta: "false"
+    # Extract from AJAX script params
     for script in soup.find_all('script'):
         script_text = script.get_text()
         if 'barriera' in script_text and 'livello' in script_text:
-            # Extract barrier percentage
             barr_match = re.search(r'barriera:\s*"([^"]+)"', script_text)
             if barr_match:
-                barr_val = parse_number(barr_match.group(1))
-                if barr_val:
-                    extra['barrier_pct_from_page'] = barr_val
-
-            # Extract barrier absolute level (for worst-of)
-            liv_match = re.search(r'livello:\s*"([^"]+)"', script_text)
-            if liv_match:
-                liv_val = parse_number(liv_match.group(1))
-                if liv_val:
-                    extra['barrier_level_abs'] = liv_val
-
-            # Extract barrier type
+                extra['barrier_pct_from_page'] = parse_number(barr_match.group(1))
             tipo_match = re.search(r'tipo:\s*"([^"]+)"', script_text)
             if tipo_match:
                 tipo = tipo_match.group(1).strip().upper()
@@ -369,14 +486,9 @@ async def scrape_detail(page, isin: str) -> Dict:
                     extra['barrier_type'] = 'European'
                 elif 'CONTINUA' in tipo:
                     extra['barrier_type'] = 'American'
-
-            # Extract if barrier was reached
-            ragg_match = re.search(r'raggiunta:\s*"([^"]+)"', script_text)
-            if ragg_match:
-                extra['barrier_reached'] = ragg_match.group(1).strip().lower() == 'true'
             break
 
-    # Data emissione + altri campi dalla tabella dati
+    # Extract from data tables
     for row in soup.find_all('tr'):
         cells = row.find_all(['th', 'td'])
         if len(cells) >= 2:
@@ -385,59 +497,63 @@ async def scrape_detail(page, isin: str) -> Dict:
             if 'data emissione' in label:
                 extra['issue_date'] = parse_date(value)
             elif 'nominale' in label and 'prezzo' not in label:
-                nom = parse_number(value)
-                if nom:
-                    extra['nominal'] = nom
-            elif 'data strike' in label:
+                v = parse_number(value)
+                if v and v > 0:
+                    extra['nominal'] = v
+            elif 'data strike' in label or 'data fissazione' in label:
                 extra['strike_date'] = parse_date(value)
-            elif 'data valutazione finale' in label or 'valutazione finale' in label:
+            elif 'valutazione finale' in label:
                 extra['final_valuation_date'] = parse_date(value)
+            elif 'lettera' in label or 'ask' in label:
+                extra['ask_price'] = parse_number(value)
+            elif 'premio' in label and 'barr' not in label:
+                extra['premio'] = parse_number(value)
+            elif 'cedola' in label or 'coupon' in label:
+                if not extra['premio']:
+                    extra['premio'] = parse_number(value)
+            elif 'frequenza' in label:
+                extra['frequenza'] = value
+            elif 'divisa' in label or 'valuta' in label:
+                if value.strip().upper() in ['EUR', 'USD', 'GBP', 'CHF']:
+                    extra['divisa'] = value.strip().upper()
+            elif 'mercato' in label:
+                if 'cert' in value.lower() or 'sedex' in value.lower():
+                    extra['mercato'] = value.strip()
 
-    # =============================================
-    # Sottostanti - FIXED: extract ALL columns
-    # =============================================
+    # Underlyings table - Strategy 1: tables with sottostante header
     found_underlyings = False
-
-    # Strategy 1: Find table with matching headers
     for table in soup.find_all('table'):
+        header_text = table.get_text().lower()
+        if 'sottostant' not in header_text and 'underlying' not in header_text:
+            continue
+
         header_row = table.find('tr')
         if not header_row:
             continue
-        headers = [cell.get_text(strip=True).lower() for cell in header_row.find_all(['th', 'td'])]
-        header_text = ' '.join(headers)
-
-        if not any(kw in header_text for kw in ['sottostante', 'strike', 'valore iniziale', 'ultimo', 'spot']):
-            continue
+        headers = header_row.find_all(['th', 'td'])
+        header_labels = [h.get_text(strip=True).lower() for h in headers]
 
         col_map = {}
-        for i, h in enumerate(headers):
-            hl = h.lower()
-            if any(kw in hl for kw in ['sottostante', 'nome', 'descrizione']):
+        for i, hl in enumerate(header_labels):
+            if any(kw in hl for kw in ['sottostante', 'nome', 'descrizione', 'underlying']):
                 col_map['name'] = i
-            elif any(kw in hl for kw in ['valore iniziale', 'strike', 'val. iniz', 'val.iniz']):
+            elif any(kw in hl for kw in ['strike', 'val. iniz', 'val.iniz']):
                 col_map['strike'] = i
-            elif any(kw in hl for kw in ['ultimo', 'spot', 'prezzo', 'valore attuale', 'val. att', 'val.att']):
+            elif any(kw in hl for kw in ['ultimo', 'spot', 'prezzo', 'val. att', 'val.att']):
                 col_map['spot'] = i
-            elif 'barriera' in hl or 'barrier' in hl:
-                if 'distanza' not in hl and 'dist' not in hl:
-                    col_map['barrier'] = i
-            elif 'distanza' in hl or 'dist' in hl:
-                col_map['distance'] = i
+            elif ('barriera' in hl or 'barrier' in hl) and 'distanza' not in hl:
+                col_map['barrier'] = i
 
         if 'name' not in col_map:
             continue
-
-        print(f"    Underlyings table columns: {col_map}")
 
         for row in table.find_all('tr')[1:]:
             cells = row.find_all(['td', 'th'])
             if len(cells) < 2:
                 continue
-
             name_idx = col_map.get('name', 0)
             if name_idx >= len(cells):
                 continue
-
             name = cells[name_idx].get_text(strip=True)
             if not name or name.lower() in ['sottostante', 'nome', 'descrizione', '']:
                 continue
@@ -455,7 +571,6 @@ async def scrape_detail(page, isin: str) -> Dict:
                 'barrier': safe_get('barrier') or 0,
             })
             found_underlyings = True
-
         if found_underlyings:
             break
 
@@ -487,17 +602,80 @@ async def scrape_detail(page, isin: str) -> Dict:
 
 
 # ================================================================
-# STEP 3: Build output in frontend format (FIXED)
+# SCENARIO ANALYSIS
+# ================================================================
+
+def generate_scenarios(barrier_pct, purchase_price, annual_yield, years_to_mat, wo_strike, wo_name=''):
+    if not barrier_pct or not wo_strike or wo_strike <= 0 or not purchase_price or purchase_price <= 0:
+        return None
+
+    scenarios = []
+    total_coupons = annual_yield * years_to_mat / 100 * 1000
+    nominal = 1000.0
+
+    for var in [-70, -60, -50, -40, -30, -20, -10, 0, 10, 20, 30]:
+        underlying_pct = 100 + var
+        underlying_price = round(wo_strike * underlying_pct / 100, 2)
+
+        if underlying_pct <= barrier_pct:
+            redemption = round(nominal * underlying_pct / 100, 2)
+        else:
+            redemption = round(nominal + total_coupons, 2)
+
+        pl = round(redemption - purchase_price, 2)
+        pl_pct = round(pl / purchase_price * 100, 2)
+
+        scenarios.append({
+            'variation_pct': var,
+            'underlying_price': underlying_price,
+            'underlying_level': underlying_pct,
+            'redemption': redemption,
+            'pl_pct': pl_pct,
+            'pl_annual': round(pl_pct / max(years_to_mat, 0.1), 2),
+        })
+
+    return {
+        'scenarios': scenarios,
+        'purchase_price': purchase_price,
+        'worst_underlying': wo_name or 'N/A',
+        'years_to_maturity': round(years_to_mat, 2),
+    }
+
+
+# ================================================================
+# BUILD CERTIFICATE (works with both BG and CED search data)
 # ================================================================
 
 def build_certificate(raw: Dict, detail: Optional[Dict] = None) -> Dict:
-    freq_mult, freq_name = get_freq_multiplier(raw.get('frequenza', ''))
-    premio = raw.get('premio') or 0
-    annual_yield = round(premio * freq_mult, 2)
+    # Get premio/frequenza - prefer detail page, fallback to raw
+    premio = None
+    frequenza = ''
 
+    if detail and detail.get('premio'):
+        premio = detail['premio']
+    elif raw.get('premio'):
+        premio = raw['premio']
+    else:
+        premio = 0
+
+    if detail and detail.get('frequenza'):
+        frequenza = detail['frequenza']
+    elif raw.get('frequenza'):
+        frequenza = raw['frequenza']
+
+    freq_mult, freq_name = get_freq_multiplier(frequenza)
+    annual_yield = round(premio * freq_mult, 2) if premio else 0
+
+    # Barrier
     barrier_pct = barrier_as_pct(raw.get('barr_capitale'), raw.get('wo_strike'))
     if barrier_pct is None:
         barrier_pct = barrier_as_pct(raw.get('barr_premio'), raw.get('wo_strike'))
+    if barrier_pct is None and detail and detail.get('barrier_pct_from_page'):
+        barrier_pct = detail['barrier_pct_from_page']
+    if barrier_pct is None:
+        # Try from search results
+        if raw.get('search_barrier') and raw.get('search_strike') and raw['search_strike'] > 0:
+            barrier_pct = barrier_as_pct(raw['search_barrier'], raw['search_strike'])
     if barrier_pct is None:
         barrier_pct = 0
 
@@ -512,62 +690,65 @@ def build_certificate(raw: Dict, detail: Optional[Dict] = None) -> Dict:
         except:
             pass
 
-    ask_price = raw.get('ask') or 1000.0
+    # Ask price - prefer detail, fallback raw
+    ask_price = None
+    if detail and detail.get('ask_price'):
+        ask_price = detail['ask_price']
+    elif raw.get('ask'):
+        ask_price = raw['ask']
+    else:
+        ask_price = 1000.0
+
     wo_name = raw.get('wo_name', '')
     wo_strike = raw.get('wo_strike')
+    cert_type = detect_certificate_type(raw.get('nome', ''))
 
+    # Build underlyings
     sotto_names = [n.strip() for n in raw.get('sottostante', '').split(';') if n.strip()]
     detail_und = detail.get('underlyings_detail', []) if detail else []
 
-    # --- FIX: Detect certificate type properly ---
-    cert_type = detect_certificate_type(raw.get('nome', ''))
-
-    # --- Build underlyings list ---
     underlyings = []
     if detail_und:
         for u in detail_und:
             is_worst = wo_name and wo_name.lower().strip() == u['name'].lower().strip()
             u_strike = u.get('strike', 0)
             u_barrier = u.get('barrier', 0)
-
             if not u_barrier and u_strike and barrier_pct:
                 u_barrier = round(u_strike * barrier_pct / 100, 2)
-
             underlyings.append({
-                'name': u['name'],
-                'strike': u_strike,
-                'barrier': u_barrier,
-                'worst_of': is_worst
+                'name': u['name'], 'strike': u_strike,
+                'barrier': u_barrier, 'worst_of': is_worst
             })
-    else:
+    elif sotto_names:
         for name in sotto_names:
             is_worst = wo_name and wo_name.lower().strip() == name.lower().strip()
             u_strike = wo_strike if is_worst else 0
             u_barrier = 0
-            if is_worst and raw.get('barr_capitale'):
-                u_barrier = raw.get('barr_capitale')
-            elif is_worst and u_strike and barrier_pct:
+            if is_worst and barrier_pct and u_strike:
                 u_barrier = round(u_strike * barrier_pct / 100, 2)
             underlyings.append({
                 'name': name, 'strike': u_strike or 0,
-                'barrier': u_barrier or 0,
-                'worst_of': is_worst
+                'barrier': u_barrier or 0, 'worst_of': is_worst
             })
 
     if not underlyings and wo_name:
         underlyings.append({
             'name': wo_name, 'strike': wo_strike or 0,
-            'barrier': raw.get('barr_capitale') or 0,
-            'worst_of': True
+            'barrier': raw.get('barr_capitale') or 0, 'worst_of': True
         })
 
-    market_map = {'CX': 'CERT-X', 'SX': 'SeDeX'}
+    # Market
     market = raw.get('mercato', 'CERT-X')
+    market_map = {'CX': 'CERT-X', 'SX': 'SeDeX'}
     market = market_map.get(market, market)
+    if detail and detail.get('mercato'):
+        market = detail['mercato']
+
+    divisa = raw.get('divisa', 'EUR')
+    if detail and detail.get('divisa'):
+        divisa = detail['divisa']
 
     buffer_from_barrier = round(100 - barrier_pct, 2) if barrier_pct else 0
-
-    # --- FIX: Pass wo_name to scenario ---
     scenario = generate_scenarios(barrier_pct, ask_price, annual_yield, years_to_mat, wo_strike or 0, wo_name)
 
     return {
@@ -576,7 +757,7 @@ def build_certificate(raw: Dict, detail: Optional[Dict] = None) -> Dict:
         'type': cert_type,
         'issuer': raw.get('emittente', ''),
         'market': market,
-        'currency': raw.get('divisa', 'EUR'),
+        'currency': divisa,
         'ask_price': ask_price,
         'nominal': detail.get('nominal', 1000) if detail else 1000,
         'issue_date': issue_date or maturity_date,
@@ -585,23 +766,21 @@ def build_certificate(raw: Dict, detail: Optional[Dict] = None) -> Dict:
         'final_valuation_date': detail.get('final_valuation_date') or maturity_date if detail else maturity_date,
         'barrier_down': barrier_pct,
         'barrier_type': detail.get('barrier_type', 'European') if detail else 'European',
-        'coupon': premio,
+        'coupon': premio or 0,
         'coupon_frequency': freq_name,
-        'has_memory': raw.get('has_memory', False),
+        'has_memory': raw.get('has_memory', False) or ('memory' in raw.get('nome', '').lower()),
         'annual_coupon_yield': annual_yield,
         'underlyings': underlyings,
         'buffer_from_barrier': buffer_from_barrier,
         'scenario_analysis': scenario,
-        'source': 'CED'
+        'source': 'CED',
     }
 
 
 def cert_needs_enrichment(cert: Dict) -> bool:
-    """Check if a certificate has incomplete data and needs re-enrichment."""
     underlyings = cert.get('underlyings', [])
     if not underlyings:
         return True
-    # If all strikes are 0, data was never properly scraped from detail page
     all_strikes_zero = all(u.get('strike', 0) == 0 for u in underlyings)
     return all_strikes_zero
 
@@ -612,9 +791,9 @@ def cert_needs_enrichment(cert: Dict) -> bool:
 
 async def main():
     print("=" * 60)
-    print("CED Scraper v16 - FIXED")
-    print(f"Filtri: Indici, Commodities, Valute, Tassi, Credit")
-    print(f"Ultimi {RECENT_DAYS} giorni, max {MAX_CERTIFICATES} dettagli")
+    print("CED Scraper v17 - MULTI-SOURCE")
+    print(f"Sources: BG Promo + CED Advanced Search ({len(TARGET_SOTTOSTANTI)} indices)")
+    print(f"Max detail enrichment: {MAX_DETAIL_ISIN}")
     print(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print("=" * 60)
 
@@ -630,48 +809,48 @@ async def main():
         )
         page = await context.new_page()
 
-        # === 1. Scrape la tabella prodotti ===
-        all_raw = await scrape_list_page(page)
+        # === 1. Scrape BG promo (existing source) ===
+        bg_results = await scrape_bg_promo(page)
+
+        # === 2. Scrape CED advanced search (new source) ===
+        ced_results = await scrape_ced_search(page)
+
+        # === 3. Merge results (BG wins on conflicts since it has more data) ===
+        all_raw = {}
+        for isin, data in ced_results.items():
+            all_raw[isin] = data
+        for isin, data in bg_results.items():
+            all_raw[isin] = data  # BG overwrites CED since it has premio/ask/freq
+
+        print(f"\n=== MERGED: {len(all_raw)} unique certificates ===")
+        print(f"  From BG promo: {len(bg_results)}")
+        print(f"  From CED search: {len(ced_results)}")
+        print(f"  Overlap: {len(set(bg_results.keys()) & set(ced_results.keys()))}")
 
         if not all_raw:
-            print("No certificates found in table! Keeping existing data.")
+            print("No certificates found! Keeping existing data.")
             await browser.close()
             return
 
-        by_isin = {}
-        for row in all_raw:
-            if row['isin'] not in by_isin:
-                by_isin[row['isin']] = row
-        print(f"Total unique certificates: {len(by_isin)}")
-
-        # === 2. Filtra sottostanti validi ===
+        # === 4. Filter expired certificates ===
         filtered = {}
-        skipped = 0
+        expired = 0
+        for isin, raw in all_raw.items():
+            scadenza = parse_date(raw.get('scadenza', ''))
+            if scadenza:
+                try:
+                    mat_dt = datetime.strptime(scadenza, '%Y-%m-%d')
+                    if mat_dt < datetime.now():
+                        expired += 1
+                        continue
+                except:
+                    pass
+            filtered[isin] = raw
 
-        for isin, raw in by_isin.items():
-            sottostante = raw.get('sottostante', '')
-            nome = raw.get('nome', '')
-            full_text = f"{sottostante} {nome}".lower()
+        if expired:
+            print(f"  Filtered out {expired} expired certificates")
 
-            sotto_list = [n.strip() for n in sottostante.split(';') if n.strip()]
-            has_valid = any(is_valid_underlying(n) for n in sotto_list)
-
-            if has_valid:
-                filtered[isin] = raw
-            elif any(kw in full_text for kw in VALID_KEYWORDS):
-                filtered[isin] = raw
-            elif sotto_list:
-                skipped += 1
-
-        print(f"After filter: {len(filtered)} valid certificates")
-        print(f"Skipped (stocks): {skipped}")
-
-        if not filtered:
-            print("No valid certificates after filtering! Keeping existing data.")
-            await browser.close()
-            return
-
-        # === 3. Determine which ISINs need detail enrichment ===
+        # === 5. Load existing data ===
         existing_certs = {}
         if os.path.exists('certificates-data.json'):
             try:
@@ -683,16 +862,17 @@ async def main():
             except:
                 pass
 
-        # FIX: Enrich NEW ISINs AND ISINs with incomplete data
+        # === 6. Determine which need detail enrichment ===
         isins_to_enrich = []
-        for isin in filtered:
+        for isin, raw in filtered.items():
             if isin not in existing_certs:
                 isins_to_enrich.append(isin)
             elif cert_needs_enrichment(existing_certs[isin]):
                 isins_to_enrich.append(isin)
-
-        detail_count = min(len(isins_to_enrich), MAX_CERTIFICATES)
-        details = {}
+            elif raw.get('source') == 'CED_SEARCH' and not raw.get('premio'):
+                # CED search results lack premio - enrich if not already complete
+                if not existing_certs[isin].get('coupon'):
+                    isins_to_enrich.append(isin)
 
         # Preserve good detail data from previous runs
         saved_details = {}
@@ -704,6 +884,11 @@ async def main():
                     'nominal': cert.get('nominal', 1000),
                     'strike_date': cert.get('strike_date'),
                     'final_valuation_date': cert.get('final_valuation_date'),
+                    'ask_price': cert.get('ask_price'),
+                    'premio': cert.get('coupon'),
+                    'frequenza': cert.get('coupon_frequency'),
+                    'divisa': cert.get('currency', 'EUR'),
+                    'mercato': cert.get('market', 'CERT-X'),
                     'underlyings_detail': [
                         {'name': u.get('name', ''), 'strike': u.get('strike', 0),
                          'barrier': u.get('barrier', 0)}
@@ -711,40 +896,36 @@ async def main():
                     ]
                 }
 
-        if isins_to_enrich:
-            new_enrich = sum(1 for i in isins_to_enrich if i not in existing_certs)
-            re_enrich = len(isins_to_enrich) - new_enrich
-            print(f"\nDetail enrichment: {detail_count} ISINs ({new_enrich} new, {re_enrich} re-enriching incomplete)...\n")
+        detail_count = min(len(isins_to_enrich), MAX_DETAIL_ISIN)
+        details = {}
 
-            for i, isin in enumerate(isins_to_enrich[:MAX_CERTIFICATES], 1):
+        if isins_to_enrich:
+            new_count = sum(1 for i in isins_to_enrich if i not in existing_certs)
+            re_count = len(isins_to_enrich) - new_count
+            print(f"\n=== Detail enrichment: {detail_count} ISINs ({new_count} new, {re_count} re-enriching) ===\n")
+
+            for i, isin in enumerate(isins_to_enrich[:MAX_DETAIL_ISIN], 1):
                 print(f"[{i}/{detail_count}] {isin}...", end=" ", flush=True)
                 try:
                     detail = await scrape_detail(page, isin)
                     details[isin] = detail
-                    bt = detail.get('barrier_type', '?')
                     nu = len(detail.get('underlyings_detail', []))
                     has_strikes = any(u.get('strike', 0) > 0 for u in detail.get('underlyings_detail', []))
-                    print(f"OK barrier:{bt} und:{nu} strikes:{'yes' if has_strikes else 'no'}")
+                    print(f"OK und:{nu} strikes:{'yes' if has_strikes else 'no'} ask:{detail.get('ask_price')}")
                 except Exception as e:
                     print(f"ERR {str(e)[:40]}")
                     details[isin] = {}
                 await asyncio.sleep(REQUEST_DELAY)
         else:
-            print(f"\nAll {len(filtered)} ISINs have complete data, skipping detail enrichment")
+            print(f"\nAll certificates have complete data, skipping enrichment")
 
         await browser.close()
 
-        # === 4. Load existing certificates (ACCUMULATIVE) ===
-        max_age = datetime.now() - timedelta(days=730)
-
-        if existing_certs:
-            print(f"\nLoaded {len(existing_certs)} existing certificates from previous runs")
-
-        # === 5. Build certificates ===
+        # === 7. Build certificates ===
         new_count = 0
         updated_count = 0
+
         for isin, raw in filtered.items():
-            # FIX: Use fresh detail > saved detail > empty
             detail = details.get(isin) or saved_details.get(isin) or {}
             cert = build_certificate(raw, detail)
             if isin in existing_certs:
@@ -753,10 +934,8 @@ async def main():
                 new_count += 1
             existing_certs[isin] = cert
 
-        print(f"New certificates added: {new_count}")
-        print(f"Existing certificates updated: {updated_count}")
-
-        # === 6. Remove expired certificates ===
+        # === 8. Remove expired from existing ===
+        max_age = datetime.now() - timedelta(days=730)
         purged = 0
         final_certs = {}
         for isin, cert in existing_certs.items():
@@ -771,54 +950,42 @@ async def main():
                     pass
             final_certs[isin] = cert
 
-        if purged:
-            print(f"Purged {purged} certificates (maturity > 2 years ago)")
-
         certificates = list(final_certs.values())
         certificates.sort(key=lambda c: c.get('annual_coupon_yield', 0), reverse=True)
 
-        # === 7. Save files ===
+        # === 9. Save ===
         output = {
-            'success': True,
-            'count': len(certificates),
             'certificates': certificates,
             'metadata': {
-                'version': 'v16-fixed',
+                'version': 'v17-multisource',
                 'source': 'certificatiederivati.it',
-                'criteria': 'Indici, Commodities, Valute, Tassi, Credit Linked',
+                'criteria': 'BG Promo + CED Search (indices, commodities, rates)',
                 'max_history_years': 2,
                 'new_this_run': new_count,
                 'updated_this_run': updated_count,
                 'purged_expired': purged,
-                'total_scraped_this_run': len(by_isin),
-                'after_filter_this_run': len(filtered),
+                'total_from_bg': len(bg_results),
+                'total_from_ced_search': len(ced_results),
+                'total_merged': len(filtered),
                 'detail_enriched_this_run': len(details),
                 'timestamp': datetime.now().isoformat(),
                 'scrape_date': datetime.now().strftime('%Y-%m-%d'),
-                'categories': len(set(c['type'] for c in certificates)),
-                'underlyings_db': len(set(
-                    u['name'] for c in certificates for u in c['underlyings']
-                )),
+                'total_certificates': len(certificates),
             }
         }
 
         with open('certificates-data.json', 'w', encoding='utf-8') as f:
-            json.dump(output, f, indent=2, ensure_ascii=False)
+            json.dump(output, f, ensure_ascii=False, indent=2)
 
-        df = pd.DataFrame(certificates)
-        df.to_json('certificates-recenti.json', orient='records', indent=2, force_ascii=False)
-        df.to_csv('certificates-recenti.csv', index=False)
-
-        print("\n" + "=" * 60)
-        print("COMPLETED (v16 FIXED)")
-        print(f"  Total certificates in database: {len(certificates)}")
-        print(f"  New added this run: {new_count}")
-        print(f"  Updated this run: {updated_count}")
-        print(f"  Purged (expired >2y): {purged}")
-        print(f"  Skipped (stocks): {skipped}")
-        print(f"  Detail pages visited: {len(details)}")
-        print(f"  Saved: certificates-data.json, certificates-recenti.json, certificates-recenti.csv")
-        print("=" * 60)
+        print(f"\n{'=' * 60}")
+        print(f"RESULTS:")
+        print(f"  BG Promo: {len(bg_results)} certificates")
+        print(f"  CED Search: {len(ced_results)} certificates")
+        print(f"  New: {new_count}")
+        print(f"  Updated: {updated_count}")
+        print(f"  Purged: {purged}")
+        print(f"  TOTAL: {len(certificates)} certificates saved")
+        print(f"{'=' * 60}")
 
 
 if __name__ == '__main__':
