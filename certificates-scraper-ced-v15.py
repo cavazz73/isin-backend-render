@@ -13,6 +13,7 @@ import asyncio
 import json
 import os
 import re
+import urllib.parse
 from datetime import datetime, timedelta
 from typing import List, Dict, Optional, Tuple
 
@@ -340,94 +341,129 @@ async def scrape_bg_promo(page) -> Dict[str, Dict]:
 # ================================================================
 
 async def scrape_ced_search(page) -> Dict[str, Dict]:
-    """Search CED advanced search for each target index."""
+    """Search CED using direct URL navigation (bypasses fragile form interaction).
+    
+    Step 1: Load search page once, find the sottostante dropdown, extract all option values
+    Step 2: Match our TARGET_SOTTOSTANTI against actual dropdown options
+    Step 3: For each match, navigate directly to results URL with sottostanteC parameter
+    """
     print(f"\n--- Source 2: CED Advanced Search ---")
     all_results = {}
 
+    # Step 1: Load search page and find the CORRECT sottostante dropdown
+    if not await retry_goto(page, SEARCH_URL):
+        print("  Failed to load CED search page!")
+        return {}
+
+    await asyncio.sleep(2)
+
+    # Identify all selects with their names and option counts
+    selects_info = await page.evaluate('''() => {
+        const selects = document.querySelectorAll('select');
+        return Array.from(selects).map((sel, idx) => ({
+            index: idx,
+            name: sel.name || '',
+            id: sel.id || '',
+            optionCount: sel.options.length,
+            firstOptions: Array.from(sel.options).slice(0, 5).map(o => o.text.trim()),
+        }));
+    }''')
+
+    print(f"  Found {len(selects_info)} select elements:")
+    for si in selects_info:
+        print(f"    [{si['index']}] name='{si['name']}' id='{si['id']}' options={si['optionCount']} first={si['firstOptions'][:3]}")
+
+    # Find the sottostante dropdown - by name or by being the largest select
+    sotto_select_name = None
+    for si in selects_info:
+        name_lower = si['name'].lower()
+        if 'sottostante' in name_lower:
+            sotto_select_name = si['name']
+            print(f"  -> Identified sottostante dropdown: name='{si['name']}' with {si['optionCount']} options")
+            break
+
+    if not sotto_select_name:
+        # Fallback: pick the select with the MOST options (sottostante has thousands)
+        if selects_info:
+            biggest = max(selects_info, key=lambda s: s['optionCount'])
+            if biggest['optionCount'] > 100:
+                sotto_select_name = biggest['name']
+                print(f"  -> Fallback: using largest select name='{sotto_select_name}' with {biggest['optionCount']} options")
+
+    if not sotto_select_name:
+        print("  Could not identify sottostante dropdown!")
+        return {}
+
+    # Step 2: Extract ALL option values from sottostante dropdown
+    all_options = await page.evaluate(f'''() => {{
+        const sel = document.querySelector('select[name="{sotto_select_name}"]');
+        if (!sel) return [];
+        return Array.from(sel.options).map(o => ({{
+            value: o.value,
+            text: o.text.trim()
+        }})).filter(o => o.value && o.text && o.text !== '---');
+    }}''')
+
+    print(f"  Total sottostante options: {len(all_options)}")
+
+    # Step 3: Match our targets against actual options
+    matched = []
     for target in TARGET_SOTTOSTANTI:
-        try:
-            # Go to search page
-            if not await retry_goto(page, SEARCH_URL):
-                print(f"  Failed to load search page for {target}")
-                continue
+        target_lower = target.lower().strip()
+        target_words = target_lower.split()
 
-            await asyncio.sleep(1)
-
-            # Find the sottostante dropdown and look for matching option
-            options = await page.query_selector_all('select[name="sottostante"] option, select:has(option) option')
-            
-            # Try to find the right select - look for one with many options (the sottostante one)
-            selects = await page.query_selector_all('select')
-            sotto_select = None
-            for sel in selects:
-                opts = await sel.query_selector_all('option')
-                if len(opts) > 50:  # sottostante dropdown has many options
-                    sotto_select = sel
+        for opt in all_options:
+            opt_lower = opt['text'].lower()
+            # Exact substring match
+            if target_lower in opt_lower:
+                matched.append({'target': target, 'value': opt['value'], 'label': opt['text']})
+                break
+        else:
+            # Try word-by-word match
+            for opt in all_options:
+                opt_lower = opt['text'].lower()
+                if all(w in opt_lower for w in target_words):
+                    matched.append({'target': target, 'value': opt['value'], 'label': opt['text']})
                     break
-
-            if not sotto_select:
-                # Fallback: try by position (sottostante is usually the 4th select)
-                if len(selects) >= 4:
-                    sotto_select = selects[3]
-
-            if not sotto_select:
-                print(f"  Could not find sottostante dropdown for {target}")
-                continue
-
-            # Find matching option
-            options = await sotto_select.query_selector_all('option')
-            matched_value = None
-            matched_label = None
-            
-            for opt in options:
-                label = await opt.text_content()
-                if label and target.lower() in label.lower():
-                    matched_value = await opt.get_attribute('value')
-                    matched_label = label.strip()
-                    break
-
-            if not matched_value:
-                # Try partial match
-                for opt in options:
-                    label = await opt.text_content()
-                    if label:
-                        label_lower = label.lower()
-                        target_words = target.lower().split()
-                        if all(w in label_lower for w in target_words):
-                            matched_value = await opt.get_attribute('value')
-                            matched_label = label.strip()
-                            break
-
-            if not matched_value:
-                print(f"  [{target}] Not found in dropdown, skipping")
-                continue
-
-            # Select the option
-            select_name = await sotto_select.get_attribute('name') or 'sottostante'
-            await page.select_option(f'select[name="{select_name}"]', value=matched_value)
-            await asyncio.sleep(0.5)
-
-            # Click search button
-            submit_btn = await page.query_selector('input[value="Avvia Ricerca"], button:has-text("Avvia Ricerca")')
-            if submit_btn:
-                await submit_btn.click()
             else:
-                # Try form submit
-                await page.evaluate('document.querySelector("form").submit()')
+                print(f"  [{target}] No match in dropdown options")
 
-            await page.wait_for_load_state('networkidle', timeout=30000)
+    print(f"  Matched {len(matched)}/{len(TARGET_SOTTOSTANTI)} targets")
+
+    # Step 4: For each matched target, navigate to results URL directly
+    BASE_RESULTS_URL = 'https://www.certificatiederivati.it/db_bs_estrazione_ricerca.asp'
+
+    for m in matched:
+        try:
+            # Build direct URL - bypass form completely
+            params = {
+                'db': '2',  # investment certificates
+                'nome': '',
+                sotto_select_name: m['value'],
+                'emittente': '',
+                'FiltroDal': '2020-1-1',
+                'FiltroAl': '2099-12-31',
+                'divisa': '',
+                'fase': '',
+            }
+            url = f"{BASE_RESULTS_URL}?{urllib.parse.urlencode(params)}"
+
+            if not await retry_goto(page, url):
+                print(f"  [{m['label']}] Failed to load results page")
+                continue
+
             await asyncio.sleep(1)
 
-            # Parse results table
+            # Parse results
             html = await page.content()
             soup = BeautifulSoup(html, 'lxml')
 
             # Find result count
             count_text = soup.get_text()
-            count_match = re.search(r'(\d+)\s*Certificate', count_text)
+            count_match = re.search(r'(\d+)\s*Certificat', count_text)
             total = int(count_match.group(1)) if count_match else 0
 
-            # Parse table
+            # Parse results table
             found = 0
             for table in soup.find_all('table'):
                 header = table.get_text().lower()
@@ -443,23 +479,22 @@ async def scrape_ced_search(page) -> Dict[str, Dict]:
                     cell_texts = [c.get_text(strip=True) for c in cells]
                     isin = cell_texts[0].strip()
 
-                    if not re.match(r'^[A-Z]{2}[A-Z0-9]{9,11}$', isin):
-                        continue
-
-                    # Get ISIN link if available
+                    # Extract ISIN from link if present
                     a_tag = cells[0].find('a')
                     if a_tag:
                         href = a_tag.get('href', '')
-                        m = re.search(r'isin=([A-Z0-9]+)', href)
-                        if m:
-                            isin = m.group(1)
+                        isin_match = re.search(r'isin=([A-Z0-9]+)', href)
+                        if isin_match:
+                            isin = isin_match.group(1)
+
+                    if not re.match(r'^[A-Z]{2}[A-Z0-9]{9,11}$', isin):
+                        continue
 
                     nome = cell_texts[1] if len(cell_texts) > 1 else ''
                     emittente = cell_texts[2] if len(cell_texts) > 2 else ''
-                    sottostante = cell_texts[3] if len(cell_texts) > 3 else ''
+                    sottostante = cell_texts[3] if len(cell_texts) > 3 else m['label']
                     strike = parse_number(cell_texts[4]) if len(cell_texts) > 4 else None
                     barriera = parse_number(cell_texts[5]) if len(cell_texts) > 5 else None
-                    protezione = cell_texts[6] if len(cell_texts) > 6 else ''
                     scadenza = cell_texts[7] if len(cell_texts) > 7 else ''
 
                     if isin not in all_results:
@@ -468,12 +503,12 @@ async def scrape_ced_search(page) -> Dict[str, Dict]:
                             'nome': nome,
                             'emittente': emittente,
                             'scadenza': scadenza,
-                            'sottostante': matched_label or target,
+                            'sottostante': sottostante,
                             'wo_name': '',
                             'wo_strike': strike,
-                            'ask': None,  # will come from detail page
-                            'premio': None,  # will come from detail page
-                            'frequenza': '',  # will come from detail page
+                            'ask': None,
+                            'premio': None,
+                            'frequenza': '',
                             'has_memory': 'memory' in nome.lower(),
                             'barr_premio': barriera,
                             'barr_capitale': barriera,
@@ -487,10 +522,77 @@ async def scrape_ced_search(page) -> Dict[str, Dict]:
 
                 break  # found the right table
 
-            print(f"  [{matched_label or target}] {found} new (total results: {total})")
+            # Check for pagination (multiple pages of results)
+            pages_found = 1
+            page_links = soup.find_all('a', href=re.compile(r'p=\d+'))
+            if page_links:
+                page_nums = set()
+                for pl in page_links:
+                    pm = re.search(r'p=(\d+)', pl.get('href', ''))
+                    if pm:
+                        page_nums.add(int(pm.group(1)))
+                if page_nums:
+                    max_page = min(max(page_nums), 5)  # cap at 5 pages per target
+                    pages_found = max_page
+
+                    # Fetch additional pages
+                    for pg in range(2, max_page + 1):
+                        params_pg = dict(params)
+                        params_pg['p'] = str(pg)
+                        url_pg = f"{BASE_RESULTS_URL}?{urllib.parse.urlencode(params_pg)}"
+                        if not await retry_goto(page, url_pg):
+                            break
+                        await asyncio.sleep(1)
+
+                        html_pg = await page.content()
+                        soup_pg = BeautifulSoup(html_pg, 'lxml')
+
+                        for table in soup_pg.find_all('table'):
+                            hdr = table.get_text().lower()
+                            if 'isin' not in hdr or 'nome' not in hdr:
+                                continue
+                            for row in table.find_all('tr')[1:]:
+                                cells = row.find_all('td')
+                                if len(cells) < 6:
+                                    continue
+                                ct = [c.get_text(strip=True) for c in cells]
+                                isin2 = ct[0].strip()
+                                a2 = cells[0].find('a')
+                                if a2:
+                                    href2 = a2.get('href', '')
+                                    im2 = re.search(r'isin=([A-Z0-9]+)', href2)
+                                    if im2:
+                                        isin2 = im2.group(1)
+                                if not re.match(r'^[A-Z]{2}[A-Z0-9]{9,11}$', isin2):
+                                    continue
+                                if isin2 not in all_results:
+                                    all_results[isin2] = {
+                                        'isin': isin2,
+                                        'nome': ct[1] if len(ct) > 1 else '',
+                                        'emittente': ct[2] if len(ct) > 2 else '',
+                                        'scadenza': ct[7] if len(ct) > 7 else '',
+                                        'sottostante': ct[3] if len(ct) > 3 else m['label'],
+                                        'wo_name': '',
+                                        'wo_strike': parse_number(ct[4]) if len(ct) > 4 else None,
+                                        'ask': None,
+                                        'premio': None,
+                                        'frequenza': '',
+                                        'has_memory': 'memory' in (ct[1] if len(ct) > 1 else '').lower(),
+                                        'barr_premio': parse_number(ct[5]) if len(ct) > 5 else None,
+                                        'barr_capitale': parse_number(ct[5]) if len(ct) > 5 else None,
+                                        'divisa': 'EUR',
+                                        'mercato': 'CERT-X',
+                                        'source': 'CED_SEARCH',
+                                        'search_strike': parse_number(ct[4]) if len(ct) > 4 else None,
+                                        'search_barrier': parse_number(ct[5]) if len(ct) > 5 else None,
+                                    }
+                                    found += 1
+                            break
+
+            print(f"  [{m['label']}] {found} new certificates (pages: {pages_found})")
 
         except Exception as e:
-            print(f"  [{target}] Error: {str(e)[:60]}")
+            print(f"  [{m['target']}] Error: {str(e)[:80]}")
 
         await asyncio.sleep(REQUEST_DELAY)
 
