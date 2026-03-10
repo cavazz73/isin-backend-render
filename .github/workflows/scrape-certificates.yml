@@ -1,17 +1,14 @@
 name: Scrape Certificates Daily
 
 on:
-  # Run every day at 18:30 UTC (19:30 CET / 20:30 CEST)
   schedule:
     - cron: '30 18 * * *'
-  
-  # Allow manual trigger
   workflow_dispatch:
 
 jobs:
   scrape-certificates:
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 30
     
     steps:
       - name: Checkout repository
@@ -29,24 +26,23 @@ jobs:
           pip install playwright beautifulsoup4 pandas lxml
           python -m playwright install chromium
           python -m playwright install-deps
-          echo "✅ Python dependencies + Playwright installed"
       
-      - name: Run CED certificates scraper
+      - name: Clean old data and run scraper
         env:
-          MAX_DETAIL_ISIN: '600'
+          MAX_DETAIL_ISIN: '100'
         run: |
-          echo "🚀 Starting CED certificates scraper v17 (multi-source)..."
+          echo "Removing old certificates data to start fresh..."
+          rm -f certificates-data.json
+          echo "Starting CED certificates scraper v16..."
           python certificates-scraper-ced-v15.py
-          echo "✅ Scraper completed"
+          echo "Scraper completed"
       
       - name: Check for changes
         id: check_changes
         run: |
           if git diff --quiet certificates-data.json 2>/dev/null; then
-            echo "No changes detected"
             echo "has_changes=false" >> $GITHUB_OUTPUT
           else
-            echo "Changes detected in certificates-data.json"
             echo "has_changes=true" >> $GITHUB_OUTPUT
           fi
       
@@ -58,30 +54,5 @@ jobs:
           git add certificates-data.json
           git add certificates-recenti.json 2>/dev/null || true
           git add certificates-recenti.csv 2>/dev/null || true
-          git commit -m "🔄 Auto-update certificates data - $(date +'%Y-%m-%d %H:%M')"
+          git commit -m "Auto-update certificates data - $(date +'%Y-%m-%d %H:%M')"
           git push
-          echo "✅ Changes committed and pushed"
-      
-      - name: No changes
-        if: steps.check_changes.outputs.has_changes == 'false'
-        run: |
-          echo "ℹ️ No changes to commit"
-      
-      - name: Workflow summary
-        run: |
-          echo "## 📊 CED Certificates Scraper Summary" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "- **Date:** $(date +'%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
-          echo "- **Source:** certificatiederivati.it (BG Promo + CED Search)" >> $GITHUB_STEP_SUMMARY
-          echo "- **Status:** ✅ Completed" >> $GITHUB_STEP_SUMMARY
-          echo "- **Changes:** ${{ steps.check_changes.outputs.has_changes }}" >> $GITHUB_STEP_SUMMARY
-          
-          if [ -f certificates-data.json ]; then
-            CERT_COUNT=$(python3 -c "import json; d=json.load(open('certificates-data.json')); print(len(d.get('certificates',[])))")
-            echo "- **Total certificates in DB:** ${CERT_COUNT}" >> $GITHUB_STEP_SUMMARY
-          fi
-          
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### 🔗 Next Steps" >> $GITHUB_STEP_SUMMARY
-          echo "- Render will auto-deploy with new data" >> $GITHUB_STEP_SUMMARY
-          echo "- Frontend will load updated certificates" >> $GITHUB_STEP_SUMMARY
