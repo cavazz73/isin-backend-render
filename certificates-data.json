@@ -23098,7 +23098,7 @@
       "barrier_down": 0,
       "barrier_type": "European",
       "coupon": 0,
-      "coupon_frequency": "monthly",
+      "coupon_frequency": "annual",
       "has_memory": false,
       "annual_coupon_yield": 0,
       "underlyings": [
@@ -25743,37 +25743,6 @@
       "source": "CED"
     },
     {
-      "isin": "XS2479698701",
-      "name": "SHARK REBATE",
-      "type": "Certificato",
-      "issuer": "Bnp Paribas",
-      "market": "CERT-X",
-      "currency": "EUR",
-      "ask_price": 100.0,
-      "nominal": 100.0,
-      "issue_date": "2023-03-31",
-      "maturity_date": "2028-03-15",
-      "strike_date": "2023-03-28",
-      "final_valuation_date": "2028-03-08",
-      "barrier_down": 0,
-      "barrier_type": "European",
-      "coupon": 0,
-      "coupon_frequency": "monthly",
-      "has_memory": false,
-      "annual_coupon_yield": 0,
-      "underlyings": [
-        {
-          "name": "Stoxx Europe 600 Health Care",
-          "strike": 1012.58,
-          "barrier": 0,
-          "worst_of": ""
-        }
-      ],
-      "buffer_from_barrier": 0,
-      "scenario_analysis": null,
-      "source": "CED"
-    },
-    {
       "isin": "IT0006769282",
       "name": "EQUITY PROTECTION CAP",
       "type": "Equity Protection",
@@ -26248,6 +26217,37 @@
       "buffer_from_barrier": 0,
       "scenario_analysis": null,
       "source": "CED"
+    },
+    {
+      "isin": "IT0005377533",
+      "name": "EQUITY PROTECTION CAP PLUS",
+      "type": "Equity Protection",
+      "issuer": "Intesa Sanpaolo",
+      "market": "SEDEX",
+      "currency": "EUR",
+      "ask_price": 1000.0,
+      "nominal": 1000.0,
+      "issue_date": "2019-07-31",
+      "maturity_date": "2026-07-31",
+      "strike_date": "2019-07-31",
+      "final_valuation_date": "2026-07-29",
+      "barrier_down": 0,
+      "barrier_type": "European",
+      "coupon": 0,
+      "coupon_frequency": "annual",
+      "has_memory": false,
+      "annual_coupon_yield": 0,
+      "underlyings": [
+        {
+          "name": "Eurostoxx Utilities",
+          "strike": 323.29,
+          "barrier": 0,
+          "worst_of": ""
+        }
+      ],
+      "buffer_from_barrier": 0,
+      "scenario_analysis": null,
+      "source": "CED"
     }
   ],
   "metadata": {
@@ -26262,8 +26262,8 @@
     "total_from_bg": 32,
     "total_from_ced_search": 482,
     "total_merged": 499,
-    "detail_enriched_this_run": 467,
-    "timestamp": "2026-03-10T10:55:07.221546",
+    "detail_enriched_this_run": 182,
+    "timestamp": "2026-03-10T11:39:55.652680",
     "scrape_date": "2026-03-10",
     "total_certificates": 505
   }
