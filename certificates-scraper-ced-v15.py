@@ -22,8 +22,8 @@ from playwright.async_api import async_playwright
 from bs4 import BeautifulSoup
 
 # ============ CONFIG ============
-MAX_DETAIL_ISIN = int(os.getenv('MAX_DETAIL_ISIN', '200'))
-REQUEST_DELAY = 2.0
+MAX_DETAIL_ISIN = int(os.getenv('MAX_DETAIL_ISIN', '600'))
+REQUEST_DELAY = 1.5
 PAGE_TIMEOUT = 60000
 RETRY_COUNT = 3
 
@@ -1206,7 +1206,7 @@ async def main():
             for i, isin in enumerate(isins_to_enrich[:MAX_DETAIL_ISIN], 1):
                 print(f"[{i}/{detail_count}] {isin}...", end=" ", flush=True)
                 try:
-                    detail = await scrape_detail(page, isin, debug=(i <= 3))
+                    detail = await scrape_detail(page, isin, debug=False)
                     details[isin] = detail
                     nu = len(detail.get('underlyings_detail', []))
                     has_strikes = any(u.get('strike', 0) > 0 for u in detail.get('underlyings_detail', []))
