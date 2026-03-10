@@ -722,7 +722,9 @@ async def scrape_detail(page, isin: str, debug: bool = False) -> Dict:
             elif 'valutazione finale' in label:
                 extra['final_valuation_date'] = parse_date(value)
             elif 'lettera' in label or 'ask' in label:
-                extra['ask_price'] = parse_number(value)
+                v = parse_number(value)
+                if v and v > 0 and v <= 10000:
+                    extra['ask_price'] = v
             elif 'premio' in label and 'barr' not in label:
                 extra['premio'] = parse_number(value)
             elif 'cedola' in label or 'coupon' in label:
@@ -917,57 +919,44 @@ async def scrape_detail(page, isin: str, debug: bool = False) -> Dict:
             if 'data' not in header_text and 'rilevamento' not in header_text:
                 continue
 
-            # Find column indices
+            # Find column indices - ONLY use CEDOLA column
+            # PREMIO PER IL RIMBORSO = autocall trigger (95%, 100%), NOT the coupon!
             cedola_idx = None
-            premio_idx = None
             date_idx = None
             for i, h in enumerate(headers):
                 if 'cedola' in h:
                     cedola_idx = i
-                elif 'premio' in h and 'rimborso' in h:
-                    premio_idx = i
                 elif 'data' in h:
                     date_idx = i
 
             # Parse data rows
             dates = []
             cedola_values = []
-            premio_values = []
 
             for row in table.find_all('tr')[1:]:
                 cells = row.find_all(['td', 'th'])
                 if len(cells) < 2:
                     continue
 
-                # Extract date
                 if date_idx is not None and date_idx < len(cells):
                     date_text = cells[date_idx].get_text(strip=True)
                     parsed_dt = parse_date(date_text)
                     if parsed_dt:
                         dates.append(parsed_dt)
 
-                # Extract cedola
                 if cedola_idx is not None and cedola_idx < len(cells):
                     val = parse_number(cells[cedola_idx].get_text(strip=True))
-                    if val and val > 0:
+                    if val and val > 0 and val < 50:
+                        # Sanity check: cedola should be small (e.g. 0.65, 3.55, 7.25)
+                        # Values like 60, 70, 95, 100 are triggers/barriers, not coupons
                         cedola_values.append(val)
 
-                # Extract premio per il rimborso
-                if premio_idx is not None and premio_idx < len(cells):
-                    val = parse_number(cells[premio_idx].get_text(strip=True))
-                    if val and val > 0:
-                        premio_values.append(val)
-
-            # Use cedola if available, else premio
-            coupon_values = cedola_values if cedola_values else premio_values
-
-            if coupon_values:
-                # Use the most common coupon value (some may vary)
-                most_common = Counter(coupon_values).most_common(1)[0][0]
+            if cedola_values:
+                most_common = Counter(cedola_values).most_common(1)[0][0]
                 extra['premio'] = most_common
 
                 if debug:
-                    print(f"    Cedola extracted: {most_common} from {len(coupon_values)} periods")
+                    print(f"    Cedola extracted: {most_common} from {len(cedola_values)} periods")
 
             # Calculate frequency from dates
             if len(dates) >= 2:
@@ -1007,9 +996,14 @@ async def scrape_detail(page, isin: str, debug: bool = False) -> Dict:
                 value = cells[1].get_text(strip=True)
                 if 'prezzo emissione' in label or 'prezzo di emissione' in label:
                     v = parse_number(value)
-                    if v and v > 0:
+                    if v and v > 0 and v <= 10000:
                         extra['ask_price'] = v
                         break
+
+    # Sanity check: ask_price should be <=10000 (100 or 1000 typical)
+    # Values like 50000, 100000 are "Quantità emessa" misread
+    if extra['ask_price'] and extra['ask_price'] > 10000:
+        extra['ask_price'] = extra.get('nominal', 1000)
 
     return extra
 
