@@ -7,11 +7,11 @@
     "market":"CERT-X",
     "currency":"EUR",
     "ask_price":1000.0,
-    "nominal":1000,
-    "issue_date":"2029-03-15",
+    "nominal":1000.0,
+    "issue_date":"2025-03-18",
     "maturity_date":"2029-03-15",
-    "strike_date":null,
-    "final_valuation_date":"2029-03-15",
+    "strike_date":"2025-03-06",
+    "final_valuation_date":"2029-03-06",
     "barrier_down":60.0,
     "barrier_type":"European",
     "coupon":2.11,
@@ -21,27 +21,27 @@
     "underlyings":[
       {
         "name":"Euro Stoxx 50",
-        "strike":0,
-        "barrier":0,
+        "strike":5520.47,
+        "barrier":3312.28,
         "worst_of":false
       },
       {
         "name":"Eurostoxx Banks",
-        "strike":0,
-        "barrier":0,
+        "strike":193.7,
+        "barrier":116.22,
+        "worst_of":false
+      },
+      {
+        "name":"Nasdaq 100",
+        "strike":20052.63,
+        "barrier":12031.58,
         "worst_of":false
       },
       {
         "name":"iShares China Large-Cap Etf",
         "strike":36.97,
-        "barrier":22.182,
+        "barrier":22.18,
         "worst_of":true
-      },
-      {
-        "name":"Nasdaq 100",
-        "strike":0,
-        "barrier":0,
-        "worst_of":false
       }
     ],
     "buffer_from_barrier":40.0,
@@ -53,7 +53,7 @@
           "underlying_level":30,
           "redemption":300.0,
           "pl_pct":-70.0,
-          "pl_annual":-23.2
+          "pl_annual":-23.24
         },
         {
           "variation_pct":-60,
@@ -61,7 +61,7 @@
           "underlying_level":40,
           "redemption":400.0,
           "pl_pct":-60.0,
-          "pl_annual":-19.89
+          "pl_annual":-19.92
         },
         {
           "variation_pct":-50,
@@ -69,74 +69,74 @@
           "underlying_level":50,
           "redemption":500.0,
           "pl_pct":-50.0,
-          "pl_annual":-16.57
+          "pl_annual":-16.6
         },
         {
           "variation_pct":-40,
           "underlying_price":22.18,
           "underlying_level":60,
-          "redemption":1254.64,
-          "pl_pct":25.46,
+          "redemption":1254.18,
+          "pl_pct":25.42,
           "pl_annual":8.44
         },
         {
           "variation_pct":-30,
           "underlying_price":25.88,
           "underlying_level":70,
-          "redemption":1254.64,
-          "pl_pct":25.46,
+          "redemption":1254.18,
+          "pl_pct":25.42,
           "pl_annual":8.44
         },
         {
           "variation_pct":-20,
           "underlying_price":29.58,
           "underlying_level":80,
-          "redemption":1254.64,
-          "pl_pct":25.46,
+          "redemption":1254.18,
+          "pl_pct":25.42,
           "pl_annual":8.44
         },
         {
           "variation_pct":-10,
           "underlying_price":33.27,
           "underlying_level":90,
-          "redemption":1254.64,
-          "pl_pct":25.46,
+          "redemption":1254.18,
+          "pl_pct":25.42,
           "pl_annual":8.44
         },
         {
           "variation_pct":0,
           "underlying_price":36.97,
           "underlying_level":100,
-          "redemption":1254.64,
-          "pl_pct":25.46,
+          "redemption":1254.18,
+          "pl_pct":25.42,
           "pl_annual":8.44
         },
         {
           "variation_pct":10,
           "underlying_price":40.67,
           "underlying_level":110,
-          "redemption":1254.64,
-          "pl_pct":25.46,
+          "redemption":1254.18,
+          "pl_pct":25.42,
           "pl_annual":8.44
         },
         {
           "variation_pct":20,
           "underlying_price":44.36,
           "underlying_level":120,
-          "redemption":1254.64,
-          "pl_pct":25.46,
+          "redemption":1254.18,
+          "pl_pct":25.42,
           "pl_annual":8.44
         },
         {
           "variation_pct":30,
           "underlying_price":48.06,
           "underlying_level":130,
-          "redemption":1254.64,
-          "pl_pct":25.46,
+          "redemption":1254.18,
+          "pl_pct":25.42,
           "pl_annual":8.44
         }
       ],
-      "years_to_maturity":3.02,
+      "years_to_maturity":3.01,
       "worst_underlying":"iShares China Large-Cap Etf",
       "purchase_price":1000.0,
       "barrier_pct":60.0,
@@ -151,12 +151,12 @@
     "issuer":"Barclays",
     "market":"CERT-X",
     "currency":"EUR",
-    "ask_price":982.73,
-    "nominal":1000,
+    "ask_price":990.3,
+    "nominal":1000.0,
     "issue_date":"2025-07-18",
     "maturity_date":"2029-07-16",
-    "strike_date":null,
-    "final_valuation_date":"2029-07-16",
+    "strike_date":"2025-07-09",
+    "final_valuation_date":"2029-07-09",
     "barrier_down":55.0,
     "barrier_type":"European",
     "coupon":0.68,
@@ -203,93 +203,93 @@
           "underlying_price":153.34,
           "underlying_level":30,
           "redemption":300.0,
-          "pl_pct":-69.47,
-          "pl_annual":-20.71
+          "pl_pct":-69.71,
+          "pl_annual":-20.82
         },
         {
           "variation_pct":-60,
           "underlying_price":204.45,
           "underlying_level":40,
           "redemption":400.0,
-          "pl_pct":-59.3,
-          "pl_annual":-17.68
+          "pl_pct":-59.61,
+          "pl_annual":-17.8
         },
         {
           "variation_pct":-50,
           "underlying_price":255.56,
           "underlying_level":50,
           "redemption":500.0,
-          "pl_pct":-49.12,
-          "pl_annual":-14.65
+          "pl_pct":-49.51,
+          "pl_annual":-14.79
         },
         {
           "variation_pct":-40,
           "underlying_price":306.68,
           "underlying_level":60,
-          "redemption":1273.68,
-          "pl_pct":29.61,
-          "pl_annual":8.83
+          "redemption":1273.23,
+          "pl_pct":28.57,
+          "pl_annual":8.53
         },
         {
           "variation_pct":-30,
           "underlying_price":357.79,
           "underlying_level":70,
-          "redemption":1273.68,
-          "pl_pct":29.61,
-          "pl_annual":8.83
+          "redemption":1273.23,
+          "pl_pct":28.57,
+          "pl_annual":8.53
         },
         {
           "variation_pct":-20,
           "underlying_price":408.9,
           "underlying_level":80,
-          "redemption":1273.68,
-          "pl_pct":29.61,
-          "pl_annual":8.83
+          "redemption":1273.23,
+          "pl_pct":28.57,
+          "pl_annual":8.53
         },
         {
           "variation_pct":-10,
           "underlying_price":460.02,
           "underlying_level":90,
-          "redemption":1273.68,
-          "pl_pct":29.61,
-          "pl_annual":8.83
+          "redemption":1273.23,
+          "pl_pct":28.57,
+          "pl_annual":8.53
         },
         {
           "variation_pct":0,
           "underlying_price":511.13,
           "underlying_level":100,
-          "redemption":1273.68,
-          "pl_pct":29.61,
-          "pl_annual":8.83
+          "redemption":1273.23,
+          "pl_pct":28.57,
+          "pl_annual":8.53
         },
         {
           "variation_pct":10,
           "underlying_price":562.24,
           "underlying_level":110,
-          "redemption":1273.68,
-          "pl_pct":29.61,
-          "pl_annual":8.83
+          "redemption":1273.23,
+          "pl_pct":28.57,
+          "pl_annual":8.53
         },
         {
           "variation_pct":20,
           "underlying_price":613.36,
           "underlying_level":120,
-          "redemption":1273.68,
-          "pl_pct":29.61,
-          "pl_annual":8.83
+          "redemption":1273.23,
+          "pl_pct":28.57,
+          "pl_annual":8.53
         },
         {
           "variation_pct":30,
           "underlying_price":664.47,
           "underlying_level":130,
-          "redemption":1273.68,
-          "pl_pct":29.61,
-          "pl_annual":8.83
+          "redemption":1273.23,
+          "pl_pct":28.57,
+          "pl_annual":8.53
         }
       ],
       "years_to_maturity":3.35,
       "worst_underlying":"Eurostoxx Insurance",
-      "purchase_price":982.73,
+      "purchase_price":990.3,
       "barrier_pct":55.0,
       "nominal":1000.0
     },
@@ -302,12 +302,12 @@
     "issuer":"Barclays",
     "market":"CERT-X",
     "currency":"EUR",
-    "ask_price":1009.99,
-    "nominal":1000,
+    "ask_price":1011.95,
+    "nominal":1000.0,
     "issue_date":"2025-04-07",
     "maturity_date":"2029-04-04",
-    "strike_date":null,
-    "final_valuation_date":"2029-04-04",
+    "strike_date":"2025-03-26",
+    "final_valuation_date":"2029-03-26",
     "barrier_down":60.0,
     "barrier_type":"European",
     "coupon":0.67,
@@ -348,93 +348,93 @@
           "underlying_price":580.37,
           "underlying_level":30,
           "redemption":300.0,
-          "pl_pct":-70.3,
-          "pl_annual":-22.89
+          "pl_pct":-70.35,
+          "pl_annual":-22.94
         },
         {
           "variation_pct":-60,
           "underlying_price":773.83,
           "underlying_level":40,
           "redemption":400.0,
-          "pl_pct":-60.4,
-          "pl_annual":-19.66
+          "pl_pct":-60.47,
+          "pl_annual":-19.72
         },
         {
           "variation_pct":-50,
           "underlying_price":967.28,
           "underlying_level":50,
           "redemption":500.0,
-          "pl_pct":-50.49,
-          "pl_annual":-16.44
+          "pl_pct":-50.59,
+          "pl_annual":-16.5
         },
         {
           "variation_pct":-40,
           "underlying_price":1160.74,
           "underlying_level":60,
-          "redemption":1246.98,
-          "pl_pct":23.46,
-          "pl_annual":7.64
+          "redemption":1246.54,
+          "pl_pct":23.18,
+          "pl_annual":7.56
         },
         {
           "variation_pct":-30,
           "underlying_price":1354.2,
           "underlying_level":70,
-          "redemption":1246.98,
-          "pl_pct":23.46,
-          "pl_annual":7.64
+          "redemption":1246.54,
+          "pl_pct":23.18,
+          "pl_annual":7.56
         },
         {
           "variation_pct":-20,
           "underlying_price":1547.66,
           "underlying_level":80,
-          "redemption":1246.98,
-          "pl_pct":23.46,
-          "pl_annual":7.64
+          "redemption":1246.54,
+          "pl_pct":23.18,
+          "pl_annual":7.56
         },
         {
           "variation_pct":-10,
           "underlying_price":1741.11,
           "underlying_level":90,
-          "redemption":1246.98,
-          "pl_pct":23.46,
-          "pl_annual":7.64
+          "redemption":1246.54,
+          "pl_pct":23.18,
+          "pl_annual":7.56
         },
         {
           "variation_pct":0,
           "underlying_price":1934.57,
           "underlying_level":100,
-          "redemption":1246.98,
-          "pl_pct":23.46,
-          "pl_annual":7.64
+          "redemption":1246.54,
+          "pl_pct":23.18,
+          "pl_annual":7.56
         },
         {
           "variation_pct":10,
           "underlying_price":2128.03,
           "underlying_level":110,
-          "redemption":1246.98,
-          "pl_pct":23.46,
-          "pl_annual":7.64
+          "redemption":1246.54,
+          "pl_pct":23.18,
+          "pl_annual":7.56
         },
         {
           "variation_pct":20,
           "underlying_price":2321.48,
           "underlying_level":120,
-          "redemption":1246.98,
-          "pl_pct":23.46,
-          "pl_annual":7.64
+          "redemption":1246.54,
+          "pl_pct":23.18,
+          "pl_annual":7.56
         },
         {
           "variation_pct":30,
           "underlying_price":2514.94,
           "underlying_level":130,
-          "redemption":1246.98,
-          "pl_pct":23.46,
-          "pl_annual":7.64
+          "redemption":1246.54,
+          "pl_pct":23.18,
+          "pl_annual":7.56
         }
       ],
       "years_to_maturity":3.07,
       "worst_underlying":"Eurostoxx Select Dividend 30",
-      "purchase_price":1009.99,
+      "purchase_price":1011.95,
       "barrier_pct":60.0,
       "nominal":1000.0
     },
@@ -447,12 +447,12 @@
     "issuer":"Barclays",
     "market":"CERT-X",
     "currency":"EUR",
-    "ask_price":989.99,
-    "nominal":1000,
+    "ask_price":999.0,
+    "nominal":1000.0,
     "issue_date":"2025-04-22",
     "maturity_date":"2028-04-10",
-    "strike_date":null,
-    "final_valuation_date":"2028-04-10",
+    "strike_date":"2025-04-01",
+    "final_valuation_date":"2028-04-03",
     "barrier_down":55.0,
     "barrier_type":"European",
     "coupon":0.64,
@@ -487,93 +487,93 @@
           "underlying_price":159.83,
           "underlying_level":30,
           "redemption":300.0,
-          "pl_pct":-69.7,
-          "pl_annual":-33.37
+          "pl_pct":-69.97,
+          "pl_annual":-33.58
         },
         {
           "variation_pct":-60,
           "underlying_price":213.11,
           "underlying_level":40,
           "redemption":400.0,
-          "pl_pct":-59.6,
-          "pl_annual":-28.53
+          "pl_pct":-59.96,
+          "pl_annual":-28.78
         },
         {
           "variation_pct":-50,
           "underlying_price":266.39,
           "underlying_level":50,
           "redemption":500.0,
-          "pl_pct":-49.49,
-          "pl_annual":-23.69
+          "pl_pct":-49.95,
+          "pl_annual":-23.97
         },
         {
           "variation_pct":-40,
           "underlying_price":319.67,
           "underlying_level":60,
-          "redemption":1160.43,
-          "pl_pct":17.22,
-          "pl_annual":8.24
+          "redemption":1160.01,
+          "pl_pct":16.12,
+          "pl_annual":7.74
         },
         {
           "variation_pct":-30,
           "underlying_price":372.95,
           "underlying_level":70,
-          "redemption":1160.43,
-          "pl_pct":17.22,
-          "pl_annual":8.24
+          "redemption":1160.01,
+          "pl_pct":16.12,
+          "pl_annual":7.74
         },
         {
           "variation_pct":-20,
           "underlying_price":426.22,
           "underlying_level":80,
-          "redemption":1160.43,
-          "pl_pct":17.22,
-          "pl_annual":8.24
+          "redemption":1160.01,
+          "pl_pct":16.12,
+          "pl_annual":7.74
         },
         {
           "variation_pct":-10,
           "underlying_price":479.5,
           "underlying_level":90,
-          "redemption":1160.43,
-          "pl_pct":17.22,
-          "pl_annual":8.24
+          "redemption":1160.01,
+          "pl_pct":16.12,
+          "pl_annual":7.74
         },
         {
           "variation_pct":0,
           "underlying_price":532.78,
           "underlying_level":100,
-          "redemption":1160.43,
-          "pl_pct":17.22,
-          "pl_annual":8.24
+          "redemption":1160.01,
+          "pl_pct":16.12,
+          "pl_annual":7.74
         },
         {
           "variation_pct":10,
           "underlying_price":586.06,
           "underlying_level":110,
-          "redemption":1160.43,
-          "pl_pct":17.22,
-          "pl_annual":8.24
+          "redemption":1160.01,
+          "pl_pct":16.12,
+          "pl_annual":7.74
         },
         {
           "variation_pct":20,
           "underlying_price":639.34,
           "underlying_level":120,
-          "redemption":1160.43,
-          "pl_pct":17.22,
-          "pl_annual":8.24
+          "redemption":1160.01,
+          "pl_pct":16.12,
+          "pl_annual":7.74
         },
         {
           "variation_pct":30,
           "underlying_price":692.61,
           "underlying_level":130,
-          "redemption":1160.43,
-          "pl_pct":17.22,
-          "pl_annual":8.24
+          "redemption":1160.01,
+          "pl_pct":16.12,
+          "pl_annual":7.74
         }
       ],
-      "years_to_maturity":2.09,
+      "years_to_maturity":2.08,
       "worst_underlying":"Stoxx Europe 600 Auto&Parts",
-      "purchase_price":989.99,
+      "purchase_price":999.0,
       "barrier_pct":55.0,
       "nominal":1000.0
     },
@@ -586,12 +586,12 @@
     "issuer":"Barclays",
     "market":"CERT-X",
     "currency":"EUR",
-    "ask_price":1020.44,
-    "nominal":1000,
+    "ask_price":1020.46,
+    "nominal":1000.0,
     "issue_date":"2025-04-30",
     "maturity_date":"2028-04-21",
-    "strike_date":null,
-    "final_valuation_date":"2028-04-21",
+    "strike_date":"2025-04-11",
+    "final_valuation_date":"2028-04-11",
     "barrier_down":60.0,
     "barrier_type":"European",
     "coupon":0.63,
@@ -621,7 +621,7 @@
           "underlying_level":30,
           "redemption":300.0,
           "pl_pct":-70.6,
-          "pl_annual":-33.32
+          "pl_annual":-33.4
         },
         {
           "variation_pct":-60,
@@ -629,7 +629,7 @@
           "underlying_level":40,
           "redemption":400.0,
           "pl_pct":-60.8,
-          "pl_annual":-28.69
+          "pl_annual":-28.77
         },
         {
           "variation_pct":-50,
@@ -637,76 +637,76 @@
           "underlying_level":50,
           "redemption":500.0,
           "pl_pct":-51.0,
-          "pl_annual":-24.07
+          "pl_annual":-24.13
         },
         {
           "variation_pct":-40,
           "underlying_price":99.93,
           "underlying_level":60,
-          "redemption":1160.2,
-          "pl_pct":13.7,
-          "pl_annual":6.47
+          "redemption":1159.79,
+          "pl_pct":13.65,
+          "pl_annual":6.46
         },
         {
           "variation_pct":-30,
           "underlying_price":116.58,
           "underlying_level":70,
-          "redemption":1160.2,
-          "pl_pct":13.7,
-          "pl_annual":6.47
+          "redemption":1159.79,
+          "pl_pct":13.65,
+          "pl_annual":6.46
         },
         {
           "variation_pct":-20,
           "underlying_price":133.24,
           "underlying_level":80,
-          "redemption":1160.2,
-          "pl_pct":13.7,
-          "pl_annual":6.47
+          "redemption":1159.79,
+          "pl_pct":13.65,
+          "pl_annual":6.46
         },
         {
           "variation_pct":-10,
           "underlying_price":149.9,
           "underlying_level":90,
-          "redemption":1160.2,
-          "pl_pct":13.7,
-          "pl_annual":6.47
+          "redemption":1159.79,
+          "pl_pct":13.65,
+          "pl_annual":6.46
         },
         {
           "variation_pct":0,
           "underlying_price":166.55,
           "underlying_level":100,
-          "redemption":1160.2,
-          "pl_pct":13.7,
-          "pl_annual":6.47
+          "redemption":1159.79,
+          "pl_pct":13.65,
+          "pl_annual":6.46
         },
         {
           "variation_pct":10,
           "underlying_price":183.21,
           "underlying_level":110,
-          "redemption":1160.2,
-          "pl_pct":13.7,
-          "pl_annual":6.47
+          "redemption":1159.79,
+          "pl_pct":13.65,
+          "pl_annual":6.46
         },
         {
           "variation_pct":20,
           "underlying_price":199.86,
           "underlying_level":120,
-          "redemption":1160.2,
-          "pl_pct":13.7,
-          "pl_annual":6.47
+          "redemption":1159.79,
+          "pl_pct":13.65,
+          "pl_annual":6.46
         },
         {
           "variation_pct":30,
           "underlying_price":216.52,
           "underlying_level":130,
-          "redemption":1160.2,
-          "pl_pct":13.7,
-          "pl_annual":6.47
+          "redemption":1159.79,
+          "pl_pct":13.65,
+          "pl_annual":6.46
         }
       ],
-      "years_to_maturity":2.12,
+      "years_to_maturity":2.11,
       "worst_underlying":"Eurostoxx Banks",
-      "purchase_price":1020.44,
+      "purchase_price":1020.46,
       "barrier_pct":60.0,
       "nominal":1000.0
     },
@@ -720,11 +720,11 @@
     "market":"CERT-X",
     "currency":"EUR",
     "ask_price":1000.0,
-    "nominal":1000,
+    "nominal":1000.0,
     "issue_date":"2025-09-10",
     "maturity_date":"2028-09-20",
-    "strike_date":null,
-    "final_valuation_date":"2028-09-20",
+    "strike_date":"2025-09-04",
+    "final_valuation_date":"2028-09-11",
     "barrier_down":55.0,
     "barrier_type":"European",
     "coupon":0.61,
@@ -766,7 +766,7 @@
           "underlying_level":30,
           "redemption":300.0,
           "pl_pct":-70.0,
-          "pl_annual":-27.61
+          "pl_annual":-27.67
         },
         {
           "variation_pct":-60,
@@ -774,7 +774,7 @@
           "underlying_level":40,
           "redemption":400.0,
           "pl_pct":-60.0,
-          "pl_annual":-23.67
+          "pl_annual":-23.72
         },
         {
           "variation_pct":-50,
@@ -782,216 +782,77 @@
           "underlying_level":50,
           "redemption":500.0,
           "pl_pct":-50.0,
-          "pl_annual":-19.72
+          "pl_annual":-19.76
         },
         {
           "variation_pct":-40,
           "underlying_price":2513.46,
           "underlying_level":60,
-          "redemption":1185.58,
-          "pl_pct":18.56,
+          "redemption":1185.18,
+          "pl_pct":18.52,
           "pl_annual":7.32
         },
         {
           "variation_pct":-30,
           "underlying_price":2932.37,
           "underlying_level":70,
-          "redemption":1185.58,
-          "pl_pct":18.56,
+          "redemption":1185.18,
+          "pl_pct":18.52,
           "pl_annual":7.32
         },
         {
           "variation_pct":-20,
           "underlying_price":3351.28,
           "underlying_level":80,
-          "redemption":1185.58,
-          "pl_pct":18.56,
+          "redemption":1185.18,
+          "pl_pct":18.52,
           "pl_annual":7.32
         },
         {
           "variation_pct":-10,
           "underlying_price":3770.19,
           "underlying_level":90,
-          "redemption":1185.58,
-          "pl_pct":18.56,
+          "redemption":1185.18,
+          "pl_pct":18.52,
           "pl_annual":7.32
         },
         {
           "variation_pct":0,
           "underlying_price":4189.1,
           "underlying_level":100,
-          "redemption":1185.58,
-          "pl_pct":18.56,
+          "redemption":1185.18,
+          "pl_pct":18.52,
           "pl_annual":7.32
         },
         {
           "variation_pct":10,
           "underlying_price":4608.01,
           "underlying_level":110,
-          "redemption":1185.58,
-          "pl_pct":18.56,
+          "redemption":1185.18,
+          "pl_pct":18.52,
           "pl_annual":7.32
         },
         {
           "variation_pct":20,
           "underlying_price":5026.92,
           "underlying_level":120,
-          "redemption":1185.58,
-          "pl_pct":18.56,
+          "redemption":1185.18,
+          "pl_pct":18.52,
           "pl_annual":7.32
         },
         {
           "variation_pct":30,
           "underlying_price":5445.83,
           "underlying_level":130,
-          "redemption":1185.58,
-          "pl_pct":18.56,
+          "redemption":1185.18,
+          "pl_pct":18.52,
           "pl_annual":7.32
         }
       ],
-      "years_to_maturity":2.54,
+      "years_to_maturity":2.53,
       "worst_underlying":"Msci World",
       "purchase_price":1000.0,
       "barrier_pct":55.0,
-      "nominal":1000.0
-    },
-    "source":"CED"
-  },
-  {
-    "isin":"XS3073670252",
-    "name":"PHOENIX MEMORY STEP DOWN",
-    "type":"Phoenix Memory Step Down",
-    "issuer":"Barclays",
-    "market":"CERT-X",
-    "currency":"EUR",
-    "ask_price":997.43,
-    "nominal":1000,
-    "issue_date":"2025-07-31",
-    "maturity_date":"2029-07-30",
-    "strike_date":null,
-    "final_valuation_date":"2029-07-30",
-    "barrier_down":60.0,
-    "barrier_type":"European",
-    "coupon":0.58,
-    "coupon_frequency":"monthly",
-    "has_memory":true,
-    "annual_coupon_yield":6.96,
-    "underlyings":[
-      {
-        "name":"Eurostoxx Utilities",
-        "strike":449.23,
-        "barrier":269.54,
-        "worst_of":false
-      },
-      {
-        "name":"Stoxx Europe 600 Oil&Gas",
-        "strike":374.13,
-        "barrier":224.48,
-        "worst_of":false
-      },
-      {
-        "name":"Eurostoxx Technology",
-        "strike":1066.24,
-        "barrier":639.74,
-        "worst_of":true
-      }
-    ],
-    "buffer_from_barrier":40.0,
-    "scenario_analysis":{
-      "scenarios":[
-        {
-          "variation_pct":-70,
-          "underlying_price":319.87,
-          "underlying_level":30,
-          "redemption":300.0,
-          "pl_pct":-69.92,
-          "pl_annual":-20.61
-        },
-        {
-          "variation_pct":-60,
-          "underlying_price":426.5,
-          "underlying_level":40,
-          "redemption":400.0,
-          "pl_pct":-59.9,
-          "pl_annual":-17.66
-        },
-        {
-          "variation_pct":-50,
-          "underlying_price":533.12,
-          "underlying_level":50,
-          "redemption":500.0,
-          "pl_pct":-49.87,
-          "pl_annual":-14.7
-        },
-        {
-          "variation_pct":-40,
-          "underlying_price":639.74,
-          "underlying_level":60,
-          "redemption":1236.1,
-          "pl_pct":23.93,
-          "pl_annual":7.05
-        },
-        {
-          "variation_pct":-30,
-          "underlying_price":746.37,
-          "underlying_level":70,
-          "redemption":1236.1,
-          "pl_pct":23.93,
-          "pl_annual":7.05
-        },
-        {
-          "variation_pct":-20,
-          "underlying_price":852.99,
-          "underlying_level":80,
-          "redemption":1236.1,
-          "pl_pct":23.93,
-          "pl_annual":7.05
-        },
-        {
-          "variation_pct":-10,
-          "underlying_price":959.62,
-          "underlying_level":90,
-          "redemption":1236.1,
-          "pl_pct":23.93,
-          "pl_annual":7.05
-        },
-        {
-          "variation_pct":0,
-          "underlying_price":1066.24,
-          "underlying_level":100,
-          "redemption":1236.1,
-          "pl_pct":23.93,
-          "pl_annual":7.05
-        },
-        {
-          "variation_pct":10,
-          "underlying_price":1172.86,
-          "underlying_level":110,
-          "redemption":1236.1,
-          "pl_pct":23.93,
-          "pl_annual":7.05
-        },
-        {
-          "variation_pct":20,
-          "underlying_price":1279.49,
-          "underlying_level":120,
-          "redemption":1236.1,
-          "pl_pct":23.93,
-          "pl_annual":7.05
-        },
-        {
-          "variation_pct":30,
-          "underlying_price":1386.11,
-          "underlying_level":130,
-          "redemption":1236.1,
-          "pl_pct":23.93,
-          "pl_annual":7.05
-        }
-      ],
-      "years_to_maturity":3.39,
-      "worst_underlying":"Eurostoxx Technology",
-      "purchase_price":997.43,
-      "barrier_pct":60.0,
       "nominal":1000.0
     },
     "source":"CED"
@@ -1004,11 +865,11 @@
     "market":"CERT-X",
     "currency":"EUR",
     "ask_price":1000.0,
-    "nominal":1000,
+    "nominal":1000.0,
     "issue_date":"2025-03-24",
     "maturity_date":"2028-03-20",
-    "strike_date":null,
-    "final_valuation_date":"2028-03-20",
+    "strike_date":"2025-03-12",
+    "final_valuation_date":"2028-03-13",
     "barrier_down":60.0,
     "barrier_type":"European",
     "coupon":0.58,
@@ -1050,7 +911,7 @@
           "underlying_level":30,
           "redemption":300.0,
           "pl_pct":-70.0,
-          "pl_annual":-34.46
+          "pl_annual":-34.55
         },
         {
           "variation_pct":-60,
@@ -1058,7 +919,7 @@
           "underlying_level":40,
           "redemption":400.0,
           "pl_pct":-60.0,
-          "pl_annual":-29.54
+          "pl_annual":-29.61
         },
         {
           "variation_pct":-50,
@@ -1066,70 +927,70 @@
           "underlying_level":50,
           "redemption":500.0,
           "pl_pct":-50.0,
-          "pl_annual":-24.61
+          "pl_annual":-24.68
         },
         {
           "variation_pct":-40,
           "underlying_price":22984.27,
           "underlying_level":60,
-          "redemption":1141.39,
-          "pl_pct":14.14,
+          "redemption":1141.01,
+          "pl_pct":14.1,
           "pl_annual":6.96
         },
         {
           "variation_pct":-30,
           "underlying_price":26814.98,
           "underlying_level":70,
-          "redemption":1141.39,
-          "pl_pct":14.14,
+          "redemption":1141.01,
+          "pl_pct":14.1,
           "pl_annual":6.96
         },
         {
           "variation_pct":-20,
           "underlying_price":30645.69,
           "underlying_level":80,
-          "redemption":1141.39,
-          "pl_pct":14.14,
+          "redemption":1141.01,
+          "pl_pct":14.1,
           "pl_annual":6.96
         },
         {
           "variation_pct":-10,
           "underlying_price":34476.4,
           "underlying_level":90,
-          "redemption":1141.39,
-          "pl_pct":14.14,
+          "redemption":1141.01,
+          "pl_pct":14.1,
           "pl_annual":6.96
         },
         {
           "variation_pct":0,
           "underlying_price":38307.11,
           "underlying_level":100,
-          "redemption":1141.39,
-          "pl_pct":14.14,
+          "redemption":1141.01,
+          "pl_pct":14.1,
           "pl_annual":6.96
         },
         {
           "variation_pct":10,
           "underlying_price":42137.82,
           "underlying_level":110,
-          "redemption":1141.39,
-          "pl_pct":14.14,
+          "redemption":1141.01,
+          "pl_pct":14.1,
           "pl_annual":6.96
         },
         {
           "variation_pct":20,
           "underlying_price":45968.53,
           "underlying_level":120,
-          "redemption":1141.39,
-          "pl_pct":14.14,
+          "redemption":1141.01,
+          "pl_pct":14.1,
           "pl_annual":6.96
         },
         {
           "variation_pct":30,
           "underlying_price":49799.24,
           "underlying_level":130,
-          "redemption":1141.39,
-          "pl_pct":14.14,
+          "redemption":1141.01,
+          "pl_pct":14.1,
           "pl_annual":6.96
         }
       ],
@@ -1142,18 +1003,157 @@
     "source":"CED"
   },
   {
+    "isin":"XS3073670252",
+    "name":"PHOENIX MEMORY STEP DOWN",
+    "type":"Phoenix Memory Step Down",
+    "issuer":"Barclays",
+    "market":"CERT-X",
+    "currency":"EUR",
+    "ask_price":1003.29,
+    "nominal":1000.0,
+    "issue_date":"2025-07-31",
+    "maturity_date":"2029-07-30",
+    "strike_date":"2025-07-23",
+    "final_valuation_date":"2029-07-23",
+    "barrier_down":60.0,
+    "barrier_type":"European",
+    "coupon":0.58,
+    "coupon_frequency":"monthly",
+    "has_memory":true,
+    "annual_coupon_yield":6.96,
+    "underlyings":[
+      {
+        "name":"Eurostoxx Utilities",
+        "strike":449.23,
+        "barrier":269.54,
+        "worst_of":false
+      },
+      {
+        "name":"Stoxx Europe 600 Oil&Gas",
+        "strike":374.13,
+        "barrier":224.48,
+        "worst_of":false
+      },
+      {
+        "name":"Eurostoxx Technology",
+        "strike":1066.24,
+        "barrier":639.74,
+        "worst_of":true
+      }
+    ],
+    "buffer_from_barrier":40.0,
+    "scenario_analysis":{
+      "scenarios":[
+        {
+          "variation_pct":-70,
+          "underlying_price":319.87,
+          "underlying_level":30,
+          "redemption":300.0,
+          "pl_pct":-70.1,
+          "pl_annual":-20.7
+        },
+        {
+          "variation_pct":-60,
+          "underlying_price":426.5,
+          "underlying_level":40,
+          "redemption":400.0,
+          "pl_pct":-60.13,
+          "pl_annual":-17.75
+        },
+        {
+          "variation_pct":-50,
+          "underlying_price":533.12,
+          "underlying_level":50,
+          "redemption":500.0,
+          "pl_pct":-50.16,
+          "pl_annual":-14.81
+        },
+        {
+          "variation_pct":-40,
+          "underlying_price":639.74,
+          "underlying_level":60,
+          "redemption":1235.72,
+          "pl_pct":23.17,
+          "pl_annual":6.84
+        },
+        {
+          "variation_pct":-30,
+          "underlying_price":746.37,
+          "underlying_level":70,
+          "redemption":1235.72,
+          "pl_pct":23.17,
+          "pl_annual":6.84
+        },
+        {
+          "variation_pct":-20,
+          "underlying_price":852.99,
+          "underlying_level":80,
+          "redemption":1235.72,
+          "pl_pct":23.17,
+          "pl_annual":6.84
+        },
+        {
+          "variation_pct":-10,
+          "underlying_price":959.62,
+          "underlying_level":90,
+          "redemption":1235.72,
+          "pl_pct":23.17,
+          "pl_annual":6.84
+        },
+        {
+          "variation_pct":0,
+          "underlying_price":1066.24,
+          "underlying_level":100,
+          "redemption":1235.72,
+          "pl_pct":23.17,
+          "pl_annual":6.84
+        },
+        {
+          "variation_pct":10,
+          "underlying_price":1172.86,
+          "underlying_level":110,
+          "redemption":1235.72,
+          "pl_pct":23.17,
+          "pl_annual":6.84
+        },
+        {
+          "variation_pct":20,
+          "underlying_price":1279.49,
+          "underlying_level":120,
+          "redemption":1235.72,
+          "pl_pct":23.17,
+          "pl_annual":6.84
+        },
+        {
+          "variation_pct":30,
+          "underlying_price":1386.11,
+          "underlying_level":130,
+          "redemption":1235.72,
+          "pl_pct":23.17,
+          "pl_annual":6.84
+        }
+      ],
+      "years_to_maturity":3.39,
+      "worst_underlying":"Eurostoxx Technology",
+      "purchase_price":1003.29,
+      "barrier_pct":60.0,
+      "nominal":1000.0
+    },
+    "source":"CED"
+  },
+  {
     "isin":"XS3084880551",
     "name":"PHOENIX MEMORY STEP DOWN",
     "type":"Phoenix Memory Step Down",
     "issuer":"Barclays",
     "market":"CERT-X",
     "currency":"EUR",
-    "ask_price":942.25,
-    "nominal":1000,
+    "ask_price":948.43,
+    "nominal":1000.0,
     "issue_date":"2025-08-22",
     "maturity_date":"2029-08-20",
-    "strike_date":null,
-    "final_valuation_date":"2029-08-20",
+    "strike_date":"2025-08-13",
+    "final_valuation_date":"2029-08-13",
     "barrier_down":60.0,
     "barrier_type":"European",
     "coupon":0.565,
@@ -1194,93 +1194,93 @@
           "underlying_price":18.17,
           "underlying_level":30,
           "redemption":300.0,
-          "pl_pct":-68.16,
-          "pl_annual":-19.76
+          "pl_pct":-68.37,
+          "pl_annual":-19.85
         },
         {
           "variation_pct":-60,
           "underlying_price":24.22,
           "underlying_level":40,
           "redemption":400.0,
-          "pl_pct":-57.55,
-          "pl_annual":-16.68
+          "pl_pct":-57.83,
+          "pl_annual":-16.79
         },
         {
           "variation_pct":-50,
           "underlying_price":30.28,
           "underlying_level":50,
           "redemption":500.0,
-          "pl_pct":-46.94,
-          "pl_annual":-13.61
+          "pl_pct":-47.28,
+          "pl_annual":-13.73
         },
         {
           "variation_pct":-40,
           "underlying_price":36.34,
           "underlying_level":60,
-          "redemption":1233.89,
-          "pl_pct":30.95,
-          "pl_annual":8.97
+          "redemption":1233.52,
+          "pl_pct":30.06,
+          "pl_annual":8.73
         },
         {
           "variation_pct":-30,
           "underlying_price":42.39,
           "underlying_level":70,
-          "redemption":1233.89,
-          "pl_pct":30.95,
-          "pl_annual":8.97
+          "redemption":1233.52,
+          "pl_pct":30.06,
+          "pl_annual":8.73
         },
         {
           "variation_pct":-20,
           "underlying_price":48.45,
           "underlying_level":80,
-          "redemption":1233.89,
-          "pl_pct":30.95,
-          "pl_annual":8.97
+          "redemption":1233.52,
+          "pl_pct":30.06,
+          "pl_annual":8.73
         },
         {
           "variation_pct":-10,
           "underlying_price":54.5,
           "underlying_level":90,
-          "redemption":1233.89,
-          "pl_pct":30.95,
-          "pl_annual":8.97
+          "redemption":1233.52,
+          "pl_pct":30.06,
+          "pl_annual":8.73
         },
         {
           "variation_pct":0,
           "underlying_price":60.56,
           "underlying_level":100,
-          "redemption":1233.89,
-          "pl_pct":30.95,
-          "pl_annual":8.97
+          "redemption":1233.52,
+          "pl_pct":30.06,
+          "pl_annual":8.73
         },
         {
           "variation_pct":10,
           "underlying_price":66.62,
           "underlying_level":110,
-          "redemption":1233.89,
-          "pl_pct":30.95,
-          "pl_annual":8.97
+          "redemption":1233.52,
+          "pl_pct":30.06,
+          "pl_annual":8.73
         },
         {
           "variation_pct":20,
           "underlying_price":72.67,
           "underlying_level":120,
-          "redemption":1233.89,
-          "pl_pct":30.95,
-          "pl_annual":8.97
+          "redemption":1233.52,
+          "pl_pct":30.06,
+          "pl_annual":8.73
         },
         {
           "variation_pct":30,
           "underlying_price":78.73,
           "underlying_level":130,
-          "redemption":1233.89,
-          "pl_pct":30.95,
-          "pl_annual":8.97
+          "redemption":1233.52,
+          "pl_pct":30.06,
+          "pl_annual":8.73
         }
       ],
-      "years_to_maturity":3.45,
+      "years_to_maturity":3.44,
       "worst_underlying":"iShares MSCI China ETF",
-      "purchase_price":942.25,
+      "purchase_price":948.43,
       "barrier_pct":60.0,
       "nominal":1000.0
     },
@@ -1293,12 +1293,12 @@
     "issuer":"Intesa Sanpaolo",
     "market":"CERT-X",
     "currency":"EUR",
-    "ask_price":1005.79,
-    "nominal":1000,
+    "ask_price":1000.0,
+    "nominal":1000.0,
     "issue_date":"2025-07-30",
     "maturity_date":"2028-07-31",
-    "strike_date":null,
-    "final_valuation_date":"2028-07-31",
+    "strike_date":"2025-07-11",
+    "final_valuation_date":"2028-07-27",
     "barrier_down":60.0,
     "barrier_type":"European",
     "coupon":0.52,
@@ -1333,7 +1333,7 @@
           "underlying_price":1615.04,
           "underlying_level":30,
           "redemption":300.0,
-          "pl_pct":-70.17,
+          "pl_pct":-70.0,
           "pl_annual":-29.29
         },
         {
@@ -1341,85 +1341,85 @@
           "underlying_price":2153.39,
           "underlying_level":40,
           "redemption":400.0,
-          "pl_pct":-60.23,
-          "pl_annual":-25.14
+          "pl_pct":-60.0,
+          "pl_annual":-25.1
         },
         {
           "variation_pct":-50,
           "underlying_price":2691.74,
           "underlying_level":50,
           "redemption":500.0,
-          "pl_pct":-50.29,
-          "pl_annual":-20.99
+          "pl_pct":-50.0,
+          "pl_annual":-20.92
         },
         {
           "variation_pct":-40,
           "underlying_price":3230.09,
           "underlying_level":60,
-          "redemption":1149.49,
-          "pl_pct":14.29,
-          "pl_annual":5.97
+          "redemption":1149.14,
+          "pl_pct":14.91,
+          "pl_annual":6.24
         },
         {
           "variation_pct":-30,
           "underlying_price":3768.44,
           "underlying_level":70,
-          "redemption":1149.49,
-          "pl_pct":14.29,
-          "pl_annual":5.97
+          "redemption":1149.14,
+          "pl_pct":14.91,
+          "pl_annual":6.24
         },
         {
           "variation_pct":-20,
           "underlying_price":4306.78,
           "underlying_level":80,
-          "redemption":1149.49,
-          "pl_pct":14.29,
-          "pl_annual":5.97
+          "redemption":1149.14,
+          "pl_pct":14.91,
+          "pl_annual":6.24
         },
         {
           "variation_pct":-10,
           "underlying_price":4845.13,
           "underlying_level":90,
-          "redemption":1149.49,
-          "pl_pct":14.29,
-          "pl_annual":5.97
+          "redemption":1149.14,
+          "pl_pct":14.91,
+          "pl_annual":6.24
         },
         {
           "variation_pct":0,
           "underlying_price":5383.48,
           "underlying_level":100,
-          "redemption":1149.49,
-          "pl_pct":14.29,
-          "pl_annual":5.97
+          "redemption":1149.14,
+          "pl_pct":14.91,
+          "pl_annual":6.24
         },
         {
           "variation_pct":10,
           "underlying_price":5921.83,
           "underlying_level":110,
-          "redemption":1149.49,
-          "pl_pct":14.29,
-          "pl_annual":5.97
+          "redemption":1149.14,
+          "pl_pct":14.91,
+          "pl_annual":6.24
         },
         {
           "variation_pct":20,
           "underlying_price":6460.18,
           "underlying_level":120,
-          "redemption":1149.49,
-          "pl_pct":14.29,
-          "pl_annual":5.97
+          "redemption":1149.14,
+          "pl_pct":14.91,
+          "pl_annual":6.24
         },
         {
           "variation_pct":30,
           "underlying_price":6998.52,
           "underlying_level":130,
-          "redemption":1149.49,
-          "pl_pct":14.29,
-          "pl_annual":5.97
+          "redemption":1149.14,
+          "pl_pct":14.91,
+          "pl_annual":6.24
         }
       ],
-      "years_to_maturity":2.4,
+      "years_to_maturity":2.39,
       "worst_underlying":"Euro Stoxx 50",
-      "purchase_price":1005.79,
+      "purchase_price":1000.0,
       "barrier_pct":60.0,
       "nominal":1000.0
     },
@@ -1432,12 +1432,12 @@
     "issuer":"Unicredit",
     "market":"CERT-X",
     "currency":"EUR",
-    "ask_price":1009.5,
-    "nominal":1000,
+    "ask_price":1009.0,
+    "nominal":1000.0,
     "issue_date":"2025-03-19",
     "maturity_date":"2028-03-20",
-    "strike_date":null,
-    "final_valuation_date":"2028-03-20",
+    "strike_date":"2025-03-07",
+    "final_valuation_date":"2028-03-13",
     "barrier_down":60.0,
     "barrier_type":"European",
     "coupon":0.46,
@@ -1472,93 +1472,93 @@
           "underlying_price":1640.52,
           "underlying_level":30,
           "redemption":300.0,
-          "pl_pct":-70.28,
-          "pl_annual":-34.6
+          "pl_pct":-70.27,
+          "pl_annual":-34.68
         },
         {
           "variation_pct":-60,
           "underlying_price":2187.36,
           "underlying_level":40,
           "redemption":400.0,
-          "pl_pct":-60.38,
-          "pl_annual":-29.72
+          "pl_pct":-60.36,
+          "pl_annual":-29.79
         },
         {
           "variation_pct":-50,
           "underlying_price":2734.2,
           "underlying_level":50,
           "redemption":500.0,
-          "pl_pct":-50.47,
-          "pl_annual":-24.84
+          "pl_pct":-50.45,
+          "pl_annual":-24.9
         },
         {
           "variation_pct":-40,
           "underlying_price":3281.05,
           "underlying_level":60,
-          "redemption":1112.14,
-          "pl_pct":10.17,
-          "pl_annual":5.01
+          "redemption":1111.84,
+          "pl_pct":10.19,
+          "pl_annual":5.03
         },
         {
           "variation_pct":-30,
           "underlying_price":3827.89,
           "underlying_level":70,
-          "redemption":1112.14,
-          "pl_pct":10.17,
-          "pl_annual":5.01
+          "redemption":1111.84,
+          "pl_pct":10.19,
+          "pl_annual":5.03
         },
         {
           "variation_pct":-20,
           "underlying_price":4374.73,
           "underlying_level":80,
-          "redemption":1112.14,
-          "pl_pct":10.17,
-          "pl_annual":5.01
+          "redemption":1111.84,
+          "pl_pct":10.19,
+          "pl_annual":5.03
         },
         {
           "variation_pct":-10,
           "underlying_price":4921.57,
           "underlying_level":90,
-          "redemption":1112.14,
-          "pl_pct":10.17,
-          "pl_annual":5.01
+          "redemption":1111.84,
+          "pl_pct":10.19,
+          "pl_annual":5.03
         },
         {
           "variation_pct":0,
           "underlying_price":5468.41,
           "underlying_level":100,
-          "redemption":1112.14,
-          "pl_pct":10.17,
-          "pl_annual":5.01
+          "redemption":1111.84,
+          "pl_pct":10.19,
+          "pl_annual":5.03
         },
         {
           "variation_pct":10,
           "underlying_price":6015.25,
           "underlying_level":110,
-          "redemption":1112.14,
-          "pl_pct":10.17,
-          "pl_annual":5.01
+          "redemption":1111.84,
+          "pl_pct":10.19,
+          "pl_annual":5.03
         },
         {
           "variation_pct":20,
           "underlying_price":6562.09,
           "underlying_level":120,
-          "redemption":1112.14,
-          "pl_pct":10.17,
-          "pl_annual":5.01
+          "redemption":1111.84,
+          "pl_pct":10.19,
+          "pl_annual":5.03
         },
         {
           "variation_pct":30,
           "underlying_price":7108.93,
           "underlying_level":130,
-          "redemption":1112.14,
-          "pl_pct":10.17,
-          "pl_annual":5.01
+          "redemption":1111.84,
+          "pl_pct":10.19,
+          "pl_annual":5.03
         }
       ],
       "years_to_maturity":2.03,
       "worst_underlying":"Euro Stoxx 50",
-      "purchase_price":1009.5,
+      "purchase_price":1009.0,
       "barrier_pct":60.0,
       "nominal":1000.0
     },
@@ -1572,10 +1572,10 @@
     "market":"CERT-X",
     "currency":"EUR",
     "ask_price":1000.0,
-    "nominal":1000,
+    "nominal":1000.0,
     "issue_date":"2025-09-25",
     "maturity_date":"2027-09-27",
-    "strike_date":null,
+    "strike_date":"2025-09-12",
     "final_valuation_date":"2027-09-27",
     "barrier_down":0.0,
     "barrier_type":"European",
@@ -1602,12 +1602,12 @@
     "issuer":"Barclays",
     "market":"CERT-X",
     "currency":"USD",
-    "ask_price":1124.06,
-    "nominal":1000,
+    "ask_price":1126.11,
+    "nominal":1000.0,
     "issue_date":"2025-02-26",
     "maturity_date":"2028-02-15",
-    "strike_date":null,
-    "final_valuation_date":"2028-02-15",
+    "strike_date":"2025-02-07",
+    "final_valuation_date":"2028-02-07",
     "barrier_down":0.0,
     "barrier_type":"European",
     "coupon":4.65,
@@ -1634,10 +1634,10 @@
     "market":"CERT-X",
     "currency":"EUR",
     "ask_price":1000.0,
-    "nominal":1000,
+    "nominal":1000.0,
     "issue_date":"2025-02-12",
     "maturity_date":"2029-12-20",
-    "strike_date":null,
+    "strike_date":"2025-02-12",
     "final_valuation_date":"2029-12-20",
     "barrier_down":0.0,
     "barrier_type":"European",
@@ -1658,99 +1658,6 @@
     "source":"CED"
   },
   {
-    "isin":"XS2768945284",
-    "name":"DIGITAL",
-    "type":"Digital",
-    "issuer":"Bnp Paribas",
-    "market":"CERT-X",
-    "currency":"EUR",
-    "ask_price":1000.0,
-    "nominal":1000,
-    "issue_date":"2025-06-26",
-    "maturity_date":"2027-06-28",
-    "strike_date":null,
-    "final_valuation_date":"2027-06-28",
-    "barrier_down":0.0,
-    "barrier_type":"European",
-    "coupon":0.0,
-    "coupon_frequency":"monthly",
-    "has_memory":false,
-    "annual_coupon_yield":0.0,
-    "underlyings":[
-      {
-        "name":"ESTRON",
-        "strike":1.922,
-        "barrier":0,
-        "worst_of":true
-      }
-    ],
-    "buffer_from_barrier":0.0,
-    "scenario_analysis":null,
-    "source":"CED"
-  },
-  {
-    "isin":"JE00BS6BYH76",
-    "name":"EQUITY PROTECTION CALLABLE",
-    "type":"Protection",
-    "issuer":"Goldman Sachs",
-    "market":"CERT-X",
-    "currency":"EUR",
-    "ask_price":1028.95,
-    "nominal":1000,
-    "issue_date":"2025-06-18",
-    "maturity_date":"2029-06-06",
-    "strike_date":null,
-    "final_valuation_date":"2029-06-06",
-    "barrier_down":0.0,
-    "barrier_type":"European",
-    "coupon":0.0,
-    "coupon_frequency":"monthly",
-    "has_memory":false,
-    "annual_coupon_yield":0.0,
-    "underlyings":[
-      {
-        "name":"SMI Swiss",
-        "strike":12227.08,
-        "barrier":0,
-        "worst_of":true
-      }
-    ],
-    "buffer_from_barrier":0.0,
-    "scenario_analysis":null,
-    "source":"CED"
-  },
-  {
-    "isin":"XS3040123666",
-    "name":"EQUITY PROTECTION CALLABLE",
-    "type":"Protection",
-    "issuer":"Bnp Paribas",
-    "market":"CERT-X",
-    "currency":"USD",
-    "ask_price":1046.0,
-    "nominal":1000,
-    "issue_date":"2025-07-09",
-    "maturity_date":"2029-06-29",
-    "strike_date":null,
-    "final_valuation_date":"2029-06-29",
-    "barrier_down":0.0,
-    "barrier_type":"European",
-    "coupon":0.0,
-    "coupon_frequency":"monthly",
-    "has_memory":false,
-    "annual_coupon_yield":0.0,
-    "underlyings":[
-      {
-        "name":"S&P 500",
-        "strike":5967.84,
-        "barrier":0,
-        "worst_of":true
-      }
-    ],
-    "buffer_from_barrier":0.0,
-    "scenario_analysis":null,
-    "source":"CED"
-  },
-  {
     "isin":"DE000GV8HW54",
     "name":"DIGITAL",
     "type":"Digital",
@@ -1758,10 +1665,10 @@
     "market":"CERT-X",
     "currency":"EUR",
     "ask_price":1000.0,
-    "nominal":1000,
+    "nominal":1000.0,
     "issue_date":"2025-08-11",
     "maturity_date":"2027-08-11",
-    "strike_date":null,
+    "strike_date":"2025-06-24",
     "final_valuation_date":"2027-08-11",
     "barrier_down":0.0,
     "barrier_type":"European",
@@ -1788,12 +1695,12 @@
     "issuer":"Goldman Sachs",
     "market":"CERT-X",
     "currency":"EUR",
-    "ask_price":1039.6,
-    "nominal":1000,
+    "ask_price":1047.25,
+    "nominal":1000.0,
     "issue_date":"2025-07-02",
     "maturity_date":"2029-06-20",
-    "strike_date":null,
-    "final_valuation_date":"2029-06-20",
+    "strike_date":"2025-06-13",
+    "final_valuation_date":"2029-06-13",
     "barrier_down":0.0,
     "barrier_type":"European",
     "coupon":0.0,
@@ -1813,18 +1720,111 @@
     "source":"CED"
   },
   {
+    "isin":"XS2768945284",
+    "name":"DIGITAL",
+    "type":"Digital",
+    "issuer":"Bnp Paribas",
+    "market":"CERT-X",
+    "currency":"EUR",
+    "ask_price":1000.0,
+    "nominal":1000.0,
+    "issue_date":"2025-06-26",
+    "maturity_date":"2027-06-28",
+    "strike_date":"2025-06-26",
+    "final_valuation_date":"2027-06-28",
+    "barrier_down":0.0,
+    "barrier_type":"European",
+    "coupon":0.0,
+    "coupon_frequency":"monthly",
+    "has_memory":false,
+    "annual_coupon_yield":0.0,
+    "underlyings":[
+      {
+        "name":"ESTRON",
+        "strike":1.922,
+        "barrier":0,
+        "worst_of":true
+      }
+    ],
+    "buffer_from_barrier":0.0,
+    "scenario_analysis":null,
+    "source":"CED"
+  },
+  {
+    "isin":"JE00BS6BYH76",
+    "name":"EQUITY PROTECTION CALLABLE",
+    "type":"Protection",
+    "issuer":"Goldman Sachs",
+    "market":"CERT-X",
+    "currency":"EUR",
+    "ask_price":1029.75,
+    "nominal":1000.0,
+    "issue_date":"2025-06-18",
+    "maturity_date":"2029-06-06",
+    "strike_date":"2025-05-30",
+    "final_valuation_date":"2029-05-30",
+    "barrier_down":0.0,
+    "barrier_type":"European",
+    "coupon":0.0,
+    "coupon_frequency":"monthly",
+    "has_memory":false,
+    "annual_coupon_yield":0.0,
+    "underlyings":[
+      {
+        "name":"SMI Swiss",
+        "strike":12227.08,
+        "barrier":0,
+        "worst_of":true
+      }
+    ],
+    "buffer_from_barrier":0.0,
+    "scenario_analysis":null,
+    "source":"CED"
+  },
+  {
+    "isin":"XS3040123666",
+    "name":"EQUITY PROTECTION CALLABLE",
+    "type":"Protection",
+    "issuer":"Bnp Paribas",
+    "market":"CERT-X",
+    "currency":"USD",
+    "ask_price":1047.4,
+    "nominal":1000.0,
+    "issue_date":"2025-07-09",
+    "maturity_date":"2029-06-29",
+    "strike_date":"2025-06-20",
+    "final_valuation_date":"2029-06-20",
+    "barrier_down":0.0,
+    "barrier_type":"European",
+    "coupon":0.0,
+    "coupon_frequency":"monthly",
+    "has_memory":false,
+    "annual_coupon_yield":0.0,
+    "underlyings":[
+      {
+        "name":"S&P 500",
+        "strike":5967.84,
+        "barrier":0,
+        "worst_of":true
+      }
+    ],
+    "buffer_from_barrier":0.0,
+    "scenario_analysis":null,
+    "source":"CED"
+  },
+  {
     "isin":"XS3032003983",
     "name":"DIGITAL ACCUMULATED",
     "type":"Digital",
     "issuer":"Intesa Sanpaolo",
     "market":"CERT-X",
     "currency":"EUR",
-    "ask_price":1018.63,
-    "nominal":1000,
+    "ask_price":1017.62,
+    "nominal":1000.0,
     "issue_date":"2025-04-23",
     "maturity_date":"2028-04-24",
-    "strike_date":null,
-    "final_valuation_date":"2028-04-24",
+    "strike_date":"2025-04-23",
+    "final_valuation_date":"2028-04-18",
     "barrier_down":0.0,
     "barrier_type":"European",
     "coupon":0.0,
@@ -1850,12 +1850,12 @@
     "issuer":"Goldman Sachs",
     "market":"CERT-X",
     "currency":"USD",
-    "ask_price":1079.65,
-    "nominal":1000,
+    "ask_price":1066.35,
+    "nominal":1000.0,
     "issue_date":"2025-06-11",
     "maturity_date":"2029-05-31",
-    "strike_date":null,
-    "final_valuation_date":"2029-05-31",
+    "strike_date":"2025-05-23",
+    "final_valuation_date":"2029-05-23",
     "barrier_down":0.0,
     "barrier_type":"European",
     "coupon":0.0,
@@ -1881,12 +1881,12 @@
     "issuer":"Bnp Paribas",
     "market":"CERT-X",
     "currency":"USD",
-    "ask_price":1161.79,
-    "nominal":1000,
+    "ask_price":1175.79,
+    "nominal":1000.0,
     "issue_date":"2025-01-30",
     "maturity_date":"2028-02-09",
-    "strike_date":null,
-    "final_valuation_date":"2028-02-09",
+    "strike_date":"2025-01-30",
+    "final_valuation_date":"2028-01-31",
     "barrier_down":0.0,
     "barrier_type":"European",
     "coupon":0.0,
@@ -1912,12 +1912,12 @@
     "issuer":"Banco BPM",
     "market":"CERT-X",
     "currency":"EUR",
-    "ask_price":1078.6,
-    "nominal":1000,
+    "ask_price":1092.69,
+    "nominal":1000.0,
     "issue_date":"2025-03-12",
     "maturity_date":"2028-03-10",
-    "strike_date":null,
-    "final_valuation_date":"2028-03-10",
+    "strike_date":"2025-02-21",
+    "final_valuation_date":"2028-03-03",
     "barrier_down":0.0,
     "barrier_type":"European",
     "coupon":0.0,
@@ -1943,11 +1943,11 @@
     "issuer":"Goldman Sachs",
     "market":"CERT-X",
     "currency":"USD",
-    "ask_price":1088.35,
-    "nominal":1000,
+    "ask_price":1090.45,
+    "nominal":1000.0,
     "issue_date":"2025-03-14",
     "maturity_date":"2028-03-03",
-    "strike_date":null,
+    "strike_date":"2025-02-25",
     "final_valuation_date":"2028-03-03",
     "barrier_down":0.0,
     "barrier_type":"European",
@@ -1974,12 +1974,12 @@
     "issuer":"Goldman Sachs",
     "market":"CERT-X",
     "currency":"EUR",
-    "ask_price":1033.05,
-    "nominal":1000,
+    "ask_price":1039.5,
+    "nominal":1000.0,
     "issue_date":"2025-04-02",
     "maturity_date":"2028-03-21",
-    "strike_date":null,
-    "final_valuation_date":"2028-03-21",
+    "strike_date":"2025-03-14",
+    "final_valuation_date":"2028-03-14",
     "barrier_down":0.0,
     "barrier_type":"European",
     "coupon":0.0,
@@ -2005,12 +2005,12 @@
     "issuer":"Barclays",
     "market":"CERT-X",
     "currency":"EUR",
-    "ask_price":1159.83,
-    "nominal":1000,
+    "ask_price":1173.46,
+    "nominal":1000.0,
     "issue_date":"2025-04-02",
     "maturity_date":"2028-03-21",
-    "strike_date":null,
-    "final_valuation_date":"2028-03-21",
+    "strike_date":"2025-03-14",
+    "final_valuation_date":"2028-03-14",
     "barrier_down":0.0,
     "barrier_type":"European",
     "coupon":0.0,
@@ -2037,11 +2037,11 @@
     "market":"CERT-X",
     "currency":"USD",
     "ask_price":1000.0,
-    "nominal":1000,
+    "nominal":1000.0,
     "issue_date":"2025-04-09",
     "maturity_date":"2028-03-28",
-    "strike_date":null,
-    "final_valuation_date":"2028-03-28",
+    "strike_date":"2025-03-21",
+    "final_valuation_date":"2028-03-21",
     "barrier_down":0.0,
     "barrier_type":"European",
     "coupon":0.0,
@@ -2073,12 +2073,12 @@
     "issuer":"Banco BPM",
     "market":"CERT-X",
     "currency":"EUR",
-    "ask_price":1013.5,
-    "nominal":1000,
+    "ask_price":1012.85,
+    "nominal":1000.0,
     "issue_date":"2025-04-02",
     "maturity_date":"2028-03-31",
-    "strike_date":null,
-    "final_valuation_date":"2028-03-31",
+    "strike_date":"2025-03-14",
+    "final_valuation_date":"2028-03-24",
     "barrier_down":0.0,
     "barrier_type":"European",
     "coupon":0.0,
@@ -2104,12 +2104,43 @@
     "issuer":"Goldman Sachs",
     "market":"CERT-X",
     "currency":"EUR",
-    "ask_price":1052.8,
-    "nominal":1000,
+    "ask_price":1053.0,
+    "nominal":1000.0,
     "issue_date":"2025-04-09",
     "maturity_date":"2028-04-04",
-    "strike_date":null,
-    "final_valuation_date":"2028-04-04",
+    "strike_date":"2025-03-28",
+    "final_valuation_date":"2028-03-28",
+    "barrier_down":0.0,
+    "barrier_type":"European",
+    "coupon":0.0,
+    "coupon_frequency":"monthly",
+    "has_memory":false,
+    "annual_coupon_yield":0.0,
+    "underlyings":[
+      {
+        "name":"S&P 500",
+        "strike":5580.94,
+        "barrier":0,
+        "worst_of":true
+      }
+    ],
+    "buffer_from_barrier":0.0,
+    "scenario_analysis":null,
+    "source":"CED"
+  },
+  {
+    "isin":"XS2984358965",
+    "name":"EQUITY PROTECTION CAP",
+    "type":"Protection",
+    "issuer":"Bnp Paribas",
+    "market":"CERT-X",
+    "currency":"USD",
+    "ask_price":1097.79,
+    "nominal":1000.0,
+    "issue_date":"2025-04-09",
+    "maturity_date":"2028-04-06",
+    "strike_date":"2025-03-28",
+    "final_valuation_date":"2028-03-28",
     "barrier_down":0.0,
     "barrier_type":"European",
     "coupon":0.0,
@@ -2135,11 +2166,11 @@
     "issuer":"Mediobanca",
     "market":"CERT-X",
     "currency":"EUR",
-    "ask_price":1071.38,
-    "nominal":1000,
+    "ask_price":1082.53,
+    "nominal":1000.0,
     "issue_date":"2025-04-09",
     "maturity_date":"2028-03-28",
-    "strike_date":null,
+    "strike_date":"2025-03-28",
     "final_valuation_date":"2028-03-28",
     "barrier_down":0.0,
     "barrier_type":"European",
@@ -2160,49 +2191,18 @@
     "source":"CED"
   },
   {
-    "isin":"XS2984358965",
-    "name":"EQUITY PROTECTION CAP",
-    "type":"Protection",
-    "issuer":"Bnp Paribas",
-    "market":"CERT-X",
-    "currency":"USD",
-    "ask_price":1095.93,
-    "nominal":1000,
-    "issue_date":"2025-04-09",
-    "maturity_date":"2028-04-06",
-    "strike_date":null,
-    "final_valuation_date":"2028-04-06",
-    "barrier_down":0.0,
-    "barrier_type":"European",
-    "coupon":0.0,
-    "coupon_frequency":"monthly",
-    "has_memory":false,
-    "annual_coupon_yield":0.0,
-    "underlyings":[
-      {
-        "name":"S&P 500",
-        "strike":5580.94,
-        "barrier":0,
-        "worst_of":true
-      }
-    ],
-    "buffer_from_barrier":0.0,
-    "scenario_analysis":null,
-    "source":"CED"
-  },
-  {
     "isin":"JE00BS6BRS98",
     "name":"EQUITY PROTECTION",
     "type":"Protection",
     "issuer":"Goldman Sachs",
     "market":"CERT-X",
     "currency":"USD",
-    "ask_price":1160.85,
-    "nominal":1000,
+    "ask_price":1164.8,
+    "nominal":1000.0,
     "issue_date":"2025-03-31",
     "maturity_date":"2030-03-26",
-    "strike_date":null,
-    "final_valuation_date":"2030-03-26",
+    "strike_date":"2025-03-19",
+    "final_valuation_date":"2030-03-19",
     "barrier_down":0.0,
     "barrier_type":"European",
     "coupon":0.0,
