@@ -14,6 +14,7 @@ import json
 import os
 import re
 import urllib.parse
+from collections import Counter
 from datetime import datetime, timedelta
 from typing import List, Dict, Optional, Tuple
 
@@ -660,8 +661,13 @@ async def scrape_detail(page, isin: str, debug: bool = False) -> Dict:
     if not await retry_goto(page, url):
         return extra
 
-    # Wait for page to settle (AJAX content)
+    # Wait for AJAX content to load (barrier + date rilevamento)
     await page.wait_for_timeout(3000)
+    # Extra wait for Date rilevamento AJAX
+    try:
+        await page.wait_for_selector('table:has(th:has-text("CEDOLA")), table:has(td:has-text("CEDOLA"))', timeout=3000)
+    except:
+        pass
 
     html = await page.content()
     soup = BeautifulSoup(html, 'lxml')
@@ -893,6 +899,118 @@ async def scrape_detail(page, isin: str, debug: bool = False) -> Dict:
     if debug and not found_underlyings:
         print(f"    DEBUG: No underlyings found for {isin}")
 
+    # =============================================
+    # COUPON/PREMIO from "Date rilevamento" table (AJAX loaded)
+    # Headers: DATA RILEVAMENTO | PREMIO PER IL RIMBORSO | TRIGGER AUTOCALLABLE | CEDOLA
+    # =============================================
+    if not extra['premio']:
+        for table in soup.find_all('table'):
+            first_row = table.find('tr')
+            if not first_row:
+                continue
+            headers = [c.get_text(strip=True).lower() for c in first_row.find_all(['th', 'td'])]
+            header_text = ' '.join(headers)
+
+            # Match the "Date rilevamento" table
+            if 'cedola' not in header_text and 'premio' not in header_text:
+                continue
+            if 'data' not in header_text and 'rilevamento' not in header_text:
+                continue
+
+            # Find column indices
+            cedola_idx = None
+            premio_idx = None
+            date_idx = None
+            for i, h in enumerate(headers):
+                if 'cedola' in h:
+                    cedola_idx = i
+                elif 'premio' in h and 'rimborso' in h:
+                    premio_idx = i
+                elif 'data' in h:
+                    date_idx = i
+
+            # Parse data rows
+            dates = []
+            cedola_values = []
+            premio_values = []
+
+            for row in table.find_all('tr')[1:]:
+                cells = row.find_all(['td', 'th'])
+                if len(cells) < 2:
+                    continue
+
+                # Extract date
+                if date_idx is not None and date_idx < len(cells):
+                    date_text = cells[date_idx].get_text(strip=True)
+                    parsed_dt = parse_date(date_text)
+                    if parsed_dt:
+                        dates.append(parsed_dt)
+
+                # Extract cedola
+                if cedola_idx is not None and cedola_idx < len(cells):
+                    val = parse_number(cells[cedola_idx].get_text(strip=True))
+                    if val and val > 0:
+                        cedola_values.append(val)
+
+                # Extract premio per il rimborso
+                if premio_idx is not None and premio_idx < len(cells):
+                    val = parse_number(cells[premio_idx].get_text(strip=True))
+                    if val and val > 0:
+                        premio_values.append(val)
+
+            # Use cedola if available, else premio
+            coupon_values = cedola_values if cedola_values else premio_values
+
+            if coupon_values:
+                # Use the most common coupon value (some may vary)
+                most_common = Counter(coupon_values).most_common(1)[0][0]
+                extra['premio'] = most_common
+
+                if debug:
+                    print(f"    Cedola extracted: {most_common} from {len(coupon_values)} periods")
+
+            # Calculate frequency from dates
+            if len(dates) >= 2:
+                try:
+                    date_objs = sorted([datetime.strptime(d, '%Y-%m-%d') for d in dates if d])
+                    if len(date_objs) >= 2:
+                        avg_gap = sum(
+                            (date_objs[i+1] - date_objs[i]).days
+                            for i in range(len(date_objs)-1)
+                        ) / (len(date_objs) - 1)
+
+                        if avg_gap <= 35:
+                            extra['frequenza'] = 'mensile'
+                        elif avg_gap <= 100:
+                            extra['frequenza'] = 'trimestrale'
+                        elif avg_gap <= 200:
+                            extra['frequenza'] = 'semestrale'
+                        else:
+                            extra['frequenza'] = 'annuale'
+
+                        if debug:
+                            print(f"    Frequency: {extra['frequenza']} (avg gap: {avg_gap:.0f} days)")
+                except:
+                    pass
+
+            break  # Found the table
+
+    # =============================================
+    # ASK PRICE fallback: use "Prezzo emissione" or "Nominale"
+    # =============================================
+    if not extra['ask_price']:
+        # Try prezzo emissione from the data we already parsed
+        for row in soup.find_all('tr'):
+            cells = row.find_all(['th', 'td'])
+            if len(cells) >= 2:
+                label = cells[0].get_text(strip=True).lower()
+                value = cells[1].get_text(strip=True)
+                if 'prezzo emissione' in label or 'prezzo di emissione' in label:
+                    v = parse_number(value)
+                    if v and v > 0:
+                        extra['ask_price'] = v
+                        break
+
     return extra
 
 
@@ -985,14 +1103,15 @@ def build_certificate(raw: Dict, detail: Optional[Dict] = None) -> Dict:
         except:
             pass
 
-    # Ask price - prefer detail, fallback raw
+    # Ask price - prefer detail, fallback raw, then nominal
     ask_price = None
     if detail and detail.get('ask_price'):
         ask_price = detail['ask_price']
     elif raw.get('ask'):
         ask_price = raw['ask']
     else:
-        ask_price = 1000.0
+        # Use nominal as fallback (100 or 1000 depending on certificate)
+        ask_price = detail.get('nominal', 1000) if detail else 1000.0
 
     wo_name = raw.get('wo_name', '')
     wo_strike = raw.get('wo_strike')
@@ -1206,11 +1325,13 @@ async def main():
             for i, isin in enumerate(isins_to_enrich[:MAX_DETAIL_ISIN], 1):
                 print(f"[{i}/{detail_count}] {isin}...", end=" ", flush=True)
                 try:
-                    detail = await scrape_detail(page, isin, debug=False)
+                    detail = await scrape_detail(page, isin, debug=(i <= 3))
                     details[isin] = detail
                     nu = len(detail.get('underlyings_detail', []))
                     has_strikes = any(u.get('strike', 0) > 0 for u in detail.get('underlyings_detail', []))
-                    print(f"OK und:{nu} strikes:{'yes' if has_strikes else 'no'} ask:{detail.get('ask_price')}")
+                    premio_str = f"{detail.get('premio')}" if detail.get('premio') else 'None'
+                    freq_str = detail.get('frequenza', '') or ''
+                    print(f"OK und:{nu} strikes:{'yes' if has_strikes else 'no'} ask:{detail.get('ask_price')} premio:{premio_str} freq:{freq_str}")
                 except Exception as e:
                     print(f"ERR {str(e)[:40]}")
                     details[isin] = {}
