@@ -26,8 +26,19 @@ function detectQueryType(query) {
         return 'isin';
     }
     
-    // Symbol: Usually 1-5 letters, may include .
-    if (/^[A-Z]{1,5}(\.[A-Z]{1,2})?$/.test(cleaned)) {
+    // Has exchange suffix (e.g. ENEL.MI) → definitely a symbol
+    if (/^[A-Z]{1,5}\.[A-Z]{1,2}$/.test(cleaned)) {
+        return 'symbol';
+    }
+    
+    // Contains spaces or lowercase → name search
+    if (query.includes(' ') || query !== query.toUpperCase()) {
+        return 'name';
+    }
+    
+    // Short uppercase (1-5 letters, no dots) — could be symbol OR name
+    // Treat as symbol but the AI fallback in /search will handle wrong matches
+    if (/^[A-Z]{1,5}$/.test(cleaned)) {
         return 'symbol';
     }
     
@@ -61,6 +72,62 @@ router.get('/search', async (req, res) => {
             result = await aggregator.searchByISIN(q);
         } else {
             result = await aggregator.search(q);
+            
+            // AI FALLBACK: If top result looks wrong, use Perplexity to resolve
+            // Works for both name queries ("facebook") and ambiguous symbol queries ("meta")
+            if (result.success && result.results.length > 0) {
+                const topResult = result.results[0];
+                const topName = (topResult.name || '').toLowerCase();
+                const queryLower = q.toLowerCase().trim();
+                
+                // Check if top result looks relevant to the query
+                const isRelevant = topName.includes(queryLower) || 
+                    queryLower.split(/\s+/).some(word => word.length > 2 && topName.includes(word));
+                
+                // For symbol queries: check if the ticker matches AND exchange is major
+                const topExchange = (topResult.exchange || '').toUpperCase();
+                const isMajorExchange = ['NMS', 'NGM', 'NYQ', 'NYSE', 'NASDAQ', 'MIL', 'LSE', 'PAR', 'XETRA', 'FRA'].some(
+                    e => topExchange.includes(e)
+                );
+                const topTicker = (topResult.symbol || '').split('.')[0].toUpperCase();
+                const tickerMatchesQuery = topTicker === q.trim().toUpperCase();
+                
+                // AI triggers when:
+                // - Symbol query: ticker matches but exchange is minor (e.g. META on JKT instead of NASDAQ)
+                // - Name query: top result name doesn't contain query words
+                // - Don't trigger for symbol queries where ticker matches on a major exchange (AAPL on NASDAQ = correct)
+                let needsAI = false;
+                if (queryType === 'symbol') {
+                    needsAI = tickerMatchesQuery && !isMajorExchange;
+                } else {
+                    needsAI = !isRelevant;
+                }
+                
+                if (needsAI) {
+                    console.log(`[API] Top result "${topResult.name}" (${topExchange}) may not match "${q}", trying AI...`);
+                    try {
+                        const aiTicker = await aggregator._aiResolveQuery(q);
+                        if (aiTicker) {
+                            const currentTicker = (topResult.symbol || '').split('.')[0].toUpperCase();
+                            if (aiTicker !== currentTicker) {
+                                console.log(`[API] AI resolved to: ${aiTicker} (was: ${currentTicker}), re-searching...`);
+                                const aiResult = await aggregator.search(aiTicker);
+                                if (aiResult.success && aiResult.results.length > 0) {
+                                    aiResult.metadata = {
+                                        ...aiResult.metadata,
+                                        aiDisambiguated: true,
+                                        originalQuery: q,
+                                        resolvedTicker: aiTicker
+                                    };
+                                    result = aiResult;
+                                }
+                            }
+                        }
+                    } catch (aiError) {
+                        console.warn(`[API] AI disambiguation failed: ${aiError.message}`);
+                    }
+                }
+            }
         }
 
         if (!result.success) {
