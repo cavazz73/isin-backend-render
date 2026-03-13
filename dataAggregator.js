@@ -85,6 +85,102 @@ class DataAggregatorV4 {
     }
 
     /**
+     * Score a search result for ranking (higher = better)
+     * Factors: exchange quality, ticker match, type preference
+     */
+    _scoreResult(item, query) {
+        let score = 0;
+        const q = (query || '').toUpperCase().trim();
+        const sym = (item.symbol || '').toUpperCase();
+        const name = (item.name || '').toUpperCase();
+        const exchange = (item.exchange || '').toUpperCase();
+
+        // 1. Exchange quality (major US > major EU > others)
+        const tier1 = ['NMS', 'NGM', 'NYQ', 'NYSE', 'NASDAQ', 'NAS', 'PCX', 'BTS']; // US major
+        const tier2 = ['MIL', 'LSE', 'LON', 'GER', 'PAR', 'EPA', 'AMS', 'FRA', 'XETRA']; // EU major
+        const tier3 = ['JKT', 'BSE', 'NSE', 'KSE', 'BUE', 'SAO']; // Smaller markets
+        
+        if (tier1.some(e => exchange.includes(e))) score += 100;
+        else if (tier2.some(e => exchange.includes(e))) score += 60;
+        else if (tier3.some(e => exchange.includes(e))) score += 10;
+        else score += 30; // Unknown exchange
+
+        // 2. Exact ticker match with query
+        const baseSym = sym.split('.')[0]; // Remove suffix like .MI
+        if (baseSym === q) score += 200; // Exact ticker match
+        
+        // 3. Name contains query (for name searches)
+        if (q.length > 2 && name.includes(q)) score += 50;
+
+        // 4. Has price (prefer results with price data)
+        if (item.price != null) score += 30;
+
+        // 5. Type preference: stocks/ETFs over obscure instruments
+        const t = (item.type || '').toLowerCase();
+        if (['stock', 'equity', 'etf'].includes(t)) score += 20;
+
+        return score;
+    }
+
+    /**
+     * Rank search results by relevance to query
+     */
+    _rankResults(results, query) {
+        if (!results || results.length <= 1) return results;
+        
+        return [...results].sort((a, b) => {
+            return this._scoreResult(b, query) - this._scoreResult(a, query);
+        });
+    }
+
+    /**
+     * AI-powered search disambiguation using Perplexity
+     * Used when text search returns ambiguous results
+     * Returns the correct ticker symbol for the query
+     */
+    async _aiResolveQuery(query) {
+        const apiKey = process.env.PERPLEXITY_API_KEY;
+        if (!apiKey) {
+            console.log('[AI Search] No Perplexity API key, skipping AI disambiguation');
+            return null;
+        }
+
+        try {
+            console.log(`[AI Search] Disambiguating: "${query}"`);
+            const response = await axios.post('https://api.perplexity.ai/chat/completions', {
+                model: 'sonar',
+                messages: [{
+                    role: 'user',
+                    content: `What is the primary stock ticker symbol for "${query}"? Reply with ONLY the ticker symbol (e.g. "META" or "ENEL.MI"), nothing else. If it's a well-known company, give the main US or EU listing.`
+                }],
+                max_tokens: 30,
+                temperature: 0.0
+            }, {
+                headers: {
+                    'Authorization': `Bearer ${apiKey}`,
+                    'Content-Type': 'application/json'
+                },
+                timeout: 5000
+            });
+
+            const answer = (response.data?.choices?.[0]?.message?.content || '').trim();
+            // Extract just the ticker (remove quotes, periods at end, etc.)
+            const ticker = answer.replace(/["""''`]/g, '').replace(/\.$/, '').split(/[\s,]/)[0].toUpperCase();
+            
+            if (ticker && ticker.length >= 1 && ticker.length <= 10 && /^[A-Z0-9.]+$/.test(ticker)) {
+                console.log(`[AI Search] Resolved "${query}" → ticker: ${ticker}`);
+                return ticker;
+            }
+            
+            console.log(`[AI Search] Could not extract ticker from response: "${answer}"`);
+            return null;
+        } catch (error) {
+            console.error(`[AI Search] Perplexity error: ${error.message}`);
+            return null;
+        }
+    }
+
+    /**
      * Determine if query is for European market
      */
     isEuropeanMarket(query) {
@@ -129,8 +225,9 @@ class DataAggregatorV4 {
                 if (twelveResult.success && twelveResult.results.length > 0) {
                     console.log(`[DataAggregatorV4] TwelveData found ${twelveResult.results.length} results (EU)`);
                     
-                    // Enrich with quotes (LIMITED + SEQUENTIAL)
-                    const enriched = await this.enrichWithQuotes(twelveResult.results);
+                    // Rank + Enrich with quotes (LIMITED + SEQUENTIAL)
+                    const ranked = this._rankResults(twelveResult.results, query);
+                    const enriched = await this.enrichWithQuotes(ranked);
                     
                     const response = {
                         success: true,
@@ -188,15 +285,18 @@ class DataAggregatorV4 {
             };
         }
 
+        // RANK results by relevance to query BEFORE enriching (saves API calls)
+        const rankedResults = this._rankResults(mergedResults, query);
+
         // Enrich results with quotes from best available source (LIMITED + SEQUENTIAL)
-        const enrichedResults = await this.enrichWithQuotes(mergedResults);
+        const enrichedResults = await this.enrichWithQuotes(rankedResults);
 
         const response = {
             success: true,
             results: enrichedResults,
             metadata: {
                 totalResults: enrichedResults.length,
-                sources: this.sources.filter((_, i) => results[i] && results[i].success),  // âœ… NULL-SAFE
+                sources: this.sources.filter((_, i) => results[i] && results[i].success),
                 timestamp: new Date().toISOString(),
                 fromCache: false
             }
@@ -210,9 +310,18 @@ class DataAggregatorV4 {
 
     /**
      * Merge search results from multiple sources, removing duplicates
+     * Prefers major exchanges (NYSE/NASDAQ > EU > others) for same symbol
      */
     mergeSearchResults(results) {
         const symbolMap = new Map();
+
+        // Exchange quality tier (higher = better)
+        const exchangeScore = (exch) => {
+            const e = (exch || '').toUpperCase();
+            if (['NMS', 'NGM', 'NYQ', 'NYSE', 'NASDAQ', 'PCX', 'BTS'].some(x => e.includes(x))) return 100;
+            if (['MIL', 'LSE', 'LON', 'PAR', 'EPA', 'AMS', 'FRA', 'XETRA', 'GER'].some(x => e.includes(x))) return 60;
+            return 10;
+        };
 
         results.forEach((result, sourceIndex) => {
             if (!result.success || !result.results) return;
@@ -230,10 +339,16 @@ class DataAggregatorV4 {
                 } else {
                     const existing = symbolMap.get(symbol);
                     
-                    // Prefer TwelveData, then Yahoo, then Finnhub, then AlphaVantage
-                    if (source === 'twelvedata' || 
+                    // Prefer item from better exchange
+                    const existingExchScore = exchangeScore(existing.exchange);
+                    const newExchScore = exchangeScore(item.exchange);
+                    
+                    // Prefer TwelveData source, BUT only if exchange is equal or better
+                    const sourceWins = source === 'twelvedata' || 
                         (source === 'yahoo' && existing.sources[0] !== 'twelvedata') ||
-                        (source === 'finnhub' && !['twelvedata', 'yahoo'].includes(existing.sources[0]))) {
+                        (source === 'finnhub' && !['twelvedata', 'yahoo'].includes(existing.sources[0]));
+                    
+                    if (newExchScore > existingExchScore || (sourceWins && newExchScore >= existingExchScore)) {
                         symbolMap.set(symbol, {
                             ...existing,
                             ...item,
