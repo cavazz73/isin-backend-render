@@ -258,54 +258,62 @@ class DataAggregatorV4 {
 
         // SEQUENTIAL (not parallel) to avoid rate limiting
         for (const item of limitedResults) {
-            // Check if we already have BOTH price AND fundamentals
-            const hasFundamentals = item.marketCap || item.peRatio || item.dividendYield || item.week52High;
-            
-            if (item.price != null && typeof item.price === 'number' && hasFundamentals) {
-                // Already complete, skip
-                enrichedResults.push(item);
-                continue;
-            }
-
-            const quote = await this.getQuote(item.symbol);
-            
-            if (quote.success && quote.data) {
-                // Smart name: prefer FIGI/original name over Yahoo ticker-names
-                const bestName = this._bestName(item.name, item.figiName, quote.data.name, item.symbol);
-                const bestDesc = this._bestName(quote.data.description, item.description, bestName);
+            try {
+                // Check if we already have BOTH price AND fundamentals
+                const hasFundamentals = item.marketCap || item.peRatio || item.dividendYield || item.week52High;
                 
-                const isFund = this._isFundType(item.type) || this._isFundType(quote.data.type);
-                
-                const enriched = {
-                    ...item,
-                    name: bestName,
-                    description: bestDesc,
-                    price: item.price || quote.data.price,
-                    change: item.change ?? quote.data.change,
-                    changePercent: item.changePercent ?? quote.data.changePercent,
-                    currency: quote.data.currency || item.currency,
-                    // FUNDAMENTAL DATA - use quote data if item doesn't have it
-                    marketCap: item.marketCap || quote.data.marketCap || null,
-                    peRatio: item.peRatio || quote.data.peRatio || null,
-                    dividendYield: item.dividendYield || quote.data.dividendYield || null,
-                    week52High: item.week52High || quote.data.week52High || null,
-                    week52Low: item.week52Low || quote.data.week52Low || null,
-                    quoteSources: [quote.source]
-                };
-                
-                // Fund-specific: add NAV/AUM, mark metrics as fund-type
-                if (isFund) {
-                    enriched.instrumentCategory = 'fund';
-                    enriched.nav = enriched.price; // For funds, price IS the NAV
-                    enriched.totalAssets = quote.data.totalAssets || item.totalAssets || null;
-                    // P/E and MarketCap are not meaningful for funds
-                    enriched.peRatio = null;
-                    enriched.marketCap = null;
+                if (item.price != null && typeof item.price === 'number' && hasFundamentals) {
+                    // Already complete, skip
+                    enrichedResults.push(item);
+                    continue;
                 }
+
+                const quote = await this.getQuote(item.symbol);
                 
-                enrichedResults.push(enriched);
-            } else {
-                enrichedResults.push(item);
+                if (quote.success && quote.data) {
+                    // Smart name: prefer FIGI/original name over Yahoo ticker-names
+                    const bestName = this._bestName(item.name, item.figiName, quote.data.name, item.symbol);
+                    const bestDesc = this._bestName(quote.data.description, item.description, bestName);
+                    
+                    const isFund = this._isFundType(item.type) || this._isFundType(quote.data.type);
+                    
+                    const enriched = {
+                        ...item,
+                        name: bestName,
+                        description: bestDesc,
+                        price: item.price || quote.data.price,
+                        change: item.change ?? quote.data.change,
+                        changePercent: item.changePercent ?? quote.data.changePercent,
+                        currency: quote.data.currency || item.currency,
+                        // FUNDAMENTAL DATA - use quote data if item doesn't have it
+                        marketCap: item.marketCap || quote.data.marketCap || null,
+                        peRatio: item.peRatio || quote.data.peRatio || null,
+                        dividendYield: item.dividendYield || quote.data.dividendYield || null,
+                        week52High: item.week52High || quote.data.week52High || null,
+                        week52Low: item.week52Low || quote.data.week52Low || null,
+                        quoteSources: [quote.source],
+                        // Fund-specific fields from quote
+                        totalAssets: quote.data.totalAssets || item.totalAssets || null,
+                        fundCategory: quote.data.fundCategory || item.fundCategory || null,
+                        fundFamily: quote.data.fundFamily || item.fundFamily || null
+                    };
+                    
+                    // Fund-specific: add NAV/AUM, mark metrics as fund-type
+                    if (isFund) {
+                        enriched.instrumentCategory = 'fund';
+                        enriched.nav = enriched.price; // For funds, price IS the NAV
+                        // P/E and MarketCap are not meaningful for funds
+                        enriched.peRatio = null;
+                        enriched.marketCap = null;
+                    }
+                    
+                    enrichedResults.push(enriched);
+                } else {
+                    enrichedResults.push(item);
+                }
+            } catch (enrichError) {
+                console.error(`[DataAggregatorV4] Error enriching ${item.symbol}: ${enrichError.message}`);
+                enrichedResults.push(item); // Push un-enriched item rather than crashing
             }
 
             // SMALL DELAY to avoid rate limiting
@@ -553,31 +561,36 @@ class DataAggregatorV4 {
                 }).filter(r => r.symbol);
 
                 if (results.length > 0) {
-                    // Enrich with real-time quotes (price, P/E, etc.)
-                    const enriched = await this.enrichWithQuotes(results);
+                    // Save FIGI data immediately (before enrichment) for step 6 fallback
+                    openFigiData = results[0];
                     
-                    // Only return if we actually got a price
-                    const hasPrice = enriched.some(r => r.price != null);
-                    if (hasPrice) {
-                        const response = {
-                            success: true,
-                            results: enriched,
-                            metadata: {
-                                totalResults: enriched.length,
-                                sources: ['openfigi'],
-                                primarySource: 'openfigi',
-                                isin: isin.toUpperCase(),
-                                timestamp: new Date().toISOString(),
-                                fromCache: false
-                            }
-                        };
+                    // Enrich with real-time quotes (price, P/E, etc.)
+                    try {
+                        const enriched = await this.enrichWithQuotes(results);
                         
-                        await this.cache.set('isin', isin, response, 86400);
-                        return response;
-                    } else {
-                        // Save FIGI data for later (name, type) but continue to other sources for price
-                        openFigiData = results[0];
-                        console.log(`[OpenFIGI] No price for ${results[0].symbol}, trying other sources...`);
+                        // Only return if we actually got a price
+                        const hasPrice = enriched.some(r => r.price != null);
+                        if (hasPrice) {
+                            const response = {
+                                success: true,
+                                results: enriched,
+                                metadata: {
+                                    totalResults: enriched.length,
+                                    sources: ['openfigi'],
+                                    primarySource: 'openfigi',
+                                    isin: isin.toUpperCase(),
+                                    timestamp: new Date().toISOString(),
+                                    fromCache: false
+                                }
+                            };
+                            
+                            await this.cache.set('isin', isin, response, 86400);
+                            return response;
+                        } else {
+                            console.log(`[OpenFIGI] No price for ${results[0].symbol}, trying other sources...`);
+                        }
+                    } catch (enrichError) {
+                        console.error(`[OpenFIGI] Enrichment failed: ${enrichError.message}, continuing with fallbacks...`);
                     }
                 }
             }
