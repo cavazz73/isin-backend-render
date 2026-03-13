@@ -268,7 +268,8 @@ class YahooFinanceClient {
             sector: null,
             totalAssets: null,       // Fund AUM
             fundCategory: null,      // Fund category (e.g., "EUR Flexible Bond")
-            fundFamily: null         // Fund family (e.g., "Carmignac")
+            fundFamily: null,        // Fund family (e.g., "Carmignac")
+            fundName: null           // Real fund name from Yahoo (e.g., "Carmignac Portfolio Credit A EUR Acc")
         };
 
         // 1. Get 52W High/Low from 1Y chart data
@@ -334,13 +335,18 @@ class YahooFinanceClient {
                     const fd = qr.financialData;
                     fundamentals.marketCap = fd.marketCap?.raw || null;
                 }
-                // Price module (backup for marketCap, PE)
+                // Price module (backup for marketCap, PE, and FUND NAME)
                 if (qr.price) {
                     const p = qr.price;
                     if (!fundamentals.marketCap) fundamentals.marketCap = p.marketCap?.raw || null;
                     if (!fundamentals.peRatio) fundamentals.peRatio = p.trailingPE?.raw ? +p.trailingPE.raw.toFixed(2) : null;
                     if (p.dividendYield?.raw) {
                         fundamentals.dividendYield = p.dividendYield.raw;
+                    }
+                    // Extract real fund name from longName (e.g. "Carmignac Portfolio Credit A EUR Acc")
+                    const ln = p.longName;
+                    if (ln && typeof ln === 'string' && ln.includes(' ') && ln.length > 5) {
+                        fundamentals.fundName = ln;
                     }
                 }
                 // SummaryDetail (best source for dividend yield)
