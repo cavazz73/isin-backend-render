@@ -1,846 +1,480 @@
 /**
  * Copyright (c) 2024-2025 Mutna S.R.L.S. - All Rights Reserved
- * P.IVA: 04219740364
- * 
- * Multi-Source Data Aggregator V4.2 FINAL
- * SEARCH: TwelveData primary for EU markets
- * QUOTE: Yahoo primary (complete data), TwelveData fallback + separate fundamentals call
- * CACHE: Redis/Upstash for intelligent caching
- * PERFORMANCE: Limit 3 results, sequential with delay
+ * Yahoo Finance API Client (Primary Source - Unlimited, Free)
+ * V4.1 - WITH FUNDAMENTAL DATA
  */
 
-const TwelveDataClient = require('./twelveData');
-const YahooFinanceClient = require('./yahooFinance');
-const FinnhubClient = require('./finnhub');
-const AlphaVantageClient = require('./alphaVantage');
-const FinancialModelingPrepClient = require('./financialModelingPrep');
-const OpenFigiClient = require('./openFigi');
-const RedisCache = require('./redisCache');
+const axios = require('axios');
 
-class DataAggregatorV4 {
-    constructor(config = {}) {
-        // Initialize all data sources
-        this.fmp = new FinancialModelingPrepClient(config.fmpKey || process.env.FMP_API_KEY);  // âœ… PRIMARY SOURCE
-        this.twelvedata = new TwelveDataClient(config.twelveDataKey || process.env.TWELVE_DATA_API_KEY);
-        this.yahoo = new YahooFinanceClient();
-        this.finnhub = new FinnhubClient(config.finnhubKey || process.env.FINNHUB_API_KEY);
-        this.alphavantage = new AlphaVantageClient(config.alphavantageKey || process.env.ALPHA_VANTAGE_API_KEY);
+class YahooFinanceClient {
+    constructor() {
+        this.baseUrl = 'https://query1.finance.yahoo.com';
+        this.baseUrlV7 = 'https://query1.finance.yahoo.com/v7';
+        this.baseUrlV8 = 'https://query2.finance.yahoo.com/v8';
         
-        // Initialize Redis Cache
-        this.cache = new RedisCache(config.redisUrl || process.env.REDIS_URL);
-        
-        // Initialize OpenFIGI (Bloomberg ISIN resolver)
-        this.openfigi = new OpenFigiClient(config.openFigiKey || process.env.OPENFIGI_API_KEY);
-        
-        // Priority for SEARCH: TwelveData > FMP > Yahoo > Finnhub > AlphaVantage
-        this.sources = ['twelvedata', 'fmp', 'yahoo', 'finnhub', 'alphavantage'];
-        
-        console.log('[DataAggregatorV4] Initialized with FMP (complete fundamentals) + OpenFIGI (ISIN resolver) + Redis caching');
+        // Cookie/crumb authentication for v7/v10 endpoints
+        this._crumb = null;
+        this._cookie = null;
+        this._crumbExpiry = 0;
     }
 
     /**
-     * Check if a name is a real human-readable name (not a ticker/code)
-     * Tickers: "0P0001FE3K.F", "AAPL", "XS2345678901"
-     * Real names: "Carmignac Portfolio Credit", "Apple Inc"
+     * Get Yahoo authentication cookie + crumb (required for v7/v10 endpoints)
+     * Crumb is cached for 30 minutes
      */
-    _isRealName(name) {
-        if (!name || typeof name !== 'string') return false;
-        const trimmed = name.trim();
-        if (trimmed.length < 3) return false;
-        // Must contain at least one space (real names have spaces)
-        if (!trimmed.includes(' ')) return false;
-        // Should not look like a Morningstar ID (0P0001...)
-        if (/^0P[0-9A-Z]{6,}/.test(trimmed)) return false;
-        // Should not look like an ISIN
-        if (/^[A-Z]{2}[A-Z0-9]{9,10}$/.test(trimmed)) return false;
-        return true;
-    }
-
-    /**
-     * Pick the best available name from multiple sources
-     */
-    _bestName(...candidates) {
-        // First pass: find a real name (with spaces, human-readable)
-        for (const name of candidates) {
-            if (this._isRealName(name)) return name;
-        }
-        // Second pass: any non-empty string
-        for (const name of candidates) {
-            if (name && typeof name === 'string' && name.trim().length > 0) return name.trim();
-        }
-        return 'N/A';
-    }
-
-    /**
-     * Detect if instrument is a fund/OICR type
-     */
-    _isFundType(type) {
-        if (!type) return false;
-        const t = type.toLowerCase();
-        return ['fund', 'mutual fund', 'open-end fund', 'closed-end fund', 'mutualfund', 'oicr'].includes(t);
-    }
-
-    /**
-     * Determine if query is for European market
-     */
-    isEuropeanMarket(query) {
-        const upperQuery = query.toUpperCase();
-        
-        // Italian stocks
-        const italianStocks = ['ENEL', 'ENI', 'INTESA', 'UNICREDIT', 'GENERALI', 'FERRARI', 
-                               'STELLANTIS', 'LEONARDO', 'PRYSMIAN', 'TELECOM'];
-        
-        // Check if query contains European exchange suffixes
-        const europeanSuffixes = ['.MI', '.PA', '.DE', '.L', '.AS', '.SW', '.MC'];
-        
-        // Check if it's a known Italian stock or has EU suffix
-        return italianStocks.includes(upperQuery) || 
-               europeanSuffixes.some(suffix => upperQuery.includes(suffix));
-    }
-
-    /**
-     * Search across all sources with intelligent routing + CACHE
-     */
-    async search(query) {
-        console.log(`[DataAggregatorV4] Searching for: "${query}"`);
-        
-        // 1. CHECK CACHE FIRST
-        const cached = await this.cache.get('search', query);
-        if (cached) {
-            console.log(`[DataAggregatorV4] ðŸš€ CACHE HIT! Returning cached results`);
-            return {
-                ...cached,
-                fromCache: true,
-                cacheTimestamp: new Date().toISOString()
-            };
-        }
-        
-        const isEU = this.isEuropeanMarket(query);
-        console.log(`[DataAggregatorV4] European market: ${isEU ? 'YES' : 'NO'}`);
-
-        // For European markets, prioritize TwelveData
-        if (isEU) {
-            try {
-                const twelveResult = await this.twelvedata.search(query);
-                if (twelveResult.success && twelveResult.results.length > 0) {
-                    console.log(`[DataAggregatorV4] TwelveData found ${twelveResult.results.length} results (EU)`);
-                    
-                    // Enrich with quotes (LIMITED + SEQUENTIAL)
-                    const enriched = await this.enrichWithQuotes(twelveResult.results);
-                    
-                    const response = {
-                        success: true,
-                        results: enriched,
-                        metadata: {
-                            totalResults: enriched.length,
-                            sources: ['twelvedata'],
-                            primarySource: 'twelvedata',
-                            region: 'EU',
-                            timestamp: new Date().toISOString(),
-                            fromCache: false
-                        }
-                    };
-                    
-                    // SAVE TO CACHE
-                    await this.cache.set('search', query, response);
-                    
-                    return response;
-                }
-            } catch (error) {
-                console.error(`[DataAggregatorV4] TwelveData error: ${error.message}`);
-            }
+    async _ensureAuth() {
+        if (this._crumb && this._cookie && Date.now() < this._crumbExpiry) {
+            return true;
         }
 
-        // Try all sources in parallel
-        const searchPromises = [
-            this.twelvedata.search(query).catch(e => ({ success: false, results: [], error: e.message })),
-            this.yahoo.search(query).catch(e => ({ success: false, results: [], error: e.message })),
-            this.finnhub.search(query).catch(e => ({ success: false, results: [], error: e.message })),
-            this.alphavantage.search(query).catch(e => ({ success: false, results: [], error: e.message }))
-        ];
-
-        const results = await Promise.all(searchPromises);
-        
-        // Log results from each source
-        results.forEach((result, index) => {
-            const source = this.sources[index];
-            if (result.success && result.results.length > 0) {
-                console.log(`[${source}] Found ${result.results.length} results`);
-            }
-        });
-
-        // Merge and deduplicate results
-        const mergedResults = this.mergeSearchResults(results);
-        
-        if (mergedResults.length === 0) {
-            return {
-                success: false,
-                results: [],
-                metadata: {
-                    sources: this.sources,
-                    errors: results.map((r, i) => ({ source: this.sources[i], error: r.error })),
-                    fromCache: false
-                }
-            };
-        }
-
-        // Enrich results with quotes from best available source (LIMITED + SEQUENTIAL)
-        const enrichedResults = await this.enrichWithQuotes(mergedResults);
-
-        const response = {
-            success: true,
-            results: enrichedResults,
-            metadata: {
-                totalResults: enrichedResults.length,
-                sources: this.sources.filter((_, i) => results[i] && results[i].success),  // âœ… NULL-SAFE
-                timestamp: new Date().toISOString(),
-                fromCache: false
-            }
-        };
-        
-        // SAVE TO CACHE
-        await this.cache.set('search', query, response);
-
-        return response;
-    }
-
-    /**
-     * Merge search results from multiple sources, removing duplicates
-     */
-    mergeSearchResults(results) {
-        const symbolMap = new Map();
-
-        results.forEach((result, sourceIndex) => {
-            if (!result.success || !result.results) return;
-
-            const source = this.sources[sourceIndex];
-            
-            result.results.forEach(item => {
-                const symbol = item.symbol;
-                
-                if (!symbolMap.has(symbol)) {
-                    symbolMap.set(symbol, {
-                        ...item,
-                        sources: [source]
-                    });
-                } else {
-                    const existing = symbolMap.get(symbol);
-                    
-                    // Prefer TwelveData, then Yahoo, then Finnhub, then AlphaVantage
-                    if (source === 'twelvedata' || 
-                        (source === 'yahoo' && existing.sources[0] !== 'twelvedata') ||
-                        (source === 'finnhub' && !['twelvedata', 'yahoo'].includes(existing.sources[0]))) {
-                        symbolMap.set(symbol, {
-                            ...existing,
-                            ...item,
-                            sources: [...existing.sources, source]
-                        });
-                    } else {
-                        existing.sources.push(source);
-                    }
-                }
+        try {
+            // Step 1: Get consent cookie by visiting Yahoo Finance
+            const initResp = await axios.get('https://fc.yahoo.com', {
+                headers: {
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+                },
+                timeout: 10000,
+                maxRedirects: 5,
+                validateStatus: () => true  // Accept any status
             });
-        });
 
-        return Array.from(symbolMap.values());
+            // Extract cookies from response
+            const setCookies = initResp.headers['set-cookie'];
+            if (setCookies) {
+                this._cookie = setCookies.map(c => c.split(';')[0]).join('; ');
+            }
+
+            // Step 2: Get crumb using the cookie
+            const crumbResp = await axios.get('https://query2.finance.yahoo.com/v1/test/getcrumb', {
+                headers: {
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+                    'Cookie': this._cookie || ''
+                },
+                timeout: 10000
+            });
+
+            if (crumbResp.data && typeof crumbResp.data === 'string') {
+                this._crumb = crumbResp.data;
+                this._crumbExpiry = Date.now() + 30 * 60 * 1000; // 30 min
+                console.log('[Yahoo] Auth: crumb obtained successfully');
+                return true;
+            }
+        } catch (error) {
+            console.error('[Yahoo] Auth error:', error.message);
+        }
+
+        this._crumb = null;
+        this._cookie = null;
+        return false;
     }
 
     /**
-     * Enrich search results with real-time quotes + FUNDAMENTAL DATA
-     * FIXED: Limit to 3 results + sequential with delay to avoid rate limiting
+     * Make authenticated request to Yahoo API
      */
-    async enrichWithQuotes(results) {
-        // LIMIT TO 3 RESULTS
-        const limitedResults = results.slice(0, 3);
-        const enrichedResults = [];
-
-        console.log(`[DataAggregatorV4] Enriching ${limitedResults.length} results (limited from ${results.length})`);
-
-        // SEQUENTIAL (not parallel) to avoid rate limiting
-        for (const item of limitedResults) {
-            // Check if we already have BOTH price AND fundamentals
-            const hasFundamentals = item.marketCap || item.peRatio || item.dividendYield || item.week52High;
-            
-            if (item.price != null && typeof item.price === 'number' && hasFundamentals) {
-                // Already complete, skip
-                enrichedResults.push(item);
-                continue;
-            }
-
-            const quote = await this.getQuote(item.symbol);
-            
-            if (quote.success && quote.data) {
-                // Smart name: prefer FIGI/original name over Yahoo ticker-names
-                const bestName = this._bestName(item.name, item.figiName, quote.data.name, item.symbol);
-                const bestDesc = this._bestName(quote.data.description, item.description, bestName);
-                
-                const isFund = this._isFundType(item.type) || this._isFundType(quote.data.type);
-                
-                const enriched = {
-                    ...item,
-                    name: bestName,
-                    description: bestDesc,
-                    price: item.price || quote.data.price,
-                    change: item.change ?? quote.data.change,
-                    changePercent: item.changePercent ?? quote.data.changePercent,
-                    currency: quote.data.currency || item.currency,
-                    // FUNDAMENTAL DATA - use quote data if item doesn't have it
-                    marketCap: item.marketCap || quote.data.marketCap || null,
-                    peRatio: item.peRatio || quote.data.peRatio || null,
-                    dividendYield: item.dividendYield || quote.data.dividendYield || null,
-                    week52High: item.week52High || quote.data.week52High || null,
-                    week52Low: item.week52Low || quote.data.week52Low || null,
-                    quoteSources: [quote.source]
-                };
-                
-                // Fund-specific: add NAV/AUM, mark metrics as fund-type
-                if (isFund) {
-                    enriched.instrumentCategory = 'fund';
-                    enriched.nav = enriched.price; // For funds, price IS the NAV
-                    enriched.totalAssets = quote.data.totalAssets || item.totalAssets || null;
-                    // P/E and MarketCap are not meaningful for funds
-                    enriched.peRatio = null;
-                    enriched.marketCap = null;
-                }
-                
-                enrichedResults.push(enriched);
-            } else {
-                enrichedResults.push(item);
-            }
-
-            // SMALL DELAY to avoid rate limiting
-            await new Promise(resolve => setTimeout(resolve, 100));
-        }
-
-        return enrichedResults;
-    }
-
-    /**
-     * Get quote with intelligent routing + CACHE
-     * STRATEGY: FMP first (complete fundamentals + description), then Yahoo, then TwelveData
-     */
-    async getQuote(symbol) {
-        console.log(`[DataAggregatorV4] Getting quote for: ${symbol}`);
-
-        // 1. CHECK CACHE FIRST
-        const cached = await this.cache.get('quote', symbol);
-        if (cached) {
-            console.log(`[DataAggregatorV4] ðŸš€ QUOTE CACHE HIT: ${symbol}`);
-            return {
-                ...cached,
-                fromCache: true
-            };
-        }
-
-        // âœ… TRY FINANCIAL MODELING PREP FIRST (complete fundamentals + description!)
-        try {
-            const fmpQuote = await this.fmp.getQuote(symbol);
-            if (fmpQuote.success && fmpQuote.data) {
-                console.log(`[fmp] Quote found: ${fmpQuote.data.price} USD (complete fundamentals + description)`);
-                
-                // SAVE TO CACHE
-                await this.cache.set('quote', symbol, fmpQuote);
-                
-                return fmpQuote;
-            }
-        } catch (error) {
-            console.error(`[fmp] Quote error: ${error.message}`);
-        }
-
-        // FALLBACK: Yahoo (if available)
-        try {
-            const yahooQuote = await this.yahoo.getQuote(symbol);
-            if (yahooQuote.success && yahooQuote.data) {
-                console.log(`[yahoo] Quote found: ${yahooQuote.data.price} ${yahooQuote.data.currency}`);
-                
-                // GET FUNDAMENTALS from Yahoo (getQuote only returns price from chart endpoint)
-                console.log(`[DataAggregatorV4] Fetching fundamentals from Yahoo for ${symbol}...`);
-                const fundamentals = await this.yahoo.getFundamentals(symbol);
-                
-                // Combine price data with fundamentals
-                const combinedQuote = {
-                    ...yahooQuote,
-                    data: {
-                        ...yahooQuote.data,
-                        description: (fundamentals.success && fundamentals.data.description) || yahooQuote.data.description,
-                        marketCap: fundamentals.success ? fundamentals.data.marketCap : null,
-                        peRatio: fundamentals.success ? fundamentals.data.peRatio : null,
-                        dividendYield: fundamentals.success ? fundamentals.data.dividendYield : null,
-                        week52High: fundamentals.success ? fundamentals.data.week52High : null,
-                        week52Low: fundamentals.success ? fundamentals.data.week52Low : null,
-                        sector: fundamentals.success ? fundamentals.data.sector : null,
-                        industry: fundamentals.success ? fundamentals.data.industry : null,
-                        // Fund-specific
-                        totalAssets: fundamentals.success ? fundamentals.data.totalAssets : null,
-                        fundCategory: fundamentals.success ? fundamentals.data.fundCategory : null,
-                        fundFamily: fundamentals.success ? fundamentals.data.fundFamily : null
-                    }
-                };
-                
-                if (fundamentals.success) {
-                    console.log(`[yahoo] Added fundamentals for ${symbol}`);
-                }
-                
-                // SAVE TO CACHE
-                await this.cache.set('quote', symbol, combinedQuote);
-                
-                return combinedQuote;
-            }
-        } catch (error) {
-            console.error(`[yahoo] Quote error: ${error.message}`);
-        }
-
-        // âœ… FALLBACK: TwelveData for price + separate fundamentals call
-        try {
-            const twelveQuote = await this.twelvedata.getQuote(symbol);
-            if (twelveQuote.success && twelveQuote.data) {
-                console.log(`[twelvedata] Quote found: ${twelveQuote.data.price} ${twelveQuote.data.currency}`);
-                
-                // ðŸ†• GET FUNDAMENTALS from TwelveData
-                console.log(`[DataAggregatorV4] Fetching fundamentals from TwelveData for ${symbol}...`);
-                const fundamentals = await this.twelvedata.getFundamentals(symbol);
-                
-                // Combine price data with fundamentals
-                const combinedQuote = {
-                    ...twelveQuote,
-                    data: {
-                        ...twelveQuote.data,
-                        marketCap: fundamentals.success ? fundamentals.data.marketCap : null,
-                        peRatio: fundamentals.success ? fundamentals.data.peRatio : null,
-                        dividendYield: fundamentals.success ? fundamentals.data.dividendYield : null,
-                        week52High: fundamentals.success ? fundamentals.data.week52High : null,
-                        week52Low: fundamentals.success ? fundamentals.data.week52Low : null
-                    }
-                };
-                
-                if (fundamentals.success) {
-                    console.log(`[twelvedata] Added fundamentals for ${symbol}`);
-                }
-                
-                // SAVE TO CACHE
-                await this.cache.set('quote', symbol, combinedQuote);
-                
-                return combinedQuote;
-            }
-        } catch (error) {
-            console.error(`[twelvedata] Quote error: ${error.message}`);
-        }
-
-        // Fallback to Finnhub (no fundamentals)
-        try {
-            const finnhubQuote = await this.finnhub.getQuote(symbol);
-            if (finnhubQuote.success && finnhubQuote.data) {
-                console.log(`[finnhub] Quote found: ${finnhubQuote.data.price}`);
-                
-                // SAVE TO CACHE
-                await this.cache.set('quote', symbol, finnhubQuote);
-                
-                return finnhubQuote;
-            }
-        } catch (error) {
-            console.error(`[finnhub] Quote error: ${error.message}`);
-        }
-
-        // Fallback to Alpha Vantage (no fundamentals)
-        try {
-            const avQuote = await this.alphavantage.getQuote(symbol);
-            if (avQuote.success && avQuote.data) {
-                console.log(`[alphavantage] Quote found: ${avQuote.data.price}`);
-                
-                // SAVE TO CACHE
-                await this.cache.set('quote', symbol, avQuote);
-                
-                return avQuote;
-            }
-        } catch (error) {
-            console.error(`[alphavantage] Quote error: ${error.message}`);
-        }
-
-        return {
-            success: false,
-            error: 'No quote data available from any source'
-        };
-    }
-
-    /**
-     * Get historical data with intelligent routing
-     */
-    async getHistoricalData(symbol, period = '1M') {
-        console.log(`[DataAggregatorV4] Getting historical data: ${symbol}, period: ${period}`);
-
-        // Try TwelveData first
-        try {
-            const twelveHistorical = await this.twelvedata.getHistoricalData(symbol, period);
-            if (twelveHistorical.success && twelveHistorical.data && twelveHistorical.data.length > 0) {
-                console.log(`[twelvedata] Historical data: ${twelveHistorical.data.length} points`);
-                return twelveHistorical;
-            }
-        } catch (error) {
-            console.error(`[twelvedata] Historical error: ${error.message}`);
-        }
-
-        // Fallback to Yahoo
-        try {
-            const yahooHistorical = await this.yahoo.getHistoricalData(symbol, period);
-            if (yahooHistorical.success && yahooHistorical.data && yahooHistorical.data.length > 0) {
-                console.log(`[yahoo] Historical data: ${yahooHistorical.data.length} points`);
-                return yahooHistorical;
-            }
-        } catch (error) {
-            console.error(`[yahoo] Historical error: ${error.message}`);
-        }
-
-        // Fallback to Alpha Vantage
-        try {
-            const avHistorical = await this.alphavantage.getHistoricalData(symbol, period);
-            if (avHistorical.success && avHistorical.data && avHistorical.data.length > 0) {
-                console.log(`[alphavantage] Historical data: ${avHistorical.data.length} points`);
-                return avHistorical;
-            }
-        } catch (error) {
-            console.error(`[alphavantage] Historical error: ${error.message}`);
-        }
-
-        return {
-            success: false,
-            error: 'No historical data available from any source'
-        };
-    }
-
-    /**
-     * Search by ISIN with fallback + CACHE
-     * STRATEGY: Cache → OpenFIGI (ISIN→ticker) → TwelveData → Yahoo → Finnhub
-     * Then enrich with quotes for price data
-     */
-    async searchByISIN(isin) {
-        console.log(`[DataAggregatorV4] Searching by ISIN: ${isin}`);
-
-        // 1. CHECK CACHE FIRST
-        const cached = await this.cache.get('isin', isin);
-        if (cached) {
-            console.log(`[DataAggregatorV4] 🚀 ISIN CACHE HIT!`);
-            return {
-                ...cached,
-                fromCache: true
-            };
-        }
-
-        // 2. Try OpenFIGI FIRST (Bloomberg ISIN resolver - best for funds/ETF/bonds)
-        let openFigiData = null; // Keep FIGI data for ISIN mapping even if price not found
-        try {
-            const figiResult = await this.openfigi.mapISIN(isin);
-            if (figiResult.success && figiResult.results.length > 0) {
-                console.log(`[OpenFIGI] Resolved ISIN ${isin} → ${figiResult.results.length} instrument(s)`);
-                
-                // Get the best Yahoo-compatible symbol
-                const bestSymbol = OpenFigiClient.getBestYahooSymbol(figiResult.results);
-                const bestResult = figiResult.results[0];
-                
-                // Build search results from OpenFIGI data
-                const results = figiResult.results.slice(0, 3).map(r => {
-                    const suffix = OpenFigiClient.exchangeToYahooSuffix(r.exchange);
-                    return {
-                        symbol: r.symbol + suffix,
-                        name: r.name,
-                        figiName: r.name, // Preserved copy that won't get overwritten
-                        type: r.type,
-                        exchange: r.exchange,
-                        currency: r.currency || '',
-                        isin: isin.toUpperCase(),
-                        source: 'openfigi',
-                        figi: r.figi
-                    };
-                }).filter(r => r.symbol);
-
-                if (results.length > 0) {
-                    // Enrich with real-time quotes (price, P/E, etc.)
-                    const enriched = await this.enrichWithQuotes(results);
-                    
-                    // Only return if we actually got a price
-                    const hasPrice = enriched.some(r => r.price != null);
-                    if (hasPrice) {
-                        const response = {
-                            success: true,
-                            results: enriched,
-                            metadata: {
-                                totalResults: enriched.length,
-                                sources: ['openfigi'],
-                                primarySource: 'openfigi',
-                                isin: isin.toUpperCase(),
-                                timestamp: new Date().toISOString(),
-                                fromCache: false
-                            }
-                        };
-                        
-                        await this.cache.set('isin', isin, response, 86400);
-                        return response;
-                    } else {
-                        // Save FIGI data for later (name, type) but continue to other sources for price
-                        openFigiData = results[0];
-                        console.log(`[OpenFIGI] No price for ${results[0].symbol}, trying other sources...`);
-                    }
-                }
-            }
-        } catch (error) {
-            console.error(`[OpenFIGI] ISIN search error: ${error.message}`);
-        }
-
-        // 3. Fallback: Try TwelveData
-        try {
-            const twelveResult = await this.twelvedata.searchByISIN(isin);
-            if (twelveResult.success && twelveResult.results.length > 0) {
-                // Ensure ISIN is preserved in results
-                const resultsWithISIN = twelveResult.results.map(r => ({
-                    ...r,
-                    isin: r.isin || isin.toUpperCase(),
-                    name: this._bestName(openFigiData && openFigiData.name, r.name, r.symbol),
-                    figiName: (openFigiData && openFigiData.name) || null
-                }));
-                const enriched = await this.enrichWithQuotes(resultsWithISIN);
-                const response = {
-                    success: true,
-                    results: enriched,
-                    metadata: {
-                        totalResults: enriched.length,
-                        sources: ['twelvedata'],
-                        isin: isin.toUpperCase(),
-                        timestamp: new Date().toISOString(),
-                        fromCache: false
-                    }
-                };
-                await this.cache.set('isin', isin, response, 86400);
-                return response;
-            }
-        } catch (error) {
-            console.error(`[twelvedata] ISIN search error: ${error.message}`);
-        }
-
-        // 4. Fallback: Try Yahoo
-        try {
-            const yahooResult = await this.yahoo.searchByISIN(isin);
-            if (yahooResult.success && yahooResult.results.length > 0) {
-                const resultsWithISIN = yahooResult.results.map(r => ({
-                    ...r,
-                    isin: r.isin || isin.toUpperCase(),
-                    name: this._bestName(openFigiData && openFigiData.name, r.name, r.symbol),
-                    figiName: (openFigiData && openFigiData.name) || null
-                }));
-                const enriched = await this.enrichWithQuotes(resultsWithISIN);
-                const response = {
-                    success: true,
-                    results: enriched,
-                    metadata: {
-                        totalResults: enriched.length,
-                        sources: ['yahoo'],
-                        isin: isin.toUpperCase(),
-                        timestamp: new Date().toISOString(),
-                        fromCache: false
-                    }
-                };
-                await this.cache.set('isin', isin, response, 86400);
-                return response;
-            }
-        } catch (error) {
-            console.error(`[yahoo] ISIN search error: ${error.message}`);
-        }
-
-        // 5. Fallback: Try Finnhub
-        try {
-            const finnhubResult = await this.finnhub.searchByISIN(isin);
-            if (finnhubResult.success && finnhubResult.results.length > 0) {
-                const resultsWithISIN = finnhubResult.results.map(r => ({
-                    ...r,
-                    isin: r.isin || isin.toUpperCase(),
-                    name: this._bestName(openFigiData && openFigiData.name, r.name, r.symbol),
-                    figiName: (openFigiData && openFigiData.name) || null
-                }));
-                const enriched = await this.enrichWithQuotes(resultsWithISIN);
-                const response = {
-                    success: true,
-                    results: enriched,
-                    metadata: {
-                        totalResults: enriched.length,
-                        sources: ['finnhub'],
-                        isin: isin.toUpperCase(),
-                        timestamp: new Date().toISOString(),
-                        fromCache: false
-                    }
-                };
-                await this.cache.set('isin', isin, response, 86400);
-                return response;
-            }
-        } catch (error) {
-            console.error(`[finnhub] ISIN search error: ${error.message}`);
-        }
-
-        // 6. Last resort: return OpenFIGI data without price (at least show name + external links)
-        if (openFigiData) {
-            console.log(`[DataAggregatorV4] Returning OpenFIGI data without price for ${isin}`);
-            const response = {
-                success: true,
-                results: [{
-                    ...openFigiData,
-                    isin: isin.toUpperCase()
-                }],
-                metadata: {
-                    totalResults: 1,
-                    sources: ['openfigi'],
-                    primarySource: 'openfigi',
-                    isin: isin.toUpperCase(),
-                    timestamp: new Date().toISOString(),
-                    fromCache: false,
-                    note: 'No price available from any source'
-                }
-            };
-            await this.cache.set('isin', isin, response, 3600); // shorter TTL since no price
-            return response;
-        }
-
-        return {
-            success: false,
-            results: [],
-            error: 'No results for ISIN from any source'
-        };
-    }
-
-    /**
-     * Get complete instrument details with fundamentals (description, marketCap, PE, etc)
-     * PRIMARY: Financial Modeling Prep (complete data)
-     * FALLBACK: Quote data
-     */
-    async getInstrumentDetails(symbol) {
-        console.log(`[DataAggregatorV4] Getting instrument details for: ${symbol}`);
+    async _authGet(url, params = {}) {
+        await this._ensureAuth();
         
-        // 1. CHECK CACHE FIRST
-        const cached = await this.cache.get('details', symbol);
-        if (cached) {
-            console.log(`[DataAggregatorV4] ðŸš€ CACHE HIT! Returning cached details`);
-            return {
-                ...cached,
-                fromCache: true
-            };
+        if (this._crumb) {
+            params.crumb = this._crumb;
         }
-        
-        // 2. Try Financial Modeling Prep (complete fundamentals)
-        try {
-            const fmpResult = await this.fmp.getQuote(symbol);
-            if (fmpResult.success) {
-                console.log(`[FMP] Complete details for ${symbol}: ${fmpResult.data.price} ${fmpResult.data.currency}`);
-                
-                const response = {
-                    success: true,
-                    data: fmpResult.data,
-                    source: 'fmp',
-                    fromCache: false
-                };
-                
-                // SAVE TO CACHE (longer TTL for details: 1 hour)
-                await this.cache.set('details', symbol, response, 3600);
-                
-                return response;
-            }
-        } catch (error) {
-            console.error(`[FMP] Details error: ${error.message}`);
-        }
-        
-        // 3. Fallback: Try to get quote data (less complete but better than nothing)
-        try {
-            const quoteResult = await this.getQuote(symbol);
-            if (quoteResult.success) {
-                console.log(`[DataAggregatorV4] Using quote data as fallback for details`);
-                
-                const response = {
-                    success: true,
-                    data: {
-                        ...quoteResult.data,
-                        description: quoteResult.data.name || `${symbol} stock`,
-                        // Add placeholder fundamentals if missing
-                        marketCap: quoteResult.data.marketCap || null,
-                        peRatio: quoteResult.data.peRatio || null,
-                        dividendYield: quoteResult.data.dividendYield || null,
-                        week52High: quoteResult.data.week52High || null,
-                        week52Low: quoteResult.data.week52Low || null,
-                        // Fund-specific fields
-                        totalAssets: quoteResult.data.totalAssets || null,
-                        fundCategory: quoteResult.data.fundCategory || null,
-                        fundFamily: quoteResult.data.fundFamily || null
-                    },
-                    source: quoteResult.source,
-                    fromCache: false
-                };
-                
-                // SAVE TO CACHE
-                await this.cache.set('details', symbol, response, 3600);
-                
-                return response;
-            }
-        } catch (error) {
-            console.error(`[DataAggregatorV4] Fallback details error: ${error.message}`);
-        }
-        
-        return {
-            success: false,
-            error: 'Could not fetch instrument details from any source'
-        };
-    }
 
-    /**
-     * Health check for all sources + Redis
-     */
-    async healthCheck() {
-        console.log('[DataAggregatorV4] Running health check...');
-        
-        const checks = await Promise.all([
-            this.twelvedata.search('AAPL')
-                .then(() => ({ twelvedata: 'OK' }))
-                .catch(() => ({ twelvedata: 'FAIL' })),
-            this.yahoo.search('AAPL')
-                .then(() => ({ yahoo: 'OK' }))
-                .catch(() => ({ yahoo: 'FAIL' })),
-            this.finnhub.search('AAPL')
-                .then(() => ({ finnhub: 'OK' }))
-                .catch(() => ({ finnhub: 'FAIL' })),
-            this.alphavantage.search('IBM')
-                .then(() => ({ alphavantage: 'OK' }))
-                .catch(() => ({ alphavantage: 'FAIL' })),
-            this.openfigi.mapISIN('US0378331005')
-                .then(r => ({ openfigi: r.success ? 'OK' : 'FAIL' }))
-                .catch(() => ({ openfigi: 'FAIL' }))
-        ]);
-
-        const sources = Object.assign({}, ...checks);
-        const usageStats = this.twelvedata.getUsageStats();
-        
-        // Redis health check
-        const redisHealth = await this.cache.healthCheck();
-        const cacheStats = await this.cache.getStats();
-
-        return {
-            status: 'operational',
-            version: '4.2.0-FINAL',
-            sources: sources,
-            twelveDataUsage: usageStats,
-            redis: {
-                health: redisHealth,
-                stats: cacheStats
+        return axios.get(url, {
+            params,
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                'Accept': 'application/json',
+                'Referer': 'https://finance.yahoo.com',
+                'Origin': 'https://finance.yahoo.com',
+                'Cookie': this._cookie || ''
             },
-            timestamp: new Date().toISOString()
+            timeout: 15000
+        });
+    }
+
+    async search(query) {
+        try {
+            const searchQuery = this.normalizeItalianSymbol(query);
+            
+            // Use v1 search endpoint with auth
+            const url = `https://query2.finance.yahoo.com/v1/finance/search`;
+            const response = await this._authGet(url, {
+                q: searchQuery,
+                lang: 'en-US',
+                region: 'US',
+                quotesCount: 10,
+                newsCount: 0,
+                listsCount: 0,
+                enableFuzzyQuery: false
+            });
+
+            if (!response.data?.quotes) {
+                return { success: false, results: [] };
+            }
+
+            const results = response.data.quotes
+                .filter(q => q.symbol)
+                .map(quote => ({
+                    symbol: quote.symbol,
+                    name: quote.shortname || quote.longname || quote.symbol,
+                    description: quote.longname || quote.shortname || '',
+                    type: this._mapQuoteType(quote.quoteType),
+                    exchange: quote.exchange,
+                    currency: quote.currency || 'USD',
+                    isin: quote.isin || null,
+                    country: this.getCountryFromExchange(quote.exchange),
+                    price: null,
+                    change: null,
+                    changePercent: null
+                }));
+
+            return { success: true, results, source: 'yahoo' };
+
+        } catch (error) {
+            console.error('[Yahoo] Search error:', error.message);
+            return { success: false, results: [], error: error.message };
+        }
+    }
+
+    /**
+     * Map Yahoo quoteType to standard types
+     */
+    _mapQuoteType(quoteType) {
+        const map = {
+            'EQUITY': 'Stock',
+            'ETF': 'ETF',
+            'MUTUALFUND': 'Fund',
+            'INDEX': 'Index',
+            'CURRENCY': 'Currency',
+            'CRYPTOCURRENCY': 'Crypto',
+            'FUTURE': 'Future',
+            'OPTION': 'Option',
+        };
+        return map[quoteType] || quoteType || 'Unknown';
+    }
+
+    async getQuote(symbol) {
+        // PRIMARY: Use v8 chart endpoint (free, unlimited, global)
+        try {
+            const url = `${this.baseUrlV8}/finance/chart/${symbol}`;
+            const response = await axios.get(url, {
+                params: { range: '1d', interval: '1m' },
+                headers: {
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                    'Accept': 'application/json',
+                    'Referer': 'https://finance.yahoo.com',
+                    'Origin': 'https://finance.yahoo.com'
+                },
+                timeout: 15000
+            });
+
+            const result = response.data?.chart?.result?.[0];
+            if (!result) return { success: false };
+
+            const meta = result.meta;
+            const price = meta.regularMarketPrice;
+            const prevClose = meta.chartPreviousClose || meta.previousClose;
+
+            if (!price) return { success: false };
+
+            const change = prevClose ? +(price - prevClose).toFixed(4) : null;
+            const changePercent = prevClose ? +((change / prevClose) * 100).toFixed(2) : null;
+
+            return {
+                success: true,
+                data: {
+                    symbol: meta.symbol || symbol,
+                    name: meta.shortName || meta.longName || symbol,
+                    description: meta.longName || meta.shortName || symbol,
+                    price: price,
+                    change: change,
+                    changePercent: changePercent,
+                    currency: meta.currency || 'USD',
+                    exchange: meta.exchangeName || meta.exchange || '',
+                    marketCap: null,
+                    previousClose: prevClose,
+                    dayHigh: meta.regularMarketDayHigh || null,
+                    dayLow: meta.regularMarketDayLow || null,
+                    volume: meta.regularMarketVolume || null,
+                    timestamp: new Date().toISOString()
+                },
+                source: 'yahoo-chart'
+            };
+
+        } catch (error) {
+            console.error('[Yahoo] Chart-quote error:', error.message);
+        }
+
+        // FALLBACK: Try v7 quote with auth
+        try {
+            const url = `${this.baseUrlV7}/finance/quote`;
+            const response = await this._authGet(url, {
+                symbols: symbol,
+                fields: 'symbol,regularMarketPrice,regularMarketChange,regularMarketChangePercent,currency,shortName,longName,exchange,marketCap'
+            });
+
+            const quote = response.data?.quoteResponse?.result?.[0];
+            if (!quote) return { success: false };
+
+            return {
+                success: true,
+                data: {
+                    symbol: quote.symbol,
+                    name: quote.shortName || quote.longName,
+                    description: quote.longName || quote.shortName,
+                    price: quote.regularMarketPrice,
+                    change: quote.regularMarketChange,
+                    changePercent: quote.regularMarketChangePercent,
+                    currency: quote.currency || 'USD',
+                    exchange: quote.exchange,
+                    marketCap: quote.marketCap || null,
+                    timestamp: new Date().toISOString()
+                },
+                source: 'yahoo'
+            };
+
+        } catch (error) {
+            console.error('[Yahoo] V7 quote error:', error.message);
+            return { success: false, error: error.message };
+        }
+    }
+
+    /**
+     * Get fundamentals (marketCap, P/E, dividend, 52W, description) via Yahoo
+     * Uses v8 chart for 52W range + quoteSummary for fundamentals
+     */
+    async getFundamentals(symbol) {
+        const fundamentals = {
+            marketCap: null,
+            peRatio: null,
+            dividendYield: null,
+            week52High: null,
+            week52Low: null,
+            description: null,
+            industry: null,
+            sector: null,
+            totalAssets: null,       // Fund AUM
+            fundCategory: null,      // Fund category (e.g., "EUR Flexible Bond")
+            fundFamily: null         // Fund family (e.g., "Carmignac")
+        };
+
+        // 1. Get 52W High/Low from 1Y chart data
+        try {
+            const url = `${this.baseUrlV8}/finance/chart/${symbol}`;
+            const response = await axios.get(url, {
+                params: { range: '1y', interval: '1d' },
+                headers: {
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+                    'Accept': 'application/json',
+                    'Referer': 'https://finance.yahoo.com',
+                    'Origin': 'https://finance.yahoo.com'
+                },
+                timeout: 15000
+            });
+
+            const result = response.data?.chart?.result?.[0];
+            if (result) {
+                const meta = result.meta;
+                fundamentals.week52High = meta.fiftyTwoWeekHigh || null;
+                fundamentals.week52Low = meta.fiftyTwoWeekLow || null;
+
+                // Calculate from actual data if meta doesn't have it
+                if (!fundamentals.week52High && result.indicators?.quote?.[0]) {
+                    const highs = result.indicators.quote[0].high.filter(h => h != null);
+                    const lows = result.indicators.quote[0].low.filter(l => l != null);
+                    if (highs.length) fundamentals.week52High = Math.max(...highs);
+                    if (lows.length) fundamentals.week52Low = Math.min(...lows);
+                }
+            }
+        } catch (error) {
+            console.error('[Yahoo] 52W chart error:', error.message);
+        }
+
+        // 2. Try quoteSummary for fundamentals + description (requires auth)
+        try {
+            const url = `https://query2.finance.yahoo.com/v10/finance/quoteSummary/${symbol}`;
+            const response = await this._authGet(url, {
+                modules: 'summaryProfile,summaryDetail,defaultKeyStatistics,financialData,price'
+            });
+
+            const qr = response.data?.quoteSummary?.result?.[0];
+            if (qr) {
+                // Profile
+                if (qr.summaryProfile) {
+                    fundamentals.description = qr.summaryProfile.longBusinessSummary || null;
+                    fundamentals.industry = qr.summaryProfile.industry || null;
+                    fundamentals.sector = qr.summaryProfile.sector || null;
+                    fundamentals.website = qr.summaryProfile.website || null;
+                }
+                // Key Statistics (includes totalAssets for funds)
+                if (qr.defaultKeyStatistics) {
+                    const ks = qr.defaultKeyStatistics;
+                    fundamentals.peRatio = ks.forwardPE?.raw ? +ks.forwardPE.raw.toFixed(2) : 
+                                          (ks.trailingPE?.raw ? +ks.trailingPE.raw.toFixed(2) : null);
+                    // Fund AUM (totalAssets)
+                    if (ks.totalAssets?.raw) {
+                        fundamentals.totalAssets = ks.totalAssets.raw;
+                    }
+                }
+                // Financial Data
+                if (qr.financialData) {
+                    const fd = qr.financialData;
+                    fundamentals.marketCap = fd.marketCap?.raw || null;
+                }
+                // Price module (backup for marketCap, PE)
+                if (qr.price) {
+                    const p = qr.price;
+                    if (!fundamentals.marketCap) fundamentals.marketCap = p.marketCap?.raw || null;
+                    if (!fundamentals.peRatio) fundamentals.peRatio = p.trailingPE?.raw ? +p.trailingPE.raw.toFixed(2) : null;
+                    if (p.dividendYield?.raw) {
+                        fundamentals.dividendYield = p.dividendYield.raw;
+                    }
+                }
+                // SummaryDetail (best source for dividend yield)
+                if (qr.summaryDetail) {
+                    const sd = qr.summaryDetail;
+                    if (!fundamentals.dividendYield) {
+                        fundamentals.dividendYield = sd.dividendYield?.raw || sd.trailingAnnualDividendYield?.raw || null;
+                    }
+                    if (!fundamentals.peRatio) {
+                        const pe = sd.trailingPE?.raw || sd.forwardPE?.raw || null;
+                        fundamentals.peRatio = pe ? +pe.toFixed(2) : null;
+                    }
+                    if (!fundamentals.week52High) fundamentals.week52High = sd.fiftyTwoWeekHigh?.raw || null;
+                    if (!fundamentals.week52Low) fundamentals.week52Low = sd.fiftyTwoWeekLow?.raw || null;
+                    if (!fundamentals.marketCap) fundamentals.marketCap = sd.marketCap?.raw || null;
+                }
+            }
+        } catch (error) {
+            console.error('[Yahoo] QuoteSummary error:', error.message);
+        }
+
+        // 3. Try fund-specific data (separate call - may fail for non-fund instruments)
+        try {
+            const url = `https://query2.finance.yahoo.com/v10/finance/quoteSummary/${symbol}`;
+            const response = await this._authGet(url, {
+                modules: 'fundProfile'
+            });
+            const qr = response.data?.quoteSummary?.result?.[0];
+            if (qr && qr.fundProfile) {
+                fundamentals.fundCategory = qr.fundProfile.categoryName || null;
+                fundamentals.fundFamily = qr.fundProfile.family || null;
+                console.log(`[Yahoo] Fund profile found: ${fundamentals.fundFamily} / ${fundamentals.fundCategory}`);
+            }
+        } catch (error) {
+            // Expected to fail for non-fund instruments - silently ignore
+        }
+
+        const hasData = Object.values(fundamentals).some(v => v != null);
+        return {
+            success: hasData,
+            data: fundamentals,
+            source: 'yahoo'
         };
     }
 
-    /**
-     * Get cache statistics
-     */
-    async getCacheStats() {
-        return await this.cache.getStats();
+    async getHistoricalData(symbol, period = '1M') {
+        try {
+            const periodMap = {
+                '1D': { range: '1d', interval: '5m' },
+                '1W': { range: '5d', interval: '1h' },
+                '1M': { range: '1mo', interval: '1d' },
+                '3M': { range: '3mo', interval: '1d' },
+                '6M': { range: '6mo', interval: '1d' },
+                'YTD': { range: 'ytd', interval: '1d' },
+                '1Y': { range: '1y', interval: '1d' },
+                '3Y': { range: '3y', interval: '1wk' },
+                '5Y': { range: '5y', interval: '1wk' },
+                'MAX': { range: 'max', interval: '1mo' }
+            };
+
+            const params = periodMap[period] || periodMap['1M'];
+            const url = `${this.baseUrlV8}/finance/chart/${symbol}`;
+            
+            const response = await axios.get(url, {
+                params: { range: params.range, interval: params.interval },
+                headers: {
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                    'Accept': 'application/json',
+                    'Accept-Language': 'en-US,en;q=0.9',
+                    'Referer': 'https://finance.yahoo.com',
+                    'Origin': 'https://finance.yahoo.com'
+                },
+                timeout: 15000
+            });
+
+            const result = response.data?.chart?.result?.[0];
+            const timestamps = result?.timestamp;
+            const quotes = result?.indicators?.quote?.[0];
+
+            if (!timestamps || !quotes) {
+                return { success: false };
+            }
+
+            const historicalData = timestamps
+                .map((timestamp, index) => ({
+                    date: new Date(timestamp * 1000).toISOString().split('T')[0],
+                    open: quotes.open[index],
+                    high: quotes.high[index],
+                    low: quotes.low[index],
+                    close: quotes.close[index],
+                    volume: quotes.volume[index]
+                }))
+                .filter(item => item.close !== null);
+
+            return {
+                success: true,
+                symbol: symbol,
+                data: historicalData,
+                source: 'yahoo'
+            };
+
+        } catch (error) {
+            console.error('[Yahoo] Historical error:', error.message);
+            return { success: false, error: error.message };
+        }
+    }
+
+    async searchByISIN(isin) {
+        return this.search(isin);
     }
 
     /**
-     * Clear all cache
+     * Normalizza simboli italiani aggiungendo .MI se necessario
      */
-    async clearCache() {
-        return await this.cache.clearAll();
+    normalizeItalianSymbol(query) {
+        const italianStocks = {
+            'ENEL': 'ENEL.MI',
+            'ENI': 'ENI.MI',
+            'INTESA': 'ISP.MI',
+            'UNICREDIT': 'UCG.MI',
+            'GENERALI': 'G.MI',
+            'FERRARI': 'RACE.MI',
+            'STELLANTIS': 'STLA.MI',
+            'LEONARDO': 'LDO.MI',
+            'PRYSMIAN': 'PRY.MI',
+            'TELECOM': 'TIT.MI'
+        };
+
+        const upperQuery = query.toUpperCase();
+        return italianStocks[upperQuery] || query;
+    }
+
+    /**
+     * Determina il paese dall'exchange
+     */
+    getCountryFromExchange(exchange) {
+        const exchangeCountryMap = {
+            'MIL': 'IT', 'Milan': 'IT',
+            'NYSE': 'US', 'NMS': 'US', 'NYQ': 'US',
+            'LSE': 'GB', 'LON': 'GB',
+            'FRA': 'DE', 'XETRA': 'DE',
+            'PAR': 'FR', 'EPA': 'FR',
+            'AMS': 'NL',
+            'SWX': 'CH',
+            'BME': 'ES'
+        };
+        return exchangeCountryMap[exchange] || 'US';
     }
 }
 
-module.exports = DataAggregatorV4;
+module.exports = YahooFinanceClient;
