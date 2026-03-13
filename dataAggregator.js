@@ -15,6 +15,7 @@ const FinnhubClient = require('./finnhub');
 const AlphaVantageClient = require('./alphaVantage');
 const FinancialModelingPrepClient = require('./financialModelingPrep');
 const OpenFigiClient = require('./openFigi');
+const MorningstarClient = require('./morningstar');
 const RedisCache = require('./redisCache');
 
 class DataAggregatorV4 {
@@ -31,6 +32,9 @@ class DataAggregatorV4 {
         
         // Initialize OpenFIGI (Bloomberg ISIN resolver)
         this.openfigi = new OpenFigiClient(config.openFigiKey || process.env.OPENFIGI_API_KEY);
+        
+        // Initialize Morningstar (fund name resolution)
+        this.morningstar = new MorningstarClient();
         
         // Priority for SEARCH: TwelveData > FMP > Yahoo > Finnhub > AlphaVantage
         this.sources = ['twelvedata', 'fmp', 'yahoo', 'finnhub', 'alphavantage'];
@@ -271,8 +275,8 @@ class DataAggregatorV4 {
                 const quote = await this.getQuote(item.symbol);
                 
                 if (quote.success && quote.data) {
-                    // Smart name: fundName (from Yahoo quoteSummary longName) > FIGI name > chart name > symbol
-                    const bestName = this._bestName(quote.data.fundName, item.name, item.figiName, quote.data.name, item.symbol);
+                    // Smart name: fundName (quoteSummary) > morningstarName > FIGI name > chart name > symbol
+                    const bestName = this._bestName(quote.data.fundName, item.morningstarName, item.name, item.figiName, quote.data.name, item.symbol);
                     const bestDesc = this._bestName(quote.data.description, item.description, bestName);
                     
                     const isFund = this._isFundType(item.type) || this._isFundType(quote.data.type);
@@ -540,6 +544,20 @@ class DataAggregatorV4 {
 
         // 2. Try OpenFIGI FIRST (Bloomberg ISIN resolver - best for funds/ETF/bonds)
         let openFigiData = null; // Keep FIGI data for ISIN mapping even if price not found
+        let morningstarName = null; // Real name from Morningstar
+        
+        // 2a. Try Morningstar for real fund/ETF name (THE authoritative source)
+        try {
+            const msResult = await this.morningstar.searchByISIN(isin);
+            if (msResult.success && msResult.data && msResult.data.name) {
+                morningstarName = msResult.data.name;
+                console.log(`[Morningstar] Resolved name: "${morningstarName}" for ${isin}`);
+            }
+        } catch (e) {
+            console.warn(`[Morningstar] Name lookup failed: ${e.message}`);
+        }
+
+        // 2b. Try OpenFIGI
         try {
             const figiResult = await this.openfigi.mapISIN(isin);
             if (figiResult.success && figiResult.results.length > 0) {
@@ -554,8 +572,10 @@ class DataAggregatorV4 {
                     const suffix = OpenFigiClient.exchangeToYahooSuffix(r.exchange);
                     return {
                         symbol: r.symbol + suffix,
-                        name: r.name,
+                        // Use Morningstar name if available (real fund name), fallback to FIGI name
+                        name: this._bestName(morningstarName, r.name, r.symbol + suffix),
                         figiName: r.name, // Preserved copy that won't get overwritten
+                        morningstarName: morningstarName, // Preserved copy from Morningstar
                         type: r.type,
                         exchange: r.exchange,
                         currency: r.currency || '',
@@ -611,8 +631,9 @@ class DataAggregatorV4 {
                 const resultsWithISIN = twelveResult.results.map(r => ({
                     ...r,
                     isin: r.isin || isin.toUpperCase(),
-                    name: this._bestName(openFigiData && openFigiData.name, r.name, r.symbol),
-                    figiName: (openFigiData && openFigiData.name) || null
+                    name: this._bestName(morningstarName, openFigiData && openFigiData.name, r.name, r.symbol),
+                    figiName: (openFigiData && openFigiData.name) || null,
+                    morningstarName: morningstarName || null
                 }));
                 const enriched = await this.enrichWithQuotes(resultsWithISIN);
                 const response = {
@@ -640,8 +661,9 @@ class DataAggregatorV4 {
                 const resultsWithISIN = yahooResult.results.map(r => ({
                     ...r,
                     isin: r.isin || isin.toUpperCase(),
-                    name: this._bestName(openFigiData && openFigiData.name, r.name, r.symbol),
-                    figiName: (openFigiData && openFigiData.name) || null
+                    name: this._bestName(morningstarName, openFigiData && openFigiData.name, r.name, r.symbol),
+                    figiName: (openFigiData && openFigiData.name) || null,
+                    morningstarName: morningstarName || null
                 }));
                 const enriched = await this.enrichWithQuotes(resultsWithISIN);
                 const response = {
@@ -669,8 +691,9 @@ class DataAggregatorV4 {
                 const resultsWithISIN = finnhubResult.results.map(r => ({
                     ...r,
                     isin: r.isin || isin.toUpperCase(),
-                    name: this._bestName(openFigiData && openFigiData.name, r.name, r.symbol),
-                    figiName: (openFigiData && openFigiData.name) || null
+                    name: this._bestName(morningstarName, openFigiData && openFigiData.name, r.name, r.symbol),
+                    figiName: (openFigiData && openFigiData.name) || null,
+                    morningstarName: morningstarName || null
                 }));
                 const enriched = await this.enrichWithQuotes(resultsWithISIN);
                 const response = {
