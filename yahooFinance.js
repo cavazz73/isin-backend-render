@@ -115,7 +115,7 @@ class YahooFinanceClient {
                 .filter(q => q.symbol)
                 .map(quote => ({
                     symbol: quote.symbol,
-                    name: quote.shortname || quote.longname || quote.symbol,
+                    name: this._pickBestName(quote.shortname, quote.longname, quote.symbol),
                     description: quote.longname || quote.shortname || '',
                     type: this._mapQuoteType(quote.quoteType),
                     exchange: quote.exchange,
@@ -152,6 +152,20 @@ class YahooFinanceClient {
         return map[quoteType] || quoteType || 'Unknown';
     }
 
+    /**
+     * Pick the best human-readable name from Yahoo meta fields
+     * shortName for funds is often the Morningstar ticker (e.g. "0P0001FE3K.F")
+     * longName is usually the real name (e.g. "Carmignac Portfolio Credit A EUR Acc")
+     */
+    _pickBestName(shortName, longName, fallback) {
+        const isReal = (n) => n && typeof n === 'string' && n.includes(' ') && n.length > 3 && !/^0P/.test(n);
+        // Prefer whichever looks like a real name
+        if (isReal(longName)) return longName;
+        if (isReal(shortName)) return shortName;
+        // Fall back to whichever exists
+        return shortName || longName || fallback;
+    }
+
     async getQuote(symbol) {
         // PRIMARY: Use v8 chart endpoint (free, unlimited, global)
         try {
@@ -183,7 +197,7 @@ class YahooFinanceClient {
                 success: true,
                 data: {
                     symbol: meta.symbol || symbol,
-                    name: meta.shortName || meta.longName || symbol,
+                    name: this._pickBestName(meta.shortName, meta.longName, symbol),
                     description: meta.longName || meta.shortName || symbol,
                     price: price,
                     change: change,
@@ -219,7 +233,7 @@ class YahooFinanceClient {
                 success: true,
                 data: {
                     symbol: quote.symbol,
-                    name: quote.shortName || quote.longName,
+                    name: this._pickBestName(quote.shortName, quote.longName, symbol),
                     description: quote.longName || quote.shortName,
                     price: quote.regularMarketPrice,
                     change: quote.regularMarketChange,
