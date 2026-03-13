@@ -39,6 +39,48 @@ class DataAggregatorV4 {
     }
 
     /**
+     * Check if a name is a real human-readable name (not a ticker/code)
+     * Tickers: "0P0001FE3K.F", "AAPL", "XS2345678901"
+     * Real names: "Carmignac Portfolio Credit", "Apple Inc"
+     */
+    _isRealName(name) {
+        if (!name || typeof name !== 'string') return false;
+        const trimmed = name.trim();
+        if (trimmed.length < 3) return false;
+        // Must contain at least one space (real names have spaces)
+        if (!trimmed.includes(' ')) return false;
+        // Should not look like a Morningstar ID (0P0001...)
+        if (/^0P[0-9A-Z]{6,}/.test(trimmed)) return false;
+        // Should not look like an ISIN
+        if (/^[A-Z]{2}[A-Z0-9]{9,10}$/.test(trimmed)) return false;
+        return true;
+    }
+
+    /**
+     * Pick the best available name from multiple sources
+     */
+    _bestName(...candidates) {
+        // First pass: find a real name (with spaces, human-readable)
+        for (const name of candidates) {
+            if (this._isRealName(name)) return name;
+        }
+        // Second pass: any non-empty string
+        for (const name of candidates) {
+            if (name && typeof name === 'string' && name.trim().length > 0) return name.trim();
+        }
+        return 'N/A';
+    }
+
+    /**
+     * Detect if instrument is a fund/OICR type
+     */
+    _isFundType(type) {
+        if (!type) return false;
+        const t = type.toLowerCase();
+        return ['fund', 'mutual fund', 'open-end fund', 'closed-end fund', 'mutualfund', 'oicr'].includes(t);
+    }
+
+    /**
      * Determine if query is for European market
      */
     isEuropeanMarket(query) {
@@ -228,9 +270,16 @@ class DataAggregatorV4 {
             const quote = await this.getQuote(item.symbol);
             
             if (quote.success && quote.data) {
-                enrichedResults.push({
+                // Smart name: prefer FIGI/original name over Yahoo ticker-names
+                const bestName = this._bestName(item.name, item.figiName, quote.data.name, item.symbol);
+                const bestDesc = this._bestName(quote.data.description, item.description, bestName);
+                
+                const isFund = this._isFundType(item.type) || this._isFundType(quote.data.type);
+                
+                const enriched = {
                     ...item,
-                    description: quote.data.description || item.description,
+                    name: bestName,
+                    description: bestDesc,
                     price: item.price || quote.data.price,
                     change: item.change ?? quote.data.change,
                     changePercent: item.changePercent ?? quote.data.changePercent,
@@ -242,7 +291,19 @@ class DataAggregatorV4 {
                     week52High: item.week52High || quote.data.week52High || null,
                     week52Low: item.week52Low || quote.data.week52Low || null,
                     quoteSources: [quote.source]
-                });
+                };
+                
+                // Fund-specific: add NAV/AUM, mark metrics as fund-type
+                if (isFund) {
+                    enriched.instrumentCategory = 'fund';
+                    enriched.nav = enriched.price; // For funds, price IS the NAV
+                    enriched.totalAssets = quote.data.totalAssets || item.totalAssets || null;
+                    // P/E and MarketCap are not meaningful for funds
+                    enriched.peRatio = null;
+                    enriched.marketCap = null;
+                }
+                
+                enrichedResults.push(enriched);
             } else {
                 enrichedResults.push(item);
             }
@@ -308,7 +369,11 @@ class DataAggregatorV4 {
                         week52High: fundamentals.success ? fundamentals.data.week52High : null,
                         week52Low: fundamentals.success ? fundamentals.data.week52Low : null,
                         sector: fundamentals.success ? fundamentals.data.sector : null,
-                        industry: fundamentals.success ? fundamentals.data.industry : null
+                        industry: fundamentals.success ? fundamentals.data.industry : null,
+                        // Fund-specific
+                        totalAssets: fundamentals.success ? fundamentals.data.totalAssets : null,
+                        fundCategory: fundamentals.success ? fundamentals.data.fundCategory : null,
+                        fundFamily: fundamentals.success ? fundamentals.data.fundFamily : null
                     }
                 };
                 
@@ -477,6 +542,7 @@ class DataAggregatorV4 {
                     return {
                         symbol: r.symbol + suffix,
                         name: r.name,
+                        figiName: r.name, // Preserved copy that won't get overwritten
                         type: r.type,
                         exchange: r.exchange,
                         currency: r.currency || '',
@@ -527,7 +593,8 @@ class DataAggregatorV4 {
                 const resultsWithISIN = twelveResult.results.map(r => ({
                     ...r,
                     isin: r.isin || isin.toUpperCase(),
-                    name: r.name || (openFigiData && openFigiData.name) || r.symbol
+                    name: this._bestName(openFigiData && openFigiData.name, r.name, r.symbol),
+                    figiName: (openFigiData && openFigiData.name) || null
                 }));
                 const enriched = await this.enrichWithQuotes(resultsWithISIN);
                 const response = {
@@ -555,7 +622,8 @@ class DataAggregatorV4 {
                 const resultsWithISIN = yahooResult.results.map(r => ({
                     ...r,
                     isin: r.isin || isin.toUpperCase(),
-                    name: r.name || (openFigiData && openFigiData.name) || r.symbol
+                    name: this._bestName(openFigiData && openFigiData.name, r.name, r.symbol),
+                    figiName: (openFigiData && openFigiData.name) || null
                 }));
                 const enriched = await this.enrichWithQuotes(resultsWithISIN);
                 const response = {
@@ -583,7 +651,8 @@ class DataAggregatorV4 {
                 const resultsWithISIN = finnhubResult.results.map(r => ({
                     ...r,
                     isin: r.isin || isin.toUpperCase(),
-                    name: r.name || (openFigiData && openFigiData.name) || r.symbol
+                    name: this._bestName(openFigiData && openFigiData.name, r.name, r.symbol),
+                    figiName: (openFigiData && openFigiData.name) || null
                 }));
                 const enriched = await this.enrichWithQuotes(resultsWithISIN);
                 const response = {
@@ -690,7 +759,11 @@ class DataAggregatorV4 {
                         peRatio: quoteResult.data.peRatio || null,
                         dividendYield: quoteResult.data.dividendYield || null,
                         week52High: quoteResult.data.week52High || null,
-                        week52Low: quoteResult.data.week52Low || null
+                        week52Low: quoteResult.data.week52Low || null,
+                        // Fund-specific fields
+                        totalAssets: quoteResult.data.totalAssets || null,
+                        fundCategory: quoteResult.data.fundCategory || null,
+                        fundFamily: quoteResult.data.fundFamily || null
                     },
                     source: quoteResult.source,
                     fromCache: false
