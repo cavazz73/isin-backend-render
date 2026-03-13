@@ -271,8 +271,8 @@ class DataAggregatorV4 {
                 const quote = await this.getQuote(item.symbol);
                 
                 if (quote.success && quote.data) {
-                    // Smart name: prefer FIGI/original name over Yahoo ticker-names
-                    const bestName = this._bestName(item.name, item.figiName, quote.data.name, item.symbol);
+                    // Smart name: fundName (from Yahoo quoteSummary longName) > FIGI name > chart name > symbol
+                    const bestName = this._bestName(quote.data.fundName, item.name, item.figiName, quote.data.name, item.symbol);
                     const bestDesc = this._bestName(quote.data.description, item.description, bestName);
                     
                     const isFund = this._isFundType(item.type) || this._isFundType(quote.data.type);
@@ -295,7 +295,8 @@ class DataAggregatorV4 {
                         // Fund-specific fields from quote
                         totalAssets: quote.data.totalAssets || item.totalAssets || null,
                         fundCategory: quote.data.fundCategory || item.fundCategory || null,
-                        fundFamily: quote.data.fundFamily || item.fundFamily || null
+                        fundFamily: quote.data.fundFamily || item.fundFamily || null,
+                        fundName: quote.data.fundName || item.fundName || null
                     };
                     
                     // Fund-specific: add NAV/AUM, mark metrics as fund-type
@@ -366,10 +367,13 @@ class DataAggregatorV4 {
                 const fundamentals = await this.yahoo.getFundamentals(symbol);
                 
                 // Combine price data with fundamentals
+                const fundName = fundamentals.success ? fundamentals.data.fundName : null;
                 const combinedQuote = {
                     ...yahooQuote,
                     data: {
                         ...yahooQuote.data,
+                        // Use fundName (from quoteSummary longName) as name if it's better
+                        name: this._bestName(fundName, yahooQuote.data.name, symbol),
                         description: (fundamentals.success && fundamentals.data.description) || yahooQuote.data.description,
                         marketCap: fundamentals.success ? fundamentals.data.marketCap : null,
                         peRatio: fundamentals.success ? fundamentals.data.peRatio : null,
@@ -381,7 +385,8 @@ class DataAggregatorV4 {
                         // Fund-specific
                         totalAssets: fundamentals.success ? fundamentals.data.totalAssets : null,
                         fundCategory: fundamentals.success ? fundamentals.data.fundCategory : null,
-                        fundFamily: fundamentals.success ? fundamentals.data.fundFamily : null
+                        fundFamily: fundamentals.success ? fundamentals.data.fundFamily : null,
+                        fundName: fundName
                     }
                 };
                 
